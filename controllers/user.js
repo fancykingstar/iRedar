@@ -13,15 +13,13 @@ exports.postRegister = async (req, res) => {
     email,
     password,
     passwordConfirmation,
-    lastName,
     firstName,
+    lastName,
   } = req.body;
 
-  if (!password || !email) {
+  if (!password || !email || !firstName || !lastName) {
     return res.status(422).send({
-      errors: [
-        { title: 'Data missing!', detail: 'Provide email and password!' },
-      ],
+      errors: [{ title: 'Invalid Input', detail: 'All fields are required' }],
     });
   }
 
@@ -29,7 +27,7 @@ exports.postRegister = async (req, res) => {
     return res.status(422).send({
       errors: [
         {
-          title: 'Invalid passsword!',
+          title: 'Invalid Passsword',
           detail: 'Password is not a same as confirmation!',
         },
       ],
@@ -41,8 +39,8 @@ exports.postRegister = async (req, res) => {
       return res.status(422).send({
         errors: [
           {
-            title: 'Invalid email!',
-            detail: 'User with this email already exist!',
+            title: 'Invalid Email',
+            detail: 'User already exists',
           },
         ],
       });
@@ -71,7 +69,7 @@ exports.postLogin = async (req, res) => {
   if (!password || !email) {
     return res.status(422).send({
       errors: [
-        { title: 'Data missing!', detail: 'Provide email and password!' },
+        { title: 'Invalid Input', detail: 'Email and password are required' },
       ],
     });
   }
@@ -80,7 +78,12 @@ exports.postLogin = async (req, res) => {
 
     if (!user) {
       return res.status(422).send({
-        errors: [{ title: 'Invalid User!', detail: 'User does not exist' }],
+        errors: [
+          {
+            title: 'Invalid Authentication',
+            detail: 'User does not exists',
+          },
+        ],
       });
     }
 
@@ -88,7 +91,12 @@ exports.postLogin = async (req, res) => {
 
     if (!matched) {
       return res.status(422).send({
-        errors: [{ title: 'Wrong Data!', detail: 'Wrong email or password' }],
+        errors: [
+          {
+            title: 'Invalid Authentication',
+            detail: 'Wrong password',
+          },
+        ],
       });
     }
 
@@ -105,7 +113,7 @@ exports.postLogin = async (req, res) => {
 
     user.save();
 
-    return res.json(token);
+    return res.json({ token });
   } catch (err) {
     return res.status(422).send({ errors: normalizeErrors(err.errors) });
   }
