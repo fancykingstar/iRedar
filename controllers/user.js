@@ -6,7 +6,7 @@ const nodeMailer = require('../helpers/nodemailer');
 const { resetPasswordEmail } = require('../helpers/htmlMails/reset-password');
 
 // Load models
-const User = require('../models/user');
+const User = require('../models/User');
 
 // @route POST api/users/register
 // @desc Register user
@@ -21,19 +21,19 @@ exports.postRegister = async (req, res) => {
   } = req.body;
 
   if (!password || !email || !firstName || !lastName) {
-    return res.status(422).send({
+    return res.status(422).json({
       success: false,
       errors: [{ title: 'Invalid Input', detail: 'All fields are required' }],
     });
   }
 
   if (password !== passwordConfirmation) {
-    return res.status(422).send({
+    return res.status(422).json({
       success: false,
       errors: [
         {
           title: 'Invalid Passsword',
-          detail: 'Password is not a same as confirmation!',
+          detail: 'Password is not a same as confirmation',
         },
       ],
     });
@@ -41,7 +41,7 @@ exports.postRegister = async (req, res) => {
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(422).send({
+      return res.status(422).json({
         success: false,
         errors: [
           {
@@ -68,7 +68,7 @@ exports.postRegister = async (req, res) => {
     logger.error(err);
     return res
       .status(422)
-      .send({ success: false, errors: normalizeErrors(err.errors) });
+      .json({ success: false, errors: normalizeErrors(err.errors) });
   }
 };
 
@@ -79,7 +79,7 @@ exports.postLogin = async (req, res) => {
   const { email, password } = req.body;
 
   if (!password || !email) {
-    return res.status(422).send({
+    return res.status(422).json({
       success: false,
       errors: [
         { title: 'Invalid Input', detail: 'Email and password are required' },
@@ -90,7 +90,7 @@ exports.postLogin = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(422).send({
+      return res.status(422).json({
         success: false,
         errors: [
           {
@@ -104,7 +104,7 @@ exports.postLogin = async (req, res) => {
     const matched = await user.hasSamePassword(password);
 
     if (!matched) {
-      return res.status(422).send({
+      return res.status(422).json({
         success: false,
         errors: [
           {
@@ -133,18 +133,22 @@ exports.postLogin = async (req, res) => {
     logger.error(err);
     return res
       .status(422)
-      .send({ success: false, errors: normalizeErrors(err.errors) });
+      .json({ success: false, errors: normalizeErrors(err.errors) });
   }
 };
 
-exports.postPasswordForget = async (req, res) => {
+// @route POST api/users/reset-password
+// @desc Reset password
+// @access Public
+exports.postResetPassword = async (req, res) => {
   const { email } = req.body;
 
   try {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(422).send({
+      return res.status(422).json({
+        success: false,
         errors: [
           {
             title: 'Invalid Authentication',
@@ -164,7 +168,6 @@ exports.postPasswordForget = async (req, res) => {
     );
 
     user.confirmToken = token;
-    user.confirmTokenExpires = Date.now() + 3600000; // 1 hour
 
     await user.save();
 
@@ -179,7 +182,7 @@ exports.postPasswordForget = async (req, res) => {
       nodeMailer(mailOptions);
     } catch (err) {
       logger.error(err);
-      return res.json({
+      return res.status(422).json({
         success: false,
         errors: [
           {
@@ -198,6 +201,127 @@ exports.postPasswordForget = async (req, res) => {
     logger.error(err);
     return res
       .status(422)
-      .send({ success: false, errors: normalizeErrors(err.errors) });
+      .json({ success: false, errors: normalizeErrors(err.errors) });
+  }
+};
+
+// @route GET api/users/reset-password/:confirmToken
+// @desc  Return user who requested reset password
+// @access Public
+exports.getResetPassword = async (req, res) => {
+  const { confirmToken } = req.params;
+
+  try {
+    const user = await User.findOne({ confirmToken });
+
+    if (!user) {
+      return res.status(422).json({
+        success: false,
+        errors: [
+          {
+            title: 'Invalid Authentication',
+            detail: 'Token has expired',
+          },
+        ],
+      });
+    }
+
+    try {
+      await jwt.verify(confirmToken, keys.secretOrKey);
+
+      return res.json({
+        success: true,
+        userId: user.id,
+      });
+    } catch (error) {
+      logger.error(error);
+      return res.status(422).json({
+        success: false,
+        errors: [
+          {
+            title: 'Invalid Authentication',
+            detail: 'Token has expired',
+          },
+        ],
+      });
+    }
+  } catch (err) {
+    logger.error(err);
+    return res
+      .status(422)
+      .json({ success: false, errors: normalizeErrors(err.errors) });
+  }
+};
+
+// @route   PUT api/users/reset-password/:confirmToken
+// @desc    Reset password
+// @access  Public
+exports.putResetPassword = async (req, res) => {
+  const { userId, password, passwordConfirmation } = req.body;
+
+  try {
+    const user = await User.findOne({ _id: userId });
+
+    if (!user) {
+      return res.status(422).json({
+        success: false,
+        errors: [
+          {
+            title: 'Invalid Authentication',
+            detail: 'Token has expired',
+          },
+        ],
+      });
+    }
+
+    if (password.length < 6) {
+      return res.json({
+        success: false,
+        errors: [
+          {
+            title: 'Invalid Passsword',
+            detail: 'Password is too short, min is 6 characters',
+          },
+        ],
+      });
+    }
+
+    if (password !== passwordConfirmation) {
+      return res.json({
+        success: false,
+        errors: [
+          {
+            title: 'Invalid Passsword',
+            detail: 'Password is not a same as confirmation',
+          },
+        ],
+      });
+    }
+
+    if (!user.confirmToken) {
+      return res.status(422).json({
+        success: false,
+        errors: [
+          {
+            title: 'Invalid Authentication',
+            detail: 'Token has expired',
+          },
+        ],
+      });
+    }
+
+    user.password = password;
+    user.confirmToken = undefined;
+
+    await user.save();
+    return res.json({
+      success: true,
+      message: 'Password has been reset',
+    });
+  } catch (err) {
+    logger.error(err);
+    return res
+      .status(422)
+      .json({ success: false, errors: normalizeErrors(err.errors) });
   }
 };

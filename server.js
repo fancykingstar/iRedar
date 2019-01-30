@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const cors = require('cors');
+const morgan = require('morgan');
 
 const logger = require('./configs/logger');
 const users = require('./routes/users');
@@ -11,6 +12,9 @@ const users = require('./routes/users');
 
 // Initial express app
 const app = express();
+
+// Log requests info
+app.use(morgan('dev'));
 
 // Handle CORS
 app.use(cors());

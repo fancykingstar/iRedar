@@ -15,14 +15,20 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     min: [6, 'Password is too short, min is 6 characters'],
-    max: [32, 'Password is too long, max is 32 characters'],
     required: 'Password is required',
   },
   confirmToken: String,
-  confirmTokenExpires: Date,
-  role: { type: String, default: 'client' },
+
   firstLogin: { type: Boolean, default: true },
-  businesses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Business' }],
+  organizations: [
+    {
+      organization: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Organization',
+      },
+      role: { type: String, default: 'client' },
+    },
+  ],
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   phoneNumber: String,

@@ -18,7 +18,13 @@ describe('/api/users', () => {
         lastName: 'ok',
       })
       .expect(200)
-      .expect({ success: true }, done);
+      .expect(
+        {
+          success: true,
+          message: 'Your user have been created',
+        },
+        done,
+      );
   });
 
   it('login success', (done) => {
@@ -48,6 +54,7 @@ describe('/api/users', () => {
       .expect(
         422,
         {
+          success: false,
           errors: [
             {
               title: 'Invalid Email',
