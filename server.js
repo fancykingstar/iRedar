@@ -4,7 +4,9 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const cors = require('cors');
 
+const logger = require('./configs/logger');
 const users = require('./routes/users');
+
 // eslint-disable no-console
 
 // Initial express app
@@ -27,8 +29,8 @@ if (process.env.NODE_ENV !== 'test') {
       db,
       { useNewUrlParser: true },
     )
-    .then(() => console.log('MongoDB connected'))
-    .catch(err => console.log(err));
+    .then(() => logger.info('MongoDB connected'))
+    .catch(err => logger.error(err));
   mongoose.set('useCreateIndex', true);
 }
 
@@ -42,6 +44,6 @@ app.use('/api/users', users);
 
 const port = process.env.PORT || 5000;
 
-app.listen(port, () => console.log(`Server running on port ${port}`));
+app.listen(port, () => logger.info(`Server running on port ${port}`));
 
 module.exports = app;
