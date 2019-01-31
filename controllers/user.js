@@ -1,8 +1,9 @@
 const jwt = require('jsonwebtoken');
+const emailValidator = require('email-validator');
 const keys = require('../configs/keys');
 const logger = require('../configs/logger');
-const { normalizeErrors } = require('../helpers/mongoose');
 const nodeMailer = require('../helpers/nodemailer');
+
 const { resetPasswordEmail } = require('../helpers/htmlMails/reset-password');
 
 // Load models
@@ -23,27 +24,47 @@ exports.postRegister = async (req, res) => {
 
   if (!password || !email || !firstName || !lastName) {
     return res.status(422).json({
-      success: false,
       errors: [{ title: 'Invalid Input', detail: 'All fields are required' }],
+    });
+  }
+
+  if (!emailValidator.validate(email)) {
+    return res.status(422).json({
+      errors: [
+        {
+          title: 'Invalid Email',
+          detail: 'Email in invalid',
+        },
+      ],
+    });
+  }
+
+  if (password.length < 6) {
+    return res.status(422).json({
+      errors: [
+        {
+          title: 'Invalid Password',
+          detail: 'Password is too short, min is 6 characters',
+        },
+      ],
     });
   }
 
   if (password !== passwordConfirmation) {
     return res.status(422).json({
-      success: false,
       errors: [
         {
-          title: 'Invalid Passsword',
+          title: 'Invalid Password',
           detail: 'Password is not a same as confirmation',
         },
       ],
     });
   }
+
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(422).json({
-        success: false,
         errors: [
           {
             title: 'Invalid Email',
@@ -76,7 +97,7 @@ exports.postRegister = async (req, res) => {
     logger.error(err);
     return res
       .status(422)
-      .json({ success: false, errors: normalizeErrors(err.errors) });
+      .json({ title: 'Server Error', detail: 'Please try again' });
   }
 };
 
@@ -88,18 +109,28 @@ exports.postLogin = async (req, res) => {
 
   if (!password || !email) {
     return res.status(422).json({
-      success: false,
       errors: [
         { title: 'Invalid Input', detail: 'Email and password are required' },
       ],
     });
   }
+
+  if (!emailValidator.validate(email)) {
+    return res.status(422).json({
+      errors: [
+        {
+          title: 'Invalid Email',
+          detail: 'Email in invalid',
+        },
+      ],
+    });
+  }
+
   try {
     const user = await User.findOne({ email });
 
     if (!user) {
       return res.status(422).json({
-        success: false,
         errors: [
           {
             title: 'Invalid Authentication',
@@ -113,7 +144,6 @@ exports.postLogin = async (req, res) => {
 
     if (!matched) {
       return res.status(422).json({
-        success: false,
         errors: [
           {
             title: 'Invalid Authentication',
@@ -144,7 +174,7 @@ exports.postLogin = async (req, res) => {
     logger.error(err);
     return res
       .status(422)
-      .json({ success: false, errors: normalizeErrors(err.errors) });
+      .json({ title: 'Server Error', detail: 'Please try again' });
   }
 };
 
@@ -163,7 +193,7 @@ exports.getProfile = async (req, res) => {
     logger.error(err);
     return res
       .status(422)
-      .json({ success: false, errors: normalizeErrors(err.errors) });
+      .json({ title: 'Server Error', detail: 'Please try again' });
   }
 };
 
@@ -178,7 +208,6 @@ exports.postResetPassword = async (req, res) => {
 
     if (!user) {
       return res.status(422).json({
-        success: false,
         errors: [
           {
             title: 'Invalid Authentication',
@@ -205,7 +234,7 @@ exports.postResetPassword = async (req, res) => {
       from: '"iAuto" <iauto.iradardata@gmail.com>', // sender address
       to: email, // list of receivers
       subject: 'Password Reset', // Subject line
-      html: resetPasswordEmail('localhost:5000', token), // html body
+      html: resetPasswordEmail('localhost:3000', token), // html body
     };
 
     try {
@@ -213,11 +242,10 @@ exports.postResetPassword = async (req, res) => {
     } catch (err) {
       logger.error(err);
       return res.status(422).json({
-        success: false,
         errors: [
           {
-            title: 'Invalid Authentication',
-            detail: 'An Error occured while sending password reset',
+            title: 'Server Error',
+            detail: 'An Error occurred while sending password reset',
           },
         ],
       });
@@ -231,22 +259,67 @@ exports.postResetPassword = async (req, res) => {
     logger.error(err);
     return res
       .status(422)
-      .json({ success: false, errors: normalizeErrors(err.errors) });
+      .json({ title: 'Server Error', detail: 'Please try again' });
   }
 };
 
 // @route GET api/users/reset-password/:confirmToken
 // @desc  Return user who requested reset password
 // @access Public
-exports.getResetPassword = async (req, res) => {
-  const { confirmToken } = req.params;
+// exports.getResetPassword = async (req, res) => {
+//   const { confirmToken } = req.params;
+
+//   try {
+//     const user = await User.findOne({ confirmToken });
+
+//     if (!user) {
+//       return res.status(422).json({
+//         errors: [
+//           {
+//             title: 'Invalid Authentication',
+//             detail: 'Token has expired',
+//           },
+//         ],
+//       });
+//     }
+
+//     try {
+//       await jwt.verify(confirmToken, keys.secretOrKey);
+
+//       return res.json({
+//         success: true,
+//         userId: user.id,
+//       });
+//     } catch (error) {
+//       logger.error(error);
+//       return res.status(422).json({
+//         errors: [
+//           {
+//             title: 'Invalid Authentication',
+//             detail: 'Token has expired',
+//           },
+//         ],
+//       });
+//     }
+//   } catch (err) {
+//     logger.error(err);
+//     return res
+//       .status(422)
+//       .json({ title: 'Server Error', detail: 'Please try again' });
+//   }
+// };
+
+// @route   PUT api/users/reset-password
+// @desc    Reset password
+// @access  Public
+exports.putResetPassword = async (req, res) => {
+  const { confirmToken, password, passwordConfirmation } = req.body;
 
   try {
     const user = await User.findOne({ confirmToken });
 
     if (!user) {
       return res.status(422).json({
-        success: false,
         errors: [
           {
             title: 'Invalid Authentication',
@@ -258,43 +331,9 @@ exports.getResetPassword = async (req, res) => {
 
     try {
       await jwt.verify(confirmToken, keys.secretOrKey);
-
-      return res.json({
-        success: true,
-        userId: user.id,
-      });
     } catch (error) {
       logger.error(error);
       return res.status(422).json({
-        success: false,
-        errors: [
-          {
-            title: 'Invalid Authentication',
-            detail: 'Token has expired',
-          },
-        ],
-      });
-    }
-  } catch (err) {
-    logger.error(err);
-    return res
-      .status(422)
-      .json({ success: false, errors: normalizeErrors(err.errors) });
-  }
-};
-
-// @route   PUT api/users/reset-password/:confirmToken
-// @desc    Reset password
-// @access  Public
-exports.putResetPassword = async (req, res) => {
-  const { userId, password, passwordConfirmation } = req.body;
-
-  try {
-    const user = await User.findOne({ _id: userId });
-
-    if (!user) {
-      return res.status(422).json({
-        success: false,
         errors: [
           {
             title: 'Invalid Authentication',
@@ -305,11 +344,10 @@ exports.putResetPassword = async (req, res) => {
     }
 
     if (password.length < 6) {
-      return res.json({
-        success: false,
+      return res.status(422).json({
         errors: [
           {
-            title: 'Invalid Passsword',
+            title: 'Invalid Password',
             detail: 'Password is too short, min is 6 characters',
           },
         ],
@@ -317,11 +355,10 @@ exports.putResetPassword = async (req, res) => {
     }
 
     if (password !== passwordConfirmation) {
-      return res.json({
-        success: false,
+      return res.status(422).json({
         errors: [
           {
-            title: 'Invalid Passsword',
+            title: 'Invalid Password',
             detail: 'Password is not a same as confirmation',
           },
         ],
@@ -330,7 +367,6 @@ exports.putResetPassword = async (req, res) => {
 
     if (!user.confirmToken) {
       return res.status(422).json({
-        success: false,
         errors: [
           {
             title: 'Invalid Authentication',
@@ -352,6 +388,6 @@ exports.putResetPassword = async (req, res) => {
     logger.error(err);
     return res
       .status(422)
-      .json({ success: false, errors: normalizeErrors(err.errors) });
+      .json({ title: 'Server Error', detail: 'Please try again' });
   }
 };

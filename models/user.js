@@ -9,8 +9,6 @@ const UserSchema = new mongoose.Schema({
     unique: true,
     lowercase: true,
     required: 'Email is required',
-    // eslint-disable-next-line no-useless-escape
-    match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/],
   },
   password: {
     type: String,

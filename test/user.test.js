@@ -54,7 +54,6 @@ describe('/api/users', () => {
       .expect(
         422,
         {
-          success: false,
           errors: [
             {
               title: 'Invalid Email',

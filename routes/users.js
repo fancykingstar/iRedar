@@ -20,15 +20,10 @@ router.post('/login', userController.postLogin);
 // @access Public
 router.post('/reset-password', userController.postResetPassword);
 
-// @route POST api/users/reset-password
-// @desc Return user who requested reset password
-// @access Public
-router.get('/reset-password/:confirmToken', userController.getResetPassword);
-
-// @route   PUT api/users/reset-password/:confirmToken
+// @route   PUT api/users/reset-password
 // @desc    Reset password
 // @access  Public
-router.put('/reset-password/:confirmToken', userController.putResetPassword);
+router.put('/reset-password', userController.putResetPassword);
 
 // @route POST api/users/:id
 // @desc Return current user profile

@@ -1,4 +1,4 @@
-exports.resetPasswordEmail = (host, token) => `
+exports.resetPasswordEmail = (appHost, token) => `
 <!DOCTYPE html>
 <html>
   <head>
@@ -192,7 +192,7 @@ exports.resetPasswordEmail = (host, token) => `
                             bgcolor="#1a82e2"
                           >
                             <a
-                              href="http://${host}/api/users/reset-password/${token}"
+                              href="http://${appHost}/reset-password/${token}"
                               target="_blank"
                               style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;"
                               >Reset Password</a
@@ -219,8 +219,8 @@ exports.resetPasswordEmail = (host, token) => `
                   your browser:
                 </p>
                 <p style="margin: 0;">
-                  <a href="http://${host}/api/users/reset-password/${token}" target="_blank"
-                    >http://${host}/api/users/reset-password/${token}</a
+                  <a href="http://${appHost}/reset-password/${token}" target="_blank"
+                    >http://${appHost}/reset-password/${token}</a
                   >
                 </p>
               </td>
