@@ -7,6 +7,7 @@ const { resetPasswordEmail } = require('../helpers/htmlMails/reset-password');
 
 // Load models
 const User = require('../models/User');
+const Profile = require('../models/Profile');
 
 // @route POST api/users/register
 // @desc Register user
@@ -52,14 +53,21 @@ exports.postRegister = async (req, res) => {
       });
     }
 
-    const user = new User({
+    const user = await new User({
       email,
       password,
       lastName,
       firstName,
     });
-
     await user.save();
+
+    await new Profile({
+      // eslint-disable-next-line no-underscore-dangle
+      user: user._id,
+      lastName: user.lastName,
+      firstName: user.firstName,
+    }).save();
+
     return res.json({
       success: true,
       message: 'Your user have been created',
@@ -128,7 +136,29 @@ exports.postLogin = async (req, res) => {
 
     user.save();
 
-    return res.json({ token });
+    return res.json({
+      success: true,
+      token: `Bearer ${token}`,
+    });
+  } catch (err) {
+    logger.error(err);
+    return res
+      .status(422)
+      .json({ success: false, errors: normalizeErrors(err.errors) });
+  }
+};
+
+// @route GET api/users/:id
+// @desc Return current user
+// @access Private
+exports.getProfile = async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.params.id });
+
+    return res.json({
+      success: true,
+      profile,
+    });
   } catch (err) {
     logger.error(err);
     return res

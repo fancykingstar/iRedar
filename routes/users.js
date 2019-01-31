@@ -1,4 +1,5 @@
 const express = require('express');
+const passport = require('passport');
 
 const router = express.Router();
 
@@ -28,5 +29,14 @@ router.get('/reset-password/:confirmToken', userController.getResetPassword);
 // @desc    Reset password
 // @access  Public
 router.put('/reset-password/:confirmToken', userController.putResetPassword);
+
+// @route POST api/users/:id
+// @desc Return current user profile
+// @access Private
+router.get(
+  '/:id',
+  passport.authenticate('jwt', { session: false }),
+  userController.getProfile,
+);
 
 module.exports = router;

@@ -38,9 +38,8 @@ if (process.env.NODE_ENV !== 'test') {
   mongoose.set('useCreateIndex', true);
 }
 
-app.use(passport.initialize());
-
 // Passport Config
+app.use(passport.initialize());
 require('./configs/passport')(passport);
 
 // Use routes
