@@ -21,7 +21,10 @@ describe('/api/users', () => {
       .expect(
         {
           success: true,
-          message: 'Your user have been created',
+          alert: {
+            title: 'Success!',
+            detail: 'Your user have been created',
+          },
         },
         done,
       );
@@ -54,13 +57,9 @@ describe('/api/users', () => {
       .expect(
         422,
         {
-          errors: [
-            {
-              title: 'Invalid Email',
-              detail: 'User already exists',
-            },
-          ],
+          email: 'User already exists',
         },
+
         done,
       );
   });
