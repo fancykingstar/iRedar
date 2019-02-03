@@ -19,13 +19,13 @@ router.post(
   userController.postPermission,
 );
 
-// @route POST api/organizations/permission/:id
+// @route POST api/organizations/permissions/:profileId
 // @desc Return current user profile
 // @access Private
 router.get(
-  '/permission/:id',
+  '/permissions/:profileId',
   passport.authenticate('jwt', { session: false }),
-  userController.getPermission,
+  userController.getPermissions,
 );
 
 module.exports = router;

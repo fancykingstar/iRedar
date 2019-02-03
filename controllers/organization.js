@@ -108,7 +108,7 @@ exports.postPermission = async (req, res) => {
     }
 
     // Check if profile exists
-    const profile = await Profile.findOne({ id: profileId });
+    const profile = await Profile.findOne({ _id: profileId });
     if (!profile) {
       return res.status(422).json({
         name: 'User does not exists',
@@ -121,6 +121,7 @@ exports.postPermission = async (req, res) => {
       profile: profile.id,
     });
 
+    console.log(existingPermission);
     if (existingPermission) {
       return res.status(422).json({
         name: 'Your permission already existed',
@@ -150,18 +151,18 @@ exports.postPermission = async (req, res) => {
   }
 };
 
-// @route GET api/organizations/permission/:id
-// @desc Return current user's permission
+// @route GET api/organizations/permissions/:profileId
+// @desc Return current user's permissions
 // @access Private
-exports.getPermission = async (req, res) => {
+exports.getPermissions = async (req, res) => {
   try {
-    const permission = await Permission.findOne({
-      profile: req.params.id,
+    const permissions = await Permission.find({
+      profile: req.params.profileId,
     });
 
     return res.json({
       success: true,
-      permission,
+      permissions,
     });
   } catch (error) {
     logger.error(error);
