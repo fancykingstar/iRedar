@@ -6,7 +6,9 @@ const cors = require('cors');
 const morgan = require('morgan');
 
 const logger = require('./configs/logger');
+
 const users = require('./routes/users');
+const organizations = require('./routes/organization');
 
 // eslint-disable no-console
 
@@ -29,10 +31,7 @@ const db = require('./configs/keys').mongoURI;
 // Connect to MongoDB
 if (process.env.NODE_ENV !== 'test') {
   mongoose
-    .connect(
-      db,
-      { useNewUrlParser: true },
-    )
+    .connect(db, { useNewUrlParser: true })
     .then(() => logger.info('MongoDB connected'))
     .catch(err => logger.error(err));
   mongoose.set('useCreateIndex', true);
@@ -44,6 +43,7 @@ require('./configs/passport')(passport);
 
 // Use routes
 app.use('/api/users', users);
+app.use('/api/organizations', organizations);
 
 const port = process.env.PORT || 5000;
 

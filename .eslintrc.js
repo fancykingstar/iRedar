@@ -10,6 +10,7 @@ module.exports = {
     'func-names': ['error', 'never'],
     'no-console': 'off',
     'no-param-reassign': ['error', { props: false }],
-    'no-shadow': ['error', { allow: ['err', 'error'] }]
+    'no-shadow': ['error', { allow: ['err', 'error'] }],
+    'no-underscore-dangle': 'off'
   }
 };

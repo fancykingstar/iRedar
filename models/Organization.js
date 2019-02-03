@@ -39,42 +39,6 @@ const OrganizationSchema = new mongoose.Schema({
       required: true,
     },
   },
-
-  admin: [
-    {
-      user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-      },
-    },
-  ],
-
-  staff: [
-    {
-      user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-      },
-    },
-  ],
-
-  client: [
-    {
-      user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-      },
-    },
-  ],
-
-  partner: [
-    {
-      partner: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Organization',
-      },
-    },
-  ],
 });
 
 module.exports = mongoose.model('Organization', OrganizationSchema);

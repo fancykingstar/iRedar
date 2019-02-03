@@ -6,19 +6,15 @@ const ProfileSchema = {
     ref: 'User',
     require: true,
   },
-  lastName: {
-    type: String,
-  },
-  firstName: {
-    type: String,
-  },
-  bio: {
-    type: String,
-    default: 'Hello everyone',
-  },
+
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  phoneNumber: String,
+
   avatar: {
     type: String,
   },
+  firstLogin: { type: Boolean, default: true },
 };
 
 module.exports = mongoose.model('Profile', ProfileSchema);

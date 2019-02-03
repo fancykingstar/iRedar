@@ -18,18 +18,6 @@ const UserSchema = new mongoose.Schema({
   confirmToken: String,
 
   firstLogin: { type: Boolean, default: true },
-  organizations: [
-    {
-      organization: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Organization',
-      },
-      role: { type: String, default: 'client' },
-    },
-  ],
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
-  phoneNumber: String,
 });
 
 UserSchema.methods.hasSamePassword = function (requestedPassword) {

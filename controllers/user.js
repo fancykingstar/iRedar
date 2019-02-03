@@ -60,16 +60,13 @@ exports.postRegister = async (req, res) => {
     const user = await new User({
       email,
       password,
-      lastName,
-      firstName,
     });
     await user.save();
 
     await new Profile({
-      // eslint-disable-next-line no-underscore-dangle
       user: user._id,
-      lastName: user.lastName,
-      firstName: user.firstName,
+      lastName,
+      firstName,
     }).save();
 
     return res.json({
@@ -128,18 +125,17 @@ exports.postLogin = async (req, res) => {
       });
     }
 
+    const profile = await Profile.findOne({ user });
+    if (profile.firstLogin) await profile.updateOne({ firstLogin: false });
+
     const token = jwt.sign(
       {
         userId: user.id,
-        email: user.email,
+        profileId: profile.id,
       },
       keys.secretOrKey,
-      { expiresIn: '1h' },
+      { expiresIn: '30d' },
     );
-
-    if (user.firstLogin) await user.updateOne({ firstLogin: false });
-
-    user.save();
 
     return res.json({
       success: true,
