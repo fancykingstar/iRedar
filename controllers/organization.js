@@ -174,3 +174,80 @@ exports.getPermissions = async (req, res) => {
     });
   }
 };
+
+// @route GET api/organizations/permissions/admin/:organizationId/:profileId
+// @desc Return all organization's permissions
+// @access Private
+exports.getAdminPermissions = async (req, res) => {
+  try {
+    const permissions = await Permission.findOne({
+      profile: req.params.profileId,
+      organization: req.params.organizationId,
+    });
+
+    if (permissions.role !== 'admin') {
+      return res.status(422).json({
+        alert: {
+          title: 'Access denied!',
+          detail: 'You do not have permissions',
+        },
+      });
+    }
+
+    const allPermissions = await Permission.find({
+      organization: req.params.organizationId,
+    }).populate('profile');
+
+    return res.json({
+      success: true,
+      allPermissions,
+    });
+  } catch (error) {
+    logger.error(error);
+    return res.status(422).json({
+      alert: {
+        title: 'Error!',
+        detail: 'Server occurred an error,  please try again',
+      },
+    });
+  }
+};
+
+// @route POST api/organizations/permissions/admin/
+// @desc Return all organization's permissions
+// @access Private
+exports.postAdminPermissions = async (req, res) => {
+  try {
+    const permission = await Permission.findOne({
+      _id: req.body.permissionId,
+    });
+
+    if (!permission) {
+      return res.status(422).json({
+        alert: {
+          title: 'Not Found!',
+          detail: 'Permission does not exist',
+        },
+      });
+    }
+
+    await permission.updateOne({ role: req.body.role });
+
+    const allPermissions = await Permission.find({
+      organization: req.params.organizationId,
+    }).populate('profile');
+
+    return res.json({
+      success: true,
+      allPermissions,
+    });
+  } catch (error) {
+    logger.error(error);
+    return res.status(422).json({
+      alert: {
+        title: 'Error!',
+        detail: 'Server occurred an error,  please try again',
+      },
+    });
+  }
+};

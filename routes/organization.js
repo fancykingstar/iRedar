@@ -27,5 +27,22 @@ router.get(
   passport.authenticate('jwt', { session: false }),
   userController.getPermissions,
 );
+// @route GET api/organizations/permissions/admin/:organizationId/:profileId
+// @desc Return all organization's permissions
+// @access Private
+router.get(
+  '/permissions/admin/:organizationId/:profileId',
+  passport.authenticate('jwt', { session: false }),
+  userController.getAdminPermissions,
+);
+
+// @route POST api/organizations/permissions/admin/
+// @desc Return all organization's permissions
+// @access Private
+router.post(
+  '/permissions/admin',
+  passport.authenticate('jwt', { session: false }),
+  userController.postAdminPermissions,
+);
 
 module.exports = router;

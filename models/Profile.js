@@ -9,7 +9,11 @@ const ProfileSchema = {
 
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
-  phoneNumber: String,
+  email: { type: String, required: true },
+  phoneNumber: {
+    type: String,
+    default: 'none',
+  },
 
   avatar: {
     type: String,
