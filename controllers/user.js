@@ -65,6 +65,7 @@ exports.postRegister = async (req, res) => {
 
     await new Profile({
       user: user._id,
+      email,
       lastName,
       firstName,
     }).save();
