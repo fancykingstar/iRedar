@@ -16,6 +16,7 @@
     "express": "^4.16.4",
     "gravatar": "^1.8.0",
     "jsonwebtoken": "^8.4.0",
+    "moment": "^2.24.0",
     "mongoose": "^5.4.7",
     "morgan": "^1.9.1",
     "nodemailer": "^5.1.1",

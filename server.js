@@ -9,6 +9,7 @@ const logger = require('./configs/logger');
 
 const users = require('./routes/users');
 const organizations = require('./routes/organization');
+const submissions = require('./routes/submission');
 
 // eslint-disable no-console
 
@@ -44,6 +45,7 @@ require('./configs/passport')(passport);
 // Use routes
 app.use('/api/users', users);
 app.use('/api/organizations', organizations);
+app.use('/api/submissions', submissions);
 
 const port = process.env.PORT || 5000;
 
