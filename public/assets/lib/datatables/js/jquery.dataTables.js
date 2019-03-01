@@ -4816,7 +4816,12 @@
 		var select = $('<select/>', {
 			'name':          tableId+'_length',
 			'aria-controls': tableId,
-			'class':         classes.sLengthSelect
+			// 'class':         classes.sLengthSelect
+			'class': 'form-control',
+			'css': {
+				'display': 'inline',
+				'width': '50px'
+			}
 		} );
 	
 		for ( var i=0, ien=lengths.length ; i<ien ; i++ ) {
