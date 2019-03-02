@@ -12,6 +12,13 @@ class FCRPLoan extends Component {
             autoFocus: true,
             titleTemplate: '<span class="number">#index#</span> <span class="title">#title#</span>',
             cssClass: 'wizard wizard-style-2',
+            onStepChanging: function (event, currentIndex, newIndex) {
+                return true
+            },
+            onFinishing: function (event, currentIndex) {
+                return true
+            },
+
             onFinished: async function (event, currentIndex) {
                 let content = {
                     fromForm: 'fcrp-loan',
@@ -77,7 +84,8 @@ class FCRPLoan extends Component {
                 try {
                     await axios.post(`http://localhost:5000/api/submissions`, content);
                     window.history2.push({
-                        pathname: '/forms/submission-success'
+                        // pathname: '/forms/submission-success'
+                        pathname: '/forms/'
                     });
 
                     console.log('OK');
@@ -759,7 +767,7 @@ class FCRPLoan extends Component {
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-4">
-                                            <label htmlFor="howDidYouHearAboutUs">How did you hear baout FCRP?</label>
+                                            <label htmlFor="howDidYouHearAboutUs">How did you hear about FCRP?</label>
                                             <input type="text" className="form-control" id="howDidYouHearAboutUs" name="howDidYouHearAboutUs" />
                                         </div>
                                     </div>

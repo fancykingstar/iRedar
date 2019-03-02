@@ -5,9 +5,8 @@ export default function Footer() {
     <div className="slim-footer" style={{ backgroundColor: '#f7f7f7' }}>
       <div className="container">
         <p>
-          Copyright 2018 &copy; All Rights Reserved. Slim Dashboard Template
+          Copyright 2019 &copy; iRadar Canada. All Rights Reserved.
         </p>
-        <p>Designed by: ThemePixels</p>
       </div>
     </div>
   );

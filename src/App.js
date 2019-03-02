@@ -85,7 +85,7 @@ class App extends Component {
               <Switch>
                 <PrivateRoute
                   exact
-                  path="/modules/referrals"
+                  path="/modules/submissions"
                   component={Referrals}
                 />
               </Switch>

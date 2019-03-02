@@ -7,6 +7,22 @@ import { HOST_URL } from '../../../actions/types';
 
 // export default function FormsPage() {
 class FormsPage extends Component {
+  componentDidMount() {
+    window.history2 = this.props.history
+    // alert(JSON.stringify(this.props))
+
+  }
+
+  // componentDidUpdate() {
+  //   window.$('#datatable2').DataTable({
+  //     responsive: true,
+  //     language: {
+  //       searchPlaceholder: 'Search...',
+  //       sSearch: '',
+  //       lengthMenu: '_MENU_ items/page',
+  //     }
+  //   });
+  // }
 
   copyToClipboard = str => {
     const el = document.createElement('textarea');
@@ -17,9 +33,16 @@ class FormsPage extends Component {
     document.body.removeChild(el);
   };
 
+  viewForm = event => {
+    let formName = event.target.getAttribute('form_name')
+    this.props.history.push({
+      pathname: '/forms/all-forms/' + formName
+    });
+  }
+
   shareForm = event => {
     let formName = event.target.getAttribute('form_name')
-    let url = 'http://localhost:3000/forms/all-forms/'+formName
+    let url = 'http://localhost:3000/forms/all-forms/' + formName
     this.copyToClipboard(url)
     alert('Copied the form URL to Clipboard')
   }
@@ -33,113 +56,106 @@ class FormsPage extends Component {
             <h6 className="slim-pagetitle">All Forms</h6>
           </div>
 
-          <div className="table-responsive mg-t-40">
-            <table className="table table-invoice">
-              <thead>
-                <tr>
-                  <th className="wd-20p">Name</th>
-                  <th className="wd-40p">Link</th>
-                  <th className="tx-center"> </th>
-                  <th className="tx-right"> </th>
-                  <th className="tx-right"> </th>
-                </tr>
-              </thead>
-              <tbody>
-                {/* <tr>
-                <td>Registration Form</td>
-                <td className="tx-12">{`${HOST_URL}/forms/all-forms/1`}</td>
-                <td className="tx-center"> </td>
-                <td className="tx-right">
-                  <Link to="/forms/all-forms/1" className="tx-right">
-                    View
-                  </Link>
-                </td>
-                 <td className="tx-right">
-                  <Link to="/forms/all-forms/1" className="tx-right">
-                    Submissions
-                  </Link>
-                </td> 
-              </tr> */}
-                {/* <tr>
-                <td>IAR Assessment</td>
-                <td className="tx-12">{`${HOST_URL}/forms/all-forms/1`}</td>
-                <td className="tx-center"> </td>
-                <td className="tx-right">
-                  <Link to="/forms/all-forms/1" className="tx-right">
-                    View
-                  </Link>
-                </td>
-              <td className="tx-right">
-                  <Link to="/forms/all-forms/1" className="tx-right">
-                    Submissions
-                  </Link>
-                </td> 
-              </tr> */}
-                <tr>
-                  <td> Client Action Plan</td>
-                  <td className="tx-12">{`${HOST_URL}/forms/all-forms/1`}</td>
-                  <td className="tx-center"> </td>
-                  <td className="tx-right">
-                    <Link
-                      to="/forms/all-forms/client-action"
-                      className="tx-right"
-                    >
-                      View
-                  </Link>
-                  </td>
-                  <td className="tx-right">
-                    <button id="downloadButton" type="button" className="btn btn-secondary btn-sm" onClick={this.shareForm} form_name='client-action' >Share</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td> IAR Assessment</td>
-                  <td className="tx-12">{`${HOST_URL}/forms/all-forms/2`}</td>
-                  <td className="tx-center"> </td>
-                  <td className="tx-right">
-                    <Link
-                      to="/forms/all-forms/iar-assessment"
-                      className="tx-right"
-                    >
-                      View
-                  </Link>
-                  </td>
-                  <td className="tx-right">
-                    <button id="downloadButton" type="button" className="btn btn-secondary btn-sm" onClick={this.shareForm} form_name='iar-assessment' >Share</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td> FCRP Loan</td>
-                  <td className="tx-12">{`${HOST_URL}/forms/all-forms/3`}</td>
-                  <td className="tx-center"> </td>
-                  <td className="tx-right">
-                    <Link
-                      to="/forms/all-forms/fcrp-loan"
-                      className="tx-right"
-                    >
-                      View
-                  </Link>
-                  </td>
-                  <td className="tx-right">
-                    <button id="downloadButton" type="button" className="btn btn-secondary btn-sm" onClick={this.shareForm} form_name='fcrp-loan' >Share</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Registration</td>
-                  <td className="tx-12">{`${HOST_URL}/forms/all-forms/4`}</td>
-                  <td className="tx-center"> </td>
-                  <td className="tx-right">
-                    <Link
-                      to="/forms/all-forms/registration"
-                      className="tx-right"
-                    >
-                      View
-                  </Link>
-                  </td>
-                  <td className="tx-right">
-                    <button id="downloadButton" type="button" className="btn btn-secondary btn-sm" onClick={this.shareForm} form_name='registration' >Share</button>
-                  </td>
-                </tr>
-                {/* <tr>
+          <div className="table-responsive mg-t-0">
+            <div class="section-wrapper">
+
+              <table className="table table-invoice" id="datatable2">
+                <thead>
+                  <tr>
+                    <th className="wd-5p">Id</th>
+                    <th className="wd-20p">Name</th>
+                    {/* <th className="wd-40p">Link</th> */}
+                    <th className="wd-20p">Date Created</th>
+                    <th className="wd-20p">Date Modified</th>
+
+                    <th className="tx-center"> </th>
+                    <th className="tx-right"> </th>
+                    <th className="tx-right"> </th>
+                    <th className="tx-right"> </th>
+                    <th className="tx-right"> </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td> Client Action Plan</td>
+                    {/* <td className="tx-12">{`${HOST_URL}/forms/all-forms/1`}</td> */}
+                    <td>Jan 09, 2018 12:00 AM</td>
+                    <td>Jan 09, 2018 12:00 AM</td>
+                    <td className="tx-right">
+                      <button type="button" className="btn btn-secondary btn-sm" onClick={this.viewForm} form_name='client-action' >View</button>
+                    </td>
+                    <td className="tx-right">
+                      <button type="button" className="btn btn-secondary btn-sm" onClick={this.viewForm} form_name='client-action' >Edit</button>
+                    </td>
+                    <td className="tx-right">
+                      <button type="button" className="btn btn-secondary btn-sm" onClick={this.shareForm} form_name='client-action' >Share</button>
+                    </td>
+                    <td className="tx-right">
+                      <button type="button" className="btn btn-primary btn-sm" onClick={this.shareForm} form_name='registration' >Submissions</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td> IAR Assessment</td>
+                    <td>Jan 09, 2018 12:00 AM</td>
+                    <td>Jan 09, 2018 12:00 AM</td>
+                    {/* <td className="tx-12">{`${HOST_URL}/forms/all-forms/2`}</td> */}
+                    {/* <td className="tx-center"> </td> */}
+                    <td className="tx-right">
+                      <button type="button" className="btn btn-secondary btn-sm" onClick={this.viewForm} form_name='iar-assessment' >View</button>
+                    </td>
+                    <td className="tx-right">
+                      <button type="button" className="btn btn-secondary btn-sm" onClick={this.viewForm} form_name='iar-assessment' >Edit</button>
+                    </td>
+                    <td className="tx-right">
+                      <button type="button" className="btn btn-secondary btn-sm" onClick={this.shareForm} form_name='iar-assessment' >Share</button>
+                    </td>
+                    <td className="tx-right">
+                      <button type="button" className="btn btn-primary btn-sm" onClick={this.shareForm} form_name='registration' >Submissions</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td> FCRP Loan</td>
+                    <td>Jan 09, 2018 12:00 AM</td>
+                    <td>Jan 09, 2018 12:00 AM</td>
+                    {/* <td className="tx-12">{`${HOST_URL}/forms/all-forms/3`}</td> */}
+                    {/* <td className="tx-center"> </td> */}
+                    <td className="tx-right">
+                      <button type="button" className="btn btn-secondary btn-sm" onClick={this.viewForm} form_name='fcrp-loan' >View</button>
+                    </td>
+                    <td className="tx-right">
+                      <button type="button" className="btn btn-secondary btn-sm" onClick={this.viewForm} form_name='fcrp-loan' >Edit</button>
+                    </td>
+                    <td className="tx-right">
+                      <button type="button" className="btn btn-secondary btn-sm" onClick={this.shareForm} form_name='fcrp-loan' >Share</button>
+                    </td>
+                    <td className="tx-right">
+                      <button type="button" className="btn btn-primary btn-sm" onClick={this.shareForm} form_name='registration' >Submissions</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>4</td>
+                    <td>Registration</td>
+                    <td>Jan 09, 2018 12:00 AM</td>
+                    <td>Jan 09, 2018 12:00 AM</td>
+                    {/* <td className="tx-12">{`${HOST_URL}/forms/all-forms/4`}</td> */}
+                    {/* <td className="tx-center"> </td> */}
+                    <td className="tx-right">
+                      <button type="button" className="btn btn-secondary btn-sm" onClick={this.viewForm} form_name='registration' >View</button>
+                    </td>
+                    <td className="tx-right">
+                      <button type="button" className="btn btn-secondary btn-sm" onClick={this.viewForm} form_name='registration' >Edit</button>
+                    </td>
+                    <td className="tx-right">
+                      <button type="button" className="btn btn-secondary btn-sm" onClick={this.shareForm} form_name='registration' >Share</button>
+                    </td>
+                    <td className="tx-right">
+                      <button type="button" className="btn btn-primary btn-sm" onClick={this.shareForm} form_name='registration' >Submissions</button>
+                    </td>
+                  </tr>
+                  {/* <tr>
                 <td>FCRP Loan Initiative Intake</td>
                 <td className="tx-12">{`${HOST_URL}/forms/all-forms/1`}</td>
                 <td className="tx-center"> </td>
@@ -154,8 +170,9 @@ class FormsPage extends Component {
                   </Link>
                 </td> 
               </tr> */}
-              </tbody>
-            </table>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

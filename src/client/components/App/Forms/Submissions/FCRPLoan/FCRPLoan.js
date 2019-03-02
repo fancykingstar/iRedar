@@ -697,7 +697,7 @@ class FCRPLoanSubmission extends Component {
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-4">
-                                            <label htmlFor="howDidYouHearAboutUs">How did you hear baout FCRP?</label>
+                                            <label htmlFor="howDidYouHearAboutUs">How did you hear about FCRP?</label>
                                             <input type="text" className="form-control" id="howDidYouHearAboutUs" name="howDidYouHearAboutUs" readOnly defaultValue={submission.content.howDidYouHearAboutUs} />
                                         </div>
                                     </div>

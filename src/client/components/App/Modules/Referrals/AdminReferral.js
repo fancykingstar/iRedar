@@ -15,6 +15,10 @@ class AdminReferral extends Component {
       organizationId: permissions[0].organization
     };
     getAllSubmissions(userData);
+
+    // window.history2 = this.props.history
+    // alert(JSON.stringify(this.props))
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -31,6 +35,7 @@ class AdminReferral extends Component {
       <AdminReferralList
         submissionList={this.state.submissionList}
         loading={this.props.loading}
+        // history2 = {this.props.history}
       />
     );
   }

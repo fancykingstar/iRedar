@@ -86,6 +86,9 @@ class AdminNavbar extends Component {
               <div className="sub-item">
                 <ul>
                   <li>
+                    <Link to="/modules/submissions">Submissions</Link>
+                  </li>
+                  <li>
                     <Link to="/modules/referrals">Referrals</Link>
                   </li>
                 </ul>
