@@ -6,11 +6,11 @@
   "scripts": {
     "test-server": "mocha --recursive --exit",
     "start-dev": "nf start -p 3000 -j Procfile.dev",
-    "start": "node src/server/server.js -p $PORT",
+    "start": "nf start -p $PORT -j Procfile",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "heroku-postbuild": "react-scripts build && node src/server/server.js -p $PORT"
+    "heroku-postbuild": "react-scripts build"
   },
   "author": "Minh Do",
   "license": "MIT",
