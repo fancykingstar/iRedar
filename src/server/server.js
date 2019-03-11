@@ -31,13 +31,12 @@ app.use(bodyParser.json());
 const db = require('./configs/keys').mongoURI;
 
 // Connect to MongoDB
-if (process.env.NODE_ENV !== 'test') {
-  mongoose
+mongoose
     .connect(db, { useNewUrlParser: true })
     .then(() => logger.info('MongoDB connected'))
     .catch(err => logger.error(err));
-  mongoose.set('useCreateIndex', true);
-}
+mongoose.set('useCreateIndex', true);
+
 
 const debugMode = (process.env.NODE_ENV === "development");
 const relativePath = debugMode ? '../../' : '../..';
