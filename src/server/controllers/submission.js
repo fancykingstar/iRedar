@@ -2,6 +2,7 @@ const logger = require('../configs/logger');
 
 const Submission = require('../models/Submission');
 const Permission = require('../models/Permission');
+const Profile = require('../models/Profile')
 
 // @route POST api/submissions
 // @desc Submit form
@@ -9,8 +10,10 @@ const Permission = require('../models/Permission');
 exports.postSubmission = async (req, res) => {
   console.log(req.body);
   try {
+
     const submission = await new Submission({
       content: req.body,
+      userId: req.user._id
     });
     await submission.save();
 
@@ -18,7 +21,7 @@ exports.postSubmission = async (req, res) => {
       success: true,
     });
   } catch (error) {
-    logger.error(error);
+   console.error(error)
     return res.status(422).json({
       alert: {
         title: 'Error!',
@@ -35,7 +38,13 @@ exports.getAllSubmissions = async (req, res) => {
   console.log(req.body);
   const { profileId, organizationId } = req.body;
 
+
+  console.log("USER IS ",req.user)
+
   try {
+
+    let profile = await Profile.find({ user: req.user._id })
+
     const permissions = await Permission.findOne({
       profile: profileId,
       organization: organizationId,
@@ -53,7 +62,7 @@ exports.getAllSubmissions = async (req, res) => {
     // const allSubmissions = await Submission.find({
     //   organization: organizationId,
     // });
-    const allSubmissions = await Submission.find().sort({
+    const allSubmissions = await Submission.find({   userId: req.user._id}).sort({
       dateSubmitted: 'desc',
     });
     return res.json({
@@ -61,7 +70,7 @@ exports.getAllSubmissions = async (req, res) => {
       allSubmissions,
     });
   } catch (error) {
-    logger.error(error);
+    console.error(error)
     return res.status(422).json({
       alert: {
         title: 'Error!',

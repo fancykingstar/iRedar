@@ -8,7 +8,7 @@ const submissionController = require('../controllers/submission');
 // @route POST api/submissions
 // @desc Submiss form
 // @access Public
-router.post('/', submissionController.postSubmission);
+router.post('/', passport.authenticate('jwt', { session: false }),submissionController.postSubmission);
 
 // @route GET api/submissions/all
 // @desc Return all submissions

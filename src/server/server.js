@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const cors = require('cors');
 const morgan = require('morgan');
+const path = require('path');
 
 const logger = require('./configs/logger');
 
@@ -38,6 +39,9 @@ if (process.env.NODE_ENV !== 'test') {
   mongoose.set('useCreateIndex', true);
 }
 
+const debugMode = (process.env.NODE_ENV === "development");
+const relativePath = debugMode ? '../../' : '../..';
+
 // Passport Config
 app.use(passport.initialize());
 require('./configs/passport')(passport);
@@ -46,6 +50,11 @@ require('./configs/passport')(passport);
 app.use('/api/users', users);
 app.use('/api/organizations', organizations);
 app.use('/api/submissions', submissions);
+
+if (!debugMode){
+  app.use(express.static(path.join(__dirname, relativePath,'build')));
+}
+
 
 const port = process.env.PORT || 5000;
 

@@ -9,6 +9,8 @@ const { resetPasswordEmail } = require('../helpers/htmlMails/reset-password');
 // Load models
 const User = require('../models/User');
 const Profile = require('../models/Profile');
+const Permission = require('../models/Permission');
+const Organization = require('../models/Organization');
 
 // @route POST api/users/register
 // @desc Register user
@@ -63,12 +65,23 @@ exports.postRegister = async (req, res) => {
     });
     await user.save();
 
-    await new Profile({
+    let profile = await new Profile({
       user: user._id,
       email,
       lastName,
       firstName,
     }).save();
+
+
+    let organization = await new Organization({name: firstName})
+
+    const permission = await new Permission({
+      organization: organization._id,
+      profile: profile._id,
+      role: 'admin'
+    });
+
+    await permission.save();
 
     return res.json({
       success: true,
@@ -78,7 +91,8 @@ exports.postRegister = async (req, res) => {
       },
     });
   } catch (error) {
-    logger.error(error);
+    //logger.error(error);
+    console.error(error)
     return res.status(422).json({
       alert: {
         title: 'Error!',

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import axios from 'axios';
+import { API_URL } from '../../../../actions/types';
 
 class Registration extends Component {
     componentDidMount() {
@@ -93,7 +94,7 @@ class Registration extends Component {
                 }
 
                 try {
-                    await axios.post(`http://localhost:5000/api/submissions`, content);
+                    await axios.post(API_URL+'/api/submissions', content);
                     window.history2.push({
                         // pathname: '/forms/submission-success'
                         pathname: '/forms/'
@@ -1181,7 +1182,7 @@ class Registration extends Component {
                         </form>
 
                     </div>
-                
+
                 </div>
             </div >
         )

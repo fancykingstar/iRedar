@@ -97,7 +97,7 @@ exports.postPermission = async (req, res) => {
     });
   }
 
-  try {
+   try {
     const organization = await Organization.findOne({ name });
 
     // Check if organization exists
