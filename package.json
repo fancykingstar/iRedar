@@ -9,7 +9,8 @@
     "start": "node src/server/server.js -p $PORT",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "heroku-postbuild": "echo Skip build on Heroku"
   },
   "author": "Minh Do",
   "license": "MIT",
@@ -58,5 +59,6 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "heroku-run-build-script": true
 }
