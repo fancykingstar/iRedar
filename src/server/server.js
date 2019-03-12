@@ -54,6 +54,17 @@ if (!debugMode){
   app.use(express.static(path.join(__dirname, relativePath,'build')));
 }
 
+app.get('/*', function (req, res) {
+
+  if (req.xhr || req.headers.accept.indexOf('json') > -1) {
+    // send your xhr response here
+    res.sendStatus(404)
+  } else {
+    // send your normal response here
+    res.sendFile(path.join(__dirname, relativePath,'build', 'index.html'));
+  }
+
+});
 
 const port = process.env.PORT || 5000;
 
