@@ -42,7 +42,7 @@ class FormsPage extends Component {
 
   shareForm = event => {
     let formName = event.target.getAttribute('form_name')
-    let url = 'http://localhost:3000/forms/all-forms/' + formName
+    let url = window.location.protocol + "//" + window.location.host+'/forms/all-forms/' + formName
     this.copyToClipboard(url)
     alert('Copied the form URL to Clipboard')
   }
@@ -168,7 +168,7 @@ class FormsPage extends Component {
                   <Link to="/forms/all-forms/1" className="tx-right">
                     Submissions
                   </Link>
-                </td> 
+                </td>
               </tr> */}
                 </tbody>
               </table>
