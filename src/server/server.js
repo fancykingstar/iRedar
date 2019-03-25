@@ -11,6 +11,7 @@ const logger = require('./configs/logger');
 const users = require('./routes/users');
 const organizations = require('./routes/organization');
 const submissions = require('./routes/submission');
+const uploadedForms = require('./routes/uploadedForms');
 
 // eslint-disable no-console
 
@@ -49,6 +50,7 @@ require('./configs/passport')(passport);
 app.use('/api/users', users);
 app.use('/api/organizations', organizations);
 app.use('/api/submissions', submissions);
+app.use('/api/upload-forms', uploadedForms);
 
 if (!debugMode){
   app.use(express.static(path.join(__dirname, relativePath,'build')));
