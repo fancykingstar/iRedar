@@ -26,25 +26,25 @@ class UploadForm extends Component {
 
   componentDidMount() {
     this.props.dispatch(getAllUploadForms())
+  }
 
-    window.$('#uploadFormButton').change(_ => {
-      var file = window.$('#uploadFormButton').prop('files')[0]
-      if (file) {
-        var reader = new FileReader()
-        reader.readAsDataURL(file)
-        reader.onload = _ => {
-          var result = reader.result
-          let form = {
-            content: result,
-            fileName: file.name,
-            type: file.name.substr(file.name.lastIndexOf('.') + 1),
-            dateUpdated: Date(),
-            size: file.size,
-          }
-          this.props.dispatch(uploadFormToServer(form))
+  handleChange = _ => {
+    var file = window.$('#uploadFormButton').prop('files')[0]
+    if (file) {
+      var reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = _ => {
+        var result = reader.result
+        let form = {
+          content: result,
+          fileName: file.name,
+          type: file.name.substr(file.name.lastIndexOf('.') + 1),
+          dateUpdated: Date(),
+          size: file.size,
         }
+        this.props.dispatch(uploadFormToServer(form))
       }
-    })
+    }
   }
 
   toArray = json => {
@@ -105,7 +105,7 @@ class UploadForm extends Component {
             </div>
             <div className="manager-left">
               <label className="btn btn-contact-new" htmlFor="uploadFormButton">Upload Form</label>
-              <input type="file" id="uploadFormButton" name="uploadFormButton" style={{ opacity: 0 }} />
+              <input type="file" id="uploadFormButton" name="uploadFormButton" style={{ opacity: 0 }} onChange={this.handleChange} />
               <nav className="nav">
                 <NavLink className="nav-link" to="/forms/upload-forms/all">
                   <span>All File Type</span>
