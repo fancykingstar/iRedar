@@ -25,7 +25,7 @@ class UploadFormTable extends Component {
   }
 
   componentWillUnmount() {
-    this.$el.DataTable.destroy(true)
+    this.table.destroy(true)
   }
 
   shouldComponentUpdate(nextProps) {
