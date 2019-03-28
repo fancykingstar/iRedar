@@ -25,8 +25,8 @@ app.use(morgan('dev'));
 app.use(cors());
 
 // Body parser middleware
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 // Database config
 const db = require('./configs/keys').mongoURI;
