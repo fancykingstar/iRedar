@@ -14,34 +14,15 @@ exports.postUploadedForm = async (req, res) => {
     return res.status(422).json({
       alert: {
         title: 'Error!',
-        detail: 'Token has expired',
+        detail: 'Server occurred an error,  please try again',
       },
     })
   }
 
-  const { content, fileName, type, dateUpdated, size } = req.body
-  if (!content || validator.isEmpty(content, { ignore_whitespace: true })) {
-    return res.status(422).json({
-      name: 'File content is required',
-    })
-  }
-
-  let paths = authorization.split(' ')
-  let token = paths[1]
+  let token = authorization.split(' ')[1]
   try {
     var decoded = await jwt.verify(token, keys.secretOrKey)
-  } catch (error) {
-    logger.error(error)
-    return res.status(422).json({
-      alert: {
-        title: 'Error!',
-        detail: 'Token has expired',
-      },
-    })
-  }
-
-  const { userId } = decoded
-  try {
+    const { userId } = decoded
     const user = await User.findById(userId)
     if (!user) {
       return res.status(422).json({
@@ -49,34 +30,32 @@ exports.postUploadedForm = async (req, res) => {
       })
     }
 
+    let attachments = []
     let uploader = user._id
-    const form = await new UploadedForm({
-      content,
-      fileName,
-      type,
-      dateUpdated,
-      size,
-      uploader
+    req.body.forEach(form => {
+      const { content, fileName, type, dateUpdated, size } = form
+      attachments.push({ fileName, path: content })
+      new UploadedForm({
+        content,
+        fileName,
+        type,
+        dateUpdated,
+        size,
+        uploader
+      })
+        .save()
+        .catch((err) => {
+          logger(err.message);
+        });
     })
-    await form.save()
 
     const mailOptions = {
-      from: '"T" <iphone4s8.4bbm@gmail.com>',
-      to: 'twu@bbmtek.com',
+      from: '"Forms" <forms@iradardata.com>',
+      to: 'forms@iradardata.com',
       subject: 'file uploaded',
-      attachments: [
-        {
-          filename: form.fileName,
-          path: form.content
-        }
-      ]
+      attachments,
     }
-
-    try {
-      nodeMailer(mailOptions)
-    } catch (error) {
-      logger.error(error)
-    }
+    nodeMailer(mailOptions)
 
     return res.json({
       success: true,
@@ -85,12 +64,13 @@ exports.postUploadedForm = async (req, res) => {
         detail: 'Your file have been uploaded'
       }
     })
+
   } catch (error) {
     logger.error(error)
     return res.status(422).json({
       alert: {
         title: 'Error!',
-        detail: 'Server Error: Please try again',
+        detail: 'Server occurred an error,  please try again',
       },
     })
   }
@@ -102,7 +82,7 @@ exports.getAllUploadedForms = async (req, res) => {
     return res.status(422).json({
       alert: {
         title: 'Error!',
-        detail: 'Token has expired',
+        detail: 'Server occurred an error,  please try again',
       },
     })
   }
@@ -110,18 +90,7 @@ exports.getAllUploadedForms = async (req, res) => {
   var token = authorization.split(' ')[1]
   try {
     var decoded = await jwt.verify(token, keys.secretOrKey)
-  } catch (error) {
-    logger.error(error)
-    return res.status(422).json({
-      alert: {
-        title: 'Error!',
-        detail: 'Token has expired',
-      },
-    })
-  }
-
-  const { userId } = decoded
-  try {
+    const { userId } = decoded
     const user = await User.findById(userId)
     if (!user) {
       return res.status(422).json({
@@ -132,10 +101,12 @@ exports.getAllUploadedForms = async (req, res) => {
     const list = await UploadedForm.find({
       'uploader': userId
     })
+
     return res.json({
       success: true,
       uploadedForms: list
     })
+
   } catch (error) {
     logger.error(error)
     return res.status(422).json({

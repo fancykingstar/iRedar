@@ -29,22 +29,34 @@ class UploadForm extends Component {
   }
 
   handleChange = _ => {
-    var file = window.$('#uploadFormButton').prop('files')[0]
-    if (file) {
-      var reader = new FileReader()
-      reader.readAsDataURL(file)
-      reader.onload = _ => {
-        var result = reader.result
-        let form = {
-          content: result,
-          fileName: file.name,
-          type: file.name.substr(file.name.lastIndexOf('.') + 1),
-          dateUpdated: Date(),
-          size: file.size,
+    var files = window.$('#uploadFormButton').prop('files')
+    if (!files) return
+    this.uploadMultipleFiles(files)
+  }
+
+  uploadMultipleFiles = files => {
+    let promises = []
+    for (let file of files) {
+      let promise = new Promise(resolve => {
+        let reader = new FileReader()
+        reader.onload = _ => {
+          let form = {
+            content: reader.result,
+            fileName: file.name,
+            type: file.name.substr(file.name.lastIndexOf('.') + 1),
+            dateUpdated: Date(),
+            size: file.size,
+          }
+          resolve(form)
         }
-        this.props.dispatch(uploadFormToServer(form))
-      }
+        reader.readAsDataURL(file)
+      })
+      promises.push(promise)
     }
+
+    Promise.all(promises).then(contents => {
+      this.props.dispatch(uploadFormToServer(contents))
+    })
   }
 
   toArray = json => {
@@ -105,7 +117,7 @@ class UploadForm extends Component {
             </div>
             <div className="manager-left">
               <label className="btn btn-contact-new" htmlFor="uploadFormButton">Upload Form</label>
-              <input type="file" id="uploadFormButton" name="uploadFormButton" style={{ opacity: 0 }} onChange={this.handleChange} />
+              <input type="file" id="uploadFormButton" name="uploadFormButton" style={{ opacity: 0 }} onChange={this.handleChange} multiple />
               <nav className="nav">
                 <NavLink className="nav-link" to="/forms/upload-forms/all">
                   <span>All File Type</span>

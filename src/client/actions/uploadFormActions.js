@@ -3,12 +3,12 @@ import axios from 'axios'
 import setAuthToken from '../utils/setAuthToken'
 import { API_URL, GET_ERRORS, GET_UPLOADED_FORM } from './types'
 
-export const uploadFormToServer = form => async dispatch => {
+export const uploadFormToServer = forms => async dispatch => {
   try {
     setAuthToken(localStorage.jwtToken)
     const res = await axios.post(
       `${API_URL}/api/upload-forms`,
-      form
+      forms
     )
     dispatch(getAllUploadForms())
 
