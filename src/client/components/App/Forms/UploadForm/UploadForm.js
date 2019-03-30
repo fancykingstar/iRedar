@@ -28,8 +28,8 @@ class UploadForm extends Component {
     this.props.dispatch(getAllUploadForms())
   }
 
-  handleChange = _ => {
-    var files = window.$('#uploadFormButton').prop('files')
+  handleUpload = _ => {
+    var files = this.uploadInput.files
     if (!files) return
     this.uploadMultipleFiles(files)
   }
@@ -117,7 +117,7 @@ class UploadForm extends Component {
             </div>
             <div className="manager-left">
               <label className="btn btn-contact-new" htmlFor="uploadFormButton">Upload Form</label>
-              <input type="file" id="uploadFormButton" name="uploadFormButton" style={{ opacity: 0 }} onChange={this.handleChange} multiple />
+              <input type="file" id="uploadFormButton" name="uploadFormButton" style={{ opacity: 0 }} ref={(ref) => { this.uploadInput = ref }} onChange={this.handleUpload} multiple />
               <nav className="nav">
                 <NavLink className="nav-link" to="/forms/upload-forms/all">
                   <span>All File Type</span>
