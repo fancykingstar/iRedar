@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken')
-const validator = require('validator')
 const keys = require('../configs/keys')
 const logger = require('../configs/logger')
 const nodeMailer = require('../helpers/nodemailer')
@@ -98,13 +97,13 @@ exports.getAllUploadedForms = async (req, res) => {
       })
     }
 
-    const list = await UploadedForm.find({
+    const uploadedForms = await UploadedForm.find({
       'uploader': userId
     })
 
     return res.json({
       success: true,
-      uploadedForms: list
+      uploadedForms
     })
 
   } catch (error) {

@@ -24,6 +24,13 @@ class AdminSubmissionList extends Component {
     });
   }
 
+  share = event => {
+    let submissionId = event.target.getAttribute('submission_id')
+    window.history2.push({
+      pathname: '/referrals/' + submissionId
+    });
+  }
+
   render() {
     let submissionList = this.props.submissionList
     let loading = this.props.loading
@@ -64,6 +71,7 @@ class AdminSubmissionList extends Component {
                     <th className="tx-right"> </th>
                     <th className="tx-right"> </th>
                     <th className="tx-right"> </th>
+                    <th className="tx-right"> </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -94,6 +102,9 @@ class AdminSubmissionList extends Component {
                             </td>
                             <td className="tx-right">
                               <button type="button" className="btn btn-primary btn-sm" onClick={this.detail} form_name={content.fromForm} submission_id={submission._id} >Detail</button>
+                            </td>
+                            <td className="tx-right">
+                              <button type="button" className="btn btn-primary btn-sm" onClick={this.share} form_name={content.fromForm} submission_id={submission._id} >Share</button>
                             </td>
                           </tr>
                         </React.Fragment>

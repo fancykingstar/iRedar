@@ -1,4 +1,4 @@
-import { GET_UPLOADED_FORM } from "../actions/types"
+import { SET_ALL_UPLOAD_FORMS } from '../actions/uploadFormActions'
 
 const initialState = {
   loading: true,
@@ -14,7 +14,7 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case GET_UPLOADED_FORM:
+    case SET_ALL_UPLOAD_FORMS:
       return {
         ...state,
         uploadForms: action.payload.uploadedForms,

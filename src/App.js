@@ -28,12 +28,15 @@ import FCRPLoan from './client/components/App/Forms/AllForms/FCRPLoan';
 import Registration from './client/components/App/Forms/AllForms/Registration';
 
 import Submissions from './client/components/App/Modules/Submissions';
+import Referrals from './client/components/App/Modules/Referrals';
 import ClientActionSubmission from './client/components/App/Forms/Submissions/ClientAction';
 import IARAssessmentSubmission from './client/components/App/Forms/Submissions/IARAssessment';
 import FCRPLoanSubmission from './client/components/App/Forms/Submissions/FCRPLoan';
 import RegistrationSubmission from './client/components/App/Forms/Submissions/Registration';
 import SubmissionSuccess from './client/components/App/Forms/Submissions/SubmissionSuccess';
-import FormList from './client/components/App/Forms/UploadForm';
+import UploadFormList from './client/components/App/Forms/UploadForm';
+import ReferralForm from './client/components/App/Modules/Referrals/ReferralForm';
+import ReferralFormReacOnly from './client/components/App/Modules/Referrals/ReferralFormReadOnly'
 
 // Check for authentication
 checkAuth(store);
@@ -88,6 +91,13 @@ class App extends Component {
                   exact
                   path="/modules/submissions"
                   component={Submissions}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/modules/referrals"
+                  component={Referrals}
                 />
               </Switch>
 
@@ -160,7 +170,21 @@ class App extends Component {
                 <PrivateRoute
                   exact
                   path="/forms/upload-forms/:filterType"
-                  component={FormList}
+                  component={UploadFormList}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/referrals/:submissionId"
+                  component={ReferralForm}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/referrals/detail/:referralId"
+                  component={ReferralFormReacOnly}
                 />
               </Switch>
             </div>

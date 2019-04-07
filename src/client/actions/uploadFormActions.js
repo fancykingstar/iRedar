@@ -1,7 +1,9 @@
 import axios from 'axios'
 
 import setAuthToken from '../utils/setAuthToken'
-import { API_URL, GET_ERRORS, GET_UPLOADED_FORM } from './types'
+import { API_URL, GET_ERRORS } from './types'
+
+export const SET_ALL_UPLOAD_FORMS = 'uploadForm/SET_ALL_UPLOAD_FORMS'
 
 export const uploadFormToServer = forms => async dispatch => {
   try {
@@ -38,7 +40,7 @@ export const getAllUploadForms = _ => async dispatch => {
 
 export const setAllUploadForms = payload => (
   {
-    type: GET_UPLOADED_FORM,
+    type: SET_ALL_UPLOAD_FORMS,
     payload
   }
 )
