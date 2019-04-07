@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-
 import { HOST_URL } from '../../../../actions/types';
 
-class PartnerReferral extends Component {
+class PartnerSubmissions extends Component {
   render() {
     return (
       <div className="table-responsive mg-t-40">
@@ -27,11 +26,6 @@ class PartnerReferral extends Component {
                   View
                 </Link>
               </td>
-              {/* <td className="tx-right">
-            <Link to="/forms/all-forms/1" className="tx-right">
-              Submissions
-            </Link>
-          </td> */}
             </tr>
             <tr>
               <td>IAR Assessment</td>
@@ -42,11 +36,6 @@ class PartnerReferral extends Component {
                   View
                 </Link>
               </td>
-              {/* <td className="tx-right">
-            <Link to="/forms/all-forms/1" className="tx-right">
-              Submissions
-            </Link>
-          </td> */}
             </tr>
             <tr>
               <td> Client Action Plan</td>
@@ -57,11 +46,6 @@ class PartnerReferral extends Component {
                   View
                 </Link>
               </td>
-              {/* <td className="tx-right">
-            <Link to="/forms/all-forms/1" className="tx-right">
-              Submissions
-            </Link>
-          </td> */}
             </tr>
             <tr>
               <td>FCRP Loan Initiative Intake</td>
@@ -72,11 +56,6 @@ class PartnerReferral extends Component {
                   View
                 </Link>
               </td>
-              {/* <td className="tx-right">
-            <Link to="/forms/all-forms/1" className="tx-right">
-              Submissions
-            </Link>
-          </td> */}
             </tr>
           </tbody>
         </table>
@@ -85,4 +64,4 @@ class PartnerReferral extends Component {
   }
 }
 
-export default PartnerReferral;
+export default PartnerSubmissions;

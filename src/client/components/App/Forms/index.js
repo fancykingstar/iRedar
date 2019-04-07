@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom';
-import { HOST_URL } from '../../../actions/types';
 
-
-
-// export default function FormsPage() {
 class FormsPage extends Component {
   componentDidMount() {
     window.history2 = this.props.history
@@ -42,7 +37,7 @@ class FormsPage extends Component {
 
   shareForm = event => {
     let formName = event.target.getAttribute('form_name')
-    let url = window.location.protocol + "//" + window.location.host+'/forms/all-forms/' + formName
+    let url = window.location.protocol + "//" + window.location.host + '/forms/all-forms/' + formName
     this.copyToClipboard(url)
     alert('Copied the form URL to Clipboard')
   }

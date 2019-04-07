@@ -27,7 +27,7 @@ import IARAssessment from './client/components/App/Forms/AllForms/IARAssessment'
 import FCRPLoan from './client/components/App/Forms/AllForms/FCRPLoan';
 import Registration from './client/components/App/Forms/AllForms/Registration';
 
-import Referrals from './client/components/App/Modules/Referrals';
+import Submissions from './client/components/App/Modules/Submissions';
 import ClientActionSubmission from './client/components/App/Forms/Submissions/ClientAction';
 import IARAssessmentSubmission from './client/components/App/Forms/Submissions/IARAssessment';
 import FCRPLoanSubmission from './client/components/App/Forms/Submissions/FCRPLoan';
@@ -87,7 +87,7 @@ class App extends Component {
                 <PrivateRoute
                   exact
                   path="/modules/submissions"
-                  component={Referrals}
+                  component={Submissions}
                 />
               </Switch>
 

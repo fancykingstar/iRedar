@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 
-import AdminReferral from './AdminReferral';
-import PartnerReferral from './PartnerReferral';
+import AdminSubmission from './AdminSubmission';
+import PartnerSubmissions from './PartnerSubmission';
 
-// function ReferralsPage({ permissions }) {
-class ReferralsPage extends Component {
+class SubmissionsPage extends Component {
   componentDidMount() {
     window.history2 = this.props.history
-    // alert(JSON.stringify(this.props))
   }
 
   render() {
@@ -22,8 +20,8 @@ class ReferralsPage extends Component {
             <ol className="breadcrumb slim-breadcrumb" />
             <h6 className="slim-pagetitle">Submissions</h6>
           </div>
-          {role === 'admin' && <AdminReferral />}
-          {role === 'partner' && <PartnerReferral />}
+          {role === 'admin' && <AdminSubmission />}
+          {role === 'partner' && <PartnerSubmissions />}
         </div>
       </div>
     );
@@ -35,4 +33,4 @@ const mapStateToProps = state => ({
   permissions: state.access.permissions
 });
 
-export default connect(mapStateToProps)(ReferralsPage);
+export default connect(mapStateToProps)(SubmissionsPage);
