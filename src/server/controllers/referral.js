@@ -33,7 +33,9 @@ exports.getAllReferrals = async (req, res) => {
             .or([
                 { 'sender': profileId },
                 { 'receivers': profileId }
-            ]).populate('sender')
+            ])
+            .populate('sender', 'firstName')
+            .populate('receivers', 'firstName')
         return res.json({
             success: true,
             referrals

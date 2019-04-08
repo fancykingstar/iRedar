@@ -1,52 +1,80 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import './ReferralForm.css'
 
 class ReferralFormReadOnly extends Component {
+
+    componentDidMount() {
+        window.$('#partnerList').tagsinput({
+            readOnly: true
+        })
+    }
+
+    toString = partners => {
+        return partners.map(partner => partner.firstName).join()
+    }
 
     render() {
         return (
             <div className="container" id="referral">
-                <form id="referralFormReadOnly">
-                    <h1 className="form-group">{this.props.referralForm.formName}</h1>
-                    <div className="form-group">
-                        <label htmlFor="firstName">First name</label>
-                        <input type="text" className="form-control" id="firstName" defaultValue={this.props.referralForm.firstName || ''} readOnly />
+                <br />
+                <h1 htmlFor="referralForm" className="text-center">{this.props.referralForm.formName}</h1>
+                <br />
+                <form id="referralForm" className="form-horizontal">
+                    <br />
+                    <div className="form-row">
+                        <div className="form-group col-md-4">
+                            <label htmlFor="firstName">Firstname</label>
+                            <input type="text" className="form-control" id="firstName" value={this.props.referralForm.firstName || ''} readOnly />
+                        </div>
+                        <div className="form-group col-md-4">
+                            <label htmlFor="lastName">Lastname</label>
+                            <input type="text" className="form-control" id="lastName" value={this.props.referralForm.lastName || ''} readOnly />
+                        </div>
+                        <div className="form-group col-md-4">
+                            <label htmlFor="email">Email</label>
+                            <input type="email" className="form-control" id="email" value={this.props.referralForm.email || ''} readOnly />
+                        </div>
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="lastName">Last name</label>
-                        <input type="text" className="form-control" id="lastName" defaultValue={this.props.referralForm.lastName || ''} readOnly />
+
+                    <div className="form-row">
+                        <div className="form-group col-md-6">
+                            <label htmlFor="address">Address</label>
+                            <input type="text" className="form-control" id="address" value={this.props.referralForm.address || ''} readOnly />
+                        </div>
+                        <div className="form-group col-md-3">
+                            <label htmlFor="province">Province</label>
+                            <input type="text" className="form-control" id="province" value={this.props.referralForm.province || ''} readOnly />
+                        </div>
+                        <div className="form-group col-md-3">
+                            <label htmlFor="city">City</label>
+                            <input type="text" className="form-control" id="city" value={this.props.referralForm.city || ''} readOnly />
+                        </div>
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="email">Email</label>
-                        <input type="email" className="form-control" id="email" defaultValue={this.props.referralForm.email || ''} readOnly />
+
+                    <div className="form-row">
+                        <div className="form-group col-md-12">
+                            <label htmlFor="workExperience">Work experience</label>
+                            <textarea className="form-control" id="workExperience" value={this.props.referralForm.workExperience || ''} readOnly />
+                        </div>
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="address">Address</label>
-                        <input type="text" className="form-control" id="address" defaultValue={this.props.referralForm.address || ''} readOnly />
+
+                    <div className="form-row">
+                        <div className="form-group col-md-6">
+                            <label htmlFor="note">Note</label>
+                            <textarea className="form-control" id="note" value={this.props.referralForm.note || ''} readOnly />
+                        </div>
+                        <div className="form-group col-md-6">
+                            <label htmlFor="partnerList">Partner</label>
+                            <input type="text" className="form-control" id="partnerList"
+                                data-role="tagsinput"
+                                value={this.toString(this.props.referralForm.receivers) || ''} disabled />
+                        </div>
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="province">Province</label>
-                        <input type="text" className="form-control" id="province" defaultValue={this.props.referralForm.province || ''} readOnly />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="city">City</label>
-                        <input type="text" className="form-control" id="city" defaultValue={this.props.referralForm.city || ''} readOnly />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="workExperience">workExperience</label>
-                        <textarea className="form-control" id="workExperience" defaultValue={this.props.referralForm.workExperience || ''} readOnly />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="note">note</label>
-                        <textarea className="form-control" id="note" defaultValue={this.props.referralForm.note || ''} readOnly />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="needchange">need change</label>
-                        <input type="text" className="form-control" id="needchange" defaultValue={this.props.referralForm.needchange || ''} readOnly />
-                    </div>
+                    <br />
                 </form>
                 <br />
-            </div>
+            </div >
         )
     }
 }

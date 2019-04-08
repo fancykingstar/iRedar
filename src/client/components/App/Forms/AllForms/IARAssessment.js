@@ -118,7 +118,7 @@ class IARAssessment extends Component {
                 }
 
                 try {
-                    await axios.post(API_URL+'/api/submissions', content);
+                    await axios.post(API_URL + '/api/submissions', content);
                     window.history2.push({
                         // pathname: '/forms/submission-success'
                         pathname: '/forms/'
@@ -588,6 +588,7 @@ class IARAssessment extends Component {
                                         <div className="form-group col-md-4">
                                             <label htmlFor="exampleFormControlSelect1">MS Word</label>
                                             <select className="form-control" id="msWord_skillLevel" name="msWord_skillLevel">
+                                                <option>N/A</option>
                                                 <option>Basic</option>
                                                 <option>Intermediate</option>
                                                 <option>Advanced</option>
@@ -596,6 +597,7 @@ class IARAssessment extends Component {
                                         <div className="form-group col-md-4">
                                             <label htmlFor="exampleFormControlSelect1">Email</label>
                                             <select className="form-control" id="email_skillLevel" name="email_skillLevel">
+                                                <option>N/A</option>
                                                 <option>Basic</option>
                                                 <option>Intermediate</option>
                                                 <option>Advanced</option>
@@ -604,6 +606,7 @@ class IARAssessment extends Component {
                                         <div className="form-group col-md-4">
                                             <label htmlFor="exampleFormControlSelect1">Internet</label>
                                             <select className="form-control" id="internet_skillLevel" name="internet_skillLevel">
+                                                <option>N/A</option>
                                                 <option>Basic</option>
                                                 <option>Intermediate</option>
                                                 <option>Advanced</option>

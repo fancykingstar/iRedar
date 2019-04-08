@@ -48,7 +48,7 @@ class FCRPLoan extends Component {
                     landingDate: window.$('#landingDate').val(),
                     yearOfCitizenship: window.$('#yearOfCitizenship').val(),
                     permanentResidencyClass: window.$('#permanentResidencyClass').val(),
-                    conventionRefuge: window.$('#conventionRefuge').val(),
+                    conventionRefugee: window.$('#conventionRefugee').val(),
                     howDidYouHearAboutUs: window.$('#howDidYouHearAboutUs').val(),
                     landingDocumentString: window.$('#landingDocumentString').val(),
                     landingDocumentName: window.$('#landingDocumentName').val(),
@@ -83,7 +83,7 @@ class FCRPLoan extends Component {
                 }
 
                 try {
-                    await axios.post(API_URL+'/api/submissions', content);
+                    await axios.post(API_URL + '/api/submissions', content);
                     window.history2.push({
                         // pathname: '/forms/submission-success'
                         pathname: '/forms/'
@@ -662,18 +662,7 @@ class FCRPLoan extends Component {
                                         </div>
                                         <div className="form-group col-md-2">
                                             <label htmlFor="nativeLanguage">Native Language</label>
-                                            <select id="nativeLanguage" className="form-control" name="nativeLanguage">
-                                                <option value="">--</option>
-                                                <option>Arabic</option>
-                                                <option>Bengali</option>
-                                                <option>Chinese</option>
-                                                <option>English</option>
-                                                <option>Hindi</option>
-                                                <option>Japanese</option>
-                                                <option>Portuguese</option>
-                                                <option>Russian</option>
-                                                <option>Spanish</option>
-                                            </select>
+                                            <input type="text" id="nativeLanguage" className="form-control" name="nativeLanguage" />
                                         </div>
                                     </div>
                                     <div className="form-row">
@@ -719,29 +708,7 @@ class FCRPLoan extends Component {
                                         </div>
                                         <div className="form-group col-md-3">
                                             <label htmlFor="yearOfCitizenship">Year of Citizenship</label>
-                                            <select className="form-control" id="yearOfCitizenship" name="yearOfCitizenship">
-                                                <option value="">--</option>
-                                                <option>2019</option>
-                                                <option>2018</option>
-                                                <option>2017</option>
-                                                <option>2016</option>
-                                                <option>2015</option>
-                                                <option>2014</option>
-                                                <option>2013</option>
-                                                <option>2012</option>
-                                                <option>2011</option>
-                                                <option>2010</option>
-                                                <option>2009</option>
-                                                <option>2008</option>
-                                                <option>2007</option>
-                                                <option>2006</option>
-                                                <option>2005</option>
-                                                <option>2004</option>
-                                                <option>2003</option>
-                                                <option>2002</option>
-                                                <option>2001</option>
-                                                <option>2000</option>
-                                            </select>
+                                            <input type="text" className="form-control" id="yearOfCitizenship" name="yearOfCitizenship" />
                                         </div>
                                     </div>
                                     <div className="form-row">
@@ -751,15 +718,15 @@ class FCRPLoan extends Component {
                                                 <option value="">--</option>
                                                 <option>Skilled Worker</option>
                                                 <option>Family Class</option>
-                                                <option>Refuge Class</option>
+                                                <option>Refugee Class</option>
                                                 <option>Live-in-Caregiver</option>
                                                 <option>Economic Class</option>
                                                 <option>Approved in principle</option>
                                             </select>
                                         </div>
                                         <div className="form-group">
-                                            <label htmlFor="conventionRefuge">Are you A Convention Refuge?</label>
-                                            <select className="form-control" id="conventionRefuge" name="conventionRefuge">
+                                            <label htmlFor="conventionRefugee">Are you A Convention Refugee?</label>
+                                            <select className="form-control" id="conventionRefugee" name="conventionRefugee">
                                                 <option value="">--</option>
                                                 <option>Yes</option>
                                                 <option>No</option>

@@ -34,10 +34,10 @@ class ReferralFormList extends Component {
                             <thead>
                                 <tr>
                                     <th className="wd-5p">Id</th>
-                                    <th className="wd-20p">Last Name</th>
-                                    <th className="wd-20p">First Name</th>
-                                    <th className="wd-20p">Form Name</th>
-                                    <th className="wd-20p">Sender Name</th>
+                                    <th className="wd-15p">Last Name</th>
+                                    <th className="wd-15p">First Name</th>
+                                    <th className="wd-15p">Form Name</th>
+                                    <th className="wd-15p">Sender Name</th>
                                     <th className="wd-20p">Date Submitted</th>
                                     <th className="tx-right"> </th>
                                 </tr>

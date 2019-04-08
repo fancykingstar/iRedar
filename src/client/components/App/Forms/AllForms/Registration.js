@@ -64,7 +64,7 @@ class Registration extends Component {
                     landingDate_citizen: window.$('#landingDate_citizen').val(),
                     yearOfCitizenship: window.$('#yearOfCitizenship').val(),
                     permanentResidencyClass: window.$('#permanentResidencyClass').val(),
-                    conventionRefuge: window.$('#conventionRefuge').val(),
+                    conventionRefugee: window.$('#conventionRefugee').val(),
                     temporaryResident_inlandRefugeeClaimant: window.$('#temporaryResident_inlandRefugeeClaimant').prop("checked"),
                     temporaryResident_foreignWorker: window.$('#temporaryResident_foreignWorker').prop("checked"),
                     temporaryResident_liveInCaregiver: window.$('#temporaryResident_liveInCaregiver').prop("checked"),
@@ -94,7 +94,7 @@ class Registration extends Component {
                 }
 
                 try {
-                    await axios.post(API_URL+'/api/submissions', content);
+                    await axios.post(API_URL + '/api/submissions', content);
                     window.history2.push({
                         // pathname: '/forms/submission-success'
                         pathname: '/forms/'
@@ -661,18 +661,7 @@ class Registration extends Component {
                                         </div>
                                         <div className="form-group col-md-2">
                                             <label htmlFor="nativeLanguage">Native Language</label>
-                                            <select id="nativeLanguage" className="form-control" name="nativeLanguage">
-                                                <option value="">--</option>
-                                                <option>Arabic</option>
-                                                <option>Bengali</option>
-                                                <option>Chinese</option>
-                                                <option>English</option>
-                                                <option>Hindi</option>
-                                                <option>Japanese</option>
-                                                <option>Portuguese</option>
-                                                <option>Russian</option>
-                                                <option>Spanish</option>
-                                            </select>
+                                            <input type="text" id="nativeLanguage" className="form-control" name="nativeLanguage" />
                                         </div>
                                     </div>
                                 </section>
@@ -721,7 +710,7 @@ class Registration extends Component {
                                                     <div className="custom-controls-stacked">
                                                         <label className="custom-control custom-radio">
                                                             <input id="regulatedProfession_yes" name="regulatedProfession" type="radio" className="custom-control-input"
-                                                                 />
+                                                            />
                                                             <span className="custom-control-label">Yes</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
@@ -730,7 +719,7 @@ class Registration extends Component {
                                                         </label>
                                                         <label className="custom-control custom-radio">
                                                             <input id="regulatedProfession_unknown" name="regulatedProfession" type="radio" className="custom-control-input"
-                                                                 />
+                                                            />
                                                             <span className="custom-control-label">Unknown</span>
                                                         </label>
                                                     </div>
@@ -746,7 +735,7 @@ class Registration extends Component {
                                             <div className="custom-controls-stacked">
                                                 <label className="custom-control custom-radio">
                                                     <input id="licensed_yes" name="licensed" type="radio" className="custom-control-input"
-                                                         />
+                                                    />
                                                     <span className="custom-control-label">Yes</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
@@ -755,17 +744,17 @@ class Registration extends Component {
                                                 </label>
                                                 <label className="custom-control custom-radio">
                                                     <input id="licensed_inProgress" name="licensed" type="radio" className="custom-control-input"
-                                                         />
+                                                    />
                                                     <span className="custom-control-label">Licensing in Progress</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
                                                     <input id="licensed_unknown" name="licensed" type="radio" className="custom-control-input"
-                                                         />
+                                                    />
                                                     <span className="custom-control-label">Unknown</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
                                                     <input id="licensed_na" name="licensed" type="radio" className="custom-control-input"
-                                                         />
+                                                    />
                                                     <span className="custom-control-label">N/A</span>
                                                 </label>
                                             </div>
@@ -826,7 +815,7 @@ class Registration extends Component {
                                             <div className="custom-controls-stacked">
                                                 <label className="custom-control custom-radio">
                                                     <input id="postSecondaryOutsideCanada_yesSame" name="postSecondaryOutsideCanada" type="radio" className="custom-control-input"
-                                                         />
+                                                    />
                                                     <span className="custom-control-label">YES (same as above)</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
@@ -846,7 +835,7 @@ class Registration extends Component {
                                             <div className="custom-controls-stacked">
                                                 <label className="custom-control custom-radio">
                                                     <input id="degreeEvaluated_yes" name="degreeEvaluated" type="radio" className="custom-control-input"
-                                                         />
+                                                    />
                                                     <span className="custom-control-label">YES</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
@@ -871,7 +860,7 @@ class Registration extends Component {
                                             <div className="custom-controls-stacked">
                                                 <label className="custom-control custom-radio">
                                                     <input id="securityClearance_yes" name="securityClearance" type="radio" className="custom-control-input"
-                                                         />
+                                                    />
                                                     <span className="custom-control-label">YES</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
@@ -910,29 +899,7 @@ class Registration extends Component {
                                         </div>
                                         <div className="form-group col-md-3">
                                             <label htmlFor="yearOfCitizenship">Year of Citizenship</label>
-                                            <select className="form-control" id="yearOfCitizenship" name="yearOfCitizenship">
-                                                <option value="">--</option>
-                                                <option>2019</option>
-                                                <option>2018</option>
-                                                <option>2017</option>
-                                                <option>2016</option>
-                                                <option>2015</option>
-                                                <option>2014</option>
-                                                <option>2013</option>
-                                                <option>2012</option>
-                                                <option>2011</option>
-                                                <option>2010</option>
-                                                <option>2009</option>
-                                                <option>2008</option>
-                                                <option>2007</option>
-                                                <option>2006</option>
-                                                <option>2005</option>
-                                                <option>2004</option>
-                                                <option>2003</option>
-                                                <option>2002</option>
-                                                <option>2001</option>
-                                                <option>2000</option>
-                                            </select>
+                                            <input type="text" className="form-control" id="yearOfCitizenship" name="yearOfCitizenship" />
                                         </div>
                                     </div>
                                     <h5>OR</h5>
@@ -943,7 +910,7 @@ class Registration extends Component {
                                                 <option value="">--</option>
                                                 <option>Skilled Worker</option>
                                                 <option>Family Class</option>
-                                                <option>Refuge Class</option>
+                                                <option>Refugee Class</option>
                                                 <option>Live-in-Caregiver</option>
                                                 <option>Economic Class</option>
                                                 <option>Approved in principle</option>
@@ -964,8 +931,8 @@ class Registration extends Component {
                                     <h5>OR</h5>
                                     <div className="form-row">
                                         <div className="form-group">
-                                            <label htmlFor="conventionRefuge">Are you A Convention Refuge?</label>
-                                            <select className="form-control" id="conventionRefuge" name="conventionRefuge">
+                                            <label htmlFor="conventionRefugee">Are you A Convention Refugee?</label>
+                                            <select className="form-control" id="conventionRefugee" name="conventionRefugee">
                                                 <option value="">--</option>
                                                 <option>Yes</option>
                                                 <option>No</option>
@@ -981,7 +948,7 @@ class Registration extends Component {
                                                     <div className="custom-controls-stacked">
                                                         <label className="custom-control custom-radio">
                                                             <input id="temporaryResident_inlandRefugeeClaimant" name="temporaryResident" type="radio" className="custom-control-input"
-                                                                 />
+                                                            />
                                                             <span className="custom-control-label">Inland Refugee Claimant</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
@@ -990,27 +957,27 @@ class Registration extends Component {
                                                         </label>
                                                         <label className="custom-control custom-radio">
                                                             <input id="temporaryResident_liveInCaregiver" name="temporaryResident" type="radio" className="custom-control-input"
-                                                                 />
+                                                            />
                                                             <span className="custom-control-label">Live-In Caregiver</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
                                                             <input id="temporaryResident_protectedResident" name="temporaryResident" type="radio" className="custom-control-input"
-                                                                 />
+                                                            />
                                                             <span className="custom-control-label">Temporary Protected Resident</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
                                                             <input id="temporaryResident_student" name="temporaryResident" type="radio" className="custom-control-input"
-                                                                 />
+                                                            />
                                                             <span className="custom-control-label">Student or Graduate Work Permit</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
                                                             <input id="temporaryResident_other" name="temporaryResident" type="radio" className="custom-control-input"
-                                                                 />
+                                                            />
                                                             <span className="custom-control-label">Other</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
                                                             <input id="temporaryResident_diplomat" name="temporaryResident" type="radio" className="custom-control-input"
-                                                                 />
+                                                            />
                                                             <span className="custom-control-label">Diplomat</span>
                                                         </label>
 
@@ -1028,7 +995,7 @@ class Registration extends Component {
                                                     <div className="custom-controls-stacked">
                                                         <label className="custom-control custom-radio">
                                                             <input id="temporaryResident_noWorkPermit_inlandRefugee" name="temporaryResident_noWorkPermit" type="radio" className="custom-control-input"
-                                                                 />
+                                                            />
                                                             <span className="custom-control-label">Inland Refugee Claimant</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
@@ -1037,17 +1004,17 @@ class Registration extends Component {
                                                         </label>
                                                         <label className="custom-control custom-radio">
                                                             <input id="temporaryResident_noWorkPermit_visitorVisa" name="temporaryResident_noWorkPermit" type="radio" className="custom-control-input"
-                                                                 />
+                                                            />
                                                             <span className="custom-control-label">Visitor Visa</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
                                                             <input id="temporaryResident_noWorkPermit_diplomat" name="temporaryResident_noWorkPermit" type="radio" className="custom-control-input"
-                                                                 />
+                                                            />
                                                             <span className="custom-control-label">Diplomat</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
                                                             <input id="temporaryResident_noWorkPermit_other" name="temporaryResident_noWorkPermit" type="radio" className="custom-control-input"
-                                                                 />
+                                                            />
                                                             <span className="custom-control-label">Other</span>
                                                         </label>
                                                     </div>
@@ -1090,7 +1057,7 @@ class Registration extends Component {
                                                     <div className="custom-controls-stacked">
                                                         <label className="custom-control custom-radio">
                                                             <input id="legallyWorkInCanada_yes" name="legallyWorkInCanada" type="radio" className="custom-control-input"
-                                                                 />
+                                                            />
                                                             <span className="custom-control-label">YES</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
@@ -1099,7 +1066,7 @@ class Registration extends Component {
                                                         </label>
                                                         <label className="custom-control custom-radio">
                                                             <input id="legallyWorkInCanada_unknown" name="legallyWorkInCanada" type="radio" className="custom-control-input"
-                                                                 />
+                                                            />
                                                             <span className="custom-control-label">UNKNOWN</span>
                                                         </label>
                                                     </div>
@@ -1141,7 +1108,7 @@ class Registration extends Component {
                                                     <div className="custom-controls-stacked">
                                                         <label className="custom-control custom-radio">
                                                             <input id="addEmailToDistributionList_yes" name="addEmailToDistributionList" type="radio" className="custom-control-input"
-                                                                 />
+                                                            />
                                                             <span className="custom-control-label">YES</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
