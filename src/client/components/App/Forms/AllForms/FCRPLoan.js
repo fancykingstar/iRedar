@@ -1,10 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
+import { Prompt } from 'react-router-dom'
 import axios from 'axios';
 import { API_URL } from '../../../../actions/types';
 
 class FCRPLoan extends Component {
+
+    constructor(props) {
+        super(props)
+        this.state = { isBlocking: true }
+    }
+
+    disableBlocking() {
+        this.setState({ isBlocking: false })
+    }
+
     componentDidMount() {
+        var self = this
         window.download2 = this.download
         window.history2 = this.props.history
         window.$('#wizard6').steps({
@@ -21,6 +33,8 @@ class FCRPLoan extends Component {
             },
 
             onFinished: async function (event, currentIndex) {
+                await self.disableBlocking()
+
                 let content = {
                     fromForm: 'fcrp-loan',
                     salutation: window.$('#salutation').val(),
@@ -29,6 +43,7 @@ class FCRPLoan extends Component {
                     preferredName: window.$('#preferredName').val(),
                     streetAddress: window.$('#streetAddress').val(),
                     city: window.$('#city').val(),
+                    province: window.$('#province').val(),
                     postalCode: window.$('#postalCode').val(),
                     primaryPhoneNumber: window.$('#primaryPhoneNumber').val(),
                     primaryPhoneNumber_voiceMail: window.$('#primaryPhoneNumber_voiceMail').val(),
@@ -111,6 +126,8 @@ class FCRPLoan extends Component {
     }
 
     render() {
+        let { isBlocking } = this.state
+
         return (
             <div className="slim-mainpanel">
                 <div className="container">
@@ -121,7 +138,7 @@ class FCRPLoan extends Component {
                         <p className="mg-b-20 mg-sm-b-40">Please fill out the following information. </p>
 
                         <form id="immigrationForm" method="post" action="/forms">
-
+                            <Prompt when={isBlocking} message="Are you sure you want to leave, you will lose unsaved data" />
                             <div className="form-group col-md-2" >
                                 <input type="hidden" name="fromForm" value="5bedaa68f65be80016ef5a19" />
                             </div>

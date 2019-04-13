@@ -36,7 +36,7 @@ import RegistrationSubmission from './client/components/App/Forms/Submissions/Re
 import SubmissionSuccess from './client/components/App/Forms/Submissions/SubmissionSuccess';
 import UploadFormList from './client/components/App/Forms/UploadForm';
 import ReferralForm from './client/components/App/Modules/Referrals/ReferralForm';
-import ReferralFormReacOnly from './client/components/App/Modules/Referrals/ReferralFormReadOnly'
+import ReferralFormDetail from './client/components/App/Modules/Referrals/ReferralFormDetail'
 
 // Check for authentication
 checkAuth(store);
@@ -181,10 +181,10 @@ class App extends Component {
                 />
               </Switch>
               <Switch>
-                <PrivateRoute
+                <Route
                   exact
                   path="/referrals/detail/:referralId"
-                  component={ReferralFormReacOnly}
+                  component={ReferralFormDetail}
                 />
               </Switch>
             </div>

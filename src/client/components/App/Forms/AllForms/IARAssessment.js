@@ -1,10 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
+import { Prompt } from 'react-router-dom'
 import axios from 'axios';
 import { API_URL } from '../../../../actions/types';
 
 class IARAssessment extends Component {
+
+    constructor(props) {
+        super(props)
+        this.state = { isBlocking: true }
+    }
+
+    disableBlocking() {
+        this.setState({ isBlocking: false })
+    }
+
     componentDidMount() {
+        var self = this
         window.history2 = this.props.history
         window.$('#wizard6').steps({
             headerTag: 'h3',
@@ -13,6 +25,8 @@ class IARAssessment extends Component {
             titleTemplate: '<span class="number">#index#</span> <span class="title">#title#</span>',
             cssClass: 'wizard wizard-style-2',
             onFinished: async function (event, currentIndex) {
+                await self.disableBlocking()
+
                 let content = {
                     firstName: window.$('#firstName').val(),
                     lastName: window.$('#lastName').val(),
@@ -134,6 +148,8 @@ class IARAssessment extends Component {
     }
 
     render() {
+        let { isBlocking } = this.state
+
         return (
             <div className="slim-mainpanel">
                 <div className="container">
@@ -144,7 +160,7 @@ class IARAssessment extends Component {
                         <p className="mg-b-20 mg-sm-b-40">Please fill out the following information. </p>
 
                         <form id="immigrationForm" method="post" action="/forms">
-
+                            <Prompt when={isBlocking} message="Are you sure you want to leave, you will lose unsaved data" />
                             <div className="form-group col-md-2">
                                 <input type="hidden" name="fromForm" value="5bedaa96f65be80016ef5a1a" />
                             </div>

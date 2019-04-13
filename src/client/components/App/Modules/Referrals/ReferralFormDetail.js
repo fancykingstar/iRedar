@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Prompt } from 'react-router-dom'
-import { uploadReferralToServer } from '../../../../actions/referralActions'
+import { getReferralForm, uploadReferralToServer } from '../../../../actions/referralActions'
 import './ReferralForm.css'
 
-class ReferralForm extends Component {
+class ReferralFormDetail extends Component {
 
     constructor(props) {
         super(props)
@@ -12,6 +12,7 @@ class ReferralForm extends Component {
     }
 
     disableBlocking() {
+        this.readyForSubmit = true
         this.setState({ isBlocking: false })
     }
 
@@ -20,6 +21,10 @@ class ReferralForm extends Component {
             allowDuplicates: false,
             confirmKeys: [13, 44]
         })
+
+        if (JSON.stringify(this.props.referralForm) === '{}') {
+            this.props.dispatch(getReferralForm(this.props.referralId))
+        }
     }
 
     toString = partners => {
@@ -31,21 +36,30 @@ class ReferralForm extends Component {
         await this.disableBlocking()
 
         let referral = {
-            firstName: this.firstName.value || "",
-            lastName: this.lastName.value || "",
-            formName: this.props.referralForm.formName || "",
-            email: this.email.value || "",
-            address: this.address.value || "",
-            province: this.province.value || "",
-            city: this.city.value || "",
-            workExperience: this.workExperience.value || "",
-            note: this.note.value || "",
+            _id: this.props.referralId,
+            firstName: this.firstName.value || '',
+            lastName: this.lastName.value || '',
+            formName: this.props.referralForm.formName || '',
+            email: this.email.value || '',
+            address: this.address.value || '',
+            province: this.province.value || '',
+            city: this.city.value || '',
+            workExperience: this.workExperience.value || '',
+            note: this.note.value || '',
             dateSubmitted: Date(),
-            sender: this.props.referralForm.sender,
-            receivers: this.partnerList.value || ""
+            sender: this.props.sender,
+            receivers: this.partnerList.value || ''
         }
         this.props.dispatch(uploadReferralToServer(referral))
         this.props.history.push('/modules/referrals');
+    }
+
+    shouldComponentUpdate(nextProps) {
+        if (this.readyForSubmit === true) {
+            return true
+        }
+        window.$('#partnerList').tagsinput('add', this.toString(nextProps.referralForm.receivers || []) || '')
+        return true
     }
 
     render() {
@@ -56,9 +70,9 @@ class ReferralForm extends Component {
                 <br />
                 <h6 className="slim-pagetitle">Submission</h6>
                 <p htmlFor="referralForm" className="text-center" >{this.props.referralForm.formName}</p>
-                <Prompt when={isBlocking} message="Are you sure you want to leave, you will lose unsaved data" />
                 <br />
                 <form id="referralForm" className="form-horizontal" onSubmit={this.referralFormSubmit}>
+                    <Prompt when={isBlocking} message="Are you sure you want to leave, you will lose unsaved data" />
                     <br />
                     <div className="form-row">
                         <div className="form-group col-md-4">
@@ -119,24 +133,15 @@ class ReferralForm extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const { submissionId } = ownProps.match.params
-    let submission = state.submissions.allSubmissions.find(submission => submission._id === submissionId) || {}
+    const { referralId } = ownProps.match.params
+    let referralForm = state.referrals.referralForms.find(referralForm => referralForm._id === referralId) || {}
     return {
-        referralForm: {
-            firstName: submission.content.firstName || '',
-            lastName: submission.content.lastName || '',
-            formName: submission.content.fromForm || '',
-            email: submission.content.emailAddress || '',
-            address: submission.content.streetAddress || '',
-            province: submission.content.province || '',
-            city: submission.content.city || '',
-            workExperience: submission.content.workExperience || '',
-            note: submission.content.note || '',
-            sender: state.auth.user.profileId,
-        }
+        referralId,
+        referralForm,
+        sender: state.auth.user.profileId,
     }
 }
 
 export default connect(
     mapStateToProps
-)(ReferralForm)
+)(ReferralFormDetail)

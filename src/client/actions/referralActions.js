@@ -20,6 +20,21 @@ export const uploadReferralToServer = form => async dispatch => {
     }
 }
 
+export const getReferralForm = referralId => async dispatch => {
+    try {
+        const res = await axios.get(
+            `${API_URL}/api/upload-referral/referrals/` + referralId,
+        )
+        dispatch(setAllReferrals(res.data))
+    } catch (error) {
+        dispatch({
+            type: GET_ERRORS,
+            payload: error.response.data
+        })
+        throw new Error(error);
+    }
+}
+
 export const getAllReferralForms = profileId => async dispatch => {
     try {
         const res = await axios.get(

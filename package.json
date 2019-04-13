@@ -12,6 +12,7 @@
     "eject": "react-scripts eject",
     "heroku-postbuild": "react-scripts build",
     "start-all": "npm run build && node src/server/server.js",
+    "start-server-2": "nodemon src/server/server.js",
     "start-2": "react-scripts start"
   },
   "author": "Minh Do",
