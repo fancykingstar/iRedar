@@ -17,7 +17,6 @@ class Registration extends Component {
 
     componentDidMount() {
         var self = this
-        window.history2 = this.props.history
         window.$('#wizard6').steps({
             headerTag: 'h3',
             bodyTag: 'section',
@@ -26,7 +25,7 @@ class Registration extends Component {
             cssClass: 'wizard wizard-style-2',
             onFinished: async function (event, currentIndex) {
                 await self.disableBlocking()
-                
+
                 let content = {
                     fromForm: 'registration',
                     salutation: window.$('#salutation').val(),
@@ -109,7 +108,7 @@ class Registration extends Component {
 
                 try {
                     await axios.post(API_URL + '/api/submissions', content);
-                    window.history2.push({
+                    self.props.history.push({
                         // pathname: '/forms/submission-success'
                         pathname: '/forms/'
 

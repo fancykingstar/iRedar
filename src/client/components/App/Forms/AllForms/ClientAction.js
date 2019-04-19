@@ -17,7 +17,6 @@ class ClientAction1 extends Component {
 
   componentDidMount() {
     var self = this
-    window.history2 = this.props.history
     window.$('#wizard6').steps({
       headerTag: 'h3',
       bodyTag: 'section',
@@ -122,7 +121,7 @@ class ClientAction1 extends Component {
 
         try {
           await axios.post(API_URL + '/api/submissions', content);
-          window.history2.push({
+          self.props.history.push({
             // pathname: '/forms/submission-success'
             pathname: '/forms/'
 

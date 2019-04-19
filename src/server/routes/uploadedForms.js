@@ -3,14 +3,8 @@ const router = express.Router()
 
 const uploadedFormController = require('../controllers/uploadedForm')
 
-router.post(
-  '/',
-  uploadedFormController.postUploadedForm
-)
+router.post('/', uploadedFormController.postUploadedForm)
 
-router.get(
-  '/',
-  uploadedFormController.getAllUploadedForms,
-)
+router.get('/', uploadedFormController.getAllUploadedForms)
 
 module.exports = router

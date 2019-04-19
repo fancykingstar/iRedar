@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import store from './client/utils/store';
 import checkAuth from './client/utils/checkAuth';
+import axios from "axios"
 
 import './App.css';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
@@ -37,9 +38,20 @@ import SubmissionSuccess from './client/components/App/Forms/Submissions/Submiss
 import UploadFormList from './client/components/App/Forms/UploadForm';
 import ReferralForm from './client/components/App/Modules/Referrals/ReferralForm';
 import ReferralFormDetail from './client/components/App/Modules/Referrals/ReferralFormDetail'
+import { GET_ERRORS } from './client/actions/types';
 
 // Check for authentication
 checkAuth(store);
+
+axios.interceptors.response.use(response => {
+  return response;
+}, error => {
+  store.dispatch({
+    type: GET_ERRORS,
+    payload: error.response.data
+  })
+  return Promise.reject(error);
+});
 
 class App extends Component {
   render() {
