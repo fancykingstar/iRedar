@@ -228,8 +228,7 @@ exports.referralPreview = (appHost, referral) => `
                             <div>
                                 <label style="margin-right:20px;">Work experience</label>
                             </div>
-                            <textarea style="width: 100%" type="text" readonly value=${referral.workExperience || ''
-    }></textarea>
+                            <textarea style="width: 100%" type="text" readonly>${referral.workExperience || ''}</textarea>
                         </td>
                     </tr>
                     <!-- end copy -->
@@ -240,7 +239,7 @@ exports.referralPreview = (appHost, referral) => `
                             <div>
                                 <label style="margin-right:20px;">Note</label>
                             </div>
-                            <textarea style="width: 100%" type="text" readonly value=${referral.note || ''}></textarea>
+                            <textarea style="width: 100%" readonly>${referral.note || ''}</textarea>
                         </td>
                     </tr>
                     <!-- end copy -->
