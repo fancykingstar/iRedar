@@ -18,7 +18,6 @@ class FCRPLoan extends Component {
     componentDidMount() {
         var self = this
         window.download2 = this.download
-        window.history2 = this.props.history
         window.$('#wizard6').steps({
             headerTag: 'h3',
             bodyTag: 'section',
@@ -99,7 +98,7 @@ class FCRPLoan extends Component {
 
                 try {
                     await axios.post(API_URL + '/api/submissions', content);
-                    window.history2.push({
+                    self.props.history.push({
                         // pathname: '/forms/submission-success'
                         pathname: '/forms/'
                     });

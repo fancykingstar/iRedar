@@ -8,20 +8,8 @@ const User = require('../models/User')
 const UploadedForm = require('../models/UploadedForm')
 
 exports.postUploadedForm = async (req, res) => {
-  const { authorization } = req.headers
-  if (!authorization) {
-    return res.status(422).json({
-      alert: {
-        title: 'Error!',
-        detail: 'Server occurred an error,  please try again',
-      },
-    })
-  }
-
-  let token = authorization.split(' ')[1]
   try {
-    var decoded = await jwt.verify(token, keys.secretOrKey)
-    const { userId } = decoded
+    let userId = req.user._id
     const user = await User.findById(userId)
     if (!user) {
       return res.status(422).json({
@@ -76,20 +64,8 @@ exports.postUploadedForm = async (req, res) => {
 }
 
 exports.getAllUploadedForms = async (req, res) => {
-  const { authorization } = req.headers
-  if (!authorization) {
-    return res.status(422).json({
-      alert: {
-        title: 'Error!',
-        detail: 'Server occurred an error,  please try again',
-      },
-    })
-  }
-
-  var token = authorization.split(' ')[1]
   try {
-    var decoded = await jwt.verify(token, keys.secretOrKey)
-    const { userId } = decoded
+    let userId = req.user._id
     const user = await User.findById(userId)
     if (!user) {
       return res.status(422).json({

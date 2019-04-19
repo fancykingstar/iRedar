@@ -11,20 +11,8 @@ const Referral = require('../models/Referral')
 const { referralPreview } = require('../helpers/htmlMails/referral');
 
 exports.getAllReferrals = async (req, res) => {
-    const { authorization } = req.headers
-    if (!authorization) {
-        return res.status(422).json({
-            alert: {
-                title: 'Error!',
-                detail: 'Server occurred an error,  please try again',
-            },
-        })
-    }
-
-    let token = authorization.split(' ')[1]
     try {
-        var decoded = await jwt.verify(token, keys.secretOrKey)
-        const { userId } = decoded
+        let userId = req.user._id
         const user = await User.findById(userId)
         if (!user) {
             return res.status(422).json({
@@ -55,20 +43,8 @@ exports.getAllReferrals = async (req, res) => {
 }
 
 exports.getReferral = async (req, res) => {
-    const { authorization } = req.headers
-    if (!authorization) {
-        return res.status(422).json({
-            alert: {
-                title: 'Error!',
-                detail: 'Server occurred an error,  please try again',
-            },
-        })
-    }
-
-    let token = authorization.split(' ')[1]
     try {
-        var decoded = await jwt.verify(token, keys.secretOrKey)
-        const { userId } = decoded
+        let userId = req.user._id
         const user = await User.findById(userId)
         if (!user) {
             return res.status(422).json({
@@ -95,20 +71,8 @@ exports.getReferral = async (req, res) => {
 }
 
 exports.postReferral = async (req, res) => {
-    const { authorization } = req.headers
-    if (!authorization) {
-        return res.status(422).json({
-            alert: {
-                title: 'Error!',
-                detail: 'Server occurred an error,  please try again',
-            },
-        })
-    }
-
-    let token = authorization.split(' ')[1]
     try {
-        var decoded = await jwt.verify(token, keys.secretOrKey)
-        const { userId } = decoded
+        let userId = req.user._id
         const user = await User.findById(userId)
         if (!user) {
             return res.status(422).json({

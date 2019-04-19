@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-
+import { withRouter } from 'react-router-dom'
 import AdminSubmission from './AdminSubmission';
 import PartnerSubmissions from './PartnerSubmission';
 
 class SubmissionsPage extends Component {
-  componentDidMount() {
-    window.history2 = this.props.history
-  }
 
   render() {
     let permissions = this.props.permissions
@@ -33,4 +30,4 @@ const mapStateToProps = state => ({
   permissions: state.access.permissions
 });
 
-export default connect(mapStateToProps)(SubmissionsPage);
+export default withRouter(connect(mapStateToProps)(SubmissionsPage));

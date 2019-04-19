@@ -2,22 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 
 class FormsPage extends Component {
-  componentDidMount() {
-    window.history2 = this.props.history
-    // alert(JSON.stringify(this.props))
-
-  }
-
-  // componentDidUpdate() {
-  //   window.$('#datatable2').DataTable({
-  //     responsive: true,
-  //     language: {
-  //       searchPlaceholder: 'Search...',
-  //       sSearch: '',
-  //       lengthMenu: '_MENU_ items/page',
-  //     }
-  //   });
-  // }
 
   copyToClipboard = str => {
     const el = document.createElement('textarea');

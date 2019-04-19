@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import moment from 'moment'
 import Spinner from '../../../Elements/Spinner'
 import { getAllReferralForms } from '../../../../actions/referralActions';
@@ -21,7 +22,7 @@ class ReferralFormList extends Component {
 
     viewDetail = event => {
         let referralId = event.target.getAttribute('referral_Id')
-        window.history2.push('/referrals/detail/' + referralId)
+        this.props.history.push('/referrals/detail/' + referralId)
     }
 
     render() {
@@ -80,6 +81,6 @@ const mapStateToProps = state => ({
     referralForms: state.referrals.referralForms ? state.referrals.referralForms : []
 })
 
-export default connect(
+export default withRouter(connect(
     mapStateToProps
-)(ReferralFormList)
+)(ReferralFormList))

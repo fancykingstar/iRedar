@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom'
 import moment from 'moment';
 import Spinner from '../../../Elements/Spinner';
 
@@ -19,14 +20,14 @@ class AdminSubmissionList extends Component {
   detail = event => {
     let formName = event.target.getAttribute('form_name')
     let submissionId = event.target.getAttribute('submission_id')
-    window.history2.push({
+    this.props.history.push({
       pathname: '/forms/' + formName + '/' + submissionId
     });
   }
 
   share = event => {
     let submissionId = event.target.getAttribute('submission_id')
-    window.history2.push({
+    this.props.history.push({
       pathname: '/referrals/' + submissionId
     });
   }
@@ -120,4 +121,4 @@ class AdminSubmissionList extends Component {
     );
   }
 }
-export default connect()(AdminSubmissionList);
+export default withRouter(connect()(AdminSubmissionList));
