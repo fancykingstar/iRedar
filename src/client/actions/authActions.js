@@ -12,7 +12,7 @@ import {
 import setAuthToken from '../utils/setAuthToken';
 import {
   getCurrentUserPermissions,
-  clearCurrentPermission
+  clearCurrentPermission,
 } from './accessActions';
 
 export const registerUser = (userData, history) => async dispatch => {
@@ -26,6 +26,62 @@ export const registerUser = (userData, history) => async dispatch => {
       detail: 'Your user have been created. Sign in now'
     });
   } catch (error) {
+    dispatch({
+      type: GET_ERRORS,
+      payload: error.response.data
+    });
+  }
+};
+
+//Add new user through ADMIN Role
+export const addUsers = (userData, history) => async dispatch => {
+  try {
+    // getter
+    const token = localStorage.getItem('jwtToken');
+
+    console.log("JwtToken" + token);
+    console.log("JwtToken" + userData);
+
+    // Set token to Auth header
+    setAuthToken(token);
+
+    await axios.post(`${API_URL}/api/users/adduser`, userData);
+    history.push({
+      pathname: '/settings/admin-settings',
+      isRegistered: true,
+      detail: 'New user created!'
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_ERRORS,
+      payload: error.response.data
+    });
+  }
+};
+
+export const deleteUsers = (permissionIds, history) => async dispatch => {
+  try {
+    // getter
+    const token = localStorage.getItem('jwtToken');
+    console.log("JwtToken " + token);
+
+    const payload = {
+      permissionIds: Array.from(permissionIds)
+    };
+
+    // Set token to Auth header
+    setAuthToken(token);
+    await axios.post(
+        `${API_URL}/api/users/deleteUser`,
+        payload
+    );
+    history.push({
+      pathname: '/settings/admin-settings',
+      isRegistered: true,
+      detail: 'User deleted!'
+    });
+  } catch (error) {
+    console.log(error);
     dispatch({
       type: GET_ERRORS,
       payload: error.response.data
@@ -92,16 +148,19 @@ export const logoutUser = () => dispatch => {
 export const getCurrentUserProfile = userId => async dispatch => {
   try {
     const res = await axios.get(`${API_URL}/api/users/${userId}`);
+
     dispatch({
       type: GET_CURRENT_USER_PROFILE,
       payload: res.data
     });
+
   } catch (error) {
     dispatch({
       type: GET_ERRORS,
       payload: error.response.data
     });
     throw new Error(error);
+
   }
 };
 

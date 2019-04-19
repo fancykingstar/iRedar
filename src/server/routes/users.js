@@ -15,6 +15,21 @@ router.post('/register', userController.postRegister);
 // @access Public
 router.post('/login', userController.postLogin);
 
+// @route POST api/users/adduser
+// @desc Add new user
+// @access Private
+router.post('/adduser', userController.postAddUser);
+
+// @route POST api/users/deleteuser
+// @desc Add new user
+// @access Private
+router.post('/deleteuser', userController.deleteUser);
+
+// @route   PUT api/users/updateuser
+// @desc    Update User
+// @access  Public
+//router.put('/updateuser', userController.postUpdateUser);
+
 // @route POST api/users/reset-password
 // @desc Reset user password
 // @access Public

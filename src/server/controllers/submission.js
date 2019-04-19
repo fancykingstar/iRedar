@@ -39,7 +39,7 @@ exports.getAllSubmissions = async (req, res) => {
   const { profileId, organizationId } = req.body;
 
 
-  console.log("USER IS ",req.user)
+  console.log("USER IS ",req.user);
 
   try {
 

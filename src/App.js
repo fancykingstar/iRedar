@@ -22,6 +22,7 @@ import FormsPage from './client/components/App/Forms';
 import ModulesPage from './client/components/App/Modules';
 import ReportsPage from './client/components/App/Reports';
 import AdminSettings from './client/components/App/Settings/AdminSettings';
+import AddNewUsers from './client/components/App/Settings/AddNewUsers';
 import ClientAction from './client/components/App/Forms/AllForms/ClientAction';
 import IARAssessment from './client/components/App/Forms/AllForms/IARAssessment';
 import FCRPLoan from './client/components/App/Forms/AllForms/FCRPLoan';
@@ -80,6 +81,14 @@ class App extends Component {
                   exact
                   path="/settings/admin-settings"
                   component={AdminSettings}
+                />
+              </Switch>
+
+              <Switch>
+                <PrivateRoute
+                    exact
+                    path="/settings/add-new-users"
+                    component={AddNewUsers}
                 />
               </Switch>
               <Switch>

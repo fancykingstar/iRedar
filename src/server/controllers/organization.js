@@ -6,6 +6,16 @@ const Organization = require('../models/Organization');
 const Permission = require('../models/Permission');
 const Profile = require('../models/Profile');
 
+///  Mapping for Role-Permission
+const rolesToPermission = {
+  //rolesToPermission["USER"]
+  "USER": ["canRead"],
+  "CLIENT": ["canRead","canWrite","canSubmit"],
+  "PARTNER": ["canWrite","canUpdate","canRead","canSubmit"],
+  "STAFF": ["canCreate","canWrite","canUpdate","canRead","canSubmit"],
+  "ADMIN": ["canRead", "canCreate", "canWrite", "canUpdate", "canDelete", "canSubmit", "canAddUser", "canEditUser", "canViewUser", "canDeleteUser"]
+};
+
 // @route POST api/organizations/register
 // @desc Register organization
 // @access Public
@@ -34,7 +44,7 @@ exports.postRegister = async (req, res) => {
     return res.status(422).json({
       alert: {
         title: 'Error!',
-        detail: 'All fields are required',
+        detail: 'All fields are required'
       },
     });
   }
@@ -49,7 +59,7 @@ exports.postRegister = async (req, res) => {
     const existingOrganization = await Organization.findOne({ name });
     if (existingOrganization) {
       return res.status(422).json({
-        email: 'Organization already exists',
+        email: 'Organization already exists'
       });
     }
 
@@ -71,7 +81,7 @@ exports.postRegister = async (req, res) => {
       success: true,
       alert: {
         title: 'Success!',
-        detail: 'Your user have been created',
+        detail: 'Your user have been created'
       },
     });
   } catch (error) {
@@ -79,7 +89,7 @@ exports.postRegister = async (req, res) => {
     return res.status(422).json({
       alert: {
         title: 'Error!',
-        detail: 'Server Error: Please try again',
+        detail: 'Server Error: Please try again'
       },
     });
   }
@@ -93,7 +103,7 @@ exports.postPermission = async (req, res) => {
 
   if (!name || validator.isEmpty(name, { ignore_whitespace: true })) {
     return res.status(422).json({
-      name: 'Organization name is required',
+      name: 'Organization name is required'
     });
   }
 
@@ -231,6 +241,21 @@ exports.postAdminPermissions = async (req, res) => {
       });
     }
 
+    const profile = await Profile.findOne({
+      _id: permission.profile,
+    });
+
+    if (!profile) {
+      return res.status(422).json({
+        alert: {
+          title: 'Not Found!',
+          detail: 'Profile does not exist',
+        },
+      });
+    }
+
+
+    await profile.updateOne({ role: req.body.role.toUpperCase(), permissionRight: rolesToPermission[req.body.role.toUpperCase()] });
     await permission.updateOne({ role: req.body.role });
 
     const allPermissions = await Permission.find({

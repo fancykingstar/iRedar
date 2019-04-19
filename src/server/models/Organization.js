@@ -5,38 +5,43 @@ const OrganizationSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-
+  users: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "users"
+      }
+      ],
   email: {
     type: String,
-    required: true,
+    //required: true,
   },
 
   phoneNumber: {
     type: String,
-    required: true,
+    //required: true,
   },
 
   address: {
     street: {
       type: String,
-      required: true,
+      //required: true,
     },
     city: {
       type: String,
-      required: true,
+      //required: true,
     },
     province: {
       type: String,
-      required: true,
+      //required: true,
     },
     country: {
       type: String,
-      required: true,
+     // required: true,
     },
 
     postalCode: {
       type: String,
-      required: true,
+     // required: true,
     },
   },
 });
