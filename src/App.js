@@ -139,28 +139,28 @@ class App extends Component {
                 />
               </Switch>
               <Switch>
-                <PrivateRoute
+                <Route
                   exact
                   path="/forms/client-action/:submissionId"
                   component={ClientActionSubmission}
                 />
               </Switch>
               <Switch>
-                <PrivateRoute
+                <Route
                   exact
                   path="/forms/iar-assessment/:submissionId"
                   component={IARAssessmentSubmission}
                 />
               </Switch>
               <Switch>
-                <PrivateRoute
+                <Route
                   exact
                   path="/forms/fcrp-loan/:submissionId"
                   component={FCRPLoanSubmission}
                 />
               </Switch>
               <Switch>
-                <PrivateRoute
+                <Route
                   exact
                   path="/forms/registration/:submissionId"
                   component={RegistrationSubmission}

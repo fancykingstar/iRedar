@@ -36,6 +36,7 @@ class ReferralFormDetail extends Component {
         await this.disableBlocking()
 
         let referral = {
+            submissionId: this.props.referralForm.submission,
             _id: this.props.referralId,
             firstName: this.firstName.value || '',
             lastName: this.lastName.value || '',

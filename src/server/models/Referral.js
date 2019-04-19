@@ -40,6 +40,10 @@ const referralSchema = Schema({
         type: Schema.Types.ObjectId,
         ref: 'Profile',
     }],
+    submission: {
+        type: Schema.Types.ObjectId,
+        ref: 'Submission',
+    },
 })
 
 module.exports = mongoose.model('Referral', referralSchema)

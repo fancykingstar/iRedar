@@ -8,6 +8,8 @@ const User = require('../models/User')
 const Profile = require('../models/Profile')
 const Referral = require('../models/Referral')
 
+const { referralPreview } = require('../helpers/htmlMails/referral');
+
 exports.getAllReferrals = async (req, res) => {
     const { authorization } = req.headers
     if (!authorization) {
@@ -127,7 +129,8 @@ exports.postReferral = async (req, res) => {
             note,
             dateSubmitted,
             sender,
-            receivers
+            receivers,
+            submissionId
         } = req.body
 
         let receiverArray = receivers.split(',')
@@ -158,6 +161,7 @@ exports.postReferral = async (req, res) => {
             referral.dateSubmitted = dateSubmitted
             referral.sender = sender
             referral.receivers = receiverIds
+            referral.submission = submissionId
         } else {
             referral = new Referral({
                 formName,
@@ -171,19 +175,19 @@ exports.postReferral = async (req, res) => {
                 note,
                 dateSubmitted,
                 sender,
-                receivers: receiverIds
+                receivers: receiverIds,
+                submission: submissionId
             })
         }
         let saved = await referral.save()
 
-        let apiUrl = (process.env.NODE_ENV === "production") ? '' : 'http://localhost:5000'
-        let link = apiUrl + '/referrals/detail/' + saved._id
+        let apiUrl = (process.env.NODE_ENV === "production") ? 'https://iauto.herokuapp.com' : 'http://localhost:5000'
         let maillist = profiles.map(profile => profile.email).join(',')
         const mailOptions = {
             from: '"Forms" <forms@iradardata.com>',
             to: maillist,
             subject: 'new referral',
-            html: '<a href=' + link + '>' + link + '</a>'
+            html: referralPreview(apiUrl, referral)
         }
         nodeMailer(mailOptions)
 

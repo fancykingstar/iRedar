@@ -31,6 +31,7 @@ class ReferralForm extends Component {
         await this.disableBlocking()
 
         let referral = {
+            submissionId: this.props.submissionId,
             firstName: this.firstName.value || "",
             lastName: this.lastName.value || "",
             formName: this.props.referralForm.formName || "",
@@ -121,12 +122,15 @@ class ReferralForm extends Component {
 const mapStateToProps = (state, ownProps) => {
     const { submissionId } = ownProps.match.params
     let submission = state.submissions.allSubmissions.find(submission => submission._id === submissionId) || {}
+    let fromForm = submission.content.fromForm || ''
+    let email = fromForm === 'registration' ? (submission.content.email || '') : (submission.content.emailAddress || '')
     return {
+        submissionId: submissionId,
         referralForm: {
             firstName: submission.content.firstName || '',
             lastName: submission.content.lastName || '',
-            formName: submission.content.fromForm || '',
-            email: submission.content.emailAddress || '',
+            formName: fromForm,
+            email: email,
             address: submission.content.streetAddress || '',
             province: submission.content.province || '',
             city: submission.content.city || '',
