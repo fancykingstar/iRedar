@@ -33,6 +33,7 @@ import IARAssessmentSubmission from './client/components/App/Forms/Submissions/I
 import FCRPLoanSubmission from './client/components/App/Forms/Submissions/FCRPLoan';
 import RegistrationSubmission from './client/components/App/Forms/Submissions/Registration';
 import SubmissionSuccess from './client/components/App/Forms/Submissions/SubmissionSuccess';
+import FormList from './client/components/App/Forms/UploadForm';
 
 // Check for authentication
 checkAuth(store);
@@ -155,7 +156,13 @@ class App extends Component {
                   component={RegistrationSubmission}
                 />
               </Switch>
-              
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/forms/upload-forms/:filterType"
+                  component={FormList}
+                />
+              </Switch>
             </div>
           </ScrollToTop>
         </Router>

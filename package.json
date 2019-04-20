@@ -10,7 +10,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "heroku-postbuild": "react-scripts build"
+    "heroku-postbuild": "react-scripts build",
+    "start-all": "npm run build && node src/server/server.js"
   },
   "author": "Minh Do",
   "license": "MIT",
@@ -41,6 +42,7 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "^2.1.5",
     "redux": "^4.0.1",
+    "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "validator": "^10.11.0",
     "winston": "^3.2.1"

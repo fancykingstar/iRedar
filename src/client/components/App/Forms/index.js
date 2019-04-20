@@ -57,7 +57,7 @@ class FormsPage extends Component {
           </div>
 
           <div className="table-responsive mg-t-0">
-            <div class="section-wrapper">
+            <div className="section-wrapper">
 
               <table className="table table-invoice" id="datatable2">
                 <thead>

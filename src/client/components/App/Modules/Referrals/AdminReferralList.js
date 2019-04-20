@@ -6,7 +6,7 @@ import moment from 'moment';
 import Spinner from '../../../Elements/Spinner';
 
 class AdminReferral extends Component {
-  
+
   // export default function AdminReferralList({ submissionList, loading }) {
   componentDidUpdate() {
     window.$('#datatable1').DataTable({
@@ -51,7 +51,7 @@ class AdminReferral extends Component {
       ) : (
           <div className="table-responsive mg-t-0">
 
-            <div class="section-wrapper">
+            <div className="section-wrapper">
 
               <table className="table table-invoice" id="datatable1">
                 <thead>

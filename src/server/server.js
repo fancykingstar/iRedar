@@ -11,6 +11,7 @@ const logger = require('./configs/logger');
 const users = require('./routes/users');
 const organizations = require('./routes/organization');
 const submissions = require('./routes/submission');
+const uploadedForms = require('./routes/uploadedForms');
 
 // eslint-disable no-console
 
@@ -24,8 +25,8 @@ app.use(morgan('dev'));
 app.use(cors());
 
 // Body parser middleware
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 // Database config
 const db = require('./configs/keys').mongoURI;
@@ -49,6 +50,7 @@ require('./configs/passport')(passport);
 app.use('/api/users', users);
 app.use('/api/organizations', organizations);
 app.use('/api/submissions', submissions);
+app.use('/api/upload-forms', uploadedForms);
 
 if (!debugMode){
   app.use(express.static(path.join(__dirname, relativePath,'build')));
