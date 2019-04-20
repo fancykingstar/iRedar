@@ -1,5 +1,5 @@
 // NOTE: API_URL & HOST_URL need to change when deploy
-export const API_URL =  (process.env.NODE_ENV === "production") ? '': 'http://localhost:3000';
+export const API_URL = (process.env.NODE_ENV === "production") ? '' : 'http://localhost:5000';
 export const HOST_URL = 'http://localhost:3000';
 
 export const IS_REGISTERED = 'IS_REGISTERED';

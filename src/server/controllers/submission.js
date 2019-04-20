@@ -39,7 +39,7 @@ exports.getAllSubmissions = async (req, res) => {
   const { profileId, organizationId } = req.body;
 
 
-  console.log("USER IS ",req.user);
+  console.log("USER IS ", req.user);
 
   try {
 
@@ -62,7 +62,7 @@ exports.getAllSubmissions = async (req, res) => {
     // const allSubmissions = await Submission.find({
     //   organization: organizationId,
     // });
-    const allSubmissions = await Submission.find({   userId: req.user._id}).sort({
+    const allSubmissions = await Submission.find({ userId: req.user._id }).sort({
       dateSubmitted: 'desc',
     });
     return res.json({

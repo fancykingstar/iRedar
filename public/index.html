@@ -1,108 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
 
-    <!-- Twitter -->
-    <meta name="twitter:site" content="@themepixels" />
-    <meta name="twitter:creator" content="@themepixels" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="iAutoData" />
-    <meta name="twitter:description" content="iAuto Data" />
-    <meta
-      name="twitter:image"
-      content="http://themepixels.me/slim/img/slim-social.png"
-    />
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-    <!-- Facebook -->
-    <meta property="og:url" content="http://themepixels.me/slim" />
-    <meta property="og:title" content="iAutoData" />
-    <meta property="og:description" content="iAuto" />
+  <!-- Twitter -->
+  <meta name="twitter:site" content="@themepixels" />
+  <meta name="twitter:creator" content="@themepixels" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="iAutoData" />
+  <meta name="twitter:description" content="iAuto Data" />
+  <meta name="twitter:image" content="http://themepixels.me/slim/img/slim-social.png" />
 
-    <meta
-      property="og:image"
-      content="http://themepixels.me/slim/img/slim-social.png"
-    />
-    <meta
-      property="og:image:secure_url"
-      content="http://themepixels.me/slim/img/slim-social.png"
-    />
-    <meta property="og:image:type" content="image/png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="600" />
+  <!-- Facebook -->
+  <meta property="og:url" content="http://themepixels.me/slim" />
+  <meta property="og:title" content="iAutoData" />
+  <meta property="og:description" content="iAuto" />
 
-    <!-- Meta -->
-    <meta name="description" content="iAuto" />
-    <meta name="author" content="ThemePixels" />
+  <meta property="og:image" content="http://themepixels.me/slim/img/slim-social.png" />
+  <meta property="og:image:secure_url" content="http://themepixels.me/slim/img/slim-social.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="600" />
 
-    <title>iAuto Immigration</title>
+  <!-- Meta -->
+  <meta name="description" content="iAuto" />
+  <meta name="author" content="ThemePixels" />
 
-    <!-- vendor css -->
-    <link
-      href="/assets/lib/font-awesome/css/font-awesome.css"
-      rel="stylesheet"
-    />
-    <link href="/assets/lib/Ionicons/css/ionicons.css" rel="stylesheet" />
-    <link href="/assets/lib/datatables/css/jquery.dataTables.css" rel="stylesheet">
+  <title>iAuto Immigration</title>
 
-    <link
-      href="/assets/lib/jquery.steps/css/jquery.steps.css"
-      rel="stylesheet"
-    />
-    <link href="/assets/lib/rickshaw/css/rickshaw.min.css" rel="stylesheet" />
-    <link href="/assets/lib/SpinKit/css/spinkit.css" rel="stylesheet">
+  <!-- vendor css -->
+  <link href="/assets/lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
+  <link href="/assets/lib/Ionicons/css/ionicons.css" rel="stylesheet" />
+  <link href="/assets/lib/datatables/css/jquery.dataTables.css" rel="stylesheet">
 
-    <link href="/assets/lib/select2/css/select2.min.css" rel="stylesheet">
+  <link href="/assets/lib/jquery.steps/css/jquery.steps.css" rel="stylesheet" />
+  <link href="/assets/lib/rickshaw/css/rickshaw.min.css" rel="stylesheet" />
+  <link href="/assets/lib/SpinKit/css/spinkit.css" rel="stylesheet">
 
-    <!-- Slim CSS -->
-    <link rel="stylesheet" href="/assets/css/slim.css" />
-    <!-- <link
+  <link href="/assets/lib/select2/css/select2.min.css" rel="stylesheet">
+  <link href="/assets/lib/bootstrap-tagsinput/css/bootstrap-tagsinput.css" rel="stylesheet">
+  <!-- Slim CSS -->
+  <link rel="stylesheet" href="/assets/css/slim.css" />
+  <!-- <link
       rel="stylesheet"
       href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"
     /> -->
 
 
 
-    <style>
-      td.details-control {
-        background: url('../resources/details_open.png') no-repeat center center;
-        cursor: pointer;
-      }
-      tr.shown td.details-control {
-        background: url('../resources/details_close.png') no-repeat center
-          center;
-      }
-    </style>
-  </head>
+  <style>
+    td.details-control {
+      background: url('../resources/details_open.png') no-repeat center center;
+      cursor: pointer;
+    }
 
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    tr.shown td.details-control {
+      background: url('../resources/details_close.png') no-repeat center center;
+    }
+  </style>
+</head>
 
-    <script src="/assets/lib/jquery/js/jquery.js"></script>
-    <script src="/assets/lib/popper.js/js/popper.js"></script>
-    <script src="/assets/lib/bootstrap/js/bootstrap.js"></script>
-    <script src="/assets/lib/jquery.cookie/js/jquery.cookie.js"></script>
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+
+  <script src="/assets/lib/jquery/js/jquery.js"></script>
+  <script src="/assets/lib/popper.js/js/popper.js"></script>
+  <script src="/assets/lib/bootstrap/js/bootstrap.js"></script>
+  <script src="/assets/lib/jquery.cookie/js/jquery.cookie.js"></script>
 
 
-    <script src="/assets/lib/jquery.steps/js/jquery.steps.js"></script>
-    <script src="/assets/lib/parsleyjs/js/parsley.js"></script>
-    <script src="/assets/lib/d3/js/d3.js"></script>
-    <script src="/assets/lib/rickshaw/js/rickshaw.min.js"></script>
-    <script src="/assets/lib/chart.js/js/Chart.js"></script>
-  
-    <script src="/assets/lib/datatables/js/jquery.dataTables.js"></script>
-    <script src="/assets/lib/datatables-responsive/js/dataTables.responsive.js"></script>
-    <script src="/assets/lib/select2/js/select2.min.js"></script>
+  <script src="/assets/lib/jquery.steps/js/jquery.steps.js"></script>
+  <script src="/assets/lib/parsleyjs/js/parsley.js"></script>
+  <script src="/assets/lib/d3/js/d3.js"></script>
+  <script src="/assets/lib/rickshaw/js/rickshaw.min.js"></script>
+  <script src="/assets/lib/chart.js/js/Chart.js"></script>
 
-    <script src="/assets/js/slim.js"></script>
-    <script src="/assets/js/ResizeSensor.js"></script>
-    <!-- <script type="text/javascript">
+  <script src="/assets/lib/datatables/js/jquery.dataTables.js"></script>
+  <script src="/assets/lib/datatables-responsive/js/dataTables.responsive.js"></script>
+  <script src="/assets/lib/select2/js/select2.min.js"></script>
+  <script src="/assets/lib/bootstrap-tagsinput/js/bootstrap-tagsinput.js"></script>
+
+  <script src="/assets/js/slim.js"></script>
+  <script src="/assets/js/ResizeSensor.js"></script>
+  <!-- <script type="text/javascript">
       var $zoho = $zoho || {};
       $zoho.salesiq = $zoho.salesiq || {
         widgetcode:
@@ -120,7 +104,7 @@
       t.parentNode.insertBefore(s, t);
       d.write("<div id='zsiqwidget'></div>");
     </script> -->
-    <script>
+  <script>
       // $(document).ready(function(){
       //   'use strict';
 
@@ -136,7 +120,8 @@
         // });
 
       // });
-    </script>
-    </script>
-  </body>
+  </script>
+  </script>
+</body>
+
 </html>

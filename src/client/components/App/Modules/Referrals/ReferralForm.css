@@ -1,0 +1,13 @@
+#referral p {
+    color: #495057;
+    font-size: 24px;
+}
+
+#referral form {
+    background-color: white;
+    padding: 25px;
+}
+
+#referral textarea {
+    height: 200px;
+}
