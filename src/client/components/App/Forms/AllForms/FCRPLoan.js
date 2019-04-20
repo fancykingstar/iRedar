@@ -83,7 +83,7 @@ class FCRPLoan extends Component {
 
                 try {
                     await axios.post(API_URL + '/api/submissions', content);
-                    self.props.history.push({
+                    this.props.history.push({
                         // pathname: '/forms/submission-success'
                         pathname: '/forms/'
                     });
