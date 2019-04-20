@@ -16,6 +16,7 @@ class UploadFormTable extends Component {
       data: this.props.data,
       columns,
       responsive: true,
+      bInfo: false,
       language: {
         searchPlaceholder: 'Search...',
         search: '',

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getAllSubmissions } from './../../../../actions/submissionActions';
-import AdminReferralList from './AdminReferralList';
+import { getAllSubmissions } from '../../../../actions/submissionActions';
+import AdminSubmissionList from './AdminSubmissionList';
 
-class AdminReferral extends Component {
+class AdminSubmission extends Component {
   state = {
     submissionList: []
   };
@@ -15,10 +15,6 @@ class AdminReferral extends Component {
       organizationId: permissions[0].organization
     };
     getAllSubmissions(userData);
-
-    // window.history2 = this.props.history
-    // alert(JSON.stringify(this.props))
-
   }
 
   componentWillReceiveProps(nextProps) {
@@ -32,10 +28,9 @@ class AdminReferral extends Component {
 
   render() {
     return (
-      <AdminReferralList
+      <AdminSubmissionList
         submissionList={this.state.submissionList}
         loading={this.props.loading}
-        // history2 = {this.props.history}
       />
     );
   }
@@ -50,4 +45,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { getAllSubmissions }
-)(AdminReferral);
+)(AdminSubmission);

@@ -7,15 +7,15 @@ import { uploadFormToServer, getAllUploadForms } from '../../../../actions/uploa
 import UploadFormTable from './UploadFormTable'
 
 const isPdf = type => {
-  return type == 'pdf'
+  return type === 'pdf'
 }
 
 const isWord = type => {
-  return type == 'doc' || type == 'docx'
+  return type === 'doc' || type === 'docx'
 }
 
 const isExcel = type => {
-  return type == 'xls' || type == 'xlsx'
+  return type === 'xls' || type === 'xlsx'
 }
 
 const isOther = type => {

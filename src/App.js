@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import store from './client/utils/store';
 import checkAuth from './client/utils/checkAuth';
+import axios from "axios"
 
 import './App.css';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
@@ -27,16 +28,30 @@ import IARAssessment from './client/components/App/Forms/AllForms/IARAssessment'
 import FCRPLoan from './client/components/App/Forms/AllForms/FCRPLoan';
 import Registration from './client/components/App/Forms/AllForms/Registration';
 
+import Submissions from './client/components/App/Modules/Submissions';
 import Referrals from './client/components/App/Modules/Referrals';
 import ClientActionSubmission from './client/components/App/Forms/Submissions/ClientAction';
 import IARAssessmentSubmission from './client/components/App/Forms/Submissions/IARAssessment';
 import FCRPLoanSubmission from './client/components/App/Forms/Submissions/FCRPLoan';
 import RegistrationSubmission from './client/components/App/Forms/Submissions/Registration';
 import SubmissionSuccess from './client/components/App/Forms/Submissions/SubmissionSuccess';
-import FormList from './client/components/App/Forms/UploadForm';
+import UploadFormList from './client/components/App/Forms/UploadForm';
+import ReferralForm from './client/components/App/Modules/Referrals/ReferralForm';
+import ReferralFormDetail from './client/components/App/Modules/Referrals/ReferralFormDetail'
+import { GET_ERRORS } from './client/actions/types';
 
 // Check for authentication
 checkAuth(store);
+
+axios.interceptors.response.use(response => {
+  return response;
+}, error => {
+  store.dispatch({
+    type: GET_ERRORS,
+    payload: error.response.data
+  })
+  return Promise.reject(error);
+});
 
 class App extends Component {
   render() {
@@ -87,6 +102,13 @@ class App extends Component {
                 <PrivateRoute
                   exact
                   path="/modules/submissions"
+                  component={Submissions}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/modules/referrals"
                   component={Referrals}
                 />
               </Switch>
@@ -129,28 +151,28 @@ class App extends Component {
                 />
               </Switch>
               <Switch>
-                <PrivateRoute
+                <Route
                   exact
                   path="/forms/client-action/:submissionId"
                   component={ClientActionSubmission}
                 />
               </Switch>
               <Switch>
-                <PrivateRoute
+                <Route
                   exact
                   path="/forms/iar-assessment/:submissionId"
                   component={IARAssessmentSubmission}
                 />
               </Switch>
               <Switch>
-                <PrivateRoute
+                <Route
                   exact
                   path="/forms/fcrp-loan/:submissionId"
                   component={FCRPLoanSubmission}
                 />
               </Switch>
               <Switch>
-                <PrivateRoute
+                <Route
                   exact
                   path="/forms/registration/:submissionId"
                   component={RegistrationSubmission}
@@ -160,7 +182,21 @@ class App extends Component {
                 <PrivateRoute
                   exact
                   path="/forms/upload-forms/:filterType"
-                  component={FormList}
+                  component={UploadFormList}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/referrals/:submissionId"
+                  component={ReferralForm}
+                />
+              </Switch>
+              <Switch>
+                <Route
+                  exact
+                  path="/referrals/detail/:referralId"
+                  component={ReferralFormDetail}
                 />
               </Switch>
             </div>

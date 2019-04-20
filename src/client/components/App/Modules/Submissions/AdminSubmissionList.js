@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom'
 import moment from 'moment';
-
 import Spinner from '../../../Elements/Spinner';
 
-class AdminReferral extends Component {
+class AdminSubmissionList extends Component {
 
-  // export default function AdminReferralList({ submissionList, loading }) {
   componentDidUpdate() {
     window.$('#datatable1').DataTable({
       responsive: true,
@@ -22,8 +20,15 @@ class AdminReferral extends Component {
   detail = event => {
     let formName = event.target.getAttribute('form_name')
     let submissionId = event.target.getAttribute('submission_id')
-    window.history2.push({
+    this.props.history.push({
       pathname: '/forms/' + formName + '/' + submissionId
+    });
+  }
+
+  share = event => {
+    let submissionId = event.target.getAttribute('submission_id')
+    this.props.history.push({
+      pathname: '/referrals/' + submissionId
     });
   }
 
@@ -37,7 +42,7 @@ class AdminReferral extends Component {
         submission.content.age = ''
       } else {
         let birthDate2 = new Date(birthDate)
-        if (birthDate2 == "Invalid Date") {
+        if (birthDate2 === "Invalid Date") {
           submission.content.age = ''
         } else {
           submission.content.age = Math.abs(birthDate2.getUTCFullYear() - new Date().getUTCFullYear());
@@ -67,6 +72,7 @@ class AdminReferral extends Component {
                     <th className="tx-right"> </th>
                     <th className="tx-right"> </th>
                     <th className="tx-right"> </th>
+                    <th className="tx-right"> </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -85,21 +91,10 @@ class AdminReferral extends Component {
 
                             <td className="tx-center">{content.fromForm} </td>
                             <td className="tx-right">
-                              {/* {moment(submission.dateSubmitted).format(
-                                'MMMM Do YYYY, h:mm a'
-                              )} */}
                               {moment(submission.dateSubmitted).format(
                                 'MMM Do YYYY, h:mm a'
                               )}
                             </td>
-                            {/* <td className="tx-right">
-                            <Link
-                              to={`/forms/${content.fromForm}/${submission._id}`}
-                              className="tx-right"
-                            >
-                              Detail
-                      </Link>
-                          </td> */}
                             <td className="tx-right">
                               <button type="button" className="btn btn-secondary btn-sm" onClick={this.detail} form_name={content.fromForm} submission_id={submission._id} >Edit</button>
                             </td>
@@ -108,6 +103,9 @@ class AdminReferral extends Component {
                             </td>
                             <td className="tx-right">
                               <button type="button" className="btn btn-primary btn-sm" onClick={this.detail} form_name={content.fromForm} submission_id={submission._id} >Detail</button>
+                            </td>
+                            <td className="tx-right">
+                              <button type="button" className="btn btn-primary btn-sm" onClick={this.share} form_name={content.fromForm} submission_id={submission._id} >Share</button>
                             </td>
                           </tr>
                         </React.Fragment>
@@ -123,4 +121,4 @@ class AdminReferral extends Component {
     );
   }
 }
-export default connect()(AdminReferral);
+export default withRouter(connect()(AdminSubmissionList));

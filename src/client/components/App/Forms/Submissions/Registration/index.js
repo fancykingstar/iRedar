@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+import jwt_decode from 'jwt-decode';
 import { getSubmission } from '../../../../../actions/submissionActions';
 import Registration from './Registration';
 
@@ -14,12 +14,25 @@ class RegistrationSubmission extends Component {
     };
     componentDidMount() {
         const { getSubmission, permissions } = this.props;
-        const { submissionId } = this.props.match.params;
+
+        let profile
+        if (permissions.length === 0) {
+            let token = localStorage.getItem('jwtToken')
+            if (token == null) {
+                this.props.history.push('/dashboard')
+                return
+            }
+            const decoded = jwt_decode(token)
+            profile = decoded.profileId
+        } else {
+            profile = permissions[0].profile
+        }
 
         const userData = {
-            profileId: permissions[0].profile,
-            organizationId: permissions[0].organization
+            profileId: profile,
+            //organizationId: permissions[0].organization
         };
+        const { submissionId } = this.props.match.params;
         getSubmission(userData, submissionId);
 
     }
@@ -33,7 +46,7 @@ class RegistrationSubmission extends Component {
     }
 
     render() {
-        return <Registration submission={this.state.submission} />;
+        return <Registration submission={this.state.submission} history={this.props.history} />;
     }
 }
 

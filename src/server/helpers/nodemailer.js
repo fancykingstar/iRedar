@@ -1,4 +1,6 @@
 const nodemailer = require('nodemailer');
+const email = require('../configs/keys').email;
+const emailPassword = require('../configs/keys').emailPassword;
 
 const nodeMailer = async (mailOptions) => {
   // create reusable transporter object using the default SMTP transport
@@ -7,8 +9,8 @@ const nodeMailer = async (mailOptions) => {
     port: 465,
     secure: true, // true for 465, false for other ports
     auth: {
-      user: 'forms@iradardata.com',
-      pass: 'Di3hidic*',
+      user: email,
+      pass: emailPassword,
     },
   });
 

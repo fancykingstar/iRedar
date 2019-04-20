@@ -11,7 +11,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "heroku-postbuild": "react-scripts build",
-    "start-all": "npm run build && node src/server/server.js"
+    "start-all": "npm run build && node src/server/server.js",
+    "start-server-2": "nodemon src/server/server.js",
+    "start-2": "react-scripts start"
   },
   "author": "Minh Do",
   "license": "MIT",
@@ -19,6 +21,7 @@
     "axios": "^0.18.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
+    "bootstrap-tagsinput": "^0.7.1",
     "classnames": "^2.2.6",
     "cors": "^2.8.5",
     "express": "^4.16.4",

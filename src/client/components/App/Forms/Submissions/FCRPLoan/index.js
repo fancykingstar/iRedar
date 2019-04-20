@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+import jwt_decode from 'jwt-decode';
 import { getSubmission } from '../../../../../actions/submissionActions';
 import FCRPLoan from './FCRPLoan';
 
@@ -14,14 +14,26 @@ class FCRPLoanSubmission extends Component {
     };
     componentDidMount() {
         const { getSubmission, permissions } = this.props;
-        const { submissionId } = this.props.match.params;
+
+        let profile
+        if (permissions.length === 0) {
+            let token = localStorage.getItem('jwtToken')
+            if (token == null) {
+                this.props.history.push('/dashboard')
+                return
+            }
+            const decoded = jwt_decode(token)
+            profile = decoded.profileId
+        } else {
+            profile = permissions[0].profile
+        }
 
         const userData = {
-            profileId: permissions[0].profile,
-            organizationId: permissions[0].organization
+            profileId: profile,
+            //organizationId: permissions[0].organization
         };
+        const { submissionId } = this.props.match.params;
         getSubmission(userData, submissionId);
-
     }
 
     componentWillReceiveProps(nextProps) {
@@ -33,7 +45,7 @@ class FCRPLoanSubmission extends Component {
     }
 
     render() {
-        return <FCRPLoan submission={this.state.submission} />;
+        return <FCRPLoan submission={this.state.submission} history={this.props.history} />;
     }
 }
 

@@ -4,6 +4,7 @@ import Spinner from '../../../../Elements/Spinner';
 
 class FCRPLoanSubmission extends Component {
     componentDidUpdate() {
+        var self = this
         window.$('#wizard6').steps({
             headerTag: 'h3',
             bodyTag: 'section',
@@ -11,6 +12,7 @@ class FCRPLoanSubmission extends Component {
             titleTemplate: '<span class="number">#index#</span> <span class="title">#title#</span>',
             cssClass: 'wizard wizard-style-2',
             onFinished: async function (event, currentIndex) {
+                self.props.history.push('/modules/submissions')
             }
         })
 
@@ -591,18 +593,7 @@ class FCRPLoanSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-2">
                                             <label htmlFor="nativeLanguage">Native Language</label>
-                                            <select id="nativeLanguage" className="form-control" name="nativeLanguage" readOnly defaultValue={submission.content.nativeLanguage}>
-                                                <option value="">--</option>
-                                                <option>Arabic</option>
-                                                <option>Bengali</option>
-                                                <option>Chinese</option>
-                                                <option>English</option>
-                                                <option>Hindi</option>
-                                                <option>Japanese</option>
-                                                <option>Portuguese</option>
-                                                <option>Russian</option>
-                                                <option>Spanish</option>
-                                            </select>
+                                            <input type="text" id="nativeLanguage" className="form-control" name="nativeLanguage" readOnly defaultValue={submission.content.nativeLanguage} />
                                         </div>
                                     </div>
                                     <div className="form-row">
@@ -648,29 +639,7 @@ class FCRPLoanSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-3">
                                             <label htmlFor="yearOfCitizenship">Year of Citizenship</label>
-                                            <select className="form-control" id="yearOfCitizenship" name="yearOfCitizenship" readOnly defaultValue={submission.content.yearOfCitizenship}>
-                                                <option value="">--</option>
-                                                <option>2019</option>
-                                                <option>2018</option>
-                                                <option>2017</option>
-                                                <option>2016</option>
-                                                <option>2015</option>
-                                                <option>2014</option>
-                                                <option>2013</option>
-                                                <option>2012</option>
-                                                <option>2011</option>
-                                                <option>2010</option>
-                                                <option>2009</option>
-                                                <option>2008</option>
-                                                <option>2007</option>
-                                                <option>2006</option>
-                                                <option>2005</option>
-                                                <option>2004</option>
-                                                <option>2003</option>
-                                                <option>2002</option>
-                                                <option>2001</option>
-                                                <option>2000</option>
-                                            </select>
+                                            <input type="text" className="form-control" id="yearOfCitizenship" name="yearOfCitizenship" readOnly defaultValue={submission.content.yearOfCitizenship} />
                                         </div>
                                     </div>
                                     <div className="form-row">
@@ -680,15 +649,15 @@ class FCRPLoanSubmission extends Component {
                                                 <option value="">--</option>
                                                 <option>Skilled Worker</option>
                                                 <option>Family Class</option>
-                                                <option>Refuge Class</option>
+                                                <option>Refugee Class</option>
                                                 <option>Live-in-Caregiver</option>
                                                 <option>Economic Class</option>
                                                 <option>Approved in principle</option>
                                             </select>
                                         </div>
                                         <div className="form-group">
-                                            <label htmlFor="conventionRefuge">Are you A Convention Refuge?</label>
-                                            <select className="form-control" id="conventionRefuge" name="conventionRefuge" readOnly defaultValue={submission.content.conventionRefuge}>
+                                            <label htmlFor="conventionRefugee">Are you A Convention Refugee?</label>
+                                            <select className="form-control" id="conventionRefugee" name="conventionRefugee" readOnly defaultValue={submission.content.conventionRefugee}>
                                                 <option value="">--</option>
                                                 <option>Yes</option>
                                                 <option>No</option>
