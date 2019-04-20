@@ -68,7 +68,7 @@ class AdminNavbar extends Component {
                     <Link to="/forms/build-forms">Build Forms</Link>
                   </li>
                   <li>
-                    <Link to="/forms/upload-forms/all">Upload Forms</Link>
+                    <Link to="/forms/upload-forms">Upload Forms</Link>
                   </li>
                 </ul>
               </div>

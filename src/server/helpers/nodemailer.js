@@ -5,7 +5,7 @@ const emailPassword = require('../configs/keys').emailPassword;
 const nodeMailer = async (mailOptions) => {
   // create reusable transporter object using the default SMTP transport
   const transporter = nodemailer.createTransport({
-    host: 'smtp.zoho.com',
+    host: 'smtp.gmail.com',
     port: 465,
     secure: true, // true for 465, false for other ports
     auth: {

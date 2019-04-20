@@ -10,6 +10,34 @@ import { editAdminPermissions } from '../../../../actions/accessActions';
 
 export class DataTable extends Component {
   render() {
+    const deletedItems = new Set();
+    const selectRowProp = {
+      mode: 'checkbox',
+      onSelect: (row, isSelect, rowIndex, e) => {
+        if (isSelect) {
+          deletedItems.add(row.permissionId)
+        } else {
+          if (deletedItems.has(row.permissionId)) {
+            deletedItems.delete(row.permissionId);
+          }
+        }
+        this.props.onSelected(deletedItems);
+      },
+      onSelectAll: (isSelect, rows, e) => {
+        if (isSelect) {
+          rows.forEach(function(row) {
+            deletedItems.add(row.permissionId)
+          });
+        } else {
+          rows.forEach(function(row) {
+            if (deletedItems.has(row.permissionId)) {
+              deletedItems.delete(row.permissionId);
+            }
+          });
+        }
+        this.props.sendData(deletedItems);
+      }
+    };
     const { SearchBar } = Search;
     const columns = [
       {
@@ -106,7 +134,7 @@ export class DataTable extends Component {
     // NOTE: Have to use arrow function to access "this"
     const beforeSaveCell = (oldValue, newValue, row, column, done) => {
       //eslint-disable-next-line
-      if (confirm('Do you want to accep this change?')) {
+      if (confirm('Do you want to accept this change?')) {
         const userData = {
           permissionId: row.permissionId,
           role: newValue
@@ -117,7 +145,6 @@ export class DataTable extends Component {
           this.props.permissions[0].organization,
           this.props.permissions[0].profile
         );
-
         done(true);
       } else {
         done(false);
@@ -127,7 +154,7 @@ export class DataTable extends Component {
     };
 
     // const beforeSaveCell = this.beforeSaveCell;
-    const { data } = this.props;
+    let { data } = this.props;
 
     return (
       <ToolkitProvider
@@ -145,6 +172,7 @@ export class DataTable extends Component {
               hover
               defaultSorted={defaultSorted}
               bordered={false}
+              selectRow={ selectRowProp }
               cellEdit={cellEditFactory({
                 mode: 'click',
                 beforeSaveCell,
@@ -161,6 +189,6 @@ export class DataTable extends Component {
 }
 
 export default connect(
-  null,
+    null,
   { editAdminPermissions }
 )(DataTable);

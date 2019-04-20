@@ -16,7 +16,6 @@ const UserSchema = new mongoose.Schema({
     required: 'Password is required',
   },
   confirmToken: String,
-
   firstLogin: { type: Boolean, default: true },
 });
 

@@ -13,7 +13,7 @@ const PermissionSchema = {
     require: true,
   },
 
-  role: { type: String, default: 'client' },
+  role: { type: String, default: 'USER' }
 };
 
 module.exports = mongoose.model('Permission', PermissionSchema);

@@ -39,7 +39,7 @@ exports.getAllSubmissions = async (req, res) => {
   const { profileId, organizationId } = req.body;
 
 
-  console.log("USER IS ", req.user)
+  console.log("USER IS ", req.user);
 
   try {
 
@@ -90,7 +90,7 @@ exports.getSubmission = async (req, res) => {
   try {
     const permissions = await Permission.findOne({
       profile: profileId,
-      // organization: organizationId,
+      organization: organizationId,
     });
 
     if (permissions.role === 'admin') {

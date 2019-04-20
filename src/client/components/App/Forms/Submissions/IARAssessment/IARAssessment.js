@@ -477,7 +477,6 @@ class IARAssessmentSubmission extends Component {
                                         <div className="form-group col-md-4">
                                             <label htmlFor="exampleFormControlSelect1">MS Word</label>
                                             <select className="form-control" id="msWord_skillLevel" name="msWord_skillLevel" readOnly defaultValue={submission.content.msWord_skillLevel}>
-                                                <option>N/A</option>
                                                 <option>Basic</option>
                                                 <option>Intermediate</option>
                                                 <option>Advanced</option>
@@ -486,7 +485,6 @@ class IARAssessmentSubmission extends Component {
                                         <div className="form-group col-md-4">
                                             <label htmlFor="exampleFormControlSelect1">Email</label>
                                             <select className="form-control" id="email_skillLevel" name="email_skillLevel" readOnly defaultValue={submission.content.email_skillLevel}>
-                                                <option>N/A</option>
                                                 <option>Basic</option>
                                                 <option>Intermediate</option>
                                                 <option>Advanced</option>
@@ -495,7 +493,6 @@ class IARAssessmentSubmission extends Component {
                                         <div className="form-group col-md-4">
                                             <label htmlFor="exampleFormControlSelect1">Internet</label>
                                             <select className="form-control" id="internet_skillLevel" name="internet_skillLevel" readOnly defaultValue={submission.content.internet_skillLevel}>
-                                                <option>N/A</option>
                                                 <option>Basic</option>
                                                 <option>Intermediate</option>
                                                 <option>Advanced</option>
