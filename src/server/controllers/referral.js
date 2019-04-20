@@ -8,8 +8,6 @@ const User = require('../models/User')
 const Profile = require('../models/Profile')
 const Referral = require('../models/Referral')
 
-const { referralPreview } = require('../helpers/htmlMails/referral');
-
 exports.getAllReferrals = async (req, res) => {
     try {
         let userId = req.user._id
