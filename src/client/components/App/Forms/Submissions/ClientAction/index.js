@@ -33,7 +33,7 @@ class ClientActionSubmission extends Component {
   }
 
   render() {
-    return <ClientAction submission={this.state.submission} />;
+    return <ClientAction submission={this.state.submission} history={this.props.history} />;
   }
 }
 

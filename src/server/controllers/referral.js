@@ -145,7 +145,7 @@ exports.postReferral = async (req, res) => {
         }
         let saved = await referral.save()
 
-        let apiUrl = (process.env.NODE_ENV === "production") ? 'https://iauto.herokuapp.com' : 'http://localhost:5000'
+        let apiUrl = (process.env.NODE_ENV === "production") ? 'https://iauto.herokuapp.com' : 'http://localhost:3000'
         let maillist = profiles.map(profile => profile.email).join(',')
         const mailOptions = {
             from: '"Forms" <forms@iradardata.com>',

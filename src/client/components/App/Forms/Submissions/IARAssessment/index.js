@@ -33,7 +33,7 @@ class IARAssessmentSubmission extends Component {
     }
 
     render() {
-        return <IARAssessment submission={this.state.submission} />;
+        return <IARAssessment submission={this.state.submission} history={this.props.history} />;
     }
 }
 

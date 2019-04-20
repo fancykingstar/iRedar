@@ -5,7 +5,7 @@ import { API_URL } from '../../../../actions/types';
 
 class Registration extends Component {
     componentDidMount() {
-        window.history2 = this.props.history
+        var self = this
         window.$('#wizard6').steps({
             headerTag: 'h3',
             bodyTag: 'section',
@@ -13,6 +13,8 @@ class Registration extends Component {
             titleTemplate: '<span class="number">#index#</span> <span class="title">#title#</span>',
             cssClass: 'wizard wizard-style-2',
             onFinished: async function (event, currentIndex) {
+                await self.disableBlocking()
+
                 let content = {
                     fromForm: 'registration',
                     salutation: window.$('#salutation').val(),
@@ -94,8 +96,8 @@ class Registration extends Component {
                 }
 
                 try {
-                    await axios.post(API_URL+'/api/submissions', content);
-                    window.history2.push({
+                    await axios.post(API_URL + '/api/submissions', content);
+                    self.props.history.push({
                         // pathname: '/forms/submission-success'
                         pathname: '/forms/'
 

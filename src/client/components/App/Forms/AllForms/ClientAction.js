@@ -5,7 +5,7 @@ import { API_URL } from '../../../../actions/types';
 
 class ClientAction1 extends Component {
   componentDidMount() {
-    window.history2 = this.props.history
+    var self = this
     window.$('#wizard6').steps({
       headerTag: 'h3',
       bodyTag: 'section',
@@ -107,8 +107,8 @@ class ClientAction1 extends Component {
         }
 
         try {
-          await axios.post(API_URL+'/api/submissions', content);
-          window.history2.push({
+          await axios.post(API_URL + '/api/submissions', content);
+          self.props.history.push({
             // pathname: '/forms/submission-success'
             pathname: '/forms/'
 

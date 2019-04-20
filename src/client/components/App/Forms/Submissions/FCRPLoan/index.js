@@ -33,7 +33,7 @@ class FCRPLoanSubmission extends Component {
     }
 
     render() {
-        return <FCRPLoan submission={this.state.submission} />;
+        return <FCRPLoan submission={this.state.submission} history={this.props.history} />;
     }
 }
 

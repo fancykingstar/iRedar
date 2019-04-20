@@ -4,6 +4,7 @@ import Spinner from '../../../../Elements/Spinner';
 
 class RegistrationSubmission extends Component {
     componentDidUpdate() {
+        var self = this
         window.$('#wizard6').steps({
             headerTag: 'h3',
             bodyTag: 'section',
@@ -11,6 +12,7 @@ class RegistrationSubmission extends Component {
             titleTemplate: '<span class="number">#index#</span> <span class="title">#title#</span>',
             cssClass: 'wizard wizard-style-2',
             onFinished: async function (event, currentIndex) {
+                self.props.history.push('/modules/submissions')
             }
         })
     }
