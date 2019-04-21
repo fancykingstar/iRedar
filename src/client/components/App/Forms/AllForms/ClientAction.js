@@ -1,9 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
+import { Prompt } from 'react-router-dom'
 import axios from 'axios';
 import { API_URL } from '../../../../actions/types';
 
 class ClientAction1 extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = { isBlocking: true }
+  }
+
+  disableBlocking() {
+    this.setState({ isBlocking: false })
+  }
+
   componentDidMount() {
     var self = this
     window.$('#wizard6').steps({
@@ -13,6 +24,8 @@ class ClientAction1 extends Component {
       titleTemplate: '<span class="number">#index#</span> <span class="title">#title#</span>',
       cssClass: 'wizard wizard-style-2',
       onFinished: async function (event, currentIndex) {
+        await self.disableBlocking()
+
         let firstName = window.$('#firstName').val()
         let lastName = window.$('#lastName').val()
         let fromForm = 'client-action'
@@ -123,6 +136,8 @@ class ClientAction1 extends Component {
   }
 
   render() {
+    let { isBlocking } = this.state
+
     return (
       <div className="slim-mainpanel">
         <div className="container">
@@ -135,6 +150,7 @@ class ClientAction1 extends Component {
               recommended for you:
             </p>
             <form>
+              <Prompt when={isBlocking} message="Are you sure you want to leave, you will lose unsaved data" />
               <div className="form-group col-md-2">
                 <input
                   type="hidden"
