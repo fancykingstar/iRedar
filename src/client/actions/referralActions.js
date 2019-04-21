@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { API_URL, GET_ERRORS } from './types';
+import { API_URL } from './types';
 
 export const SET_ALL_REFERRALS = 'referral/referralForm/SET_ALL_REFERRALS'
 

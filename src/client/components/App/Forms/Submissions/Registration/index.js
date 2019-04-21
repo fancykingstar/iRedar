@@ -46,7 +46,7 @@ class RegistrationSubmission extends Component {
     }
 
     render() {
-        return <Registration submission={this.state.submission} />;
+        return <Registration submission={this.state.submission} history={this.props.history} />;
     }
 }
 

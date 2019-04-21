@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 import setAuthToken from '../utils/setAuthToken'
-import { API_URL, GET_ERRORS } from './types'
+import { API_URL } from './types'
 
 export const SET_ALL_UPLOAD_FORMS = 'uploadForm/SET_ALL_UPLOAD_FORMS'
 
