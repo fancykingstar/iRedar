@@ -90,6 +90,11 @@ exports.postRegister = async (req, res) => {
         "canViewUser",
         "canDeleteUser"
       ];
+    } else {
+      role = "USER";
+      permission = [
+        "canRead"
+      ];
     }
   });
 
@@ -117,11 +122,16 @@ exports.postRegister = async (req, res) => {
       permissionRight: permission
     }).save();
 
-    let organization = await new Organization({
+    let organization = await Organization.findOne({ name: domain });
+    if (!organization) {
+      // create new organization
+      let newOrganization = await new Organization({
         name: domain,
-    });
+      });
+      organization = newOrganization;
+    }
     organization.users.push(user.id);
-    await organization.save();
+    organization.save();
 
     const userPermission = await new Permission({
       profile: profile._id,
