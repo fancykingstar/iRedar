@@ -385,6 +385,71 @@ try {
   }
 };
 
+// @route   PUT api/users/updateUser
+// @desc    Update User information by user himself / herself
+// @access  Public
+
+exports.putUpdateUser = async (req, res) => {
+  const {
+    permissionId,
+    lastName,
+    firstName,
+    phoneNumber
+  } = req.body;
+
+  const header = req.headers['authorization'];
+  let tokenUserId = null;
+  let tokenUserRole = null;
+  let tokenProfileId = null;
+  if (typeof header !== 'undefined') {
+    const bearer = header.split(' ');
+    const token = bearer[1];
+    console.log("Token received is " + token);
+    jwt.verify(token, keys.secretOrKey, function (err, decoded) {
+      if (err) {
+        return res.status(403).json({
+          error: 'Token is invalid and expired'
+        });
+      }
+      console.log("userId received from token is " + decoded.userId);
+      tokenUserId = decoded.userId.toString();
+      tokenUserRole = decoded.role.toString();
+      tokenProfileId = decoded.profileId.toString();
+    });
+
+    const permission = await Permission.findById(permissionId);
+    const profileId = permission.profile.toString();
+
+    if (tokenUserRole !== "ADMIN" && profileId !== tokenProfileId) {
+      return res.status(403).json({
+        error: 'User does not have rights to change other person profile'
+      });
+    }
+    let data = {};
+    if (lastName) {
+      data["lastName"] = lastName;
+    }
+    if (firstName) {
+      data["firstName"] = firstName;
+    }
+    if (phoneNumber) {
+      data["phoneNumber"] = phoneNumber;
+    }
+    await Profile.findOneAndUpdate(
+        {_id: profileId},
+        {$set: data}
+    );
+  } else {
+    return res.status(403).json({
+      alert: {
+        title: 'Error!',
+        detail: 'Authorization token not found'
+      }
+    });
+  }
+};
+
+
 // @route   DELETE api/users/deleteUser
 // @desc    Delete User
 // @access  Public

@@ -59,6 +59,29 @@ export const addUsers = (userData, history) => async dispatch => {
   }
 };
 
+//Update user
+export const updateuser = (
+    userData
+) => async dispatch => {
+  try {
+    const token = localStorage.getItem('jwtToken');
+
+    console.log("JwtToken" + token);
+    console.log("JwtToken" + userData);
+
+    // Set token to Auth header
+    setAuthToken(token);
+
+    await axios.put(`${API_URL}/api/users/updateuser`, userData);
+  } catch (error) {
+    console.error(error);
+    dispatch({
+      type: GET_ERRORS,
+      payload: error.response.data
+    });
+  }
+};
+
 export const deleteUsers = (permissionIds, history) => async dispatch => {
   try {
     // getter

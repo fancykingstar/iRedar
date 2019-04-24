@@ -1,44 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import BootstrapTable from 'react-bootstrap-table-next';
-import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
-import paginationFactory from 'react-bootstrap-table2-paginator';
+import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 import cellEditFactory, { Type } from 'react-bootstrap-table2-editor';
 
 import './DataTable.css';
-import { editAdminPermissions } from '../../../../actions/accessActions';
+import { updateuser } from "../../../../actions/authActions";
 
 export class DataTable extends Component {
   render() {
-    const deletedItems = new Set();
-    const selectRowProp = {
-      mode: 'checkbox',
-      onSelect: (row, isSelect, rowIndex, e) => {
-        if (isSelect) {
-          deletedItems.add(row.permissionId)
-        } else {
-          if (deletedItems.has(row.permissionId)) {
-            deletedItems.delete(row.permissionId);
-          }
-        }
-        this.props.onSelected(deletedItems);
-      },
-      onSelectAll: (isSelect, rows, e) => {
-        if (isSelect) {
-          rows.forEach(function(row) {
-            deletedItems.add(row.permissionId)
-          });
-        } else {
-          rows.forEach(function(row) {
-            if (deletedItems.has(row.permissionId)) {
-              deletedItems.delete(row.permissionId);
-            }
-          });
-        }
-        this.props.sendData(deletedItems);
-      }
-    };
-    const { SearchBar } = Search;
     const columns = [
       {
         dataField: 'permissionId',
@@ -49,19 +19,19 @@ export class DataTable extends Component {
         dataField: 'lastName',
         text: 'Lastname',
         sort: true,
-        editable: false
+        editable: true
       },
       {
         dataField: 'firstName',
         text: 'Firstname',
         sort: true,
-        editable: false
+        editable: true
       },
       {
         dataField: 'phoneNumber',
         text: 'Phone #',
         sort: true,
-        editable: false
+        editable: true
       },
       {
         dataField: 'email',
@@ -79,6 +49,7 @@ export class DataTable extends Component {
         classes: (cell, row, rowIndex, colIndex) => {
           return 'table-role-row';
         },
+        hidden: true,
         editor: {
           type: Type.SELECT,
           options: [
@@ -102,27 +73,6 @@ export class DataTable extends Component {
         }
       }
     ];
-    const sizePerPageOptionRenderer = ({ text, page, onSizePerPageChange }) => (
-      <li key={text} role="presentation" className="dropdown-item">
-        <div
-          href="#"
-          tabIndex="-1"
-          role="menuitem"
-          data-page={page}
-          onMouseDown={e => {
-            e.preventDefault();
-            onSizePerPageChange(page);
-          }}
-          style={{ display: 'block', cursor: 'pointer' }}
-        >
-          {text}
-        </div>
-      </li>
-    );
-
-    const options = {
-      sizePerPageOptionRenderer
-    };
 
     const defaultSorted = [
       {
@@ -133,23 +83,27 @@ export class DataTable extends Component {
 
     // NOTE: Have to use arrow function to access "this"
     const beforeSaveCell = (oldValue, newValue, row, column, done) => {
+      console.log(oldValue);
+      console.log(newValue);
+      console.log(row);
+      console.log(column);
+      console.log(done);
       //eslint-disable-next-line
-      if (confirm('Do you want to accept this change?')) {
-        const userData = {
-          permissionId: row.permissionId,
-          role: newValue
-        };
-
-        this.props.editAdminPermissions(
-          userData,
-          this.props.permissions[0].organization,
-          this.props.permissions[0].profile
-        );
-        done(true);
+      if (confirm('Do you want to accept change for the user ?')) {
+        if (column.dataField !== "role") {
+          const userData = {
+            permissionId: row.permissionId,
+            [column.dataField]: newValue
+          };
+          console.log(userData);
+          this.props.updateuser(userData);
+          done(true);
+        } else {
+          done(false);
+        }
       } else {
         done(false);
       }
-
       return { async: true };
     };
 
@@ -165,21 +119,17 @@ export class DataTable extends Component {
       >
         {props => (
           <div>
-            <SearchBar {...props.searchProps} />
-            <hr />
             <BootstrapTable
               bootstrap4
               hover
               defaultSorted={defaultSorted}
               bordered={false}
-              selectRow={ selectRowProp }
               cellEdit={cellEditFactory({
                 mode: 'click',
                 beforeSaveCell,
                 blurToSave: true
               })}
               {...props.baseProps}
-              pagination={paginationFactory(options)}
             />
           </div>
         )}
@@ -190,5 +140,5 @@ export class DataTable extends Component {
 
 export default connect(
     null,
-  { editAdminPermissions }
+  { updateuser }
 )(DataTable);

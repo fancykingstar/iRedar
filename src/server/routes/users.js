@@ -28,7 +28,7 @@ router.post('/deleteuser', userController.deleteUser);
 // @route   PUT api/users/updateuser
 // @desc    Update User
 // @access  Public
-//router.put('/updateuser', userController.postUpdateUser);
+router.put('/updateuser', userController.putUpdateUser);
 
 // @route POST api/users/reset-password
 // @desc Reset user password
