@@ -7,7 +7,7 @@ import cellEditFactory, { Type } from 'react-bootstrap-table2-editor';
 
 import './DataTable.css';
 import { editAdminPermissions } from '../../../../actions/accessActions';
-import { updateuser } from "../../../../actions/authActions";
+import { updateUser } from "../../../../actions/authActions";
 
 export class AdminDataTable extends Component {
     render() {
@@ -159,7 +159,7 @@ export class AdminDataTable extends Component {
                         [column.dataField]: newValue
                     };
                     console.log(userData);
-                    this.props.updateuser(userData);
+                    this.props.updateUser(userData);
                     done(true);
                 }
             } else {
@@ -205,5 +205,5 @@ export class AdminDataTable extends Component {
 
 export default connect(
     null,
-    { editAdminPermissions, updateuser }
+    { editAdminPermissions, updateUser }
 )(AdminDataTable);

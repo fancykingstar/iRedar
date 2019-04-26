@@ -70,80 +70,82 @@ export class AddNewUsers extends Component {
 
           <div className="manager-wrapper">
             <div className="manager-right">
-              <form onSubmit={this.onSubmit}>
-                <div className="signin-box">
-                  {errors.alert && (
-                    <Alert
-                      type="danger"
-                      title={errors.alert.title}
-                      close={false}
-                      detail={errors.alert.detail}
-                      style={{ marginBottom: 15 }}
-                    />
-                  )}
-                  <h6 className="slim-pagetitle">User Details</h6>
-                  <div className="row row-xs mg-b-10">
-                    <div className="col-sm">
-                      <TextFieldGroup
-                        placeholder="Firstname"
-                        name="firstName"
-                        type="text"
-                        value={this.state.firstName}
-                        onChange={this.onChange}
-                        error={errors.firstName}
-                        required
-                      />
-                    </div>
-                    <div className="col-sm mg-t-10 mg-sm-t-0">
-                      <TextFieldGroup
-                        placeholder="Lastname"
-                        name="lastName"
-                        type="text"
-                        value={this.state.lastName}
-                        onChange={this.onChange}
-                        error={errors.lastName}
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <TextFieldGroup
-                      placeholder="Enter your email"
-                      name="email"
-                      type="email"
-                      value={this.state.email}
-                      onChange={this.onChange}
-                      error={errors.email}
-                      required
-                    />
-
-                    <TextFieldGroup
-                      style={{ marginTop: 5 }}
-                      placeholder="Enter your password"
-                      name="password"
-                      type="password"
-                      value={this.state.password}
-                      onChange={this.onChange}
-                      error={errors.password}
-                      required
-                    />
-                    <Select options={roleOfUser}
-                            style={{ marginTop: 5 }}
-                            placeholder="Select The Role"
-                            name="role"
-                            value={this.state.label}
-                            onChange={this.OnSelectChange}
-                            error={errors.role}
+              <div className="section-wrapper">
+                <form onSubmit={this.onSubmit}>
+                  <div className="signin-box">
+                    {errors.alert && (
+                        <Alert
+                            type="danger"
+                            title={errors.alert.title}
+                            close={false}
+                            detail={errors.alert.detail}
+                            style={{ marginBottom: 15 }}
+                        />
+                    )}
+                    <h6 className="slim-pagetitle">User Details</h6>
+                    <div className="row row-xs mg-b-10">
+                      <div className="col-sm">
+                        <TextFieldGroup
+                            placeholder="Firstname"
+                            name="firstName"
+                            type="text"
+                            value={this.state.firstName}
+                            onChange={this.onChange}
+                            error={errors.firstName}
                             required
-                    /><br />
-                    <button
-                      className="btn btn-primary btn-block btn-signin"
-                      type="submit">
-                      Add New User
-                    </button>
+                        />
+                      </div>
+                      <div className="col-sm mg-t-10 mg-sm-t-0">
+                        <TextFieldGroup
+                            placeholder="Lastname"
+                            name="lastName"
+                            type="text"
+                            value={this.state.lastName}
+                            onChange={this.onChange}
+                            error={errors.lastName}
+                            required
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <TextFieldGroup
+                          placeholder="Enter your email"
+                          name="email"
+                          type="email"
+                          value={this.state.email}
+                          onChange={this.onChange}
+                          error={errors.email}
+                          required
+                      />
+
+                      <TextFieldGroup
+                          style={{ marginTop: 5 }}
+                          placeholder="Enter your password"
+                          name="password"
+                          type="password"
+                          value={this.state.password}
+                          onChange={this.onChange}
+                          error={errors.password}
+                          required
+                      />
+                      <Select options={roleOfUser}
+                              style={{ marginTop: 5 }}
+                              placeholder="Select The Role"
+                              name="role"
+                              value={this.state.label}
+                              onChange={this.OnSelectChange}
+                              error={errors.role}
+                              required
+                      /><br />
+                      <button
+                          className="btn btn-primary btn-block btn-signin"
+                          type="submit">
+                        Add New User
+                      </button>
+                    </div>
                   </div>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
 
             <div className="manager-left">

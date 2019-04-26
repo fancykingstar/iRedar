@@ -391,9 +391,11 @@ try {
 
 exports.putUpdateUser = async (req, res) => {
   const {
+    profileId,
     permissionId,
     lastName,
     firstName,
+    email,
     phoneNumber
   } = req.body;
 
@@ -417,14 +419,17 @@ exports.putUpdateUser = async (req, res) => {
       tokenProfileId = decoded.profileId.toString();
     });
 
-    const permission = await Permission.findById(permissionId);
-    const profileId = permission.profile.toString();
-
-    if (tokenUserRole !== "ADMIN" && profileId !== tokenProfileId) {
+    let userProfileId = profileId;
+    if (!userProfileId) {
+      const permission = await Permission.findById(permissionId);
+      userProfileId = permission.profile.toString();
+    }
+    if (tokenUserRole !== "ADMIN" && userProfileId !== tokenProfileId) {
       return res.status(403).json({
         error: 'User does not have rights to change other person profile'
       });
     }
+
     let data = {};
     if (lastName) {
       data["lastName"] = lastName;
@@ -435,10 +440,24 @@ exports.putUpdateUser = async (req, res) => {
     if (phoneNumber) {
       data["phoneNumber"] = phoneNumber;
     }
+    if (email) {
+      data["email"] = email;
+    }
+    console.log(data);
     await Profile.findOneAndUpdate(
-        {_id: profileId},
+        {_id: userProfileId},
         {$set: data}
     );
+
+    if (email) {
+      const profile = await Profile.findOne({ "_id" : userProfileId});
+      if (profile) {
+        await User.findOneAndUpdate(
+            {_id: profile.user},
+            {$set: {'email': email}}
+        );
+      }
+    }
   } else {
     return res.status(403).json({
       alert: {
@@ -658,55 +677,60 @@ exports.postResetPassword = async (req, res) => {
 // @desc    Reset password
 // @access  Public
 exports.putResetPassword = async (req, res) => {
-  const { confirmToken, password, passwordConfirmation } = req.body;
-
+  const { passwordCurrent, password, passwordConfirmation } = req.body;
   try {
-    const user = await User.findOne({ confirmToken });
+    const header = req.headers['authorization'];
+    let tokenUserId = null;
+    let tokenUserRole = null;
+    let tokenProfileId = null;
+    if (typeof header !== 'undefined') {
+      const bearer = header.split(' ');
+      const token = bearer[1];
+      console.log("Token received is " + token);
+      jwt.verify(token, keys.secretOrKey, function (err, decoded) {
+        if (err) {
+          return res.status(403).json({
+            error: 'Token is invalid and expired'
+          });
+        }
+        console.log("userId received from token is " + decoded.userId);
+        tokenUserId = decoded.userId.toString();
+        tokenUserRole = decoded.role.toString();
+        tokenProfileId = decoded.profileId.toString();
+      });
 
-    if (!user || !user.confirmToken) {
-      return res.status(422).json({
+      const user = await User.findById(tokenUserId);
+      const matched = await user.hasSamePassword(passwordCurrent);
+      if (matched) {
+        if (password.length < 6) {
+          return res.status(422).json({
+            password: 'Password must be at least 6 characters',
+          });
+        }
+
+        if (password !== passwordConfirmation) {
+          return res.status(422).json({
+            passwordConfirmation: 'Password is not a same as confirmation',
+          });
+        }
+        user.password = password;
+        await user.save();
+      }
+      return res.json({
+        success: true,
         alert: {
-          title: 'Error!',
-          detail: 'Token has expired',
+          title: 'Success!',
+          detail: 'Password has been reset',
         },
       });
-    }
-
-    try {
-      await jwt.verify(confirmToken, keys.secretOrKey);
-    } catch (error) {
-      logger.error(error);
-      return res.status(422).json({
+    } else {
+      return res.status(403).json({
         alert: {
           title: 'Error!',
-          detail: 'Token has expired',
-        },
+          detail: 'Authorization token not found'
+        }
       });
     }
-
-    if (password.length < 6) {
-      return res.status(422).json({
-        password: 'Password must be at least 6 characters',
-      });
-    }
-
-    if (password !== passwordConfirmation) {
-      return res.status(422).json({
-        passwordConfirmation: 'Password is not a same as confirmation',
-      });
-    }
-
-    user.password = password;
-    user.confirmToken = undefined;
-
-    await user.save();
-    return res.json({
-      success: true,
-      alert: {
-        title: 'Success!',
-        detail: 'Password has been reset',
-      },
-    });
   } catch (error) {
     logger.error(error);
     return res.status(422).json({

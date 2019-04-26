@@ -60,7 +60,7 @@ export const addUsers = (userData, history) => async dispatch => {
 };
 
 //Update user
-export const updateuser = (
+export const updateUser = (
     userData
 ) => async dispatch => {
   try {
@@ -206,6 +206,13 @@ export const resetPassword = (email, history) => async dispatch => {
 // Update Password
 export const updatePassword = (userData, history) => async dispatch => {
   try {
+    const token = localStorage.getItem('jwtToken');
+
+    console.log("JwtToken" + token);
+    console.log("JwtToken" + userData);
+
+    // Set token to Auth header
+    setAuthToken(token);
     await axios.put(`${API_URL}/api/users/reset-password`, userData);
     history.push({
       pathname: '/',

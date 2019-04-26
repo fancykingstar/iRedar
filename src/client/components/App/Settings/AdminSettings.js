@@ -124,6 +124,18 @@ export class AdminSettings extends Component {
               </Link>
               <Link
                   to={{
+                    pathname: "/settings/update-admin-password",
+                    adminCount: adminCount,
+                    staffCount: staffCount,
+                    partnerCount: partnerCount,
+                    clientCount: clientCount
+                  }}
+                  className="btn btn-contact-new"
+              >
+                Update Password
+              </Link>
+              <Link
+                  to={{
                     pathname: "/settings/admin-settings",
                     adminCount: adminCount,
                     staffCount: staffCount,
