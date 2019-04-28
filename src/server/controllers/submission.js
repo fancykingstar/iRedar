@@ -50,7 +50,7 @@ exports.getAllSubmissions = async (req, res) => {
       organization: organizationId,
     });
 
-    if (permissions.role !== 'admin') {
+    if (!(permissions.role === 'admin' || permission.role === "staff")) {
       return res.status(422).json({
         alert: {
           title: 'Access denied!',
@@ -108,6 +108,31 @@ exports.getSubmission = async (req, res) => {
         detail: 'You do not have permissions',
       },
     });
+  } catch (error) {
+    logger.error(error);
+    return res.status(422).json({
+      alert: {
+        title: 'Error!',
+        detail: 'Server occurred an error,  please try again',
+      },
+    });
+  }
+};
+
+// @route GET api/submissions/form/:formType
+// @desc Return a submission
+// @access Private
+
+exports.getSubmissionView = async (req, res) => {
+  const { formType } = req.params;
+  try {
+      const allSubmissions = await Submission.find({
+          'content.fromForm': formType,
+      });
+      return res.json({
+          success: true,
+          allSubmissions,
+      });
   } catch (error) {
     logger.error(error);
     return res.status(422).json({

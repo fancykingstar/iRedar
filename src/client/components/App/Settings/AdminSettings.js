@@ -5,6 +5,7 @@ import AdminDataTable from '../Components/DataTables/AdminDataTable';
 import { getAdminPermissions } from './../../../actions/accessActions';
 import { deleteUsers } from "../../../actions/authActions";
 import queryString from 'query-string';
+
 export class AdminSettings extends Component {
 
   constructor() {

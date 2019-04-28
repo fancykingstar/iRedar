@@ -28,4 +28,13 @@ router.post(
   submissionController.getSubmission,
 );
 
+
+// @route GET api/submissions/:formType
+// @desc Get all submitted form by form type
+// @access Private
+router.get(
+    '/form/:formType',
+    passport.authenticate('jwt', { session: false }),
+    submissionController.getSubmissionView,
+);
 module.exports = router;

@@ -41,3 +41,20 @@ export const getSubmission = (userData, submissionId) => async dispatch => {
     });
   }
 };
+
+// Get Submission View based on Form type
+export const getSubmissionView = (formType) => async dispatch => {
+  try {
+    const res = await axios.get(`${API_URL}/api/submissions/form/${formType}`);
+    dispatch({
+      type: GET_ALL_SUBMISSIONS,
+      payload: res.data
+    });
+  }catch(error){
+    console.log(error);
+    dispatch({
+      type: GET_ERRORS,
+      payload: error.respond.data
+    })
+  }
+};

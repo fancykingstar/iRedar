@@ -12,7 +12,7 @@ const users = require('./routes/users');
 const organizations = require('./routes/organization');
 const submissions = require('./routes/submission');
 const uploadedForms = require('./routes/uploadedForms');
-const referralController = require('./routes/referral')
+const referralController = require('./routes/referral');
 
 // eslint-disable no-console
 

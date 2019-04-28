@@ -30,6 +30,10 @@ import ClientAction from './client/components/App/Forms/AllForms/ClientAction';
 import IARAssessment from './client/components/App/Forms/AllForms/IARAssessment';
 import FCRPLoan from './client/components/App/Forms/AllForms/FCRPLoan';
 import Registration from './client/components/App/Forms/AllForms/Registration';
+import ViewClientSubmission from './client/components/App/Forms/AllForms/ViewClientSubmission';
+import ViewIARSubmission from './client/components/App/Forms/AllForms/ViewIARSubmission';
+import ViewFCRPSubmission from './client/components/App/Forms/AllForms/ViewFCRPSubmission';
+import ViewRegistrationSubmission from './client/components/App/Forms/AllForms/ViewRegistrationSubmission';
 
 import Submissions from './client/components/App/Modules/Submissions';
 import Referrals from './client/components/App/Modules/Referrals';
@@ -42,6 +46,7 @@ import UploadFormList from './client/components/App/Forms/UploadForm';
 import ReferralForm from './client/components/App/Modules/Referrals/ReferralForm';
 import ReferralFormDetail from './client/components/App/Modules/Referrals/ReferralFormDetail'
 import { GET_ERRORS } from './client/actions/types';
+
 
 // Check for authentication
 checkAuth(store);
@@ -165,8 +170,37 @@ class App extends Component {
                   component={Registration}
                 />
               </Switch>
+              <Switch>
+                <PrivateRoute
+                    exact
+                    path="/forms/all-forms/view-client-submission"
+                    component={ViewClientSubmission}
+                />
+              </Switch>
 
+              <Switch>
+                <PrivateRoute
+                    exact
+                    path="/forms/all-forms/view-iar-submission"
+                    component={ViewIARSubmission}
+                />
+              </Switch>
 
+              <Switch>
+                <PrivateRoute
+                    exact
+                    path="/forms/all-forms/view-fcrp-submission"
+                    component={ViewFCRPSubmission}
+                />
+              </Switch>
+
+              <Switch>
+                <PrivateRoute
+                    exact
+                    path="/forms/all-forms/view-registration-submission"
+                    component={ViewRegistrationSubmission}
+                />
+              </Switch>
               <Switch>
                 <Route
                   exact
