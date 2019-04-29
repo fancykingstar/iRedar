@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import jwt_decode from 'jwt-decode';
-import { getSubmission } from '../../../../../actions/submissionActions';
+import {getSubmission} from '../../../../../actions/submissionActions';
 import IARAssessment from './IARAssessment';
 
 class IARAssessmentSubmission extends Component {
@@ -12,8 +12,9 @@ class IARAssessmentSubmission extends Component {
             dateSubmitted: ''
         }
     };
+
     componentDidMount() {
-        const { getSubmission, permissions } = this.props;
+        const {getSubmission, permissions} = this.props;
 
         let profile;
         if (permissions.length === 0) {
@@ -32,17 +33,15 @@ class IARAssessmentSubmission extends Component {
             profileId: profile,
             //organizationId: permissions[0].organization
         };
-        const { submissionId } = this.props.match.params;
+        const {submissionId} = this.props.match.params;
         getSubmission(userData, submissionId);
 
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.submissions.submission) {
-            this.setState({ submission: nextProps.submissions.submission });
-
+            this.setState({submission: nextProps.submissions.submission});
         }
-
     }
 
     render() {
@@ -50,7 +49,8 @@ class IARAssessmentSubmission extends Component {
         if (typeof edit === "undefined") {
             edit = false;
         }
-        return <IARAssessment submission={this.state.submission} history={this.props.history} edit={edit} />;
+        return <IARAssessment permissions={this.props.permissions} submission={this.state.submission}
+                              history={this.props.history} edit={edit}/>;
     }
 }
 
@@ -63,5 +63,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { getSubmission }
+    {getSubmission}
 )(IARAssessmentSubmission);

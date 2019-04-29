@@ -35,7 +35,6 @@ exports.postSubmission = async (req, res) => {
 // @access Private
 exports.getAllSubmissions = async (req, res) => {
   const { profileId, organizationId } = req.body;
-  console.log("USER IS ", req.user);
   try {
     let organization = await Organization.findById(organizationId);
     const permissions = await Permission.findOne({
@@ -60,7 +59,6 @@ exports.getAllSubmissions = async (req, res) => {
       allSubmissions,
     });
   } catch (error) {
-    console.error(error)
     return res.status(422).json({
       alert: {
         title: 'Error!',

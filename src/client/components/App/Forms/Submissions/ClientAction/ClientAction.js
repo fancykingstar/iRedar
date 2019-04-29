@@ -7,8 +7,8 @@ import {editSubmission} from "../../../../../actions/submissionActions";
 class ClientActionSubmission extends Component {
 
     componentDidUpdate() {
-        let self = this;
-        console.log(self);
+        const self = this;
+        const isEditable = (self.props.edit === "true");
         window.$('#wizard6').steps({
             headerTag: 'h3',
             bodyTag: 'section',
@@ -16,107 +16,109 @@ class ClientActionSubmission extends Component {
             titleTemplate: '<span class="number">#index#</span> <span class="title">#title#</span>',
             cssClass: 'wizard wizard-style-2',
             onFinished: async function (event, currentIndex) {
-                let firstName = $("[name=firstName]").val();
-                let lastName = $("[name=lastName]").val();
-                let fromForm = $("[name=fromForm]").val();
-                let workshopOne = $("[name=workshopOne]").is(":checked");
-                let workshopTwo = $("[name=workshopTwo]").is(":checked");
-                let workshopThree = $("[name=workshopThree]").is(":checked");
-                let workshopFour =  $("[name=workshopFour]").is(":checked");
-                let workshopFive = $("[name=workshopFive]").is(":checked");
-                let workshopSix = $("[name=workshopSix]").is(":checked");
-                let workshopSeven = $("[name=workshopSeven]").is(":checked");
-                let workshopEight = $("[name=workshopEight]").is(":checked");
-                let workshopNine = $("[name=workshopNine]").is(":checked");
-                let workshopTen = $("[name=workshopTen]").is(":checked");
-                let workshopTen1 = $("[name=workshopTen1]").is(":checked");
-                let workshopTen2 = $("[name=workshopTen2]").is(":checked");
-                let workshopTen3 = $("[name=workshopTen3]").is(":checked");
-                let workshopTen4 = $("[name=workshopTen4]").is(":checked");
-                let workshopEleven = $("[name=workshopEleven]").is(":checked");
-                let workshopTwelve = $("[name=workshopTwelve]").is(":checked");
-                let workshopThirteen = $("[name=workshopThirteen]").is(":checked");
-                let workshopFourteen = $("[name=workshopFourteen]").is(":checked");
-                let workshopFifteen = $("[name=workshopFifteen]").is(":checked");
-                let workshopSixteen = $("[name=workshopSixteen]").is(":checked");
-                let workshopSeventeen = $("[name=workshopSeventeen]").is(":checked");
-                let workshopEighteen = $("[name=workshopEighteen]").is(":checked");
-                let workshopNineteen = $("[name=workshopNineteen]").is(":checked");
-                let workshopTwenty = $("[name=workshopTwenty]").is(":checked");
-                let workshopTwentyOne = $("[name=workshopTwentyOne]").is(":checked");
-                let workshopTwentyTwo = $("[name=workshopTwentyTwo]").is(":checked");
-                let workshopTwentyThree = $("[name=workshopTwentyThree]").is(":checked");
-                let workshopTwentyFour = $("[name=workshopTwentyFour]").is(":checked");
-                let workshopTwentyFive = $("[name=workshopTwentyFive]").is(":checked");
-                let workshopTwentySix = $("[name=workshopTwentySix]").is(":checked");
-                let workshopTwentySeven = $("[name=workshopTwentySeven]").is(":checked");
-                let workshopTwentyEight = $("[name=workshopTwentyEight]").is(":checked");
-                let workshopTwentyNine = $("[name=workshopTwentyNine]").is(":checked");
-                let workshopThirty = $("[name=workshopThirty]").is(":checked");
-                let workshopThirtyOne = $("[name=workshopThirtyOne]").is(":checked");
-                let workshopThirtyTwo = $("[name=workshopThirtyTwo]").is(":checked");
-                let workshopThirtyThree = $("[name=workshopThirtyThree]").is(":checked");
-                let workshopThirtyFour = $("[name=workshopThirtyFour]").is(":checked");
-                let workshopThirtyFive = $("[name=workshopThirtyFive]").is(":checked");
-                let workshopThirtySix = $("[name=workshopThirtySix]").is(":checked");
-                let workshopThirtySeven = $("[name=workshopThirtySeven]").val();
+                if (isEditable) {
+                    let firstName = $("[name=firstName]").val();
+                    let lastName = $("[name=lastName]").val();
+                    let fromForm = $("[name=fromForm]").val();
+                    let workshopOne = $("[name=workshopOne]").is(":checked");
+                    let workshopTwo = $("[name=workshopTwo]").is(":checked");
+                    let workshopThree = $("[name=workshopThree]").is(":checked");
+                    let workshopFour = $("[name=workshopFour]").is(":checked");
+                    let workshopFive = $("[name=workshopFive]").is(":checked");
+                    let workshopSix = $("[name=workshopSix]").is(":checked");
+                    let workshopSeven = $("[name=workshopSeven]").is(":checked");
+                    let workshopEight = $("[name=workshopEight]").is(":checked");
+                    let workshopNine = $("[name=workshopNine]").is(":checked");
+                    let workshopTen = $("[name=workshopTen]").is(":checked");
+                    let workshopTen1 = $("[name=workshopTen1]").is(":checked");
+                    let workshopTen2 = $("[name=workshopTen2]").is(":checked");
+                    let workshopTen3 = $("[name=workshopTen3]").is(":checked");
+                    let workshopTen4 = $("[name=workshopTen4]").is(":checked");
+                    let workshopEleven = $("[name=workshopEleven]").is(":checked");
+                    let workshopTwelve = $("[name=workshopTwelve]").is(":checked");
+                    let workshopThirteen = $("[name=workshopThirteen]").is(":checked");
+                    let workshopFourteen = $("[name=workshopFourteen]").is(":checked");
+                    let workshopFifteen = $("[name=workshopFifteen]").is(":checked");
+                    let workshopSixteen = $("[name=workshopSixteen]").is(":checked");
+                    let workshopSeventeen = $("[name=workshopSeventeen]").is(":checked");
+                    let workshopEighteen = $("[name=workshopEighteen]").is(":checked");
+                    let workshopNineteen = $("[name=workshopNineteen]").is(":checked");
+                    let workshopTwenty = $("[name=workshopTwenty]").is(":checked");
+                    let workshopTwentyOne = $("[name=workshopTwentyOne]").is(":checked");
+                    let workshopTwentyTwo = $("[name=workshopTwentyTwo]").is(":checked");
+                    let workshopTwentyThree = $("[name=workshopTwentyThree]").is(":checked");
+                    let workshopTwentyFour = $("[name=workshopTwentyFour]").is(":checked");
+                    let workshopTwentyFive = $("[name=workshopTwentyFive]").is(":checked");
+                    let workshopTwentySix = $("[name=workshopTwentySix]").is(":checked");
+                    let workshopTwentySeven = $("[name=workshopTwentySeven]").is(":checked");
+                    let workshopTwentyEight = $("[name=workshopTwentyEight]").is(":checked");
+                    let workshopTwentyNine = $("[name=workshopTwentyNine]").is(":checked");
+                    let workshopThirty = $("[name=workshopThirty]").is(":checked");
+                    let workshopThirtyOne = $("[name=workshopThirtyOne]").is(":checked");
+                    let workshopThirtyTwo = $("[name=workshopThirtyTwo]").is(":checked");
+                    let workshopThirtyThree = $("[name=workshopThirtyThree]").is(":checked");
+                    let workshopThirtyFour = $("[name=workshopThirtyFour]").is(":checked");
+                    let workshopThirtyFive = $("[name=workshopThirtyFive]").is(":checked");
+                    let workshopThirtySix = $("[name=workshopThirtySix]").is(":checked");
+                    let workshopThirtySeven = $("[name=workshopThirtySeven]").val();
 
-                let content = {
-                    firstName,
-                    lastName,
-                    fromForm,
-                    workshopOne,
-                    workshopTwo,
-                    workshopThree,
-                    workshopFour,
-                    workshopFive,
-                    workshopSix,
-                    workshopSeven,
-                    workshopEight,
-                    workshopNine,
-                    workshopTen,
-                    workshopTen1,
-                    workshopTen2,
-                    workshopTen3,
-                    workshopTen4,
-                    workshopEleven,
-                    workshopTwelve,
-                    workshopThirteen,
-                    workshopFourteen,
-                    workshopFifteen,
-                    workshopSixteen,
-                    workshopSeventeen,
-                    workshopEighteen,
-                    workshopNineteen,
-                    workshopTwenty,
-                    workshopTwentyOne,
-                    workshopTwentyTwo,
-                    workshopTwentyThree,
-                    workshopTwentyFour,
-                    workshopTwentyFive,
-                    workshopTwentySix,
-                    workshopTwentySeven,
-                    workshopTwentyEight,
-                    workshopTwentyNine,
-                    workshopThirty,
-                    workshopThirtyOne,
-                    workshopThirtyTwo,
-                    workshopThirtyThree,
-                    workshopThirtyFour,
-                    workshopThirtyFive,
-                    workshopThirtySix,
-                    workshopThirtySeven
-                };
-
-                let permission = self.props.permissions[0];
-                if (permission.role === "admin" || permission.role === "staff") {
-                    const profileId = permission.profile;
-                    const submission = {
-                        userId : self.props.submission.userId,
-                        content
+                    let content = {
+                        firstName,
+                        lastName,
+                        fromForm,
+                        workshopOne,
+                        workshopTwo,
+                        workshopThree,
+                        workshopFour,
+                        workshopFive,
+                        workshopSix,
+                        workshopSeven,
+                        workshopEight,
+                        workshopNine,
+                        workshopTen,
+                        workshopTen1,
+                        workshopTen2,
+                        workshopTen3,
+                        workshopTen4,
+                        workshopEleven,
+                        workshopTwelve,
+                        workshopThirteen,
+                        workshopFourteen,
+                        workshopFifteen,
+                        workshopSixteen,
+                        workshopSeventeen,
+                        workshopEighteen,
+                        workshopNineteen,
+                        workshopTwenty,
+                        workshopTwentyOne,
+                        workshopTwentyTwo,
+                        workshopTwentyThree,
+                        workshopTwentyFour,
+                        workshopTwentyFive,
+                        workshopTwentySix,
+                        workshopTwentySeven,
+                        workshopTwentyEight,
+                        workshopTwentyNine,
+                        workshopThirty,
+                        workshopThirtyOne,
+                        workshopThirtyTwo,
+                        workshopThirtyThree,
+                        workshopThirtyFour,
+                        workshopThirtyFive,
+                        workshopThirtySix,
+                        workshopThirtySeven
                     };
-                    let response =  self.props.editSubmission(profileId, submission, self.props.submission._id);
-                    console.log(response);
+
+                    let permission = self.props.permissions[0];
+                    if (permission.role === "admin" || permission.role === "staff") {
+                        const profileId = permission.profile;
+                        const submission = {
+                            userId: self.props.submission.userId,
+                            content
+                        };
+                        let response = self.props.editSubmission(profileId, submission, self.props.submission._id);
+                        console.log(response);
+                    }
                 }
                 self.props.history.push('/dashboard')
             }
@@ -223,7 +225,8 @@ class ClientActionSubmission extends Component {
                                                 name="firstName"
                                                 value={firstName}
                                                 placeholder="First Name"
-                                                onChange={(e) => {}}
+                                                onChange={(e) => {
+                                                }}
                                             />
                                         </div>
                                         <div className="form-group col-md-6">
@@ -236,7 +239,8 @@ class ClientActionSubmission extends Component {
                                                 name="lastName"
                                                 value={lastName}
                                                 placeholder="Last Name"
-                                                onChange={(e) => {}}
+                                                onChange={(e) => {
+                                                }}
                                             />
                                         </div>
                                     </div>
@@ -253,7 +257,8 @@ class ClientActionSubmission extends Component {
                                             id="workshopOne"
                                             name="workshopOne"
                                             checked={workshopOne}
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>
@@ -277,7 +282,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopTwo}
                                             id="workshopTwo"
                                             name="workshopTwo"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>
@@ -301,7 +307,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopThree}
                                             id="workshopThree"
                                             name="workshopThree"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>
@@ -324,7 +331,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopFour}
                                             id="workshopFour"
                                             name="workshopFour"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>
@@ -347,7 +355,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopFive}
                                             id="workshopFive"
                                             name="workshopFive"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>
@@ -370,7 +379,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopSix}
                                             id="workshopSix"
                                             name="workshopSix"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>
@@ -394,7 +404,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopSeven}
                                             id="workshopSeven"
                                             name="workshopSeven"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>
@@ -418,7 +429,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopEight}
                                             id="workshopEight"
                                             name="workshopEight"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>
@@ -441,7 +453,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopNine}
                                             id="workshopNine"
                                             name="workshopNine"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>
@@ -464,7 +477,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopTen}
                                             id="workshopTen"
                                             name="workshopTen"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>
@@ -487,7 +501,8 @@ class ClientActionSubmission extends Component {
                                                 checked={workshopTen1}
                                                 id="workshopTen1"
                                                 name="workshopTen1"
-                                                onChange={(e) => {}}
+                                                onChange={(e) => {
+                                                }}
                                             />
                                             <label
                                                 className="form-check-label"
@@ -505,7 +520,8 @@ class ClientActionSubmission extends Component {
                                                 checked={workshopTen2}
                                                 id="workshopTen2"
                                                 name="workshopTen2"
-                                                onChange={(e) => {}}
+                                                onChange={(e) => {
+                                                }}
                                             />
                                             <label
                                                 className="form-check-label"
@@ -523,7 +539,8 @@ class ClientActionSubmission extends Component {
                                                 checked={workshopTen3}
                                                 id="workshopTen3"
                                                 name="workshopTen3"
-                                                onChange={(e) => {}}
+                                                onChange={(e) => {
+                                                }}
                                             />
                                             <label
                                                 className="form-check-label"
@@ -542,7 +559,8 @@ class ClientActionSubmission extends Component {
                                                 checked={workshopTen4}
                                                 id="workshopTen4"
                                                 name="workshopTen4"
-                                                onChange={(e) => {}}
+                                                onChange={(e) => {
+                                                }}
                                             />
                                             <label
                                                 className="form-check-label"
@@ -563,7 +581,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopEleven}
                                             id="workshopEleven"
                                             name="workshopEleven"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>
@@ -586,7 +605,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopTwelve}
                                             id="workshopTwelve"
                                             name="workshopTwelve"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>
@@ -609,7 +629,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopThirteen}
                                             id="workshopThirteen"
                                             name="workshopThirteen"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>Ottawa Job Match Network (OJMN).</strong>
@@ -629,7 +650,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopFourteen}
                                             id="workshopFourteen"
                                             name="workshopFourteen"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>
@@ -651,7 +673,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopFifteen}
                                             id="workshopFifteen"
                                             name="workshopFifteen"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>Workshop “Introduction to Public Service.</strong>
@@ -671,7 +694,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopSixteen}
                                             id="workshopSixteen"
                                             name="workshopSixteen"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>Professional and Employer Events.</strong>
@@ -691,7 +715,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopSeventeen}
                                             id="workshopSeventeen"
                                             name="workshopSeventeen"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>
@@ -714,7 +739,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopEighteen}
                                             id="workshopEighteen"
                                             name="workshopEighteen"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>Resume Clinic.</strong>
@@ -734,7 +760,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopNineteen}
                                             id="workshopNineteen"
                                             name="workshopNineteen"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>Interview Roulette.</strong>
@@ -767,7 +794,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopTwenty}
                                             id="workshopTwenty"
                                             name="workshopTwenty"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>
@@ -791,7 +819,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopTwentyOne}
                                             id="workshopTwentyOne"
                                             name="workshopTwentyOne"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>
@@ -814,7 +843,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopTwentyTwo}
                                             id="workshopTwentyTwo"
                                             name="workshopTwentyTwo"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>
@@ -837,7 +867,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopTwentyThree}
                                             id="workshopTwentyThree"
                                             name="workshopTwentyThree"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>
@@ -860,7 +891,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopTwentyFour}
                                             id="workshopTwentyFour"
                                             name="workshopTwentyFour"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>
@@ -884,7 +916,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopTwentyFive}
                                             id="workshopTwentyFive"
                                             name="workshopTwentyFive"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>
@@ -910,7 +943,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopTwentySix}
                                             id="workshopTwentySix"
                                             name="workshopTwentySix"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>
@@ -931,7 +965,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopTwentySeven}
                                             id="workshopTwentySeven"
                                             name="workshopTwentySeven"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>
@@ -952,7 +987,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopTwentyEight}
                                             id="workshopTwentyEight"
                                             name="workshopTwentyEight"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>Volunteering.</strong>
@@ -972,7 +1008,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopTwentyNine}
                                             id="workshopTwentyNine"
                                             name="workshopTwentyNine"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>Job Search Websites.</strong>
@@ -996,7 +1033,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopThirty}
                                             id="workshopThirty"
                                             name="workshopThirty"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>Employment Ontario (EO).</strong>
@@ -1016,7 +1054,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopThirtyOne}
                                             id="workshopThirtyOne"
                                             name="workshopThirtyOne"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>Networking.</strong>
@@ -1036,7 +1075,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopThirtyTwo}
                                             id="workshopThirtyTwo"
                                             name="workshopThirtyTwo"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>College or University.</strong>
@@ -1055,7 +1095,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopThirtyThree}
                                             id="workshopThirtyThree"
                                             name="workshopThirtyThree"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>Computer Courses.</strong>
@@ -1072,7 +1113,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopThirtyFour}
                                             id="workshopThirtyFour"
                                             name="workshopThirtyFour"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>Settlement Services.</strong>
@@ -1089,7 +1131,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopThirtyFive}
                                             id="workshopThirtyFive"
                                             name="workshopThirtyFive"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>Recruitment Agencies.</strong>
@@ -1106,7 +1149,8 @@ class ClientActionSubmission extends Component {
                                             checked={workshopThirtySix}
                                             id="workshopThirtySix"
                                             name="workshopThirtySix"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                         <label className="form-check-label" htmlFor="defaultCheck2">
                                             <strong>
@@ -1124,7 +1168,8 @@ class ClientActionSubmission extends Component {
                                             className="form-control"
                                             id="workshopThirtySeven"
                                             name="workshopThirtySeven"
-                                            onChange={(e) => {}}
+                                            onChange={(e) => {
+                                            }}
                                         />
                                     </div>
                                 </section>
@@ -1135,8 +1180,7 @@ class ClientActionSubmission extends Component {
             </div>
         );
     }
-
 }
 
-export default connect(null, { editSubmission })(ClientActionSubmission)
+export default connect(null, {editSubmission})(ClientActionSubmission)
 

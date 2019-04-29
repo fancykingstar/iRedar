@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import jwt_decode from 'jwt-decode';
-import { getSubmission } from '../../../../../actions/submissionActions';
+import {getSubmission} from '../../../../../actions/submissionActions';
 import FCRPLoan from './FCRPLoan';
 
 class FCRPLoanSubmission extends Component {
@@ -12,8 +12,9 @@ class FCRPLoanSubmission extends Component {
             dateSubmitted: ''
         }
     };
+
     componentDidMount() {
-        const { getSubmission, permissions } = this.props;
+        const {getSubmission, permissions} = this.props;
 
         let profile;
         if (permissions.length === 0) {
@@ -32,16 +33,14 @@ class FCRPLoanSubmission extends Component {
             profileId: profile,
             //organizationId: permissions[0].organization
         };
-        const { submissionId } = this.props.match.params;
+        const {submissionId} = this.props.match.params;
         getSubmission(userData, submissionId);
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.submissions.submission) {
-            this.setState({ submission: nextProps.submissions.submission });
-
+            this.setState({submission: nextProps.submissions.submission});
         }
-
     }
 
     render() {
@@ -49,7 +48,8 @@ class FCRPLoanSubmission extends Component {
         if (typeof edit === "undefined") {
             edit = false;
         }
-        return <FCRPLoan submission={this.state.submission} history={this.props.history} edit={edit} />;
+        return <FCRPLoan permissions={this.props.permissions} submission={this.state.submission}
+                         history={this.props.history} edit={edit}/>;
     }
 }
 
@@ -62,5 +62,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { getSubmission }
+    {getSubmission}
 )(FCRPLoanSubmission);
