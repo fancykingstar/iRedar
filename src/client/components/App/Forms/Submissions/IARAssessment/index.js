@@ -15,14 +15,14 @@ class IARAssessmentSubmission extends Component {
     componentDidMount() {
         const { getSubmission, permissions } = this.props;
 
-        let profile
+        let profile;
         if (permissions.length === 0) {
-            let token = localStorage.getItem('jwtToken')
+            let token = localStorage.getItem('jwtToken');
             if (token == null) {
-                this.props.history.push('/dashboard')
+                this.props.history.push('/dashboard');
                 return
             }
-            const decoded = jwt_decode(token)
+            const decoded = jwt_decode(token);
             profile = decoded.profileId
         } else {
             profile = permissions[0].profile

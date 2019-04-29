@@ -16,17 +16,24 @@ class AdminSubmissionList extends Component {
       }
     });
   }
-
-  detail = event => {
-    let formName = event.target.getAttribute('form_name')
-    let submissionId = event.target.getAttribute('submission_id')
+  edit = event => {
+    let formName = event.target.getAttribute('form_name');
+    let submissionId = event.target.getAttribute('submission_id');
     this.props.history.push({
       pathname: '/forms/' + formName + '/' + submissionId
     });
-  }
+  };
+
+  detail = event => {
+    let formName = event.target.getAttribute('form_name');
+    let submissionId = event.target.getAttribute('submission_id');
+    this.props.history.push({
+      pathname: '/forms/' + formName + '/' + submissionId
+    });
+  };
 
   share = event => {
-    let submissionId = event.target.getAttribute('submission_id')
+    let submissionId = event.target.getAttribute('submission_id');
     this.props.history.push({
       pathname: '/referrals/' + submissionId
     });
@@ -103,7 +110,7 @@ class AdminSubmissionList extends Component {
                               )}
                             </td>
                             <td className="tx-right">
-                              <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToEdit} onClick={this.detail} form_name={content.fromForm} submission_id={submission._id} >Edit</button>
+                              <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToEdit} onClick={this.edit} form_name={content.fromForm} submission_id={submission._id} >Edit</button>
                             </td>
                             <td className="tx-right">
                               <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToDelete} onClick={this.detail} form_name={content.fromForm} submission_id={submission._id} >Delete</button>

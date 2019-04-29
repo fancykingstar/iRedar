@@ -688,43 +688,43 @@ class IARAssessmentSubmission extends Component {
                                     <p>(For clients who you feel are job ready and can be referred to OJMN directly from IAR)</p>
 
                                     <div className="form-check form-group">
-                                        <input className="form-check-input" type="checkbox" value="" id="hasResearchedTheField" name="hasResearchedTheField" readOnly checked={submission.content.hasResearchedTheField} />
+                                        <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="hasResearchedTheField" name="hasResearchedTheField"  checked={submission.content.hasResearchedTheField} />
                                         <label className="form-check-label" htmlFor="hasResearchedTheField">
                                             has researched the field/industry
                               </label>
                                     </div>
                                     <div className="form-check form-group">
-                                        <input className="form-check-input" type="checkbox" value="" id="isSearching" name="isSearching" readOnly checked={submission.content.isSearching} />
+                                        <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="isSearching" name="isSearching"  checked={submission.content.isSearching} />
                                         <label className="form-check-label" htmlFor="isSearching">
                                             is searching for a comparable job in his/her field in Canada
                             </label>
                                     </div>
                                     <div className="form-check form-group">
-                                        <input className="form-check-input" type="checkbox" value="" id="hasTransferableSkills" name="hasTransferableSkills" readOnly checked={submission.content.hasTransferableSkills} />
+                                        <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="hasTransferableSkills" name="hasTransferableSkills"  checked={submission.content.hasTransferableSkills} />
                                         <label className="form-check-label" htmlFor="hasTransferableSkills">
                                             has transferable skills and demonstrates a willingness to learn
                             </label>
                                     </div>
                                     <div className="form-check form-group">
-                                        <input className="form-check-input" type="checkbox" value="" id="hasStrongResume" name="hasStrongResume" readOnly checked={submission.content.hasStrongResume} />
+                                        <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="hasStrongResume" name="hasStrongResume"  checked={submission.content.hasStrongResume} />
                                         <label className="form-check-label" htmlFor="hasStrongResume">
                                             has a strong resume detailing qualifications and competencies
                             </label>
                                     </div>
                                     <div className="form-check form-group">
-                                        <input className="form-check-input" type="checkbox" value="" id="ableToTargetResumeforOpportunities" name="ableToTargetResumeforOpportunities" readOnly checked={submission.content.ableToTargetResumeforOpportunities} />
+                                        <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="ableToTargetResumeforOpportunities" name="ableToTargetResumeforOpportunities"  checked={submission.content.ableToTargetResumeforOpportunities} />
                                         <label className="form-check-label" htmlFor="ableToTargetResumeforOpportunities">
                                             is able to target his/her resume for posted job opportunities
                             </label>
                                     </div>
                                     <div className="form-check form-group">
-                                        <input className="form-check-input" type="checkbox" value="" id="canUseSTAR" name="canUseSTAR" readOnly checked={submission.content.canUseSTAR} />
+                                        <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="canUseSTAR" name="canUseSTAR"  checked={submission.content.canUseSTAR} />
                                         <label className="form-check-label" htmlFor="canUseSTAR">
                                             can use STAR technique when answering interview questions
                             </label>
                                     </div>
                                     <div className="form-check form-group">
-                                        <input className="form-check-input" type="checkbox" value="" id="positiveAttitude" name="positiveAttitude" readOnly checked={submission.content.positiveAttitude} />
+                                        <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="positiveAttitude" name="positiveAttitude"  checked={submission.content.positiveAttitude} />
                                         <label className="form-check-label" htmlFor="positiveAttitude">
                                             demonstrates a positive attitude
                             </label>
@@ -739,7 +739,7 @@ class IARAssessmentSubmission extends Component {
                                     <p>Check one of the three options below and create the client action plan:</p>
                                     <div className="form-row">
                                         <div className="form-check form-group">
-                                            <input className="form-check-input" type="checkbox" value="" id="elegibleForJobSearchWorkshop" name="elegibleForJobSearchWorkshop" readOnly checked={submission.content.elegibleForJobSearchWorkshop} />
+                                            <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="elegibleForJobSearchWorkshop" name="elegibleForJobSearchWorkshop"  checked={submission.content.elegibleForJobSearchWorkshop} />
                                             <label className="form-check-label" htmlFor="elegibleForJobSearchWorkshop">
                                                 Client is eligible and suitable for Job Search Workshop (JSW) and will be referred
                             </label>
@@ -747,50 +747,50 @@ class IARAssessmentSubmission extends Component {
                                     </div>
                                     <p>If NOT referred to JSW, please indicate why:</p>
                                     <div className="form-check form-group">
-                                        <input className="form-check-input" type="checkbox" value="" id="referredToCareerAccessForNewcomers" name="referredToCareerAccessForNewcomers" readOnly checked={submission.content.referredToCareerAccessForNewcomers} />
+                                        <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="referredToCareerAccessForNewcomers" name="referredToCareerAccessForNewcomers"  checked={submission.content.referredToCareerAccessForNewcomers} />
                                         <label className="form-check-label" htmlFor="referredToCareerAccessForNewcomers">
                                             Client is not eligible for JSW, but will be referred to Career Access for Newcomers (CAN)
                             </label>
                                     </div>
                                     <div className="form-check form-group">
-                                        <input className="form-check-input" type="checkbox" value="" id="referredToRoadmapToEmployment" name="referredToRoadmapToEmployment" readOnly checked={submission.content.referredToRoadmapToEmployment} />
+                                        <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="referredToRoadmapToEmployment" name="referredToRoadmapToEmployment"  checked={submission.content.referredToRoadmapToEmployment} />
                                         <label className="form-check-label" htmlFor="referredToRoadmapToEmployment">
                                             Client is not suitable for JSW or CAN, but will be referred to Roadmap to Employment (RTE)
                             </label>
                                     </div>
                                     <div className="form-check form-group">
-                                        <input className="form-check-input" type="checkbox" value="" id="clientNotReferred" name="clientNotReferred" readOnly checked={submission.content.clientNotReferred} />
+                                        <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="clientNotReferred" name="clientNotReferred"  checked={submission.content.clientNotReferred} />
                                         <label className="form-check-label" htmlFor="clientNotReferred">
                                             Client will not be referred to JSW, CAN, or RTE because …
                             </label>
                                     </div>
                                     <div className="form-row">
                                         <div className="form-check form-group col-md-2">
-                                            <input className="form-check-input" type="checkbox" value="" id="clientNotReferred_attendingSchool" name="clientNotReferred_attendingSchool" readOnly checked={submission.content.clientNotReferred_attendingSchool} />
+                                            <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="clientNotReferred_attendingSchool" name="clientNotReferred_attendingSchool"  checked={submission.content.clientNotReferred_attendingSchool} />
                                             <label className="form-check-label" htmlFor="clientNotReferred_attendingSchool">
                                                 Attending school
                             </label>
                                         </div>
                                         <div className="form-check form-group  col-md-2">
-                                            <input className="form-check-input" type="checkbox" value="" id="clientNotReferred_languageSkills" name="clientNotReferred_languageSkills" readOnly checked={submission.content.clientNotReferred_languageSkills} />
+                                            <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="clientNotReferred_languageSkills" name="clientNotReferred_languageSkills"  checked={submission.content.clientNotReferred_languageSkills} />
                                             <label className="form-check-label" htmlFor="clientNotReferred_languageSkills">
                                                 Language skills
                             </label>
                                         </div>
                                         <div className="form-check form-group  col-md-2">
-                                            <input className="form-check-input" type="checkbox" value="" id="clientNotReferred_childCare" name="clientNotReferred_childCare" readOnly checked={submission.content.clientNotReferred_childCare} />
+                                            <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="clientNotReferred_childCare" name="clientNotReferred_childCare"  checked={submission.content.clientNotReferred_childCare} />
                                             <label className="form-check-label" htmlFor="clientNotReferred_childCare">
                                                 Childcare needs
                             </label>
                                         </div>
                                         <div className="form-check form-group  col-md-3">
-                                            <input className="form-check-input" type="checkbox" value="" id="clientNotReferred_noOccupationGoal" name="clientNotReferred_noOccupationGoal" readOnly checked={submission.content.clientNotReferred_noOccupationGoal} />
+                                            <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="clientNotReferred_noOccupationGoal" name="clientNotReferred_noOccupationGoal"  checked={submission.content.clientNotReferred_noOccupationGoal} />
                                             <label className="form-check-label" htmlFor="clientNotReferred_noOccupationGoal">
                                                 No occupational goal
                             </label>
                                         </div>
                                         <div className="form-check form-group  col-md-2">
-                                            <input className="form-check-input" type="checkbox" value="" id="clientNotReferred_transportation" name="clientNotReferred_transportation" readOnly checked={submission.content.clientNotReferred_transportation} />
+                                            <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="clientNotReferred_transportation" name="clientNotReferred_transportation"  checked={submission.content.clientNotReferred_transportation} />
                                             <label className="form-check-label" htmlFor="clientNotReferred_transportation">
                                                 Transportation
                             </label>
@@ -798,31 +798,31 @@ class IARAssessmentSubmission extends Component {
                                     </div>
                                     <div className="form-row">
                                         <div className="form-check form-group col-md-2">
-                                            <input className="form-check-input" type="checkbox" value="" id="clientNotReferred_health" name="clientNotReferred_health" readOnly checked={submission.content.clientNotReferred_health} />
+                                            <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="clientNotReferred_health" name="clientNotReferred_health"  checked={submission.content.clientNotReferred_health} />
                                             <label className="form-check-label" htmlFor="clientNotReferred_health">
                                                 Health
                             </label>
                                         </div>
                                         <div className="form-check form-group  col-md-3">
-                                            <input className="form-check-input" type="checkbox" value="" id="clientNotReferred_unsuitableExpectation" name="clientNotReferred_unsuitableExpectation" readOnly checked={submission.content.clientNotReferred_unsuitableExpectation} />
+                                            <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="clientNotReferred_unsuitableExpectation" name="clientNotReferred_unsuitableExpectation"  checked={submission.content.clientNotReferred_unsuitableExpectation} />
                                             <label className="form-check-label" htmlFor="clientNotReferred_unsuitableExpectation">
                                                 Unsuitable expectations
                             </label>
                                         </div>
                                         <div className="form-check form-group  col-md-3">
-                                            <input className="form-check-input" type="checkbox" value="" id="clientNotReferred_noTimeForAssignments" name="clientNotReferred_noTimeForAssignments" readOnly checked={submission.content.clientNotReferred_noTimeForAssignments} />
+                                            <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="clientNotReferred_noTimeForAssignments" name="clientNotReferred_noTimeForAssignments"  checked={submission.content.clientNotReferred_noTimeForAssignments} />
                                             <label className="form-check-label" htmlFor="clientNotReferred_noTimeForAssignments">
                                                 No time for assignments
                             </label>
                                         </div>
                                         <div className="form-check form-group  col-md-2">
-                                            <input className="form-check-input" type="checkbox" value="" id="clientNotReferred_needsJobQuickly" name="clientNotReferred_needsJobQuickly" readOnly checked={submission.content.clientNotReferred_needsJobQuickly} />
+                                            <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="clientNotReferred_needsJobQuickly" name="clientNotReferred_needsJobQuickly"  checked={submission.content.clientNotReferred_needsJobQuickly} />
                                             <label className="form-check-label" htmlFor="clientNotReferred_needsJobQuickly">
                                                 Needs job quickly
                             </label>
                                         </div>
                                         <div className="form-check form-group  col-md-2">
-                                            <input className="form-check-input" type="checkbox" value="" id="clientNotReferred_lowComputerSkills" name="clientNotReferred_lowComputerSkills" readOnly checked={submission.content.clientNotReferred_lowComputerSkills} />
+                                            <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="clientNotReferred_lowComputerSkills" name="clientNotReferred_lowComputerSkills"  checked={submission.content.clientNotReferred_lowComputerSkills} />
                                             <label className="form-check-label" htmlFor="clientNotReferred_lowComputerSkills">
                                                 No/low computer skills
                             </label>
@@ -830,19 +830,19 @@ class IARAssessmentSubmission extends Component {
                                     </div>
                                     <div className="form-row">
                                         <div className="form-check form-group col-md-6">
-                                            <input className="form-check-input" type="checkbox" value="" id="clientNotReferred_limitedInterests" name="clientNotReferred_limitedInterests" readOnly checked={submission.content.clientNotReferred_limitedInterests} />
+                                            <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="clientNotReferred_limitedInterests" name="clientNotReferred_limitedInterests"  checked={submission.content.clientNotReferred_limitedInterests} />
                                             <label className="form-check-label" htmlFor="clientNotReferred_limitedInterests">
                                                 Only interested in specific referrals (OJMN, FINP, WLT, etc.)
                             </label>
                                         </div>
                                         <div className="form-check form-group  col-md-4">
-                                            <input className="form-check-input" type="checkbox" value="" id="clientNotReferred_directReferrals" name="clientNotReferred_directReferrals" readOnly checked={submission.content.clientNotReferred_directReferrals} />
+                                            <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="clientNotReferred_directReferrals" name="clientNotReferred_directReferrals"  checked={submission.content.clientNotReferred_directReferrals} />
                                             <label className="form-check-label" htmlFor="clientNotReferred_directReferrals">
                                                 Direct referral to OJMN and/or NEEP
                             </label>
                                         </div>
                                         <div className="form-check form-group  col-md-2">
-                                            <input className="form-check-input" type="checkbox" value="" id="clientNotReferred_other" name="clientNotReferred_other" readOnly checked={submission.content.clientNotReferred_other} />
+                                            <input className="form-check-input" type="checkbox " readOnly disabled="true" value="" id="clientNotReferred_other" name="clientNotReferred_other" checked={submission.content.clientNotReferred_other} />
                                             <label className="form-check-label" htmlFor="clientNotReferred_other">
                                                 Other (please specify):
                             </label>
@@ -887,13 +887,13 @@ class IARAssessmentSubmission extends Component {
                                     aria-hidden="false" >
                                     <h5>While completing the Action plan:</h5>
                                     <div className="form-check form-group">
-                                        <input className="form-check-input" type="checkbox" value="" id="actionPlanCheckBox_one" name="actionPlanCheckBox_one" readOnly checked={submission.content.actionPlanCheckBox_one} />
+                                        <input id="actionPlanCheckBox_one" name="actionPlanCheckBox_one" readOnly disabled="true" className="form-check-input" type="checkbox"  value="" checked={submission.content.actionPlanCheckBox_one} />
                                         <label className="form-check-label" htmlFor="actionPlanCheckBox_one">
                                             Clarify the services our organization provides and the level of time and commitment necessary for successful program completion.
                             </label>
                                     </div>
                                     <div className="form-check form-group">
-                                        <input className="form-check-input" type="checkbox" value="" id="actionPlanCheckBox_two" name="actionPlanCheckBox_two" readOnly checked={submission.content.actionPlanCheckBox_two} />
+                                        <input id="actionPlanCheckBox_two" name="actionPlanCheckBox_two" readOnly disabled="true" className="form-check-input" type="checkbox" value="" checked={submission.content.actionPlanCheckBox_two} />
                                         <label className="form-check-label" htmlFor="actionPlanCheckBox_two">
                                             Ensure that client is clear about the information they received and they are satisfied with the Action Plan.
                             </label>

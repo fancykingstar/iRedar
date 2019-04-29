@@ -1,6 +1,7 @@
 const logger = require('../configs/logger');
 
 const Submission = require('../models/Submission');
+const Organization = require('../models/Organization');
 const Permission = require('../models/Permission');
 const Profile = require('../models/Profile')
 
@@ -39,18 +40,18 @@ exports.getAllSubmissions = async (req, res) => {
   const { profileId, organizationId } = req.body;
 
 
-  console.log("USER IS ", req.user)
+  console.log("USER IS ", req.user);
 
   try {
 
-    let profile = await Profile.find({ user: req.user._id })
+    let organization = await Organization.findById(organizationId);
 
     const permissions = await Permission.findOne({
       profile: profileId,
       organization: organizationId,
     });
 
-    if (!(permissions.role === 'admin' || permission.role === "staff")) {
+    if (!(permissions.role === 'admin' || permissions.role === "staff")) {
       return res.status(422).json({
         alert: {
           title: 'Access denied!',
@@ -59,10 +60,10 @@ exports.getAllSubmissions = async (req, res) => {
       });
     }
 
-    // const allSubmissions = await Submission.find({
-    //   organization: organizationId,
-    // });
-    const allSubmissions = await Submission.find({ userId: req.user._id }).sort({
+    console.log(organization);
+
+    let users = organization.users;
+    const allSubmissions = await Submission.find({userId: {$in: users}}).sort({
       dateSubmitted: 'desc',
     });
     return res.json({
