@@ -28,6 +28,15 @@ router.post(
   submissionController.getSubmission,
 );
 
+// @route POST api/submissions/:submissionId/delete
+// @desc Return a submission
+// @access Private
+router.post(
+    '/:submissionId/delete',
+    passport.authenticate('jwt', { session: false }),
+    submissionController.deleteSubmission,
+);
+
 
 // @route GET api/submissions/:formType
 // @desc Get all submitted form by form type

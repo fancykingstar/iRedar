@@ -15,7 +15,7 @@ class ClientActionSubmission extends Component {
   componentDidMount() {
     const { getSubmission, permissions } = this.props;
 
-    let profile
+    let profile;
     if (permissions.length === 0) {
       let token = localStorage.getItem('jwtToken')
       if (token == null) {
@@ -46,7 +46,11 @@ class ClientActionSubmission extends Component {
   }
 
   render() {
-    return <ClientAction submission={this.state.submission} history={this.props.history} />;
+    let edit = this.props.location.state.edit;
+    if (typeof edit === "undefined") {
+      edit = false;
+    }
+    return <ClientAction submission={this.state.submission} history={this.props.history} edit={edit}/>;
   }
 }
 

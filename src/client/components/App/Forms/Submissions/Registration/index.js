@@ -46,7 +46,11 @@ class RegistrationSubmission extends Component {
     }
 
     render() {
-        return <Registration submission={this.state.submission} history={this.props.history} />;
+        let edit = this.props.location.state.edit;
+        if (typeof edit === "undefined") {
+            edit = false;
+        }
+        return <Registration submission={this.state.submission} history={this.props.history} edit={edit} />;
     }
 }
 

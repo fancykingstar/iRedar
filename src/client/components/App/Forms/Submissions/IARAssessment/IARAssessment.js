@@ -18,6 +18,10 @@ class IARAssessmentSubmission extends Component {
     }
 
     render() {
+        let isEditable = false;
+        if (this.props.edit && this.props.edit === "true") {
+            isEditable = true;
+        }
         let submission = this.props.submission
         if (Object.keys(submission.content).length === 0) {
             return (
@@ -45,17 +49,17 @@ class IARAssessmentSubmission extends Component {
                                     <div className="form-row">
                                         <div className="form-group col-md-6">
                                             <label htmlFor="inputCity">First Name</label>
-                                            <input type="text" className="form-control" id="firstName" name="firstName" readOnly value={submission.content.firstName} placeholder="First Name" />
+                                            <input type="text" className="form-control" id="firstName" name="firstName" readOnly={!isEditable} value={submission.content.firstName} placeholder="First Name" />
                                         </div>
                                         <div className="form-group col-md-6">
                                             <label htmlFor="inputCity">Last Name</label>
-                                            <input type="text" className="form-control" id="lastName" name="lastName" readOnly value={submission.content.lastName} placeholder="Last Name" />
+                                            <input type="text" className="form-control" id="lastName" name="lastName" readOnly={!isEditable} value={submission.content.lastName} placeholder="Last Name" />
                                         </div>
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-4">
                                             <label htmlFor="serviceRequested">Service Requested</label>
-                                            <select className="form-control" id="serviceRequested" name="serviceRequested" readOnly defaultValue={submission.content.serviceRequested}>
+                                            <select className="form-control" id="serviceRequested" name="serviceRequested" readOnly={!isEditable} defaultValue={submission.content.serviceRequested}>
                                                 <option value="">--</option>
                                                 <option>Employment Support</option>
                                                 <option>Language Training</option>
@@ -65,13 +69,13 @@ class IARAssessmentSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-4">
                                             <label htmlFor="serviceRequested_other">If Other, specify</label>
-                                            <input type="text" className="form-control" id="serviceRequested_other" name="serviceRequested_other" readOnly value={submission.content.serviceRequested_other} />
+                                            <input type="text" className="form-control" id="serviceRequested_other" name="serviceRequested_other" readOnly={!isEditable} value={submission.content.serviceRequested_other} />
                                         </div>
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-4">
                                             <label htmlFor="employmentStatus">Currently Employed?</label>
-                                            <select className="form-control" id="employmentStatus" name="employmentStatus" readOnly defaultValue={submission.content.employmentStatus}>
+                                            <select className="form-control" id="employmentStatus" name="employmentStatus" readOnly={!isEditable} defaultValue={submission.content.employmentStatus}>
                                                 <option value="">--</option>
                                                 <option>Yes, full-time</option>
                                                 <option>Yes, part-time</option>
@@ -85,7 +89,7 @@ class IARAssessmentSubmission extends Component {
                                     <div className="form-row">
                                         <div className="form-group col-md-3">
                                             <label htmlFor="employmentField">If currently employed</label>
-                                            <select className="form-control" id="employmentField" name="employmentField" readOnly defaultValue={submission.content.employmentField}>
+                                            <select className="form-control" id="employmentField" name="employmentField" readOnly={!isEditable} defaultValue={submission.content.employmentField}>
                                                 <option value="">--</option>
                                                 <option>In field</option>
                                                 <option>In a related field</option>
@@ -95,12 +99,12 @@ class IARAssessmentSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-3">
                                             <label htmlFor="inputCity">Employer</label>
-                                            <input type="text" className="form-control" id="employer" name="employer" readOnly defaultValue={submission.content.employer} />
+                                            <input type="text" className="form-control" id="employer" name="employer" readOnly={!isEditable} defaultValue={submission.content.employer} />
                                         </div>
 
                                         <div className="form-group col-md-3">
                                             <label htmlFor="confirmEmail">Job Title</label>
-                                            <input type="email" className="form-control" id="jobTitle" name="jobTitle" readOnly defaultValue={submission.content.jobTitle} />
+                                            <input type="email" className="form-control" id="jobTitle" name="jobTitle" readOnly={!isEditable} defaultValue={submission.content.jobTitle} />
                                         </div>
                                         <div className="form-group col-md-3">
                                             <label htmlFor="inputAddress">Start Date</label>
@@ -111,7 +115,7 @@ class IARAssessmentSubmission extends Component {
                                                     </div>
                                                 </div>
                                                 <input id="emplymentStartDate" type="text" className="form-control"
-                                                    placeholder="MM/DD/YYYY" name="emplymentStartDate" readOnly defaultValue={submission.content.emplymentStartDate} />
+                                                    placeholder="MM/DD/YYYY" name="emplymentStartDate" readOnly={!isEditable} defaultValue={submission.content.emplymentStartDate} />
                                             </div>
                                         </div>
                                     </div>
@@ -123,11 +127,11 @@ class IARAssessmentSubmission extends Component {
                                                     <div className="custom-controls-stacked">
                                                         <label className="custom-control custom-radio">
                                                             <input type="radio" className="custom-control-input"
-                                                                id="seekingEmployment" name="seekingEmployment" readOnly checked={submission.content.seekingEmployment} />
+                                                                id="seekingEmployment" name="seekingEmployment" readOnly={!isEditable} checked={submission.content.seekingEmployment} />
                                                             <span className="custom-control-label">Yes</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
-                                                            <input type="radio" className="custom-control-input" id="notSeekingEmployment" name="seekingEmployment" readOnly checked={submission.content.notSeekingEmployment} />
+                                                            <input type="radio" className="custom-control-input" id="notSeekingEmployment" name="seekingEmployment" readOnly={!isEditable} checked={submission.content.notSeekingEmployment} />
                                                             <span className="custom-control-label">No</span>
                                                         </label>
                                                     </div>
@@ -139,7 +143,7 @@ class IARAssessmentSubmission extends Component {
                                     <div className="form-row">
                                         <div className="form-group col-md-6">
                                             <label htmlFor="barrierToJobs">What Barriers are Preventing You From Applying for Jobs or Getting A Job?</label>
-                                            <select id="barrierToJobs" className="form-control" name="barrierToJobs" readOnly defaultValue={submission.content.barrierToJobs}>
+                                            <select id="barrierToJobs" className="form-control" name="barrierToJobs" readOnly={!isEditable} defaultValue={submission.content.barrierToJobs}>
                                                 <option value="">--</option>
                                                 <option>ChildCare</option>
                                                 <option>Lack of information</option>
@@ -161,7 +165,7 @@ class IARAssessmentSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-6">
                                             <label htmlFor="barrierToJobs_other">If Other, specify</label>
-                                            <input type="text" className="form-control" id="barrierToJobs_other" name="barrierToJobs_other" readOnly defaultValue={submission.content.barrierToJobs_other} />
+                                            <input type="text" className="form-control" id="barrierToJobs_other" name="barrierToJobs_other" readOnly={!isEditable} defaultValue={submission.content.barrierToJobs_other} />
                                         </div>
                                     </div>
                                     <div className="form-row">
@@ -171,11 +175,11 @@ class IARAssessmentSubmission extends Component {
                                                 <div className="custom-controls-stacked">
                                                     <label className="custom-control custom-radio">
                                                         <input type="radio" className="custom-control-input"
-                                                            id="attendedJobSearchWorkshop_yes" name="attendedJobSearchWorkshop" readOnly checked={submission.content.attendedJobSearchWorkshop_yes} />
+                                                            id="attendedJobSearchWorkshop_yes" name="attendedJobSearchWorkshop" readOnly={!isEditable} checked={submission.content.attendedJobSearchWorkshop_yes} />
                                                         <span className="custom-control-label">Yes</span>
                                                     </label>
                                                     <label className="custom-control custom-radio">
-                                                        <input type="radio" className="custom-control-input" id="attendedJobSearchWorkshop_no" name="attendedJobSearchWorkshop" readOnly checked={submission.content.attendedJobSearchWorkshop_no} />
+                                                        <input type="radio" className="custom-control-input" id="attendedJobSearchWorkshop_no" name="attendedJobSearchWorkshop" readOnly={!isEditable} checked={submission.content.attendedJobSearchWorkshop_no} />
                                                         <span className="custom-control-label">No</span>
                                                     </label>
                                                 </div>
@@ -183,7 +187,7 @@ class IARAssessmentSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-6">
                                             <label htmlFor="nameOfJobSearchProgram">Name of the Job Search Program</label>
-                                            <input type="text" className="form-control" id="nameOfJobSearchProgram" name="nameOfJobSearchProgram" readOnly defaultValue={submission.content.nameOfJobSearchProgram} />
+                                            <input type="text" className="form-control" id="nameOfJobSearchProgram" name="nameOfJobSearchProgram" readOnly={!isEditable} defaultValue={submission.content.nameOfJobSearchProgram} />
                                         </div>
 
                                     </div>
@@ -194,23 +198,23 @@ class IARAssessmentSubmission extends Component {
                                                 <div className="custom-controls-stacked">
                                                     <label className="custom-control custom-radio">
                                                         <input type="radio" className="custom-control-input"
-                                                            id="currentAvailability_anytime" name="currentAvailability" readOnly checked={submission.content.currentAvailability_anytime} />
+                                                            id="currentAvailability_anytime" name="currentAvailability" readOnly={!isEditable} checked={submission.content.currentAvailability_anytime} />
                                                         <span className="custom-control-label">Anytime</span>
                                                     </label>
                                                     <label className="custom-control custom-radio">
-                                                        <input id="currentAvailability_mornings" name="currentAvailability" type="radio" className="custom-control-input" readOnly checked={submission.content.currentAvailability_mornings} />
+                                                        <input id="currentAvailability_mornings" name="currentAvailability" type="radio" className="custom-control-input" readOnly={!isEditable} checked={submission.content.currentAvailability_mornings} />
                                                         <span className="custom-control-label">Mornings</span>
                                                     </label>
                                                     <label className="custom-control custom-radio">
-                                                        <input id="currentAvailability_afternoons" name="currentAvailability" type="radio" className="custom-control-input" readOnly checked={submission.content.currentAvailability_afternoons} />
+                                                        <input id="currentAvailability_afternoons" name="currentAvailability" type="radio" className="custom-control-input" readOnly={!isEditable} checked={submission.content.currentAvailability_afternoons} />
                                                         <span className="custom-control-label">Afternoons</span>
                                                     </label>
                                                     <label className="custom-control custom-radio">
-                                                        <input id="currentAvailability_evenings" name="currentAvailability" type="radio" className="custom-control-input" readOnly checked={submission.content.currentAvailability_evenings} />
+                                                        <input id="currentAvailability_evenings" name="currentAvailability" type="radio" className="custom-control-input" readOnly={!isEditable} checked={submission.content.currentAvailability_evenings} />
                                                         <span className="custom-control-label">Evenings or weekends</span>
                                                     </label>
                                                     <label className="custom-control custom-radio">
-                                                        <input id="currentAvailability_none" name="currentAvailability" type="radio" className="custom-control-input" readOnly checked={submission.content.currentAvailability_none} />
+                                                        <input id="currentAvailability_none" name="currentAvailability" type="radio" className="custom-control-input" readOnly={!isEditable} checked={submission.content.currentAvailability_none} />
                                                         <span className="custom-control-label">Not currently available</span>
                                                     </label>
                                                 </div>
@@ -226,7 +230,7 @@ class IARAssessmentSubmission extends Component {
                                                         <i className="fa fa-calendar tx-16 lh-0 op-6"></i>
                                                     </div>
                                                 </div>
-                                                <input name="whenWillBeAvailable" id="whenWillBeAvailable" readOnly defaultValue={submission.content.whenWillBeAvailable} type="text" className="form-control" placeholder="MM/DD/YYYY" />
+                                                <input name="whenWillBeAvailable" id="whenWillBeAvailable" readOnly={!isEditable} defaultValue={submission.content.whenWillBeAvailable} type="text" className="form-control" placeholder="MM/DD/YYYY" />
                                             </div>
                                         </div>
                                     </div>
@@ -243,22 +247,22 @@ class IARAssessmentSubmission extends Component {
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-2">
-                                            <input type="text" className="form-control" id="workFluency_firstLanguage" name="workFluency_firstLanguage" readOnly defaultValue={submission.content.workFluency_firstLanguage} />
+                                            <input type="text" className="form-control" id="workFluency_firstLanguage" name="workFluency_firstLanguage" readOnly={!isEditable} defaultValue={submission.content.workFluency_firstLanguage} />
                                         </div>
                                         <div className="form-group col-md-2">
-                                            <input type="text" className="form-control" id="workFluency_secondLanguage" name="workFluency_secondLanguage" readOnly defaultValue={submission.content.workFluency_secondLanguage} />
+                                            <input type="text" className="form-control" id="workFluency_secondLanguage" name="workFluency_secondLanguage" readOnly={!isEditable} defaultValue={submission.content.workFluency_secondLanguage} />
                                         </div>
                                         <div className="form-group col-md-2">
-                                            <input type="text" className="form-control" id="workFluency_thirdLanguage" name="workFluency_thirdLanguage" readOnly defaultValue={submission.content.workFluency_thirdLanguage} />
+                                            <input type="text" className="form-control" id="workFluency_thirdLanguage" name="workFluency_thirdLanguage" readOnly={!isEditable} defaultValue={submission.content.workFluency_thirdLanguage} />
                                         </div>
                                         <div className="form-group col-md-2">
-                                            <input type="text" className="form-control" id="workFluency_fourthLanguage" name="workFluency_fourthLanguage" readOnly defaultValue={submission.content.workFluency_fourthLanguage} />
+                                            <input type="text" className="form-control" id="workFluency_fourthLanguage" name="workFluency_fourthLanguage" readOnly={!isEditable} defaultValue={submission.content.workFluency_fourthLanguage} />
                                         </div>
                                         <div className="form-group col-md-2">
-                                            <input type="text" className="form-control" id="workFluency_fifthLanguage" name="workFluency_fifthLanguage" readOnly defaultValue={submission.content.workFluency_fifthLanguage} />
+                                            <input type="text" className="form-control" id="workFluency_fifthLanguage" name="workFluency_fifthLanguage" readOnly={!isEditable} defaultValue={submission.content.workFluency_fifthLanguage} />
                                         </div>
                                         <div className="form-group col-md-2">
-                                            <input type="text" className="form-control" id="workFluency_sixthLanguage" name="workFluency_sixthLanguage" readOnly defaultValue={submission.content.workFluency_sixthLanguage} />
+                                            <input type="text" className="form-control" id="workFluency_sixthLanguage" name="workFluency_sixthLanguage" readOnly={!isEditable} defaultValue={submission.content.workFluency_sixthLanguage} />
                                         </div>
                                     </div>
                                     <div className="form-row">
@@ -266,12 +270,12 @@ class IARAssessmentSubmission extends Component {
                                         <div className="col">
                                             <div className="custom-controls-stacked">
                                                 <label className="custom-control custom-radio">
-                                                    <input id="englishLanguageAssessed_yes" name="englishLanguageAssessed" readOnly checked={submission.content.englishLanguageAssessed_yes} type="radio" className="custom-control-input"
+                                                    <input id="englishLanguageAssessed_yes" name="englishLanguageAssessed" readOnly={!isEditable} checked={submission.content.englishLanguageAssessed_yes} type="radio" className="custom-control-input"
                                                     />
                                                     <span className="custom-control-label">Yes</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
-                                                    <input id="englishLanguageAssessed_no" name="englishLanguageAssessed" readOnly checked={submission.content.englishLanguageAssessed_no} type="radio" className="custom-control-input" />
+                                                    <input id="englishLanguageAssessed_no" name="englishLanguageAssessed" readOnly={!isEditable} checked={submission.content.englishLanguageAssessed_no} type="radio" className="custom-control-input" />
                                                     <span className="custom-control-label">No</span>
                                                 </label>
                                             </div>
@@ -283,7 +287,7 @@ class IARAssessmentSubmission extends Component {
                                     <div className="form-row">
                                         <div className="form-group col-md-2">
                                             <label htmlFor="exampleFormControlSelect1">Listening</label>
-                                            <select className="form-control" id="englishLanguageAssessmentScore_listening" name="englishLanguageAssessmentScore_listening" readOnly defaultValue={submission.content.englishLanguageAssessmentScore_listening}>
+                                            <select className="form-control" id="englishLanguageAssessmentScore_listening" name="englishLanguageAssessmentScore_listening" readOnly={!isEditable} defaultValue={submission.content.englishLanguageAssessmentScore_listening}>
                                                 <option value="">--</option>
                                                 <option>1</option>
                                                 <option>2</option>
@@ -301,7 +305,7 @@ class IARAssessmentSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-2">
                                             <label htmlFor="exampleFormControlSelect1">Speaking</label>
-                                            <select className="form-control" id="englishLanguageAssessmentScore_speaking" name="englishLanguageAssessmentScore_speaking" readOnly defaultValue={submission.content.englishLanguageAssessmentScore_speaking}>
+                                            <select className="form-control" id="englishLanguageAssessmentScore_speaking" name="englishLanguageAssessmentScore_speaking" readOnly={!isEditable} defaultValue={submission.content.englishLanguageAssessmentScore_speaking}>
                                                 <option value="">--</option>
                                                 <option>1</option>
                                                 <option>2</option>
@@ -319,7 +323,7 @@ class IARAssessmentSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-2">
                                             <label htmlFor="exampleFormControlSelect1">Reading</label>
-                                            <select className="form-control" id="englishLanguageAssessmentScore_reading" name="englishLanguageAssessmentScore_reading" readOnly defaultValue={submission.content.englishLanguageAssessmentScore_reading}>
+                                            <select className="form-control" id="englishLanguageAssessmentScore_reading" name="englishLanguageAssessmentScore_reading" readOnly={!isEditable} defaultValue={submission.content.englishLanguageAssessmentScore_reading}>
                                                 <option value="">--</option>
                                                 <option>1</option>
                                                 <option>2</option>
@@ -337,7 +341,7 @@ class IARAssessmentSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-2">
                                             <label htmlFor="exampleFormControlSelect1">Writing</label>
-                                            <select className="form-control" id="englishLanguageAssessmentScore_writing" name="englishLanguageAssessmentScore_writing" readOnly defaultValue={submission.content.englishLanguageAssessmentScore_writing}>
+                                            <select className="form-control" id="englishLanguageAssessmentScore_writing" name="englishLanguageAssessmentScore_writing" readOnly={!isEditable} defaultValue={submission.content.englishLanguageAssessmentScore_writing}>
                                                 <option value="">--</option>
                                                 <option>1</option>
                                                 <option>2</option>
@@ -361,7 +365,7 @@ class IARAssessmentSubmission extends Component {
                                                         <i className="fa fa-calendar tx-16 lh-0 op-6"></i>
                                                     </div>
                                                 </div>
-                                                <input name="englishLanguageAssessmentScore_assessmentDate" id="englishLanguageAssessmentScore_assessmentDate" type="text" className="form-control" placeholder="MM/DD/YYYY" readOnly defaultValue={submission.content.englishLanguageAssessmentScore_assessmentDate} />
+                                                <input name="englishLanguageAssessmentScore_assessmentDate" id="englishLanguageAssessmentScore_assessmentDate" type="text" className="form-control" placeholder="MM/DD/YYYY" readOnly={!isEditable} defaultValue={submission.content.englishLanguageAssessmentScore_assessmentDate} />
                                             </div>
                                         </div>
                                     </div>
@@ -370,12 +374,12 @@ class IARAssessmentSubmission extends Component {
                                         <div className="col">
                                             <div className="custom-controls-stacked">
                                                 <label className="custom-control custom-radio">
-                                                    <input id="frenchLanguageAssessed_yes" name="frenchLanguageAssessed" type="radio" className="custom-control-input" readOnly checked={submission.content.frenchLanguageAssessed_yes}
+                                                    <input id="frenchLanguageAssessed_yes" name="frenchLanguageAssessed" type="radio" className="custom-control-input" readOnly={!isEditable} checked={submission.content.frenchLanguageAssessed_yes}
                                                     />
                                                     <span className="custom-control-label">Yes</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
-                                                    <input id="frenchLanguageAssessed_no" name="frenchLanguageAssessed" type="radio" className="custom-control-input" readOnly checked={submission.content.frenchLanguageAssessed_no} />
+                                                    <input id="frenchLanguageAssessed_no" name="frenchLanguageAssessed" type="radio" className="custom-control-input" readOnly={!isEditable} checked={submission.content.frenchLanguageAssessed_no} />
                                                     <span className="custom-control-label">No</span>
                                                 </label>
                                             </div>
@@ -387,7 +391,7 @@ class IARAssessmentSubmission extends Component {
                                     <div className="form-row">
                                         <div className="form-group col-md-2">
                                             <label htmlFor="exampleFormControlSelect1">Listening</label>
-                                            <select className="form-control" id="frenchLanguageAssessment_listening" name="frenchLanguageAssessment_listening" readOnly defaultValue={submission.content.frenchLanguageAssessment_listening}>
+                                            <select className="form-control" id="frenchLanguageAssessment_listening" name="frenchLanguageAssessment_listening" readOnly={!isEditable} defaultValue={submission.content.frenchLanguageAssessment_listening}>
                                                 <option value="">--</option>
                                                 <option>1</option>
                                                 <option>2</option>
@@ -405,7 +409,7 @@ class IARAssessmentSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-2">
                                             <label htmlFor="exampleFormControlSelect1">Speaking</label>
-                                            <select className="form-control" id="frenchLanguageAssessment_speaking" name="frenchLanguageAssessment_speaking" readOnly defaultValue={submission.content.frenchLanguageAssessment_speaking}>
+                                            <select className="form-control" id="frenchLanguageAssessment_speaking" name="frenchLanguageAssessment_speaking" readOnly={!isEditable} defaultValue={submission.content.frenchLanguageAssessment_speaking}>
                                                 <option value="">--</option>
                                                 <option>1</option>
                                                 <option>2</option>
@@ -423,7 +427,7 @@ class IARAssessmentSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-2">
                                             <label htmlFor="exampleFormControlSelect1">Reading</label>
-                                            <select className="form-control" id="frenchLanguageAssessment_reading" name="frenchLanguageAssessment_reading" readOnly defaultValue={submission.content.frenchLanguageAssessment_reading}>
+                                            <select className="form-control" id="frenchLanguageAssessment_reading" name="frenchLanguageAssessment_reading" readOnly={!isEditable} defaultValue={submission.content.frenchLanguageAssessment_reading}>
                                                 <option value="">--</option>
                                                 <option>1</option>
                                                 <option>2</option>
@@ -441,7 +445,7 @@ class IARAssessmentSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-2">
                                             <label htmlFor="exampleFormControlSelect1">Writing</label>
-                                            <select className="form-control" id="frenchLanguageAssessment_writing" name="frenchLanguageAssessment_writing" readOnly defaultValue={submission.content.frenchLanguageAssessment_writing}>
+                                            <select className="form-control" id="frenchLanguageAssessment_writing" name="frenchLanguageAssessment_writing" readOnly={!isEditable} defaultValue={submission.content.frenchLanguageAssessment_writing}>
                                                 <option value="">--</option>
                                                 <option>1</option>
                                                 <option>2</option>
@@ -465,7 +469,7 @@ class IARAssessmentSubmission extends Component {
                                                         <i className="fa fa-calendar tx-16 lh-0 op-6"></i>
                                                     </div>
                                                 </div>
-                                                <input name="frenchLanguageAssessment_assessmentDate" id="frenchLanguageAssessment_assessmentDate" readOnly defaultValue={submission.content.frenchLanguageAssessment_assessmentDate} type="text" className="form-control" placeholder="MM/DD/YYYY" />
+                                                <input name="frenchLanguageAssessment_assessmentDate" id="frenchLanguageAssessment_assessmentDate" readOnly={!isEditable} defaultValue={submission.content.frenchLanguageAssessment_assessmentDate} type="text" className="form-control" placeholder="MM/DD/YYYY" />
                                             </div>
                                         </div>
                                     </div>
@@ -476,7 +480,7 @@ class IARAssessmentSubmission extends Component {
                                     <div className="form-row">
                                         <div className="form-group col-md-4">
                                             <label htmlFor="exampleFormControlSelect1">MS Word</label>
-                                            <select className="form-control" id="msWord_skillLevel" name="msWord_skillLevel" readOnly defaultValue={submission.content.msWord_skillLevel}>
+                                            <select className="form-control" id="msWord_skillLevel" name="msWord_skillLevel" readOnly={!isEditable} defaultValue={submission.content.msWord_skillLevel}>
                                                 <option>N/A</option>
                                                 <option>Basic</option>
                                                 <option>Intermediate</option>
@@ -485,7 +489,7 @@ class IARAssessmentSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-4">
                                             <label htmlFor="exampleFormControlSelect1">Email</label>
-                                            <select className="form-control" id="email_skillLevel" name="email_skillLevel" readOnly defaultValue={submission.content.email_skillLevel}>
+                                            <select className="form-control" id="email_skillLevel" name="email_skillLevel" readOnly={!isEditable} defaultValue={submission.content.email_skillLevel}>
                                                 <option>N/A</option>
                                                 <option>Basic</option>
                                                 <option>Intermediate</option>
@@ -494,7 +498,7 @@ class IARAssessmentSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-4">
                                             <label htmlFor="exampleFormControlSelect1">Internet</label>
-                                            <select className="form-control" id="internet_skillLevel" name="internet_skillLevel" readOnly defaultValue={submission.content.internet_skillLevel}>
+                                            <select className="form-control" id="internet_skillLevel" name="internet_skillLevel" readOnly={!isEditable} defaultValue={submission.content.internet_skillLevel}>
                                                 <option>N/A</option>
                                                 <option>Basic</option>
                                                 <option>Intermediate</option>
@@ -513,12 +517,12 @@ class IARAssessmentSubmission extends Component {
                                         <div className="col">
                                             <div className="custom-controls-stacked">
                                                 <label className="custom-control custom-radio">
-                                                    <input id="resumeBrought_yes" name="resumeBrought" readOnly checked={submission.content.resumeBrought_yes} type="radio" className="custom-control-input"
+                                                    <input id="resumeBrought_yes" name="resumeBrought" readOnly={!isEditable} checked={submission.content.resumeBrought_yes} type="radio" className="custom-control-input"
                                                     />
                                                     <span className="custom-control-label">Yes</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
-                                                    <input id="resumeBrought_no" name="resumeBrought" readOnly checked={submission.content.resumeBrought_no} type="radio" className="custom-control-input" />
+                                                    <input id="resumeBrought_no" name="resumeBrought" readOnly={!isEditable} checked={submission.content.resumeBrought_no} type="radio" className="custom-control-input" />
                                                     <span className="custom-control-label">No</span>
                                                 </label>
                                             </div>
@@ -527,7 +531,7 @@ class IARAssessmentSubmission extends Component {
                                     <div className="form-row">
                                         <div className="form-group col-md-12">
                                             <label htmlFor="inputCity">Notes for improvement on resume:</label>
-                                            <input type="text" className="form-control" id="improvementToResume" name="improvementToResume" readOnly defaultValue={submission.content.improvementToResume} />
+                                            <input type="text" className="form-control" id="improvementToResume" name="improvementToResume" readOnly={!isEditable} defaultValue={submission.content.improvementToResume} />
                                         </div>
                                     </div>
                                     <h5>Work Experience</h5>
@@ -536,7 +540,7 @@ class IARAssessmentSubmission extends Component {
                                         <div className="form-group col-md-3">
                                             <label htmlFor="exampleFormControlSelect1">Years of experience in your primary profession/occupation:
                               </label>
-                                            <select className="form-control" id="yearsOfExperience_primaryOccupation" name="yearsOfExperience_primaryOccupation" readOnly defaultValue={submission.content.yearsOfExperience_primaryOccupation}>
+                                            <select className="form-control" id="yearsOfExperience_primaryOccupation" name="yearsOfExperience_primaryOccupation" readOnly={!isEditable} defaultValue={submission.content.yearsOfExperience_primaryOccupation}>
                                                 <option value="">--</option>
                                                 <option>&lt; 3 years</option>
                                                 <option>3-5 years</option>
@@ -547,7 +551,7 @@ class IARAssessmentSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-3">
                                             <label htmlFor="exampleFormControlSelect1">Secondary occupation or more, if applicable:</label>
-                                            <select className="form-control" id="yearsOfExperience_secondaryOccupation" name="yearsOfExperience_secondaryOccupation" readOnly defaultValue={submission.content.yearsOfExperience_secondaryOccupation}>
+                                            <select className="form-control" id="yearsOfExperience_secondaryOccupation" name="yearsOfExperience_secondaryOccupation" readOnly={!isEditable} defaultValue={submission.content.yearsOfExperience_secondaryOccupation}>
                                                 <option value="">--</option>
                                                 <option>&#60; 3 years</option>
                                                 <option>3-5 years</option>
@@ -558,7 +562,7 @@ class IARAssessmentSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-3">
                                             <label htmlFor="exampleFormControlSelect1">Length of time in Canada not working in field?</label>
-                                            <select className="form-control" id="periodInCanadaWithoutWorkInPrimaryField" name="periodInCanadaWithoutWorkInPrimaryField" readOnly defaultValue={submission.content.periodInCanadaWithoutWorkInPrimaryField}>
+                                            <select className="form-control" id="periodInCanadaWithoutWorkInPrimaryField" name="periodInCanadaWithoutWorkInPrimaryField" readOnly={!isEditable} defaultValue={submission.content.periodInCanadaWithoutWorkInPrimaryField}>
                                                 <option value="">--</option>
                                                 <option>&#60; 1 year</option>
                                                 <option>1-3 years</option>
@@ -571,39 +575,39 @@ class IARAssessmentSubmission extends Component {
                                     <div className="form-row">
                                         <div className="form-group col-md-12">
                                             <label htmlFor="inputCity">Short-term Goals</label>
-                                            <input type="text" className="form-control" id="shortTermGoals" name="shortTermGoals" readOnly defaultValue={submission.content.shortTermGoals} />
+                                            <input type="text" className="form-control" id="shortTermGoals" name="shortTermGoals" readOnly={!isEditable} defaultValue={submission.content.shortTermGoals} />
                                         </div>
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-12">
                                             <label htmlFor="inputCity">Long-term Goals</label>
-                                            <input type="text" className="form-control" id="longTermGoals" name="longTermGoals" readOnly defaultValue={submission.content.longTermGoals} />
+                                            <input type="text" className="form-control" id="longTermGoals" name="longTermGoals" readOnly={!isEditable} defaultValue={submission.content.longTermGoals} />
                                         </div>
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-12">
                                             <label htmlFor="inputCity">Intended Occupation</label>
-                                            <input type="text" className="form-control" id="intendedOccupation" name="intendedOccupation" readOnly defaultValue={submission.content.intendedOccupation} />
+                                            <input type="text" className="form-control" id="intendedOccupation" name="intendedOccupation" readOnly={!isEditable} defaultValue={submission.content.intendedOccupation} />
                                         </div>
                                     </div>
                                     <h5>Knowledge of Labour Market</h5>
                                     <div className="form-row">
                                         <div className="form-group col-md-12">
                                             <label htmlFor="inputCity">Where (geographical location) currently looking for work opportunities in field?</label>
-                                            <input type="text" className="form-control" id="desiredJobLocation" name="desiredJobLocation" readOnly defaultValue={submission.content.desiredJobLocation} />
+                                            <input type="text" className="form-control" id="desiredJobLocation" name="desiredJobLocation" readOnly={!isEditable} defaultValue={submission.content.desiredJobLocation} />
                                         </div>
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-12">
                                             <label htmlFor="inputCity">What level of knowledge about the occupation / industry in Ottawa? (names of companies, labour market demand, salary, etc)</label>
-                                            <input type="text" className="form-control" id="levelOfKnowledgeOfIndustry" name="levelOfKnowledgeOfIndustry" readOnly defaultValue={submission.content.levelOfKnowledgeOfIndustry} />
+                                            <input type="text" className="form-control" id="levelOfKnowledgeOfIndustry" name="levelOfKnowledgeOfIndustry" readOnly={!isEditable} defaultValue={submission.content.levelOfKnowledgeOfIndustry} />
                                         </div>
                                     </div>
                                     <h5>Job Search Methods and Networking</h5>
                                     <div className="form-row">
                                         <div className="form-group col-md-12">
                                             <label htmlFor="inputCity">What job search methods are currently in use?</label>
-                                            <input type="text" className="form-control" id="usedJobSearchMethods" name="usedJobSearchMethods" readOnly defaultValue={submission.content.usedJobSearchMethods} />
+                                            <input type="text" className="form-control" id="usedJobSearchMethods" name="usedJobSearchMethods" readOnly={!isEditable} defaultValue={submission.content.usedJobSearchMethods} />
                                         </div>
                                     </div>
                                     <div className="form-row">
@@ -611,12 +615,12 @@ class IARAssessmentSubmission extends Component {
                                         <div className="col">
                                             <div className="custom-controls-stacked">
                                                 <label className="custom-control custom-radio">
-                                                    <input id="connectedWithPeopleInDesiredField_yes" name="connectedWithPeopleInDesiredField" readOnly checked={submission.content.connectedWithPeopleInDesiredField_yes} type="radio" className="custom-control-input"
+                                                    <input id="connectedWithPeopleInDesiredField_yes" name="connectedWithPeopleInDesiredField" readOnly={!isEditable} checked={submission.content.connectedWithPeopleInDesiredField_yes} type="radio" className="custom-control-input"
                                                     />
                                                     <span className="custom-control-label">Yes</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
-                                                    <input id="connectedWithPeopleInDesiredField_no" name="connectedWithPeopleInDesiredField" readOnly checked={submission.content.connectedWithPeopleInDesiredField_no} type="radio" className="custom-control-input" />
+                                                    <input id="connectedWithPeopleInDesiredField_no" name="connectedWithPeopleInDesiredField" readOnly={!isEditable} checked={submission.content.connectedWithPeopleInDesiredField_no} type="radio" className="custom-control-input" />
                                                     <span className="custom-control-label">No</span>
                                                 </label>
                                             </div>
@@ -626,7 +630,7 @@ class IARAssessmentSubmission extends Component {
                                     <div className="form-row">
                                         <div className="form-group col-md-3">
                                             <label htmlFor="exampleFormControlSelect1">Number of job application (in the past month)</label>
-                                            <select className="form-control" id="numberOfJobApplication" name="numberOfJobApplication" readOnly defaultValue={submission.content.numberOfJobApplication}>
+                                            <select className="form-control" id="numberOfJobApplication" name="numberOfJobApplication" readOnly={!isEditable} defaultValue={submission.content.numberOfJobApplication}>
                                                 <option value="">--</option>
                                                 <option>0</option>
                                                 <option>1</option>
@@ -648,12 +652,12 @@ class IARAssessmentSubmission extends Component {
                                         <div className="col">
                                             <div className="custom-controls-stacked">
                                                 <label className="custom-control custom-radio">
-                                                    <input id="interviews_yes" name="interviews" readOnly checked={submission.content.interviews_yes} type="radio" className="custom-control-input"
+                                                    <input id="interviews_yes" name="interviews" readOnly={!isEditable} checked={submission.content.interviews_yes} type="radio" className="custom-control-input"
                                                     />
                                                     <span className="custom-control-label">Yes</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
-                                                    <input id="interviews_no" name="interviews" readOnly checked={submission.content.interviews_no} type="radio" className="custom-control-input" />
+                                                    <input id="interviews_no" name="interviews" readOnly={!isEditable} checked={submission.content.interviews_no} type="radio" className="custom-control-input" />
                                                     <span className="custom-control-label">No</span>
                                                 </label>
                                             </div>
@@ -662,7 +666,7 @@ class IARAssessmentSubmission extends Component {
                                     <div className="form-row">
                                         <div className="form-group col-md-3">
                                             <label htmlFor="exampleFormControlSelect1">Numbers of interviews:</label>
-                                            <select className="form-control" id="numberOfInterviews" name="numberOfInterviews" readOnly defaultValue={submission.content.numberOfInterviews}>
+                                            <select className="form-control" id="numberOfInterviews" name="numberOfInterviews" readOnly={!isEditable} defaultValue={submission.content.numberOfInterviews}>
                                                 <option value="">--</option>
                                                 <option>0</option>
                                                 <option>1</option>
@@ -681,50 +685,50 @@ class IARAssessmentSubmission extends Component {
                                     <div className="form-row">
                                         <div className="form-group col-md-12">
                                             <label htmlFor="inputCity">Thoughts / Comments / Concerns regarding interviews??</label>
-                                            <input type="text" className="form-control" id="thoughtsAndComments" name="thoughtsAndComments" readOnly defaultValue={submission.content.thoughtsAndComments} />
+                                            <input type="text" className="form-control" id="thoughtsAndComments" name="thoughtsAndComments" readOnly={!isEditable} defaultValue={submission.content.thoughtsAndComments} />
                                         </div>
                                     </div>
                                     <h5>Optional</h5>
                                     <p>(For clients who you feel are job ready and can be referred to OJMN directly from IAR)</p>
 
                                     <div className="form-check form-group">
-                                        <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="hasResearchedTheField" name="hasResearchedTheField"  checked={submission.content.hasResearchedTheField} />
+                                        <input className="form-check-input" type="checkbox" readOnly={!isEditable} disabled={!isEditable} value="" id="hasResearchedTheField" name="hasResearchedTheField"  checked={submission.content.hasResearchedTheField} />
                                         <label className="form-check-label" htmlFor="hasResearchedTheField">
                                             has researched the field/industry
                               </label>
                                     </div>
                                     <div className="form-check form-group">
-                                        <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="isSearching" name="isSearching"  checked={submission.content.isSearching} />
+                                        <input className="form-check-input" type="checkbox" readOnly={!isEditable} disabled={!isEditable} value="" id="isSearching" name="isSearching"  checked={submission.content.isSearching} />
                                         <label className="form-check-label" htmlFor="isSearching">
                                             is searching for a comparable job in his/her field in Canada
                             </label>
                                     </div>
                                     <div className="form-check form-group">
-                                        <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="hasTransferableSkills" name="hasTransferableSkills"  checked={submission.content.hasTransferableSkills} />
+                                        <input className="form-check-input" type="checkbox" readOnly={!isEditable} disabled={!isEditable} value="" id="hasTransferableSkills" name="hasTransferableSkills"  checked={submission.content.hasTransferableSkills} />
                                         <label className="form-check-label" htmlFor="hasTransferableSkills">
                                             has transferable skills and demonstrates a willingness to learn
                             </label>
                                     </div>
                                     <div className="form-check form-group">
-                                        <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="hasStrongResume" name="hasStrongResume"  checked={submission.content.hasStrongResume} />
+                                        <input className="form-check-input" type="checkbox" readOnly={!isEditable} disabled={!isEditable} value="" id="hasStrongResume" name="hasStrongResume"  checked={submission.content.hasStrongResume} />
                                         <label className="form-check-label" htmlFor="hasStrongResume">
                                             has a strong resume detailing qualifications and competencies
                             </label>
                                     </div>
                                     <div className="form-check form-group">
-                                        <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="ableToTargetResumeforOpportunities" name="ableToTargetResumeforOpportunities"  checked={submission.content.ableToTargetResumeforOpportunities} />
+                                        <input className="form-check-input" type="checkbox" readOnly={!isEditable} disabled={!isEditable} value="" id="ableToTargetResumeforOpportunities" name="ableToTargetResumeforOpportunities"  checked={submission.content.ableToTargetResumeforOpportunities} />
                                         <label className="form-check-label" htmlFor="ableToTargetResumeforOpportunities">
                                             is able to target his/her resume for posted job opportunities
                             </label>
                                     </div>
                                     <div className="form-check form-group">
-                                        <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="canUseSTAR" name="canUseSTAR"  checked={submission.content.canUseSTAR} />
+                                        <input className="form-check-input" type="checkbox" readOnly={!isEditable} disabled={!isEditable} value="" id="canUseSTAR" name="canUseSTAR"  checked={submission.content.canUseSTAR} />
                                         <label className="form-check-label" htmlFor="canUseSTAR">
                                             can use STAR technique when answering interview questions
                             </label>
                                     </div>
                                     <div className="form-check form-group">
-                                        <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="positiveAttitude" name="positiveAttitude"  checked={submission.content.positiveAttitude} />
+                                        <input className="form-check-input" type="checkbox" readOnly={!isEditable} disabled={!isEditable} value="" id="positiveAttitude" name="positiveAttitude"  checked={submission.content.positiveAttitude} />
                                         <label className="form-check-label" htmlFor="positiveAttitude">
                                             demonstrates a positive attitude
                             </label>
@@ -739,7 +743,7 @@ class IARAssessmentSubmission extends Component {
                                     <p>Check one of the three options below and create the client action plan:</p>
                                     <div className="form-row">
                                         <div className="form-check form-group">
-                                            <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="elegibleForJobSearchWorkshop" name="elegibleForJobSearchWorkshop"  checked={submission.content.elegibleForJobSearchWorkshop} />
+                                            <input className="form-check-input" type="checkbox" readOnly={!isEditable} disabled={!isEditable} value="" id="elegibleForJobSearchWorkshop" name="elegibleForJobSearchWorkshop"  checked={submission.content.elegibleForJobSearchWorkshop} />
                                             <label className="form-check-label" htmlFor="elegibleForJobSearchWorkshop">
                                                 Client is eligible and suitable for Job Search Workshop (JSW) and will be referred
                             </label>
@@ -747,50 +751,50 @@ class IARAssessmentSubmission extends Component {
                                     </div>
                                     <p>If NOT referred to JSW, please indicate why:</p>
                                     <div className="form-check form-group">
-                                        <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="referredToCareerAccessForNewcomers" name="referredToCareerAccessForNewcomers"  checked={submission.content.referredToCareerAccessForNewcomers} />
+                                        <input className="form-check-input" type="checkbox" readOnly={!isEditable} disabled={!isEditable} value="" id="referredToCareerAccessForNewcomers" name="referredToCareerAccessForNewcomers"  checked={submission.content.referredToCareerAccessForNewcomers} />
                                         <label className="form-check-label" htmlFor="referredToCareerAccessForNewcomers">
                                             Client is not eligible for JSW, but will be referred to Career Access for Newcomers (CAN)
                             </label>
                                     </div>
                                     <div className="form-check form-group">
-                                        <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="referredToRoadmapToEmployment" name="referredToRoadmapToEmployment"  checked={submission.content.referredToRoadmapToEmployment} />
+                                        <input className="form-check-input" type="checkbox" readOnly={!isEditable} disabled={!isEditable} value="" id="referredToRoadmapToEmployment" name="referredToRoadmapToEmployment"  checked={submission.content.referredToRoadmapToEmployment} />
                                         <label className="form-check-label" htmlFor="referredToRoadmapToEmployment">
                                             Client is not suitable for JSW or CAN, but will be referred to Roadmap to Employment (RTE)
                             </label>
                                     </div>
                                     <div className="form-check form-group">
-                                        <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="clientNotReferred" name="clientNotReferred"  checked={submission.content.clientNotReferred} />
+                                        <input className="form-check-input" type="checkbox" readOnly={!isEditable} disabled={!isEditable} value="" id="clientNotReferred" name="clientNotReferred"  checked={submission.content.clientNotReferred} />
                                         <label className="form-check-label" htmlFor="clientNotReferred">
                                             Client will not be referred to JSW, CAN, or RTE because …
                             </label>
                                     </div>
                                     <div className="form-row">
                                         <div className="form-check form-group col-md-2">
-                                            <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="clientNotReferred_attendingSchool" name="clientNotReferred_attendingSchool"  checked={submission.content.clientNotReferred_attendingSchool} />
+                                            <input className="form-check-input" type="checkbox" readOnly={!isEditable} disabled={!isEditable} value="" id="clientNotReferred_attendingSchool" name="clientNotReferred_attendingSchool"  checked={submission.content.clientNotReferred_attendingSchool} />
                                             <label className="form-check-label" htmlFor="clientNotReferred_attendingSchool">
                                                 Attending school
                             </label>
                                         </div>
                                         <div className="form-check form-group  col-md-2">
-                                            <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="clientNotReferred_languageSkills" name="clientNotReferred_languageSkills"  checked={submission.content.clientNotReferred_languageSkills} />
+                                            <input className="form-check-input" type="checkbox" readOnly={!isEditable} disabled={!isEditable} value="" id="clientNotReferred_languageSkills" name="clientNotReferred_languageSkills"  checked={submission.content.clientNotReferred_languageSkills} />
                                             <label className="form-check-label" htmlFor="clientNotReferred_languageSkills">
                                                 Language skills
                             </label>
                                         </div>
                                         <div className="form-check form-group  col-md-2">
-                                            <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="clientNotReferred_childCare" name="clientNotReferred_childCare"  checked={submission.content.clientNotReferred_childCare} />
+                                            <input className="form-check-input" type="checkbox" readOnly={!isEditable} disabled={!isEditable} value="" id="clientNotReferred_childCare" name="clientNotReferred_childCare"  checked={submission.content.clientNotReferred_childCare} />
                                             <label className="form-check-label" htmlFor="clientNotReferred_childCare">
                                                 Childcare needs
                             </label>
                                         </div>
                                         <div className="form-check form-group  col-md-3">
-                                            <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="clientNotReferred_noOccupationGoal" name="clientNotReferred_noOccupationGoal"  checked={submission.content.clientNotReferred_noOccupationGoal} />
+                                            <input className="form-check-input" type="checkbox" readOnly={!isEditable} disabled={!isEditable} value="" id="clientNotReferred_noOccupationGoal" name="clientNotReferred_noOccupationGoal"  checked={submission.content.clientNotReferred_noOccupationGoal} />
                                             <label className="form-check-label" htmlFor="clientNotReferred_noOccupationGoal">
                                                 No occupational goal
                             </label>
                                         </div>
                                         <div className="form-check form-group  col-md-2">
-                                            <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="clientNotReferred_transportation" name="clientNotReferred_transportation"  checked={submission.content.clientNotReferred_transportation} />
+                                            <input className="form-check-input" type="checkbox" readOnly={!isEditable} disabled={!isEditable} value="" id="clientNotReferred_transportation" name="clientNotReferred_transportation"  checked={submission.content.clientNotReferred_transportation} />
                                             <label className="form-check-label" htmlFor="clientNotReferred_transportation">
                                                 Transportation
                             </label>
@@ -798,31 +802,31 @@ class IARAssessmentSubmission extends Component {
                                     </div>
                                     <div className="form-row">
                                         <div className="form-check form-group col-md-2">
-                                            <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="clientNotReferred_health" name="clientNotReferred_health"  checked={submission.content.clientNotReferred_health} />
+                                            <input className="form-check-input" type="checkbox" readOnly={!isEditable} disabled={!isEditable} value="" id="clientNotReferred_health" name="clientNotReferred_health"  checked={submission.content.clientNotReferred_health} />
                                             <label className="form-check-label" htmlFor="clientNotReferred_health">
                                                 Health
                             </label>
                                         </div>
                                         <div className="form-check form-group  col-md-3">
-                                            <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="clientNotReferred_unsuitableExpectation" name="clientNotReferred_unsuitableExpectation"  checked={submission.content.clientNotReferred_unsuitableExpectation} />
+                                            <input className="form-check-input" type="checkbox" readOnly={!isEditable} disabled={!isEditable} value="" id="clientNotReferred_unsuitableExpectation" name="clientNotReferred_unsuitableExpectation"  checked={submission.content.clientNotReferred_unsuitableExpectation} />
                                             <label className="form-check-label" htmlFor="clientNotReferred_unsuitableExpectation">
                                                 Unsuitable expectations
                             </label>
                                         </div>
                                         <div className="form-check form-group  col-md-3">
-                                            <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="clientNotReferred_noTimeForAssignments" name="clientNotReferred_noTimeForAssignments"  checked={submission.content.clientNotReferred_noTimeForAssignments} />
+                                            <input className="form-check-input" type="checkbox" readOnly={!isEditable} disabled={!isEditable} value="" id="clientNotReferred_noTimeForAssignments" name="clientNotReferred_noTimeForAssignments"  checked={submission.content.clientNotReferred_noTimeForAssignments} />
                                             <label className="form-check-label" htmlFor="clientNotReferred_noTimeForAssignments">
                                                 No time for assignments
                             </label>
                                         </div>
                                         <div className="form-check form-group  col-md-2">
-                                            <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="clientNotReferred_needsJobQuickly" name="clientNotReferred_needsJobQuickly"  checked={submission.content.clientNotReferred_needsJobQuickly} />
+                                            <input className="form-check-input" type="checkbox" readOnly={!isEditable} disabled={!isEditable} value="" id="clientNotReferred_needsJobQuickly" name="clientNotReferred_needsJobQuickly"  checked={submission.content.clientNotReferred_needsJobQuickly} />
                                             <label className="form-check-label" htmlFor="clientNotReferred_needsJobQuickly">
                                                 Needs job quickly
                             </label>
                                         </div>
                                         <div className="form-check form-group  col-md-2">
-                                            <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="clientNotReferred_lowComputerSkills" name="clientNotReferred_lowComputerSkills"  checked={submission.content.clientNotReferred_lowComputerSkills} />
+                                            <input className="form-check-input" type="checkbox" readOnly={!isEditable} disabled={!isEditable} value="" id="clientNotReferred_lowComputerSkills" name="clientNotReferred_lowComputerSkills"  checked={submission.content.clientNotReferred_lowComputerSkills} />
                                             <label className="form-check-label" htmlFor="clientNotReferred_lowComputerSkills">
                                                 No/low computer skills
                             </label>
@@ -830,19 +834,19 @@ class IARAssessmentSubmission extends Component {
                                     </div>
                                     <div className="form-row">
                                         <div className="form-check form-group col-md-6">
-                                            <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="clientNotReferred_limitedInterests" name="clientNotReferred_limitedInterests"  checked={submission.content.clientNotReferred_limitedInterests} />
+                                            <input className="form-check-input" type="checkbox" readOnly={!isEditable} disabled={!isEditable} value="" id="clientNotReferred_limitedInterests" name="clientNotReferred_limitedInterests"  checked={submission.content.clientNotReferred_limitedInterests} />
                                             <label className="form-check-label" htmlFor="clientNotReferred_limitedInterests">
                                                 Only interested in specific referrals (OJMN, FINP, WLT, etc.)
                             </label>
                                         </div>
                                         <div className="form-check form-group  col-md-4">
-                                            <input className="form-check-input" type="checkbox" readOnly disabled="true" value="" id="clientNotReferred_directReferrals" name="clientNotReferred_directReferrals"  checked={submission.content.clientNotReferred_directReferrals} />
+                                            <input className="form-check-input" type="checkbox" readOnly={!isEditable} disabled={!isEditable} value="" id="clientNotReferred_directReferrals" name="clientNotReferred_directReferrals"  checked={submission.content.clientNotReferred_directReferrals} />
                                             <label className="form-check-label" htmlFor="clientNotReferred_directReferrals">
                                                 Direct referral to OJMN and/or NEEP
                             </label>
                                         </div>
                                         <div className="form-check form-group  col-md-2">
-                                            <input className="form-check-input" type="checkbox " readOnly disabled="true" value="" id="clientNotReferred_other" name="clientNotReferred_other" checked={submission.content.clientNotReferred_other} />
+                                            <input className="form-check-input" type="checkbox " readOnly={!isEditable} disabled={!isEditable} value="" id="clientNotReferred_other" name="clientNotReferred_other" checked={submission.content.clientNotReferred_other} />
                                             <label className="form-check-label" htmlFor="clientNotReferred_other">
                                                 Other (please specify):
                             </label>
@@ -853,12 +857,12 @@ class IARAssessmentSubmission extends Component {
                                         <div className="col">
                                             <div className="custom-controls-stacked">
                                                 <label className="custom-control custom-radio">
-                                                    <input id="childCareRequested_yes" name="childCareRequested" type="radio" className="custom-control-input" readOnly checked={submission.content.childCareRequested_yes}
+                                                    <input id="childCareRequested_yes" name="childCareRequested" type="radio" className="custom-control-input" readOnly={!isEditable} checked={submission.content.childCareRequested_yes}
                                                     />
                                                     <span className="custom-control-label">Yes</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
-                                                    <input id="childCareRequested_no" name="childCareRequested" type="radio" className="custom-control-input" readOnly checked={submission.content.childCareRequested_no} />
+                                                    <input id="childCareRequested_no" name="childCareRequested" type="radio" className="custom-control-input" readOnly={!isEditable} checked={submission.content.childCareRequested_no} />
                                                     <span className="custom-control-label">No</span>
                                                 </label>
                                             </div>
@@ -869,12 +873,12 @@ class IARAssessmentSubmission extends Component {
                                         <div className="col">
                                             <div className="custom-controls-stacked">
                                                 <label className="custom-control custom-radio">
-                                                    <input id="eligibleForFINP_yes" name="eligibleForFINP" readOnly checked={submission.content.eligibleForFINP_yes} type="radio" className="custom-control-input"
+                                                    <input id="eligibleForFINP_yes" name="eligibleForFINP" readOnly={!isEditable} checked={submission.content.eligibleForFINP_yes} type="radio" className="custom-control-input"
                                                     />
                                                     <span className="custom-control-label">Yes</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
-                                                    <input id="eligibleForFINP_no" name="eligibleForFINP" readOnly checked={submission.content.eligibleForFINP_no} type="radio" className="custom-control-input" />
+                                                    <input id="eligibleForFINP_no" name="eligibleForFINP" readOnly={!isEditable} checked={submission.content.eligibleForFINP_no} type="radio" className="custom-control-input" />
                                                     <span className="custom-control-label">No</span>
                                                 </label>
                                             </div>
@@ -887,13 +891,13 @@ class IARAssessmentSubmission extends Component {
                                     aria-hidden="false" >
                                     <h5>While completing the Action plan:</h5>
                                     <div className="form-check form-group">
-                                        <input id="actionPlanCheckBox_one" name="actionPlanCheckBox_one" readOnly disabled="true" className="form-check-input" type="checkbox"  value="" checked={submission.content.actionPlanCheckBox_one} />
+                                        <input id="actionPlanCheckBox_one" name="actionPlanCheckBox_one" readOnly={!isEditable} disabled={!isEditable} className="form-check-input" type="checkbox"  value="" checked={submission.content.actionPlanCheckBox_one} />
                                         <label className="form-check-label" htmlFor="actionPlanCheckBox_one">
                                             Clarify the services our organization provides and the level of time and commitment necessary for successful program completion.
                             </label>
                                     </div>
                                     <div className="form-check form-group">
-                                        <input id="actionPlanCheckBox_two" name="actionPlanCheckBox_two" readOnly disabled="true" className="form-check-input" type="checkbox" value="" checked={submission.content.actionPlanCheckBox_two} />
+                                        <input id="actionPlanCheckBox_two" name="actionPlanCheckBox_two" readOnly={!isEditable} disabled={!isEditable} className="form-check-input" type="checkbox" value="" checked={submission.content.actionPlanCheckBox_two} />
                                         <label className="form-check-label" htmlFor="actionPlanCheckBox_two">
                                             Ensure that client is clear about the information they received and they are satisfied with the Action Plan.
                             </label>

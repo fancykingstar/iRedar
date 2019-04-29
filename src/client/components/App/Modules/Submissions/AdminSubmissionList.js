@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom'
 import moment from 'moment';
 import Spinner from '../../../Elements/Spinner';
+import {deleteSubmission} from "../../../../actions/submissionActions";
 
 class AdminSubmissionList extends Component {
 
@@ -20,7 +21,8 @@ class AdminSubmissionList extends Component {
     let formName = event.target.getAttribute('form_name');
     let submissionId = event.target.getAttribute('submission_id');
     this.props.history.push({
-      pathname: '/forms/' + formName + '/' + submissionId
+      pathname: '/forms/' + formName + '/' + submissionId,
+      state: { edit: 'true' }
     });
   };
 
@@ -28,7 +30,21 @@ class AdminSubmissionList extends Component {
     let formName = event.target.getAttribute('form_name');
     let submissionId = event.target.getAttribute('submission_id');
     this.props.history.push({
-      pathname: '/forms/' + formName + '/' + submissionId
+      pathname: '/forms/' + formName + '/' + submissionId,
+      state: { edit: 'false' }
+    });
+  };
+
+  delete = event => {
+    let submissionId = event.target.getAttribute('submission_id');
+    const { deleteSubmission, permissions } = this.props;
+    const userData = {
+      profileId: permissions[0].profile,
+      organizationId: permissions[0].organization
+    };
+    deleteSubmission(userData, submissionId);
+    this.props.history.push({
+      pathname: '/dashboard'
     });
   };
 
@@ -113,7 +129,7 @@ class AdminSubmissionList extends Component {
                               <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToEdit} onClick={this.edit} form_name={content.fromForm} submission_id={submission._id} >Edit</button>
                             </td>
                             <td className="tx-right">
-                              <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToDelete} onClick={this.detail} form_name={content.fromForm} submission_id={submission._id} >Delete</button>
+                              <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToDelete} onClick={this.delete} form_name={content.fromForm} submission_id={submission._id} >Delete</button>
                             </td>
                             <td className="tx-right">
                               <button type="button" className="btn btn-primary btn-sm" disabled={!isAllowedDetail} onClick={this.detail} form_name={content.fromForm} submission_id={submission._id} >Detail</button>
@@ -146,4 +162,4 @@ const mapStateToProps = state => ({
   profile: state.auth.profile
 });
 
-export default withRouter(connect(mapStateToProps)(AdminSubmissionList));
+export default withRouter(connect(mapStateToProps, {deleteSubmission})(AdminSubmissionList));

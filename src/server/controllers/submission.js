@@ -120,6 +120,45 @@ exports.getSubmission = async (req, res) => {
   }
 };
 
+// @route POST api/submissions/:submissionId/delete
+// @desc Return a submission
+// @access Private
+exports.deleteSubmission = async (req, res) => {
+  const { profileId, organizationId } = req.body;
+  const { submissionId } = req.params;
+
+  try {
+    const permissions = await Permission.findOne({
+      profile: profileId,
+      // organization: organizationId,
+    });
+
+    if (permissions.role === 'admin') {
+      const submission = await Submission.findByIdAndRemove({
+        _id: submissionId,
+      });
+      return res.json({
+        success: true,
+        submission,
+      });
+    }
+    return res.status(422).json({
+      alert: {
+        title: 'Access denied!',
+        detail: 'You do not have permissions',
+      },
+    });
+  } catch (error) {
+    logger.error(error);
+    return res.status(422).json({
+      alert: {
+        title: 'Error!',
+        detail: 'Server occurred an error,  please try again',
+      },
+    });
+  }
+};
+
 // @route GET api/submissions/form/:formType
 // @desc Return a submission
 // @access Private

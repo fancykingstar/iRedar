@@ -4,7 +4,7 @@ import Spinner from '../../../../Elements/Spinner';
 
 class ClientActionSubmission extends Component {
   componentDidUpdate() {
-    var self = this
+    let self = this;
     window.$('#wizard6').steps({
       headerTag: 'h3',
       bodyTag: 'section',
@@ -12,12 +12,17 @@ class ClientActionSubmission extends Component {
       titleTemplate: '<span class="number">#index#</span> <span class="title">#title#</span>',
       cssClass: 'wizard wizard-style-2',
       onFinished: async function (event, currentIndex) {
+        console.log(event);
         self.props.history.push('/modules/submissions')
       }
     })
   }
 
   render() {
+    let isEditable = false;
+    if (this.props.edit && this.props.edit === "true") {
+        isEditable = true;
+    }
     let submission = this.props.submission
     const {
       firstName,
@@ -82,12 +87,11 @@ class ClientActionSubmission extends Component {
             <p className="mg-b-20 mg-sm-b-40">
               Based on your assessment, the following programs have been
               recommended for you:
-        </p>
+            </p>
 
             <form>
               <div className="form-group col-md-2">
-                <input
-                  readOnly
+                <input readOnly
                   type="hidden"
                   name="fromForm"
                   value={fromForm}
@@ -107,8 +111,8 @@ class ClientActionSubmission extends Component {
                     <div className="form-group col-md-6">
                       <label htmlFor="inputFirstName">First Name</label>
                       <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                         type="text"
                         className="form-control"
                         name="firstName"
@@ -119,8 +123,8 @@ class ClientActionSubmission extends Component {
                     <div className="form-group col-md-6">
                       <label htmlFor="inputLastName">Last Name</label>
                       <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                         type="text"
                         className="form-control"
                         name="lastName"
@@ -135,8 +139,8 @@ class ClientActionSubmission extends Component {
               </h5>
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       id="workshopOne"
@@ -158,8 +162,8 @@ class ClientActionSubmission extends Component {
                   </div>
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopTwo}
@@ -181,8 +185,8 @@ class ClientActionSubmission extends Component {
                   </div>
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopThree}
@@ -203,8 +207,8 @@ class ClientActionSubmission extends Component {
                   </div>
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopFour}
@@ -225,8 +229,8 @@ class ClientActionSubmission extends Component {
                   </div>
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopFive}
@@ -247,8 +251,8 @@ class ClientActionSubmission extends Component {
                   </div>
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopSix}
@@ -270,8 +274,8 @@ class ClientActionSubmission extends Component {
 
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopSeven}
@@ -293,8 +297,8 @@ class ClientActionSubmission extends Component {
 
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopEight}
@@ -315,8 +319,8 @@ class ClientActionSubmission extends Component {
 
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopNine}
@@ -337,8 +341,8 @@ class ClientActionSubmission extends Component {
 
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopTen}
@@ -359,8 +363,8 @@ class ClientActionSubmission extends Component {
                   <div className="form-row">
                     <div className="form-check form-group col-md-2">
                       <input
-                          readOnly
-                          disabled="true"
+                          readOnly={!isEditable}
+                          disabled={!isEditable}
                         className="form-check-input"
                         type="checkbox"
                         checked={workshopTen1}
@@ -376,8 +380,8 @@ class ClientActionSubmission extends Component {
                     </div>
                     <div className="form-check form-group  col-md-2">
                       <input
-                          readOnly
-                          disabled="true"
+                          readOnly={!isEditable}
+                          disabled={!isEditable}
                         className="form-check-input"
                         type="checkbox"
                         checked={workshopTen2}
@@ -393,8 +397,8 @@ class ClientActionSubmission extends Component {
                     </div>
                     <div className="form-check form-group  col-md-4">
                       <input
-                          readOnly
-                          disabled="true"
+                          readOnly={!isEditable}
+                          disabled={!isEditable}
                         className="form-check-input"
                         type="checkbox"
                         checked={workshopTen3}
@@ -411,8 +415,8 @@ class ClientActionSubmission extends Component {
                     </div>
                     <div className="form-check form-group  col-md-4">
                       <input
-                          readOnly
-                          disabled="true"
+                          readOnly={!isEditable}
+                          disabled={!isEditable}
                         className="form-check-input"
                         type="checkbox"
                         checked={workshopTen4}
@@ -431,8 +435,8 @@ class ClientActionSubmission extends Component {
 
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopEleven}
@@ -453,8 +457,8 @@ class ClientActionSubmission extends Component {
 
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopTwelve}
@@ -475,8 +479,8 @@ class ClientActionSubmission extends Component {
 
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopThirteen}
@@ -494,8 +498,8 @@ class ClientActionSubmission extends Component {
 
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopFourteen}
@@ -515,8 +519,8 @@ class ClientActionSubmission extends Component {
 
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopFifteen}
@@ -534,8 +538,8 @@ class ClientActionSubmission extends Component {
 
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopSixteen}
@@ -553,8 +557,8 @@ class ClientActionSubmission extends Component {
 
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopSeventeen}
@@ -575,8 +579,8 @@ class ClientActionSubmission extends Component {
 
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopEighteen}
@@ -594,8 +598,8 @@ class ClientActionSubmission extends Component {
 
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopNineteen}
@@ -615,7 +619,7 @@ class ClientActionSubmission extends Component {
                 <h3>
                   SERVICES PROVIDED BY LASI PARTNERS AND OTHER COMMUNITY
                   AGENCIES
-            </h3>
+                </h3>
                 <section
                   id="wizard6-p-2"
                   role="tabpanel"
@@ -626,8 +630,8 @@ class ClientActionSubmission extends Component {
                 >
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopTwenty}
@@ -649,8 +653,8 @@ class ClientActionSubmission extends Component {
 
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopTwentyOne}
@@ -671,8 +675,8 @@ class ClientActionSubmission extends Component {
 
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopTwentyTwo}
@@ -693,8 +697,8 @@ class ClientActionSubmission extends Component {
 
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopTwentyThree}
@@ -715,8 +719,8 @@ class ClientActionSubmission extends Component {
 
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopTwentyFour}
@@ -738,8 +742,8 @@ class ClientActionSubmission extends Component {
 
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopTwentyFive}
@@ -763,8 +767,8 @@ class ClientActionSubmission extends Component {
 
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopTwentySix}
@@ -783,8 +787,8 @@ class ClientActionSubmission extends Component {
 
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopTwentySeven}
@@ -803,8 +807,8 @@ class ClientActionSubmission extends Component {
 
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopTwentyEight}
@@ -822,8 +826,8 @@ class ClientActionSubmission extends Component {
 
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopTwentyNine}
@@ -845,8 +849,8 @@ class ClientActionSubmission extends Component {
 
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopThirty}
@@ -864,8 +868,8 @@ class ClientActionSubmission extends Component {
 
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopThirtyOne}
@@ -883,8 +887,8 @@ class ClientActionSubmission extends Component {
 
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopThirtyTwo}
@@ -901,8 +905,8 @@ class ClientActionSubmission extends Component {
 
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopThirtyThree}
@@ -917,8 +921,8 @@ class ClientActionSubmission extends Component {
 
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopThirtyFour}
@@ -933,8 +937,8 @@ class ClientActionSubmission extends Component {
 
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopThirtyFive}
@@ -949,8 +953,8 @@ class ClientActionSubmission extends Component {
 
                   <div className="form-check form-group">
                     <input
-                        readOnly
-                        disabled="true"
+                        readOnly={!isEditable}
+                        disabled={!isEditable}
                       className="form-check-input"
                       type="checkbox"
                       checked={workshopThirtySix}
@@ -967,7 +971,7 @@ class ClientActionSubmission extends Component {
                   <div className="form-group col-md-12">
                     <label htmlFor="inputCity">Other</label>
                     <input
-                      readOnly
+                      readOnly={!isEditable}
                       type="text"
                       value={workshopThirtySeven}
                       className="form-control"

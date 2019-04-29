@@ -42,6 +42,26 @@ export const getSubmission = (userData, submissionId) => async dispatch => {
   }
 };
 
+// Delete a submission
+export const deleteSubmission = (userData, submissionId) => async dispatch => {
+  try {
+    const res = await axios.post(
+        `${API_URL}/api/submissions/${submissionId}/delete`,
+        userData
+    );
+    console.log(res);
+    dispatch({
+      type: GET_SUBMISSION,
+      payload: res.data
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_ERRORS,
+      payload: error.response.data
+    });
+  }
+};
+
 // Get Submission View based on Form type
 export const getSubmissionView = (formType) => async dispatch => {
   try {

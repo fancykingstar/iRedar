@@ -18,6 +18,10 @@ class RegistrationSubmission extends Component {
     }
 
     render() {
+        let isEditable = false;
+        if (this.props.edit && this.props.edit === "true") {
+            isEditable = true;
+        }
         let submission = this.props.submission
         if (Object.keys(submission.content).length === 0) {
             return (
@@ -45,7 +49,7 @@ class RegistrationSubmission extends Component {
                                     <div className="form-row">
                                         <div className="form-group col-md-1">
                                             <label htmlFor="salutation">Salutation</label>
-                                            <select className="form-control" id="salutation" name="salutation" readOnly defaultValue={submission.content.salutation}>
+                                            <select className="form-control" id="salutation" name="salutation" readOnly={!isEditable} defaultValue={submission.content.salutation}>
                                                 <option value="">--</option>
                                                 <option>Mr</option>
                                                 <option>Mrs</option>
@@ -56,32 +60,32 @@ class RegistrationSubmission extends Component {
 
                                         <div className="form-group col-md-3">
                                             <label htmlFor="firstName">First Name</label>
-                                            <input type="text" className="form-control" id="firstName" name="firstName" placeholder="First Name" readOnly defaultValue={submission.content.firstName} />
+                                            <input type="text" className="form-control" id="firstName" name="firstName" placeholder="First Name" readOnly={!isEditable} defaultValue={submission.content.firstName} />
                                         </div>
 
 
                                         <div className="form-group col-md-4">
                                             <label htmlFor="lastName">Last Name</label>
-                                            <input type="text" className="form-control" id="lastName" name="lastName" placeholder="Last Name" readOnly defaultValue={submission.content.lastName} />
+                                            <input type="text" className="form-control" id="lastName" name="lastName" placeholder="Last Name" readOnly={!isEditable} defaultValue={submission.content.lastName} />
                                         </div>
                                         <div className="form-group col-md-4">
                                             <label htmlFor="preferredName">Preferred Name (if different from First Name)</label>
-                                            <input type="text" className="form-control" id="preferredName" name="preferredName" readOnly defaultValue={submission.content.preferredName} placeholder="Preferred First Name" />
+                                            <input type="text" className="form-control" id="preferredName" name="preferredName" readOnly={!isEditable} defaultValue={submission.content.preferredName} placeholder="Preferred First Name" />
                                         </div>
 
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-4">
                                             <label htmlFor="streetAddress">Street Address</label>
-                                            <input type="text" className="form-control" id="streetAddress" name="streetAddress" readOnly defaultValue={submission.content.streetAddress} />
+                                            <input type="text" className="form-control" id="streetAddress" name="streetAddress" readOnly={!isEditable} defaultValue={submission.content.streetAddress} />
                                         </div>
                                         <div className="form-group col-md-3">
                                             <label htmlFor="city">City</label>
-                                            <input type="text" className="form-control" id="city" name="city" readOnly defaultValue={submission.content.city} />
+                                            <input type="text" className="form-control" id="city" name="city" readOnly={!isEditable} defaultValue={submission.content.city} />
                                         </div>
                                         <div className="form-group col-md-2">
                                             <label htmlFor="province">Province</label>
-                                            <select id="province" className="form-control" name="province" readOnly defaultValue={submission.content.province}>
+                                            <select id="province" className="form-control" name="province" readOnly={!isEditable} defaultValue={submission.content.province}>
                                                 <option value="">Province</option>
                                                 <option>Alberta</option>
                                                 <option>British Columbia</option>
@@ -100,17 +104,17 @@ class RegistrationSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-3">
                                             <label htmlFor="postalCode">Postal Code</label>
-                                            <input type="text" className="form-control" id="postalCode" name="postalCode" readOnly defaultValue={submission.content.postalCode} />
+                                            <input type="text" className="form-control" id="postalCode" name="postalCode" readOnly={!isEditable} defaultValue={submission.content.postalCode} />
                                         </div>
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-4">
                                             <label htmlFor="primaryPhoneNumber">Primary Phone Number</label>
-                                            <input type="text" className="form-control" id="primaryPhoneNumber" name="primaryPhoneNumber" readOnly defaultValue={submission.content.primaryPhoneNumber} />
+                                            <input type="text" className="form-control" id="primaryPhoneNumber" name="primaryPhoneNumber" readOnly={!isEditable} defaultValue={submission.content.primaryPhoneNumber} />
                                         </div>
                                         <div className="form-group col-md-1">
                                             <label htmlFor="primaryPhoneNumber_voicemail">Voicemail?</label>
-                                            <select id="primaryPhoneNumber_voicemail" className="form-control" name="primaryPhoneNumber_voicemail" readOnly defaultValue={submission.content.primaryPhoneNumber_voicemail}>
+                                            <select id="primaryPhoneNumber_voicemail" className="form-control" name="primaryPhoneNumber_voicemail" readOnly={!isEditable} defaultValue={submission.content.primaryPhoneNumber_voicemail}>
                                                 <option value="">--</option>
                                                 <option>Yes</option>
                                                 <option>No</option>
@@ -118,11 +122,11 @@ class RegistrationSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-4">
                                             <label htmlFor="secondaryPhoneNumber">Secondary Phone Number</label>
-                                            <input type="text" className="form-control" id="secondaryPhoneNumber" name="secondaryPhoneNumber" readOnly defaultValue={submission.content.secondaryPhoneNumber} />
+                                            <input type="text" className="form-control" id="secondaryPhoneNumber" name="secondaryPhoneNumber" readOnly={!isEditable} defaultValue={submission.content.secondaryPhoneNumber} />
                                         </div>
                                         <div className="form-group col-md-1">
                                             <label htmlFor="secondaryPhoneNumber_voicemail">Voicemail?</label>
-                                            <select id="secondaryPhoneNumber_voicemail" className="form-control" name="secondaryPhoneNumber_voicemail" readOnly defaultValue={submission.content.secondaryPhoneNumber_voicemail}>
+                                            <select id="secondaryPhoneNumber_voicemail" className="form-control" name="secondaryPhoneNumber_voicemail" readOnly={!isEditable} defaultValue={submission.content.secondaryPhoneNumber_voicemail}>
                                                 <option value="">--</option>
                                                 <option>Yes</option>
                                                 <option>No</option>
@@ -133,12 +137,12 @@ class RegistrationSubmission extends Component {
                                     <div className="form-row">
                                         <div className="form-group col-md-6">
                                             <label htmlFor="email">Email address</label>
-                                            <input type="email" className="form-control" id="email" name="email" readOnly defaultValue={submission.content.email} placeholder="name@example.com" />
+                                            <input type="email" className="form-control" id="email" name="email" readOnly={!isEditable} defaultValue={submission.content.email} placeholder="name@example.com" />
 
                                         </div>
                                         <div className="form-group col-md-6">
                                             <label htmlFor="confirmEmail">Confirm Email</label>
-                                            <input type="email" className="form-control" id="confirmEmail" name="confirmEmail" readOnly defaultValue={submission.content.confirmEmail} placeholder="name@example.com" />
+                                            <input type="email" className="form-control" id="confirmEmail" name="confirmEmail" readOnly={!isEditable} defaultValue={submission.content.confirmEmail} placeholder="name@example.com" />
                                         </div>
                                     </div>
 
@@ -151,14 +155,14 @@ class RegistrationSubmission extends Component {
                                                     <i className="fa fa-calendar tx-16 lh-0 op-6"></i>
                                                 </div>
                                             </div>
-                                            <input name="birthDate" id="birthDate" readOnly defaultValue={submission.content.birthDate} type="text" className="form-control" placeholder="MM/DD/YYYY" />
+                                            <input name="birthDate" id="birthDate" readOnly={!isEditable} defaultValue={submission.content.birthDate} type="text" className="form-control" placeholder="MM/DD/YYYY" />
                                         </div>
                                     </div>
 
                                     <div className="form-row">
                                         <div className="form-group col-md-2">
                                             <label htmlFor="gender">Gender</label>
-                                            <select id="gender" className="form-control" name="gender" readOnly defaultValue={submission.content.gender}>
+                                            <select id="gender" className="form-control" name="gender" readOnly={!isEditable} defaultValue={submission.content.gender}>
                                                 <option value="">--</option>
                                                 <option>Male</option>
                                                 <option>Female</option>
@@ -167,7 +171,7 @@ class RegistrationSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-4">
                                             <label htmlFor="countryOfOrigin">Country of Origin</label>
-                                            <select id="countryOfOrigin" className="form-control" name="countryOfOrigin" readOnly defaultValue={submission.content.countryOfOrigin}>
+                                            <select id="countryOfOrigin" className="form-control" name="countryOfOrigin" readOnly={!isEditable} defaultValue={submission.content.countryOfOrigin}>
                                                 <option value="">--</option>
                                                 <option>Afghanistan</option>
                                                 <option>Albania</option>
@@ -371,7 +375,7 @@ class RegistrationSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-4">
                                             <label htmlFor="nationality">Nationality</label>
-                                            <select id="nationality" className="form-control" name="nationality" readOnly defaultValue={submission.content.nationality}>
+                                            <select id="nationality" className="form-control" name="nationality" readOnly={!isEditable} defaultValue={submission.content.nationality}>
                                                 <option value="">--</option>
                                                 <option>Afghanistan</option>
                                                 <option>Albania</option>
@@ -575,7 +579,7 @@ class RegistrationSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-2">
                                             <label htmlFor="nativeLanguage">Native Language</label>
-                                            <input type="text" id="nativeLanguage" className="form-control" name="nativeLanguage" readOnly defaultValue={submission.content.nativeLanguage} />
+                                            <input type="text" id="nativeLanguage" className="form-control" name="nativeLanguage" readOnly={!isEditable} defaultValue={submission.content.nativeLanguage} />
                                         </div>
                                     </div>
                                 </section>
@@ -588,7 +592,7 @@ class RegistrationSubmission extends Component {
                                             <label htmlFor="occupation">
                                                 Please select your professional occupation or field from the selection below
                                             </label>
-                                            <select className="form-control" id="occupation" name="occupation" readOnly defaultValue={submission.content.occupation}>
+                                            <select className="form-control" id="occupation" name="occupation" readOnly={!isEditable} defaultValue={submission.content.occupation}>
                                                 <option value="">--</option>
                                                 <option>Management</option>
                                                 <option>Business, Finance & Administration</option>
@@ -605,13 +609,13 @@ class RegistrationSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-5">
                                             <label htmlFor="occupation_other">If Other, Specify</label>
-                                            <input type="email" className="form-control" id="occupation_other" name="occupation_other" readOnly defaultValue={submission.content.occupation_other} />
+                                            <input type="email" className="form-control" id="occupation_other" name="occupation_other" readOnly={!isEditable} defaultValue={submission.content.occupation_other} />
                                         </div>
                                     </div>
                                     <div className="row">
                                         <div className="form-group col-md-6">
                                             <label htmlFor="primaryOccupation">Name of Primary Profession</label>
-                                            <input type="text" className="form-control" id="primaryOccupation" name="primaryOccupation" readOnly defaultValue={submission.content.primaryOccupation} />
+                                            <input type="text" className="form-control" id="primaryOccupation" name="primaryOccupation" readOnly={!isEditable} defaultValue={submission.content.primaryOccupation} />
                                         </div>
                                     </div>
 
@@ -623,16 +627,16 @@ class RegistrationSubmission extends Component {
                                                 <div className="col">
                                                     <div className="custom-controls-stacked">
                                                         <label className="custom-control custom-radio">
-                                                            <input id="regulatedProfession_yes" name="regulatedProfession" readOnly checked={submission.content.regulatedProfession_yes} type="radio" className="custom-control-input"
+                                                            <input id="regulatedProfession_yes" name="regulatedProfession" readOnly={!isEditable} checked={submission.content.regulatedProfession_yes} type="radio" className="custom-control-input"
                                                             />
                                                             <span className="custom-control-label">Yes</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
-                                                            <input id="regulatedProfession_no" name="regulatedProfession" readOnly checked={submission.content.regulatedProfession_no} type="radio" className="custom-control-input" />
+                                                            <input id="regulatedProfession_no" name="regulatedProfession" readOnly={!isEditable} checked={submission.content.regulatedProfession_no} type="radio" className="custom-control-input" />
                                                             <span className="custom-control-label">No</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
-                                                            <input id="regulatedProfession_unknown" name="regulatedProfession" readOnly checked={submission.content.regulatedProfession_unknown} type="radio" className="custom-control-input"
+                                                            <input id="regulatedProfession_unknown" name="regulatedProfession" readOnly={!isEditable} checked={submission.content.regulatedProfession_unknown} type="radio" className="custom-control-input"
                                                             />
                                                             <span className="custom-control-label">Unknown</span>
                                                         </label>
@@ -648,26 +652,26 @@ class RegistrationSubmission extends Component {
                                         <div className="col">
                                             <div className="custom-controls-stacked">
                                                 <label className="custom-control custom-radio">
-                                                    <input id="licensed_yes" name="licensed" readOnly checked={submission.content.licensed_yes} type="radio" className="custom-control-input"
+                                                    <input id="licensed_yes" name="licensed" readOnly={!isEditable} checked={submission.content.licensed_yes} type="radio" className="custom-control-input"
                                                     />
                                                     <span className="custom-control-label">Yes</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
-                                                    <input id="licensed_no" name="licensed" readOnly checked={submission.content.licensed_no} type="radio" className="custom-control-input" />
+                                                    <input id="licensed_no" name="licensed" readOnly={!isEditable} checked={submission.content.licensed_no} type="radio" className="custom-control-input" />
                                                     <span className="custom-control-label">No</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
-                                                    <input id="licensed_inProgress" name="licensed" readOnly checked={submission.content.licensed_inProgress} type="radio" className="custom-control-input"
+                                                    <input id="licensed_inProgress" name="licensed" readOnly={!isEditable} checked={submission.content.licensed_inProgress} type="radio" className="custom-control-input"
                                                     />
                                                     <span className="custom-control-label">Licensing in Progress</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
-                                                    <input id="licensed_unknown" name="licensed" readOnly checked={submission.content.licensed_unknown} type="radio" className="custom-control-input"
+                                                    <input id="licensed_unknown" name="licensed" readOnly={!isEditable} checked={submission.content.licensed_unknown} type="radio" className="custom-control-input"
                                                     />
                                                     <span className="custom-control-label">Unknown</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
-                                                    <input id="licensed_na" name="licensed" readOnly checked={submission.content.licensed_na} type="radio" className="custom-control-input"
+                                                    <input id="licensed_na" name="licensed" readOnly={!isEditable} checked={submission.content.licensed_na} type="radio" className="custom-control-input"
                                                     />
                                                     <span className="custom-control-label">N/A</span>
                                                 </label>
@@ -680,7 +684,7 @@ class RegistrationSubmission extends Component {
                                             <label htmlFor="degree">
                                                 Please select your highest level of education
                                   </label>
-                                            <select className="form-control" id="degree" name="degree" readOnly defaultValue={submission.content.degree}>
+                                            <select className="form-control" id="degree" name="degree" readOnly={!isEditable} defaultValue={submission.content.degree}>
                                                 <option value="">--</option>
                                                 <option value="phD">PhD</option>
                                                 <option value="masters">Masters</option>
@@ -693,7 +697,7 @@ class RegistrationSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-6">
                                             <label htmlFor="degree_other">If Other, Specify</label>
-                                            <input type="email" className="form-control" id="degree_other" name="degree_other" readOnly defaultValue={submission.content.degree_other} />
+                                            <input type="email" className="form-control" id="degree_other" name="degree_other" readOnly={!isEditable} defaultValue={submission.content.degree_other} />
                                         </div>
                                     </div>
 
@@ -702,7 +706,7 @@ class RegistrationSubmission extends Component {
                                             <label htmlFor="fieldOfStudy">
                                                 What is your field of study?
                               </label>
-                                            <select className="form-control" id="fieldOfStudy" name="fieldOfStudy" readOnly defaultValue={submission.content.fieldOfStudy}>
+                                            <select className="form-control" id="fieldOfStudy" name="fieldOfStudy" readOnly={!isEditable} defaultValue={submission.content.fieldOfStudy}>
                                                 <option value="">--</option>
                                                 <option>Education (e.g. teacher training)</option>
                                                 <option>Visual & performing arts (e.g. music, art)</option>
@@ -720,7 +724,7 @@ class RegistrationSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-6">
                                             <label htmlFor="nameOfMajor">Name of your major, field of study, or specialization:</label>
-                                            <input type="text" className="form-control" id="nameOfMajor" name="nameOfMajor" readOnly defaultValue={submission.content.nameOfMajor} />
+                                            <input type="text" className="form-control" id="nameOfMajor" name="nameOfMajor" readOnly={!isEditable} defaultValue={submission.content.nameOfMajor} />
                                         </div>
                                     </div>
                                     <div className="form-row">
@@ -728,16 +732,16 @@ class RegistrationSubmission extends Component {
                                         <div className="col">
                                             <div className="custom-controls-stacked">
                                                 <label className="custom-control custom-radio">
-                                                    <input id="postSecondaryOutsideCanada_yesSame" name="postSecondaryOutsideCanada" readOnly checked={submission.content.postSecondaryOutsideCanada_yesSame} type="radio" className="custom-control-input"
+                                                    <input id="postSecondaryOutsideCanada_yesSame" name="postSecondaryOutsideCanada" readOnly={!isEditable} checked={submission.content.postSecondaryOutsideCanada_yesSame} type="radio" className="custom-control-input"
                                                     />
                                                     <span className="custom-control-label">YES (same as above)</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
-                                                    <input id="postSecondaryOutsideCanada_yesOther" name="postSecondaryOutsideCanada" readOnly checked={submission.content.postSecondaryOutsideCanada_yesOther} type="radio" className="custom-control-input" />
+                                                    <input id="postSecondaryOutsideCanada_yesOther" name="postSecondaryOutsideCanada" readOnly={!isEditable} checked={submission.content.postSecondaryOutsideCanada_yesOther} type="radio" className="custom-control-input" />
                                                     <span className="custom-control-label">YES (other)</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
-                                                    <input id="postSecondaryOutsideCanada_no" name="postSecondaryOutsideCanada" readOnly checked={submission.content.postSecondaryOutsideCanada_no} type="radio" className="custom-control-input" />
+                                                    <input id="postSecondaryOutsideCanada_no" name="postSecondaryOutsideCanada" readOnly={!isEditable} checked={submission.content.postSecondaryOutsideCanada_no} type="radio" className="custom-control-input" />
                                                     <span className="custom-control-label">NO</span>
                                                 </label>
                                             </div>
@@ -748,20 +752,20 @@ class RegistrationSubmission extends Component {
                                         <div className="col">
                                             <div className="custom-controls-stacked">
                                                 <label className="custom-control custom-radio">
-                                                    <input id="degreeEvaluated_yes" name="degreeEvaluated" readOnly checked={submission.content.degreeEvaluated_yes} type="radio" className="custom-control-input"
+                                                    <input id="degreeEvaluated_yes" name="degreeEvaluated" readOnly={!isEditable} checked={submission.content.degreeEvaluated_yes} type="radio" className="custom-control-input"
                                                     />
                                                     <span className="custom-control-label">YES</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
-                                                    <input id="degreeEvaluated_no" name="degreeEvaluated" readOnly checked={submission.content.degreeEvaluated_no} type="radio" className="custom-control-input" />
+                                                    <input id="degreeEvaluated_no" name="degreeEvaluated" readOnly={!isEditable} checked={submission.content.degreeEvaluated_no} type="radio" className="custom-control-input" />
                                                     <span className="custom-control-label">NO</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
-                                                    <input id="degreeEvaluated_na" name="degreeEvaluated" readOnly checked={submission.content.degreeEvaluated_na} type="radio" className="custom-control-input" />
+                                                    <input id="degreeEvaluated_na" name="degreeEvaluated" readOnly={!isEditable} checked={submission.content.degreeEvaluated_na} type="radio" className="custom-control-input" />
                                                     <span className="custom-control-label">N/A</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
-                                                    <input id="degreeEvaluated_inProgress" name="degreeEvaluated" readOnly checked={submission.content.degreeEvaluated_inProgress} type="radio" className="custom-control-input" />
+                                                    <input id="degreeEvaluated_inProgress" name="degreeEvaluated" readOnly={!isEditable} checked={submission.content.degreeEvaluated_inProgress} type="radio" className="custom-control-input" />
                                                     <span className="custom-control-label">In progress</span>
                                                 </label>
                                             </div>
@@ -773,12 +777,12 @@ class RegistrationSubmission extends Component {
                                         <div className="col">
                                             <div className="custom-controls-stacked">
                                                 <label className="custom-control custom-radio">
-                                                    <input id="securityClearance_yes" name="securityClearance" readOnly checked={submission.content.securityClearance_yes} type="radio" className="custom-control-input"
+                                                    <input id="securityClearance_yes" name="securityClearance" readOnly={!isEditable} checked={submission.content.securityClearance_yes} type="radio" className="custom-control-input"
                                                     />
                                                     <span className="custom-control-label">YES</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
-                                                    <input id="securityClearance_no" name="securityClearance" readOnly checked={submission.content.securityClearance_no} type="radio" className="custom-control-input" />
+                                                    <input id="securityClearance_no" name="securityClearance" readOnly={!isEditable} checked={submission.content.securityClearance_no} type="radio" className="custom-control-input" />
                                                     <span className="custom-control-label">NO</span>
                                                 </label>
 
@@ -794,7 +798,7 @@ class RegistrationSubmission extends Component {
                                     <div className="form-row">
                                         <div className="form-group col-md-3">
                                             <label htmlFor="foreignBornCanadian">Foreign born Canadian?</label>
-                                            <select className="form-control" id="foreignBornCanadian" name="foreignBornCanadian" readOnly defaultValue={submission.content.foreignBornCanadian}>
+                                            <select className="form-control" id="foreignBornCanadian" name="foreignBornCanadian" readOnly={!isEditable} defaultValue={submission.content.foreignBornCanadian}>
                                                 <option value="">--</option>
                                                 <option>Yes</option>
                                                 <option>No</option>
@@ -808,19 +812,19 @@ class RegistrationSubmission extends Component {
                                                         <i className="fa fa-calendar tx-16 lh-0 op-6"></i>
                                                     </div>
                                                 </div>
-                                                <input name="landingDate_citizen" id="landingDate_citizen" readOnly defaultValue={submission.content.landingDate_citizen} type="text" className="form-control" placeholder="MM/DD/YYYY" />
+                                                <input name="landingDate_citizen" id="landingDate_citizen" readOnly={!isEditable} defaultValue={submission.content.landingDate_citizen} type="text" className="form-control" placeholder="MM/DD/YYYY" />
                                             </div>
                                         </div>
                                         <div className="form-group col-md-3">
                                             <label htmlFor="yearOfCitizenship">Year of Citizenship</label>
-                                            <input type="text" className="form-control" id="yearOfCitizenship" name="yearOfCitizenship" readOnly defaultValue={submission.content.yearOfCitizenship} />
+                                            <input type="text" className="form-control" id="yearOfCitizenship" name="yearOfCitizenship" readOnly={!isEditable} defaultValue={submission.content.yearOfCitizenship} />
                                         </div>
                                     </div>
                                     <h5>OR</h5>
                                     <div className="form-row">
                                         <div className="form-group col-md-6">
                                             <label htmlFor="permanentResidencyClass">Permanent Residence Class</label>
-                                            <select className="form-control" id="permanentResidencyClass" name="permanentResidencyClass" readOnly defaultValue={submission.content.permanentResidencyClass}>
+                                            <select className="form-control" id="permanentResidencyClass" name="permanentResidencyClass" readOnly={!isEditable} defaultValue={submission.content.permanentResidencyClass}>
                                                 <option value="">--</option>
                                                 <option>Skilled Worker</option>
                                                 <option>Family Class</option>
@@ -838,7 +842,7 @@ class RegistrationSubmission extends Component {
                                                         <i className="fa fa-calendar tx-16 lh-0 op-6"></i>
                                                     </div>
                                                 </div>
-                                                <input name="landingDate_permanentResident" id="landingDate_permanentResident" readOnly defaultValue={submission.content.landingDate_permanentResident} type="text" className="form-control" placeholder="MM/DD/YYYY" />
+                                                <input name="landingDate_permanentResident" id="landingDate_permanentResident" readOnly={!isEditable} defaultValue={submission.content.landingDate_permanentResident} type="text" className="form-control" placeholder="MM/DD/YYYY" />
                                             </div>
                                         </div>
                                     </div>
@@ -846,7 +850,7 @@ class RegistrationSubmission extends Component {
                                     <div className="form-row">
                                         <div className="form-group">
                                             <label htmlFor="conventionRefugee">Are you A Convention Refugee?</label>
-                                            <select className="form-control" id="conventionRefugee" name="conventionRefugee" readOnly defaultValue={submission.content.conventionRefugee}>
+                                            <select className="form-control" id="conventionRefugee" name="conventionRefugee" readOnly={!isEditable} defaultValue={submission.content.conventionRefugee}>
                                                 <option value="">--</option>
                                                 <option>Yes</option>
                                                 <option>No</option>
@@ -861,36 +865,36 @@ class RegistrationSubmission extends Component {
                                                 <div className="col">
                                                     <div className="custom-controls-stacked">
                                                         <label className="custom-control custom-radio">
-                                                            <input id="temporaryResident_inlandRefugeeClaimant" name="temporaryResident" readOnly checked={submission.content.temporaryResident_inlandRefugeeClaimant} type="radio" className="custom-control-input"
+                                                            <input id="temporaryResident_inlandRefugeeClaimant" name="temporaryResident" readOnly={!isEditable} checked={submission.content.temporaryResident_inlandRefugeeClaimant} type="radio" className="custom-control-input"
                                                             />
                                                             <span className="custom-control-label">Inland Refugee Claimant</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
-                                                            <input id="temporaryResident_foreignWorker" name="temporaryResident" readOnly checked={submission.content.temporaryResident_foreignWorker} type="radio" className="custom-control-input" />
+                                                            <input id="temporaryResident_foreignWorker" name="temporaryResident" readOnly={!isEditable} checked={submission.content.temporaryResident_foreignWorker} type="radio" className="custom-control-input" />
                                                             <span className="custom-control-label">Temporary Foreign Worker (Employer Sponsored)</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
-                                                            <input id="temporaryResident_liveInCaregiver" name="temporaryResident" readOnly checked={submission.content.temporaryResident_liveInCaregiver} type="radio" className="custom-control-input"
+                                                            <input id="temporaryResident_liveInCaregiver" name="temporaryResident" readOnly={!isEditable} checked={submission.content.temporaryResident_liveInCaregiver} type="radio" className="custom-control-input"
                                                             />
                                                             <span className="custom-control-label">Live-In Caregiver</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
-                                                            <input id="temporaryResident_protectedResident" name="temporaryResident" readOnly checked={submission.content.temporaryResident_protectedResident} type="radio" className="custom-control-input"
+                                                            <input id="temporaryResident_protectedResident" name="temporaryResident" readOnly={!isEditable} checked={submission.content.temporaryResident_protectedResident} type="radio" className="custom-control-input"
                                                             />
                                                             <span className="custom-control-label">Temporary Protected Resident</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
-                                                            <input id="temporaryResident_student" name="temporaryResident" readOnly checked={submission.content.temporaryResident_student} type="radio" className="custom-control-input"
+                                                            <input id="temporaryResident_student" name="temporaryResident" readOnly={!isEditable} checked={submission.content.temporaryResident_student} type="radio" className="custom-control-input"
                                                             />
                                                             <span className="custom-control-label">Student or Graduate Work Permit</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
-                                                            <input id="temporaryResident_other" name="temporaryResident" readOnly checked={submission.content.temporaryResident_other} type="radio" className="custom-control-input"
+                                                            <input id="temporaryResident_other" name="temporaryResident" readOnly={!isEditable} checked={submission.content.temporaryResident_other} type="radio" className="custom-control-input"
                                                             />
                                                             <span className="custom-control-label">Other</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
-                                                            <input id="temporaryResident_diplomat" name="temporaryResident" readOnly checked={submission.content.temporaryResident_diplomat} type="radio" className="custom-control-input"
+                                                            <input id="temporaryResident_diplomat" name="temporaryResident" readOnly={!isEditable} checked={submission.content.temporaryResident_diplomat} type="radio" className="custom-control-input"
                                                             />
                                                             <span className="custom-control-label">Diplomat</span>
                                                         </label>
@@ -908,26 +912,26 @@ class RegistrationSubmission extends Component {
                                                 <div className="col">
                                                     <div className="custom-controls-stacked">
                                                         <label className="custom-control custom-radio">
-                                                            <input id="temporaryResident_noWorkPermit_inlandRefugee" name="temporaryResident_noWorkPermit" readOnly checked={submission.content.temporaryResident_noWorkPermit_inlandRefugee} type="radio" className="custom-control-input"
+                                                            <input id="temporaryResident_noWorkPermit_inlandRefugee" name="temporaryResident_noWorkPermit" readOnly={!isEditable} checked={submission.content.temporaryResident_noWorkPermit_inlandRefugee} type="radio" className="custom-control-input"
                                                             />
                                                             <span className="custom-control-label">Inland Refugee Claimant</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
-                                                            <input id="temporaryResident_noWorkPermit_internationalStudent" name="temporaryResident_noWorkPermit" readOnly checked={submission.content.temporaryResident_noWorkPermit_internationalStudent} type="radio" className="custom-control-input" />
+                                                            <input id="temporaryResident_noWorkPermit_internationalStudent" name="temporaryResident_noWorkPermit" readOnly={!isEditable} checked={submission.content.temporaryResident_noWorkPermit_internationalStudent} type="radio" className="custom-control-input" />
                                                             <span className="custom-control-label">International Student</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
-                                                            <input id="temporaryResident_noWorkPermit_visitorVisa" name="temporaryResident_noWorkPermit" readOnly checked={submission.content.temporaryResident_noWorkPermit_visitorVisa} type="radio" className="custom-control-input"
+                                                            <input id="temporaryResident_noWorkPermit_visitorVisa" name="temporaryResident_noWorkPermit" readOnly={!isEditable} checked={submission.content.temporaryResident_noWorkPermit_visitorVisa} type="radio" className="custom-control-input"
                                                             />
                                                             <span className="custom-control-label">Visitor Visa</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
-                                                            <input id="temporaryResident_noWorkPermit_diplomat" name="temporaryResident_noWorkPermit" readOnly checked={submission.content.temporaryResident_noWorkPermit_diplomat} type="radio" className="custom-control-input"
+                                                            <input id="temporaryResident_noWorkPermit_diplomat" name="temporaryResident_noWorkPermit" readOnly={!isEditable} checked={submission.content.temporaryResident_noWorkPermit_diplomat} type="radio" className="custom-control-input"
                                                             />
                                                             <span className="custom-control-label">Diplomat</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
-                                                            <input id="temporaryResident_noWorkPermit_other" name="temporaryResident_noWorkPermit" readOnly checked={submission.content.temporaryResident_noWorkPermit_other} type="radio" className="custom-control-input"
+                                                            <input id="temporaryResident_noWorkPermit_other" name="temporaryResident_noWorkPermit" readOnly={!isEditable} checked={submission.content.temporaryResident_noWorkPermit_other} type="radio" className="custom-control-input"
                                                             />
                                                             <span className="custom-control-label">Other</span>
                                                         </label>
@@ -939,19 +943,19 @@ class RegistrationSubmission extends Component {
                                     <div className="form-row">
                                         <div className="form-group col-md-8">
                                             <label htmlFor="immigrationStatus_other">If Other, Specify</label>
-                                            <input type="email" className="form-control" id="immigrationStatus_other" name="immigrationStatus_other" readOnly defaultValue={submission.content.immigrationStatus_other} />
+                                            <input type="email" className="form-control" id="immigrationStatus_other" name="immigrationStatus_other" readOnly={!isEditable} defaultValue={submission.content.immigrationStatus_other} />
                                         </div>
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-8">
                                             <label htmlFor="immigrationDocumentNumber">Immigration Document Number:</label>
-                                            <input type="email" className="form-control" id="immigrationDocumentNumber" name="immigrationDocumentNumber" readOnly defaultValue={submission.content.immigrationDocumentNumber} />
+                                            <input type="email" className="form-control" id="immigrationDocumentNumber" name="immigrationDocumentNumber" readOnly={!isEditable} defaultValue={submission.content.immigrationDocumentNumber} />
                                         </div>
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-6">
                                             <label htmlFor="periodInCanada">How long have you been in Canada?</label>
-                                            <select className="form-control" id="periodInCanada" name="periodInCanada" readOnly defaultValue={submission.content.periodInCanada}>
+                                            <select className="form-control" id="periodInCanada" name="periodInCanada" readOnly={!isEditable} defaultValue={submission.content.periodInCanada}>
                                                 <option value="">--</option>
                                                 <option>0-12 months</option>
                                                 <option>1-3 years</option>
@@ -970,16 +974,16 @@ class RegistrationSubmission extends Component {
                                                 <div className="col">
                                                     <div className="custom-controls-stacked">
                                                         <label className="custom-control custom-radio">
-                                                            <input id="legallyWorkInCanada_yes" name="legallyWorkInCanada" readOnly checked={submission.content.legallyWorkInCanada_yes} type="radio" className="custom-control-input"
+                                                            <input id="legallyWorkInCanada_yes" name="legallyWorkInCanada" readOnly={!isEditable} checked={submission.content.legallyWorkInCanada_yes} type="radio" className="custom-control-input"
                                                             />
                                                             <span className="custom-control-label">YES</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
-                                                            <input id="legallyWorkInCanada_no" name="legallyWorkInCanada" readOnly checked={submission.content.legallyWorkInCanada_no} type="radio" className="custom-control-input" />
+                                                            <input id="legallyWorkInCanada_no" name="legallyWorkInCanada" readOnly={!isEditable} checked={submission.content.legallyWorkInCanada_no} type="radio" className="custom-control-input" />
                                                             <span className="custom-control-label">NO</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
-                                                            <input id="legallyWorkInCanada_unknown" name="legallyWorkInCanada" readOnly checked={submission.content.legallyWorkInCanada_unknown} type="radio" className="custom-control-input"
+                                                            <input id="legallyWorkInCanada_unknown" name="legallyWorkInCanada" readOnly={!isEditable} checked={submission.content.legallyWorkInCanada_unknown} type="radio" className="custom-control-input"
                                                             />
                                                             <span className="custom-control-label">UNKNOWN</span>
                                                         </label>
@@ -991,7 +995,7 @@ class RegistrationSubmission extends Component {
                                     <div className="form-row">
                                         <div className="form-group col-md-6">
                                             <label htmlFor="heardAboutUs">How did you hear about World Skills Employment Centre?</label>
-                                            <select className="form-control" id="heardAboutUs" name="heardAboutUs" readOnly defaultValue={submission.content.heardAboutUs}>
+                                            <select className="form-control" id="heardAboutUs" name="heardAboutUs" readOnly={!isEditable} defaultValue={submission.content.heardAboutUs}>
                                                 <option value="">--</option>
                                                 <option>Immigrant serving organization (CCI, IWSO, JFS, OCCSC, SCFS, OCISO, LASSA, YMCA, PQHC, YSB etc.)</option>
                                                 <option>Reception House</option>
@@ -1011,7 +1015,7 @@ class RegistrationSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-6">
                                             <label htmlFor="heardAboutUs_other">If Other, Specify</label>
-                                            <input type="email" className="form-control" id="heardAboutUs_other" name="heardAboutUs_other" readOnly defaultValue={submission.content.heardAboutUs_other} />
+                                            <input type="email" className="form-control" id="heardAboutUs_other" name="heardAboutUs_other" readOnly={!isEditable} defaultValue={submission.content.heardAboutUs_other} />
                                         </div>
                                     </div>
                                     <div className="form-row">
@@ -1021,12 +1025,12 @@ class RegistrationSubmission extends Component {
                                                 <div className="col">
                                                     <div className="custom-controls-stacked">
                                                         <label className="custom-control custom-radio">
-                                                            <input id="addEmailToDistributionList_yes" name="addEmailToDistributionList" readOnly checked={submission.content.addEmailToDistributionList_yes} type="radio" className="custom-control-input"
+                                                            <input id="addEmailToDistributionList_yes" name="addEmailToDistributionList" readOnly={!isEditable} checked={submission.content.addEmailToDistributionList_yes} type="radio" className="custom-control-input"
                                                             />
                                                             <span className="custom-control-label">YES</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
-                                                            <input id="addEmailToDistributionList_no" name="addEmailToDistributionList" readOnly checked={submission.content.addEmailToDistributionList_no} type="radio" className="custom-control-input" />
+                                                            <input id="addEmailToDistributionList_no" name="addEmailToDistributionList" readOnly={!isEditable} checked={submission.content.addEmailToDistributionList_no} type="radio" className="custom-control-input" />
                                                             <span className="custom-control-label">NO</span>
                                                         </label>
                                                     </div>
@@ -1036,7 +1040,7 @@ class RegistrationSubmission extends Component {
                                         <div className="form-row">
                                             <div className="form-group col-md-6">
                                                 <label htmlFor="sourceOfIncome">Source of income (optional):</label>
-                                                <select className="form-control" id="sourceOfIncome" name="sourceOfIncome" readOnly defaultValue={submission.content.sourceOfIncome}>
+                                                <select className="form-control" id="sourceOfIncome" name="sourceOfIncome" readOnly={!isEditable} defaultValue={submission.content.sourceOfIncome}>
                                                     <option value="">--</option>
                                                     <option>EI</option>
                                                     <option>ODSP</option>
@@ -1053,7 +1057,7 @@ class RegistrationSubmission extends Component {
                                             </div>
                                             <div className="form-group col-md-6">
                                                 <label htmlFor="sourceOfIncome_other">If Other, Specify</label>
-                                                <input type="email" className="form-control" id="sourceOfIncome_other" name="sourceOfIncome_other" readOnly defaultValue={submission.content.sourceOfIncome_other} />
+                                                <input type="email" className="form-control" id="sourceOfIncome_other" name="sourceOfIncome_other" readOnly={!isEditable} defaultValue={submission.content.sourceOfIncome_other} />
                                             </div>
                                         </div>
                                     </div>
