@@ -28,6 +28,7 @@
     "foreman": "^3.0.1",
     "formik": "^1.5.1",
     "gravatar": "^1.8.0",
+    "jquery": "^3.4.0",
     "jsonwebtoken": "^8.4.0",
     "jwt-decode": "^2.2.0",
     "moment": "^2.24.0",

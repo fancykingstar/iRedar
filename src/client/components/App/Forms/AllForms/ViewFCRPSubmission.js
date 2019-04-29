@@ -19,7 +19,7 @@ export class ViewFCRPSubmission extends Component {
         }
         let data = [];
         let i = 0;
-        submissions.allSubmissions.map(submission => {
+        submissions.allSubmissions.forEach(submission => {
             data.push({
                 submissionId: submission._id,
                 id: i+1,

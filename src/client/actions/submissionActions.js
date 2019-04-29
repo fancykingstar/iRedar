@@ -42,6 +42,28 @@ export const getSubmission = (userData, submissionId) => async dispatch => {
   }
 };
 
+// Edit a submission
+export const editSubmission = (profileId, submission, submissionId) => async dispatch => {
+  let postBody = {
+    profileId: profileId,
+    submission: submission
+  };
+  try {
+    const res = await axios.post(`${API_URL}/api/submissions/${submissionId}/edit`,
+        postBody
+    );
+    dispatch({
+      type: GET_SUBMISSION,
+      payload: res.data
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_ERRORS,
+      payload: error.response.data
+    });
+  }
+};
+
 // Delete a submission
 export const deleteSubmission = (userData, submissionId) => async dispatch => {
   try {

@@ -28,6 +28,15 @@ router.post(
   submissionController.getSubmission,
 );
 
+// @route POST api/submissions/:submissionId/edit
+// @desc Return a submission
+// @access Private
+router.post(
+    '/:submissionId/edit',
+    passport.authenticate('jwt', { session: false }),
+    submissionController.editSubmission,
+);
+
 // @route POST api/submissions/:submissionId/delete
 // @desc Return a submission
 // @access Private

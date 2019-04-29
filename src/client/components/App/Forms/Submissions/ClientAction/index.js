@@ -34,15 +34,12 @@ class ClientActionSubmission extends Component {
     };
     const { submissionId } = this.props.match.params;
     getSubmission(userData, submissionId);
-
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.submissions.submission) {
       this.setState({ submission: nextProps.submissions.submission });
-
     }
-
   }
 
   render() {
@@ -50,7 +47,7 @@ class ClientActionSubmission extends Component {
     if (typeof edit === "undefined") {
       edit = false;
     }
-    return <ClientAction submission={this.state.submission} history={this.props.history} edit={edit}/>;
+    return <ClientAction permissions={this.props.permissions} submission={this.state.submission} history={this.props.history} edit={edit}/>;
   }
 }
 

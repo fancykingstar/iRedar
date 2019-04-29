@@ -9,9 +9,7 @@ const Profile = require('../models/Profile')
 // @desc Submit form
 // @access Public
 exports.postSubmission = async (req, res) => {
-  console.log(req.body);
   try {
-
     const submission = await new Submission({
       content: req.body,
       userId: req.user._id
@@ -36,16 +34,10 @@ exports.postSubmission = async (req, res) => {
 // @desc Return all submissions
 // @access Private
 exports.getAllSubmissions = async (req, res) => {
-  console.log(req.body);
   const { profileId, organizationId } = req.body;
-
-
   console.log("USER IS ", req.user);
-
   try {
-
     let organization = await Organization.findById(organizationId);
-
     const permissions = await Permission.findOne({
       profile: profileId,
       organization: organizationId,
@@ -59,9 +51,6 @@ exports.getAllSubmissions = async (req, res) => {
         },
       });
     }
-
-    console.log(organization);
-
     let users = organization.users;
     const allSubmissions = await Submission.find({userId: {$in: users}}).sort({
       dateSubmitted: 'desc',
@@ -94,13 +83,56 @@ exports.getSubmission = async (req, res) => {
       // organization: organizationId,
     });
 
-    if (permissions.role === 'admin') {
+    if (permissions.role === 'admin' || permissions.role === 'staff') {
       const submission = await Submission.findOne({
         _id: submissionId,
       });
       return res.json({
         success: true,
         submission,
+      });
+    }
+    return res.status(422).json({
+      alert: {
+        title: 'Access denied!',
+        detail: 'You do not have permissions',
+      },
+    });
+  } catch (error) {
+    logger.error(error);
+    return res.status(422).json({
+      alert: {
+        title: 'Error!',
+        detail: 'Server occurred an error,  please try again',
+      },
+    });
+  }
+};
+
+// @route POST api/submissions/:submissionId/edit
+// @desc Return a submission
+// @access Private
+exports.editSubmission = async (req, res) => {
+  const { profileId, submission } = req.body;
+  const { submissionId } = req.params;
+
+  try {
+    const permissions = await Permission.findOne({
+      profile: profileId
+    });
+
+    if (permissions.role === 'admin' || permissions.role === 'staff') {
+      try {
+        await Submission.findOneAndUpdate(
+            {_id: submissionId},
+            {$set: submission}
+        );
+      } catch (e) {
+        console.log(e);
+      }
+      console.log("Success");
+      return res.json({
+        success: true
       });
     }
     return res.status(422).json({
