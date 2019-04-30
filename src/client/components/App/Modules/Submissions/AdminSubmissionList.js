@@ -17,6 +17,7 @@ class AdminSubmissionList extends Component {
       }
     });
   }
+
   edit = event => {
     let formName = event.target.getAttribute('form_name');
     let submissionId = event.target.getAttribute('submission_id');
@@ -36,16 +37,18 @@ class AdminSubmissionList extends Component {
   };
 
   delete = event => {
-    let submissionId = event.target.getAttribute('submission_id');
-    const { deleteSubmission, permissions } = this.props;
-    const userData = {
-      profileId: permissions[0].profile,
-      organizationId: permissions[0].organization
-    };
-    deleteSubmission(userData, submissionId);
-    this.props.history.push({
-      pathname: '/dashboard'
-    });
+      if (window.confirm('Do you want to delete the submission ?')) {
+          let submissionId = event.target.getAttribute('submission_id');
+          const {deleteSubmission, permissions} = this.props;
+          const userData = {
+              profileId: permissions[0].profile,
+              organizationId: permissions[0].organization
+          };
+          deleteSubmission(userData, submissionId);
+          this.props.history.push({
+              pathname: '/dashboard'
+          });
+      }
   };
 
   share = event => {
@@ -53,7 +56,7 @@ class AdminSubmissionList extends Component {
     this.props.history.push({
       pathname: '/referrals/' + submissionId
     });
-  }
+  };
 
   render() {
     const { permissions } = this.props;
