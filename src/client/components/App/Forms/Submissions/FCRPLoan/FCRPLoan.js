@@ -6,15 +6,6 @@ import $ from "jquery";
 
 class FCRPLoanSubmission extends Component {
 
-    constructor(props) {
-        super(props)
-        this.state = {isBlocking: true}
-    }
-
-    disableBlocking() {
-        this.setState({isBlocking: false})
-    }
-
     componentDidUpdate() {
         const self = this;
         const isEditable = (self.props.edit === "true");
@@ -32,7 +23,6 @@ class FCRPLoanSubmission extends Component {
             },
             onFinished: async function (event, currentIndex) {
                 if (isEditable) {
-                    await self.disableBlocking()
                     let content = {
                         fromForm: self.props.submission.content.fromForm,
                         salutation: $("[name=salutation]").find(":selected").text(),
@@ -100,6 +90,7 @@ class FCRPLoanSubmission extends Component {
                                 userId: self.props.submission.userId,
                                 content
                             };
+                            console.log(submission);
                             let response = self.props.editSubmission(
                                 profileId,
                                 submission,
@@ -111,7 +102,7 @@ class FCRPLoanSubmission extends Component {
                             console.log(error);
                         }
                     }
-                    self.props.history.push('/modules/')
+                    self.props.history.push('/dashboard')
                 } else {
                     self.props.history.push('/modules/submissions')
                 }

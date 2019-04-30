@@ -13,7 +13,7 @@ export class ViewClientSubmission extends Component {
     }
     render() {
         const { submissions, permissions } = this.props;
-        if (permissions[0].role !== 'admin') {
+        if (!(permissions[0].role === 'admin' || permissions[0].role === 'staff')) {
             this.props.history.push('/dashboard');
             return
         }

@@ -6,15 +6,6 @@ import {editSubmission} from "../../../../../actions/submissionActions";
 
 class ClientActionSubmission extends Component {
 
-    constructor(props) {
-        super(props)
-        this.state = {isBlocking: true}
-    }
-
-    disableBlocking() {
-        this.setState({isBlocking: false})
-    }
-
     componentDidUpdate() {
         const self = this;
         const isEditable = (self.props.edit === "true");
@@ -32,7 +23,6 @@ class ClientActionSubmission extends Component {
             },
             onFinished: async function (event, currentIndex) {
                 if (isEditable) {
-                    await self.disableBlocking()
                     let firstName = $("[name=firstName]").val();
                     let lastName = $("[name=lastName]").val();
                     let fromForm = $("[name=fromForm]").val();
@@ -133,6 +123,7 @@ class ClientActionSubmission extends Component {
                                 userId: self.props.submission.userId,
                                 content
                             };
+                            console.log(submission);
                             let response = self.props.editSubmission(
                                 profileId,
                                 submission,
@@ -144,7 +135,7 @@ class ClientActionSubmission extends Component {
                             console.log(error);
                         }
                     }
-                    self.props.history.push('/modules/')
+                    self.props.history.push('/dashboard')
                 } else {
                     self.props.history.push('/modules/submissions')
                 }

@@ -6,15 +6,6 @@ import $ from "jquery";
 
 class IARAssessmentSubmission extends Component {
 
-    constructor(props) {
-        super(props)
-        this.state = {isBlocking: true}
-    }
-
-    disableBlocking() {
-        this.setState({isBlocking: false})
-    }
-
     componentDidUpdate() {
         const self = this;
         const isEditable = (self.props.edit === "true");
@@ -32,7 +23,6 @@ class IARAssessmentSubmission extends Component {
             },
             onFinished: async function (event, currentIndex) {
                 if (isEditable) {
-                    await self.disableBlocking()
                     let content = {
                         firstName: $("[name=firstName]").val(),
                         lastName: $("[name=lastName]").val(),
@@ -139,6 +129,7 @@ class IARAssessmentSubmission extends Component {
                                 userId: self.props.submission.userId,
                                 content
                             };
+                            console.log(submission);
                             let response = self.props.editSubmission(
                                 profileId,
                                 submission,
@@ -150,7 +141,7 @@ class IARAssessmentSubmission extends Component {
                             console.log(error);
                         }
                     }
-                    self.props.history.push('/modules/')
+                    self.props.history.push('/dashboard')
                 } else {
                     self.props.history.push('/modules/submissions')
                 }
