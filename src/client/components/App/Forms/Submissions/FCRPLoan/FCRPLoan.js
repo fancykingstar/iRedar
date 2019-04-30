@@ -5,6 +5,16 @@ import {editSubmission} from "../../../../../actions/submissionActions";
 import $ from "jquery";
 
 class FCRPLoanSubmission extends Component {
+
+    constructor(props) {
+        super(props)
+        this.state = {isBlocking: true}
+    }
+
+    disableBlocking() {
+        this.setState({isBlocking: false})
+    }
+
     componentDidUpdate() {
         const self = this;
         const isEditable = (self.props.edit === "true");
@@ -14,8 +24,15 @@ class FCRPLoanSubmission extends Component {
             autoFocus: true,
             titleTemplate: '<span class="number">#index#</span> <span class="title">#title#</span>',
             cssClass: "wizard wizard-style-2",
+            onStepChanging: function (event, currentIndex, newIndex) {
+                return true
+            },
+            onFinishing: function (event, currentIndex) {
+                return true
+            },
             onFinished: async function (event, currentIndex) {
                 if (isEditable) {
+                    await self.disableBlocking()
                     let content = {
                         fromForm: self.props.submission.content.fromForm,
                         salutation: $("[name=salutation]").find(":selected").text(),
@@ -77,19 +94,24 @@ class FCRPLoanSubmission extends Component {
                     console.log(content);
                     let permission = self.props.permissions[0];
                     if (permission.role === "admin" || permission.role === "staff") {
-                        const profileId = permission.profile;
-                        const submission = {
-                            userId: self.props.submission.userId,
-                            content
-                        };
-                        let response = self.props.editSubmission(
-                            profileId,
-                            submission,
-                            self.props.submission._id
-                        );
-                        console.log(response);
+                        try {
+                            const profileId = permission.profile;
+                            const submission = {
+                                userId: self.props.submission.userId,
+                                content
+                            };
+                            let response = self.props.editSubmission(
+                                profileId,
+                                submission,
+                                self.props.submission._id
+                            );
+                            console.log(response);
+                            console.log('OK');
+                        } catch (error) {
+                            console.log(error);
+                        }
                     }
-                    self.props.history.push("/dashboard");
+                    self.props.history.push('/modules/')
                 } else {
                     self.props.history.push('/modules/submissions')
                 }

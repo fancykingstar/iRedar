@@ -14,7 +14,16 @@ class FormsPage extends Component {
   viewForm = event => {
     let formName = event.target.getAttribute('form_name');
     this.props.history.push({
-      pathname: '/forms/all-forms/' + formName
+        pathname: '/forms/all-forms/' + formName,
+        state: {edit: 'false'}
+    });
+  };
+
+    editForm = event => {
+        let formName = event.target.getAttribute('form_name');
+        this.props.history.push({
+            pathname: '/forms/all-forms/' + formName,
+            state: {edit: 'true'}
     });
   };
 
@@ -95,7 +104,9 @@ class FormsPage extends Component {
                       <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToView} onClick={this.viewForm} form_name='client-action' >View</button>
                     </td>
                     <td className="tx-right">
-                      <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToEdit} onClick={this.viewForm} form_name='client-action' >Edit</button>
+                        <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToEdit}
+                                onClick={this.editForm} form_name='client-action'>Edit
+                        </button>
                     </td>
                     <td className="tx-right">
                       <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToShare} onClick={this.shareForm} form_name='client-action' >Share</button>
@@ -115,7 +126,9 @@ class FormsPage extends Component {
                       <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToView} onClick={this.viewForm} form_name='iar-assessment' >View</button>
                     </td>
                     <td className="tx-right">
-                      <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToEdit} onClick={this.viewForm} form_name='iar-assessment' >Edit</button>
+                        <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToEdit}
+                                onClick={this.editForm} form_name='iar-assessment'>Edit
+                        </button>
                     </td>
                     <td className="tx-right">
                       <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToShare} onClick={this.shareForm} form_name='iar-assessment' >Share</button>
@@ -135,7 +148,9 @@ class FormsPage extends Component {
                       <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToView} onClick={this.viewForm} form_name='fcrp-loan' >View</button>
                     </td>
                     <td className="tx-right">
-                      <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToEdit} onClick={this.viewForm} form_name='fcrp-loan' >Edit</button>
+                        <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToEdit}
+                                onClick={this.editForm} form_name='fcrp-loan'>Edit
+                        </button>
                     </td>
                     <td className="tx-right">
                       <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToShare} onClick={this.shareForm} form_name='fcrp-loan' >Share</button>
@@ -155,7 +170,9 @@ class FormsPage extends Component {
                       <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToView} onClick={this.viewForm} form_name='registration' >View</button>
                     </td>
                     <td className="tx-right">
-                      <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToEdit} onClick={this.viewForm} form_name='registration' >Edit</button>
+                        <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToEdit}
+                                onClick={this.editForm} form_name='registration'>Edit
+                        </button>
                     </td>
                     <td className="tx-right">
                       <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToShare} onClick={this.shareForm} form_name='registration' >Share</button>
