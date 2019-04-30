@@ -15,9 +15,28 @@ class RegistrationSubmission extends Component {
             cssClass: 'wizard wizard-style-2',
             onFinished: async function (event, currentIndex) {
                 if (isEditable) {
+                    let content = {
 
+                    };
+                    console.log(content);
+                    let permission = self.props.permissions[0];
+                    if (permission.role === "admin" || permission.role === "staff") {
+                        const profileId = permission.profile;
+                        const submission = {
+                            userId: self.props.submission.userId,
+                            content
+                        };
+                        let response = self.props.editSubmission(
+                            profileId,
+                            submission,
+                            self.props.submission._id
+                        );
+                        console.log(response);
+                    }
+                    self.props.history.push("/dashboard");
+                } else {
+                    self.props.history.push('/modules/submissions')
                 }
-                self.props.history.push('/modules/submissions')
             }
         })
     }

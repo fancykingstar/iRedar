@@ -119,8 +119,10 @@ class ClientActionSubmission extends Component {
                         let response = self.props.editSubmission(profileId, submission, self.props.submission._id);
                         console.log(response);
                     }
+                    self.props.history.push('/dashboard')
+                } else {
+                    self.props.history.push('/modules/submissions')
                 }
-                self.props.history.push('/dashboard')
             }
         });
     }

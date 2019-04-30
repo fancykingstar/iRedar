@@ -89,8 +89,10 @@ class FCRPLoanSubmission extends Component {
                         );
                         console.log(response);
                     }
+                    self.props.history.push("/dashboard");
+                } else {
+                    self.props.history.push('/modules/submissions')
                 }
-                self.props.history.push("/dashboard");
             }
         });
 

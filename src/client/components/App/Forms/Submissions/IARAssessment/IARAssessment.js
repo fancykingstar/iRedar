@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux'
 import Spinner from '../../../../Elements/Spinner';
 import {editSubmission} from "../../../../../actions/submissionActions";
+import $ from "jquery";
 
 class IARAssessmentSubmission extends Component {
     componentDidUpdate() {
@@ -15,9 +16,122 @@ class IARAssessmentSubmission extends Component {
             cssClass: 'wizard wizard-style-2',
             onFinished: async function (event, currentIndex) {
                 if (isEditable) {
-
+                    let content = {
+                        firstName: $("[name=firstName]").val(),
+                        lastName: $("[name=lastName]").val(),
+                        fromForm: self.props.submission.content.fromForm,
+                        serviceRequested: $("[name=serviceRequested]").find(":selected").text(),
+                        serviceRequested_other: $("[name=serviceRequested_other]").val(),
+                        employmentStatus: $("[name=employmentStatus]").find(":selected").text(),
+                        employmentField: $("[name=employmentField]").find(":selected").text(),
+                        employer: $("[name=employer]").val(),
+                        jobTitle: $("[name=jobTitle]").val(),
+                        emplymentStartDate: $("[name=emplymentStartDate]").val(),
+                        seekingEmployment: $("#seekingEmployment").is(":checked"),
+                        notSeekingEmployment: $("#notSeekingEmployment").is(":checked"),
+                        barrierToJobs: $("[name=barrierToJobs]").find(":selected").text(),
+                        barrierToJobs_other: $("[name=barrierToJobs_other]").val(),
+                        attendedJobSearchWorkshop_yes: $("#attendedJobSearchWorkshop_yes").is(":checked"),
+                        attendedJobSearchWorkshop_no: $("#attendedJobSearchWorkshop_no").is(":checked"),
+                        nameOfJobSearchProgram: $("[name=nameOfJobSearchProgram]").val(),
+                        currentAvailability_anytime: $("#currentAvailability_anytime").is(":checked"),
+                        currentAvailability_mornings: $("#currentAvailability_mornings").is(":checked"),
+                        currentAvailability_afternoons: $("#currentAvailability_afternoons").is(":checked"),
+                        currentAvailability_evenings: $("#currentAvailability_evenings").is(":checked"),
+                        currentAvailability_none: $("#currentAvailability_none").is(":checked"),
+                        whenWillBeAvailable: $("[name=whenWillBeAvailable]").val(),
+                        workFluency_firstLanguage: $("[name=workFluency_firstLanguage]").val(),
+                        workFluency_secondLanguage: $("[name=workFluency_secondLanguage]").val(),
+                        workFluency_thirdLanguage: $("[name=workFluency_thirdLanguage]").val(),
+                        workFluency_fourthLanguage: $("[name=workFluency_fourthLanguage]").val(),
+                        workFluency_fifthLanguage: $("[name=workFluency_fifthLanguage]").val(),
+                        workFluency_sixthLanguage: $("[name=workFluency_sixthLanguage]").val(),
+                        englishLanguageAssessed_yes: $("#englishLanguageAssessed_yes").is(":checked"),
+                        englishLanguageAssessed_no: $("#englishLanguageAssessed_no").is(":checked"),
+                        englishLanguageAssessmentScore_listening: $("[name=englishLanguageAssessmentScore_listening]").find(":selected").text(),
+                        englishLanguageAssessmentScore_speaking: $("[name=englishLanguageAssessmentScore_speaking]").find(":selected").text(),
+                        englishLanguageAssessmentScore_reading: $("[name=englishLanguageAssessmentScore_reading]").find(":selected").text(),
+                        englishLanguageAssessmentScore_writing: $("[name=englishLanguageAssessmentScore_writing]").find(":selected").text(),
+                        englishLanguageAssessmentScore_assessmentDate: $("[name=englishLanguageAssessmentScore_assessmentDate]").val(),
+                        frenchLanguageAssessed_yes: $("#frenchLanguageAssessed_yes").is(":checked"),
+                        frenchLanguageAssessed_no: $("#frenchLanguageAssessed_no").is(":checked"),
+                        frenchLanguageAssessment_listening: $("[name=frenchLanguageAssessment_listening]").find(":selected").text(),
+                        frenchLanguageAssessment_speaking: $("[name=frenchLanguageAssessment_speaking]").find(":selected").text(),
+                        frenchLanguageAssessment_reading: $("[name=frenchLanguageAssessment_reading]").find(":selected").text(),
+                        frenchLanguageAssessment_writing: $("[name=frenchLanguageAssessment_writing]").find(":selected").text(),
+                        frenchLanguageAssessment_assessmentDate: $("[name=frenchLanguageAssessment_assessmentDate]").val(),
+                        msWord_skillLevel: $("[name=msWord_skillLevel]").find(":selected").text(),
+                        email_skillLevel: $("[name=email_skillLevel]").find(":selected").text(),
+                        internet_skillLevel: $("[name=internet_skillLevel]").find(":selected").text(),
+                        resumeBrought_yes: $("#resumeBrought_yes").is(":checked"),
+                        resumeBrought_no: $("#resumeBrought_no").is(":checked"),
+                        improvementToResume: $("[name=improvementToResume]").val(),
+                        yearsOfExperience_primaryOccupation: $("[name=yearsOfExperience_primaryOccupation]").find(":selected").text(),
+                        yearsOfExperience_secondaryOccupation: $("[name=yearsOfExperience_secondaryOccupation]").find(":selected").text(),
+                        periodInCanadaWithoutWorkInPrimaryField: $("[name=periodInCanadaWithoutWorkInPrimaryField]").find(":selected").text(),
+                        shortTermGoals: $("[name=shortTermGoals]").val(),
+                        longTermGoals: $("[name=longTermGoals]").val(),
+                        intendedOccupation: $("[name=intendedOccupation]").val(),
+                        desiredJobLocation: $("[name=desiredJobLocation]").val(),
+                        levelOfKnowledgeOfIndustry: $("[name=levelOfKnowledgeOfIndustry]").val(),
+                        usedJobSearchMethods: $("[name=usedJobSearchMethods]").val(),
+                        connectedWithPeopleInDesiredField_yes: $("#connectedWithPeopleInDesiredField_yes").is(":checked"),
+                        connectedWithPeopleInDesiredField_no: $("#connectedWithPeopleInDesiredField_no").is(":checked"),
+                        numberOfJobApplication: $("[name=numberOfJobApplication]").find(":selected").text(),
+                        interviews_yes: $("#interviews_yes").is(":checked"),
+                        interviews_no: $("#interviews_no").is(":checked"),
+                        numberOfInterviews: $("[name=numberOfInterviews]").find(":selected").text(),
+                        thoughtsAndComments: $("[name=thoughtsAndComments]").val(),
+                        hasResearchedTheField: $("#hasResearchedTheField").is(":checked"),
+                        isSearching: $("#isSearching").is(":checked"),
+                        hasTransferableSkills: $("#hasTransferableSkills").is(":checked"),
+                        hasStrongResume: $("#hasStrongResume").is(":checked"),
+                        ableToTargetResumeforOpportunities: $("#ableToTargetResumeforOpportunities").is(":checked"),
+                        canUseSTAR: $("#canUseSTAR").is(":checked"),
+                        positiveAttitude: $("#positiveAttitude").is(":checked"),
+                        elegibleForJobSearchWorkshop: $("#elegibleForJobSearchWorkshop").is(":checked"),
+                        referredToCareerAccessForNewcomers: $("#referredToCareerAccessForNewcomers").is(":checked"),
+                        referredToRoadmapToEmployment: $("#referredToRoadmapToEmployment").is(":checked"),
+                        clientNotReferred: $("#clientNotReferred").is(":checked"),
+                        clientNotReferred_attendingSchool: $("#clientNotReferred_attendingSchool").is(":checked"),
+                        clientNotReferred_languageSkills: $("#clientNotReferred_languageSkills").is(":checked"),
+                        clientNotReferred_childCare: $("#clientNotReferred_childCare").is(":checked"),
+                        clientNotReferred_noOccupationGoal: $("#clientNotReferred_noOccupationGoal").is(":checked"),
+                        clientNotReferred_transportation: $("#clientNotReferred_transportation").is(":checked"),
+                        clientNotReferred_health: $("#clientNotReferred_health").is(":checked"),
+                        clientNotReferred_unsuitableExpectation: $("#clientNotReferred_unsuitableExpectation").is(":checked"),
+                        clientNotReferred_noTimeForAssignments: $("#clientNotReferred_noTimeForAssignments").is(":checked"),
+                        clientNotReferred_needsJobQuickly: $("#clientNotReferred_needsJobQuickly").is(":checked"),
+                        clientNotReferred_lowComputerSkills: $("#clientNotReferred_lowComputerSkills").is(":checked"),
+                        clientNotReferred_limitedInterests: $("#clientNotReferred_limitedInterests").is(":checked"),
+                        clientNotReferred_directReferrals: $("#clientNotReferred_directReferrals").is(":checked"),
+                        clientNotReferred_other: $("#clientNotReferred_other").is(":checked"),
+                        childCareRequested_yes: $("#childCareRequested_yes").is(":checked"),
+                        childCareRequested_no: $("#childCareRequested_no").is(":checked"),
+                        eligibleForFINP_yes: $("#eligibleForFINP_yes").is(":checked"),
+                        eligibleForFINP_no: $("#eligibleForFINP_no").is(":checked"),
+                        actionPlanCheckBox_one: $("#actionPlanCheckBox_one").is(":checked"),
+                        actionPlanCheckBox_two: $("#actionPlanCheckBox_two").is(":checked")
+                    };
+                    console.log(content);
+                    let permission = self.props.permissions[0];
+                    if (permission.role === "admin" || permission.role === "staff") {
+                        const profileId = permission.profile;
+                        const submission = {
+                            userId: self.props.submission.userId,
+                            content
+                        };
+                        let response = self.props.editSubmission(
+                            profileId,
+                            submission,
+                            self.props.submission._id
+                        );
+                        console.log(response);
+                    }
+                    self.props.history.push("/dashboard");
+                } else {
+                    self.props.history.push('/modules/submissions')
                 }
-                self.props.history.push('/modules/submissions')
             }
         })
     }
@@ -45,7 +159,7 @@ class IARAssessmentSubmission extends Component {
                         <form id="immigrationForm" method="post" action="/forms">
 
                             <div className="form-group col-md-2">
-                                <input type="hidden" name="fromForm" value="5bedaa96f65be80016ef5a1a"/>
+                                <input readOnly type="hidden" name="fromForm" value={submission.content.fromForm}/>
                             </div>
 
                             <div id="wizard6">
@@ -57,13 +171,15 @@ class IARAssessmentSubmission extends Component {
                                             <label htmlFor="inputCity">First Name</label>
                                             <input type="text" className="form-control" id="firstName" name="firstName"
                                                    readOnly={!isEditable} value={submission.content.firstName}
-                                                   placeholder="First Name" onChange={(e) => {}}/>
+                                                   placeholder="First Name" onChange={(e) => {
+                                            }}/>
                                         </div>
                                         <div className="form-group col-md-6">
                                             <label htmlFor="inputCity">Last Name</label>
                                             <input type="text" className="form-control" id="lastName" name="lastName"
                                                    readOnly={!isEditable} value={submission.content.lastName}
-                                                   placeholder="Last Name" onChange={(e) => {}}/>
+                                                   placeholder="Last Name" onChange={(e) => {
+                                            }}/>
                                         </div>
                                     </div>
                                     <div className="form-row">
@@ -72,7 +188,8 @@ class IARAssessmentSubmission extends Component {
                                             <select className="form-control" id="serviceRequested"
                                                     name="serviceRequested" readOnly={!isEditable}
                                                     defaultValue={submission.content.serviceRequested}
-                                                    onChange={(e) => {}}>
+                                                    onChange={(e) => {
+                                                    }}>
                                                 <option value="">--</option>
                                                 <option>Employment Support</option>
                                                 <option>Language Training</option>
@@ -85,7 +202,8 @@ class IARAssessmentSubmission extends Component {
                                             <input type="text" className="form-control" id="serviceRequested_other"
                                                    name="serviceRequested_other" readOnly={!isEditable}
                                                    value={submission.content.serviceRequested_other}
-                                                   onChange={(e) => {}}/>
+                                                   onChange={(e) => {
+                                                   }}/>
                                         </div>
                                     </div>
                                     <div className="form-row">
@@ -94,7 +212,8 @@ class IARAssessmentSubmission extends Component {
                                             <select className="form-control" id="employmentStatus"
                                                     name="employmentStatus" readOnly={!isEditable}
                                                     defaultValue={submission.content.employmentStatus}
-                                                    onChange={(e) => {}}>
+                                                    onChange={(e) => {
+                                                    }}>
                                                 <option value="">--</option>
                                                 <option>Yes, full-time</option>
                                                 <option>Yes, part-time</option>
@@ -111,7 +230,8 @@ class IARAssessmentSubmission extends Component {
                                             <select className="form-control" id="employmentField" name="employmentField"
                                                     readOnly={!isEditable}
                                                     defaultValue={submission.content.employmentField}
-                                                    onChange={(e) => {}}>
+                                                    onChange={(e) => {
+                                                    }}>
                                                 <option value="">--</option>
                                                 <option>In field</option>
                                                 <option>In a related field</option>
@@ -120,20 +240,22 @@ class IARAssessmentSubmission extends Component {
                                             </select>
                                         </div>
                                         <div className="form-group col-md-3">
-                                            <label htmlFor="inputCity">Employer</label>
+                                            <label htmlFor="employer">Employer</label>
                                             <input type="text" className="form-control" id="employer" name="employer"
                                                    readOnly={!isEditable} defaultValue={submission.content.employer}
-                                                   onChange={(e) => {}}/>
+                                                   onChange={(e) => {
+                                                   }}/>
                                         </div>
 
                                         <div className="form-group col-md-3">
-                                            <label htmlFor="confirmEmail">Job Title</label>
-                                            <input type="email" className="form-control" id="jobTitle" name="jobTitle"
+                                            <label htmlFor="jobTitle">Job Title</label>
+                                            <input type="text" className="form-control" id="jobTitle" name="jobTitle"
                                                    readOnly={!isEditable} defaultValue={submission.content.jobTitle}
-                                                   onChange={(e) => {}}/>
+                                                   onChange={(e) => {
+                                                   }}/>
                                         </div>
                                         <div className="form-group col-md-3">
-                                            <label htmlFor="inputAddress">Start Date</label>
+                                            <label htmlFor="emplymentStartDate">Start Date</label>
                                             <div className="input-group">
                                                 <div className="input-group-prepend">
                                                     <div className="input-group-text">
@@ -144,7 +266,8 @@ class IARAssessmentSubmission extends Component {
                                                        placeholder="MM/DD/YYYY" name="emplymentStartDate"
                                                        readOnly={!isEditable}
                                                        defaultValue={submission.content.emplymentStartDate}
-                                                       onChange={(e) => {}}/>
+                                                       onChange={(e) => {
+                                                       }}/>
                                             </div>
                                         </div>
                                     </div>
@@ -160,7 +283,8 @@ class IARAssessmentSubmission extends Component {
                                                                    id="seekingEmployment" name="seekingEmployment"
                                                                    readOnly={!isEditable}
                                                                    checked={submission.content.seekingEmployment}
-                                                                   onChange={(e) => {}}/>
+                                                                   onChange={(e) => {
+                                                                   }}/>
                                                             <span className="custom-control-label">Yes</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
@@ -168,7 +292,8 @@ class IARAssessmentSubmission extends Component {
                                                                    id="notSeekingEmployment" name="seekingEmployment"
                                                                    readOnly={!isEditable}
                                                                    checked={submission.content.notSeekingEmployment}
-                                                                   onChange={(e) => {}}/>
+                                                                   onChange={(e) => {
+                                                                   }}/>
                                                             <span className="custom-control-label">No</span>
                                                         </label>
                                                     </div>
@@ -184,8 +309,9 @@ class IARAssessmentSubmission extends Component {
                                             <select id="barrierToJobs" className="form-control" name="barrierToJobs"
                                                     readOnly={!isEditable}
                                                     defaultValue={submission.content.barrierToJobs}
-                                                    onChange={(e) => {}}
-                                                >
+                                                    onChange={(e) => {
+                                                    }}
+                                            >
                                                 <option value="">--</option>
                                                 <option>ChildCare</option>
                                                 <option>Lack of information</option>
@@ -210,7 +336,8 @@ class IARAssessmentSubmission extends Component {
                                             <input type="text" className="form-control" id="barrierToJobs_other"
                                                    name="barrierToJobs_other" readOnly={!isEditable}
                                                    defaultValue={submission.content.barrierToJobs_other}
-                                                   onChange={(e) => {}}/>
+                                                   onChange={(e) => {
+                                                   }}/>
                                         </div>
                                     </div>
                                     <div className="form-row">
@@ -224,7 +351,8 @@ class IARAssessmentSubmission extends Component {
                                                                id="attendedJobSearchWorkshop_yes"
                                                                name="attendedJobSearchWorkshop" readOnly={!isEditable}
                                                                checked={submission.content.attendedJobSearchWorkshop_yes}
-                                                               onChange={(e) => {}}/>
+                                                               onChange={(e) => {
+                                                               }}/>
                                                         <span className="custom-control-label">Yes</span>
                                                     </label>
                                                     <label className="custom-control custom-radio">
@@ -232,7 +360,8 @@ class IARAssessmentSubmission extends Component {
                                                                id="attendedJobSearchWorkshop_no"
                                                                name="attendedJobSearchWorkshop" readOnly={!isEditable}
                                                                checked={submission.content.attendedJobSearchWorkshop_no}
-                                                               onChange={(e) => {}}/>
+                                                               onChange={(e) => {
+                                                               }}/>
                                                         <span className="custom-control-label">No</span>
                                                     </label>
                                                 </div>
@@ -244,7 +373,8 @@ class IARAssessmentSubmission extends Component {
                                             <input type="text" className="form-control" id="nameOfJobSearchProgram"
                                                    name="nameOfJobSearchProgram" readOnly={!isEditable}
                                                    defaultValue={submission.content.nameOfJobSearchProgram}
-                                                   onChange={(e) => {}}/>
+                                                   onChange={(e) => {
+                                                   }}/>
                                         </div>
 
                                     </div>
@@ -258,7 +388,8 @@ class IARAssessmentSubmission extends Component {
                                                                id="currentAvailability_anytime"
                                                                name="currentAvailability" readOnly={!isEditable}
                                                                checked={submission.content.currentAvailability_anytime}
-                                                               onChange={(e) => {}}/>
+                                                               onChange={(e) => {
+                                                               }}/>
                                                         <span className="custom-control-label">Anytime</span>
                                                     </label>
                                                     <label className="custom-control custom-radio">
@@ -266,7 +397,8 @@ class IARAssessmentSubmission extends Component {
                                                                name="currentAvailability" type="radio"
                                                                className="custom-control-input" readOnly={!isEditable}
                                                                checked={submission.content.currentAvailability_mornings}
-                                                               onChange={(e) => {}}/>
+                                                               onChange={(e) => {
+                                                               }}/>
                                                         <span className="custom-control-label">Mornings</span>
                                                     </label>
                                                     <label className="custom-control custom-radio">
@@ -274,7 +406,8 @@ class IARAssessmentSubmission extends Component {
                                                                name="currentAvailability" type="radio"
                                                                className="custom-control-input" readOnly={!isEditable}
                                                                checked={submission.content.currentAvailability_afternoons}
-                                                               onChange={(e) => {}}/>
+                                                               onChange={(e) => {
+                                                               }}/>
                                                         <span className="custom-control-label">Afternoons</span>
                                                     </label>
                                                     <label className="custom-control custom-radio">
@@ -282,7 +415,8 @@ class IARAssessmentSubmission extends Component {
                                                                name="currentAvailability" type="radio"
                                                                className="custom-control-input" readOnly={!isEditable}
                                                                checked={submission.content.currentAvailability_evenings}
-                                                               onChange={(e) => {}}/>
+                                                               onChange={(e) => {
+                                                               }}/>
                                                         <span
                                                             className="custom-control-label">Evenings or weekends</span>
                                                     </label>
@@ -291,7 +425,8 @@ class IARAssessmentSubmission extends Component {
                                                                type="radio" className="custom-control-input"
                                                                readOnly={!isEditable}
                                                                checked={submission.content.currentAvailability_none}
-                                                               onChange={(e) => {}}/>
+                                                               onChange={(e) => {
+                                                               }}/>
                                                         <span
                                                             className="custom-control-label">Not currently available</span>
                                                     </label>
@@ -301,7 +436,8 @@ class IARAssessmentSubmission extends Component {
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group">
-                                            <label htmlFor="inputAddress">If currently unavailable, will be available as
+                                            <label htmlFor="whenWillBeAvailable">If currently unavailable, will be
+                                                available as
                                                 of:</label>
                                             <div className="input-group">
                                                 <div className="input-group-prepend">
@@ -313,7 +449,8 @@ class IARAssessmentSubmission extends Component {
                                                        readOnly={!isEditable}
                                                        defaultValue={submission.content.whenWillBeAvailable} type="text"
                                                        className="form-control" placeholder="MM/DD/YYYY"
-                                                       onChange={(e) => {}}/>
+                                                       onChange={(e) => {
+                                                       }}/>
                                             </div>
                                         </div>
                                     </div>
@@ -334,32 +471,44 @@ class IARAssessmentSubmission extends Component {
                                         <div className="form-group col-md-2">
                                             <input type="text" className="form-control" id="workFluency_firstLanguage"
                                                    name="workFluency_firstLanguage" readOnly={!isEditable}
-                                                   defaultValue={submission.content.workFluency_firstLanguage} onChange={(e) => {}}/>
+                                                   defaultValue={submission.content.workFluency_firstLanguage}
+                                                   onChange={(e) => {
+                                                   }}/>
                                         </div>
                                         <div className="form-group col-md-2">
                                             <input type="text" className="form-control" id="workFluency_secondLanguage"
                                                    name="workFluency_secondLanguage" readOnly={!isEditable}
-                                                   defaultValue={submission.content.workFluency_secondLanguage} onChange={(e) => {}}/>
+                                                   defaultValue={submission.content.workFluency_secondLanguage}
+                                                   onChange={(e) => {
+                                                   }}/>
                                         </div>
                                         <div className="form-group col-md-2">
                                             <input type="text" className="form-control" id="workFluency_thirdLanguage"
                                                    name="workFluency_thirdLanguage" readOnly={!isEditable}
-                                                   defaultValue={submission.content.workFluency_thirdLanguage} onChange={(e) => {}}/>
+                                                   defaultValue={submission.content.workFluency_thirdLanguage}
+                                                   onChange={(e) => {
+                                                   }}/>
                                         </div>
                                         <div className="form-group col-md-2">
                                             <input type="text" className="form-control" id="workFluency_fourthLanguage"
                                                    name="workFluency_fourthLanguage" readOnly={!isEditable}
-                                                   defaultValue={submission.content.workFluency_fourthLanguage} onChange={(e) => {}}/>
+                                                   defaultValue={submission.content.workFluency_fourthLanguage}
+                                                   onChange={(e) => {
+                                                   }}/>
                                         </div>
                                         <div className="form-group col-md-2">
                                             <input type="text" className="form-control" id="workFluency_fifthLanguage"
                                                    name="workFluency_fifthLanguage" readOnly={!isEditable}
-                                                   defaultValue={submission.content.workFluency_fifthLanguage} onChange={(e) => {}}/>
+                                                   defaultValue={submission.content.workFluency_fifthLanguage}
+                                                   onChange={(e) => {
+                                                   }}/>
                                         </div>
                                         <div className="form-group col-md-2">
                                             <input type="text" className="form-control" id="workFluency_sixthLanguage"
                                                    name="workFluency_sixthLanguage" readOnly={!isEditable}
-                                                   defaultValue={submission.content.workFluency_sixthLanguage} onChange={(e) => {}}/>
+                                                   defaultValue={submission.content.workFluency_sixthLanguage}
+                                                   onChange={(e) => {
+                                                   }}/>
                                         </div>
                                     </div>
                                     <div className="form-row">
@@ -371,14 +520,18 @@ class IARAssessmentSubmission extends Component {
                                                     <input id="englishLanguageAssessed_yes"
                                                            name="englishLanguageAssessed" readOnly={!isEditable}
                                                            checked={submission.content.englishLanguageAssessed_yes}
-                                                           type="radio" className="custom-control-input" onChange={(e) => {}}/>
+                                                           type="radio" className="custom-control-input"
+                                                           onChange={(e) => {
+                                                           }}/>
                                                     <span className="custom-control-label">Yes</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
                                                     <input id="englishLanguageAssessed_no"
                                                            name="englishLanguageAssessed" readOnly={!isEditable}
                                                            checked={submission.content.englishLanguageAssessed_no}
-                                                           type="radio" className="custom-control-input" onChange={(e) => {}}/>
+                                                           type="radio" className="custom-control-input"
+                                                           onChange={(e) => {
+                                                           }}/>
                                                     <span className="custom-control-label">No</span>
                                                 </label>
                                             </div>
@@ -389,12 +542,13 @@ class IARAssessmentSubmission extends Component {
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-2">
-                                            <label htmlFor="exampleFormControlSelect1">Listening</label>
+                                            <label htmlFor="englishLanguageAssessmentScore_listening">Listening</label>
                                             <select className="form-control"
                                                     id="englishLanguageAssessmentScore_listening"
                                                     name="englishLanguageAssessmentScore_listening"
                                                     readOnly={!isEditable}
-                                                    onChange={(e) => {}}
+                                                    onChange={(e) => {
+                                                    }}
                                                     defaultValue={submission.content.englishLanguageAssessmentScore_listening}>
                                                 <option value="">--</option>
                                                 <option>1</option>
@@ -412,12 +566,13 @@ class IARAssessmentSubmission extends Component {
                                             </select>
                                         </div>
                                         <div className="form-group col-md-2">
-                                            <label htmlFor="exampleFormControlSelect1">Speaking</label>
+                                            <label htmlFor="englishLanguageAssessmentScore_speaking">Speaking</label>
                                             <select className="form-control"
                                                     id="englishLanguageAssessmentScore_speaking"
                                                     name="englishLanguageAssessmentScore_speaking"
                                                     readOnly={!isEditable}
-                                                    onChange={(e) => {}}
+                                                    onChange={(e) => {
+                                                    }}
                                                     defaultValue={submission.content.englishLanguageAssessmentScore_speaking}>
                                                 <option value="">--</option>
                                                 <option>1</option>
@@ -435,10 +590,11 @@ class IARAssessmentSubmission extends Component {
                                             </select>
                                         </div>
                                         <div className="form-group col-md-2">
-                                            <label htmlFor="exampleFormControlSelect1">Reading</label>
+                                            <label htmlFor="englishLanguageAssessmentScore_reading">Reading</label>
                                             <select className="form-control" id="englishLanguageAssessmentScore_reading"
                                                     name="englishLanguageAssessmentScore_reading" readOnly={!isEditable}
-                                                    onChange={(e) => {}}
+                                                    onChange={(e) => {
+                                                    }}
                                                     defaultValue={submission.content.englishLanguageAssessmentScore_reading}>
                                                 <option value="">--</option>
                                                 <option>1</option>
@@ -456,10 +612,11 @@ class IARAssessmentSubmission extends Component {
                                             </select>
                                         </div>
                                         <div className="form-group col-md-2">
-                                            <label htmlFor="exampleFormControlSelect1">Writing</label>
+                                            <label htmlFor="englishLanguageAssessmentScore_writing">Writing</label>
                                             <select className="form-control" id="englishLanguageAssessmentScore_writing"
                                                     name="englishLanguageAssessmentScore_writing" readOnly={!isEditable}
-                                                    onChange={(e) => {}}
+                                                    onChange={(e) => {
+                                                    }}
                                                     defaultValue={submission.content.englishLanguageAssessmentScore_writing}>
                                                 <option value="">--</option>
                                                 <option>1</option>
@@ -477,7 +634,8 @@ class IARAssessmentSubmission extends Component {
                                             </select>
                                         </div>
                                         <div className="form-group col-md-3">
-                                            <label htmlFor="inputAddress">Date of Assessment</label>
+                                            <label htmlFor="englishLanguageAssessmentScore_assessmentDate">Date of
+                                                Assessment</label>
                                             <div className="input-group">
                                                 <div className="input-group-prepend">
                                                     <div className="input-group-text">
@@ -488,7 +646,8 @@ class IARAssessmentSubmission extends Component {
                                                        id="englishLanguageAssessmentScore_assessmentDate" type="text"
                                                        className="form-control" placeholder="MM/DD/YYYY"
                                                        readOnly={!isEditable}
-                                                       onChange={(e) => {}}
+                                                       onChange={(e) => {
+                                                       }}
                                                        defaultValue={submission.content.englishLanguageAssessmentScore_assessmentDate}/>
                                             </div>
                                         </div>
@@ -502,7 +661,8 @@ class IARAssessmentSubmission extends Component {
                                                     <input id="frenchLanguageAssessed_yes" name="frenchLanguageAssessed"
                                                            type="radio" className="custom-control-input"
                                                            readOnly={!isEditable}
-                                                           onChange={(e) => {}}
+                                                           onChange={(e) => {
+                                                           }}
                                                            checked={submission.content.frenchLanguageAssessed_yes}
                                                     />
                                                     <span className="custom-control-label">Yes</span>
@@ -511,7 +671,8 @@ class IARAssessmentSubmission extends Component {
                                                     <input id="frenchLanguageAssessed_no" name="frenchLanguageAssessed"
                                                            type="radio" className="custom-control-input"
                                                            readOnly={!isEditable}
-                                                           onChange={(e) => {}}
+                                                           onChange={(e) => {
+                                                           }}
                                                            checked={submission.content.frenchLanguageAssessed_no}/>
                                                     <span className="custom-control-label">No</span>
                                                 </label>
@@ -523,10 +684,11 @@ class IARAssessmentSubmission extends Component {
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-2">
-                                            <label htmlFor="exampleFormControlSelect1">Listening</label>
+                                            <label htmlFor="frenchLanguageAssessment_listening">Listening</label>
                                             <select className="form-control" id="frenchLanguageAssessment_listening"
                                                     name="frenchLanguageAssessment_listening" readOnly={!isEditable}
-                                                    onChange={(e) => {}}
+                                                    onChange={(e) => {
+                                                    }}
                                                     defaultValue={submission.content.frenchLanguageAssessment_listening}>
                                                 <option value="">--</option>
                                                 <option>1</option>
@@ -544,10 +706,11 @@ class IARAssessmentSubmission extends Component {
                                             </select>
                                         </div>
                                         <div className="form-group col-md-2">
-                                            <label htmlFor="exampleFormControlSelect1">Speaking</label>
+                                            <label htmlFor="frenchLanguageAssessment_speaking">Speaking</label>
                                             <select className="form-control" id="frenchLanguageAssessment_speaking"
                                                     name="frenchLanguageAssessment_speaking" readOnly={!isEditable}
-                                                    onChange={(e) => {}}
+                                                    onChange={(e) => {
+                                                    }}
                                                     defaultValue={submission.content.frenchLanguageAssessment_speaking}>
                                                 <option value="">--</option>
                                                 <option>1</option>
@@ -565,10 +728,11 @@ class IARAssessmentSubmission extends Component {
                                             </select>
                                         </div>
                                         <div className="form-group col-md-2">
-                                            <label htmlFor="exampleFormControlSelect1">Reading</label>
+                                            <label htmlFor="frenchLanguageAssessment_reading">Reading</label>
                                             <select className="form-control" id="frenchLanguageAssessment_reading"
                                                     name="frenchLanguageAssessment_reading" readOnly={!isEditable}
-                                                    onChange={(e) => {}}
+                                                    onChange={(e) => {
+                                                    }}
                                                     defaultValue={submission.content.frenchLanguageAssessment_reading}>
                                                 <option value="">--</option>
                                                 <option>1</option>
@@ -586,10 +750,11 @@ class IARAssessmentSubmission extends Component {
                                             </select>
                                         </div>
                                         <div className="form-group col-md-2">
-                                            <label htmlFor="exampleFormControlSelect1">Writing</label>
+                                            <label htmlFor="frenchLanguageAssessment_writing">Writing</label>
                                             <select className="form-control" id="frenchLanguageAssessment_writing"
                                                     name="frenchLanguageAssessment_writing" readOnly={!isEditable}
-                                                    onChange={(e) => {}}
+                                                    onChange={(e) => {
+                                                    }}
                                                     defaultValue={submission.content.frenchLanguageAssessment_writing}>
                                                 <option value="">--</option>
                                                 <option>1</option>
@@ -607,7 +772,8 @@ class IARAssessmentSubmission extends Component {
                                             </select>
                                         </div>
                                         <div className="form-group col-md-3">
-                                            <label htmlFor="inputAddress">Date of Assessment</label>
+                                            <label htmlFor="frenchLanguageAssessment_assessmentDate">Date of
+                                                Assessment</label>
                                             <div className="input-group">
                                                 <div className="input-group-prepend">
                                                     <div className="input-group-text">
@@ -617,7 +783,8 @@ class IARAssessmentSubmission extends Component {
                                                 <input name="frenchLanguageAssessment_assessmentDate"
                                                        id="frenchLanguageAssessment_assessmentDate"
                                                        readOnly={!isEditable}
-                                                       onChange={(e) => {}}
+                                                       onChange={(e) => {
+                                                       }}
                                                        defaultValue={submission.content.frenchLanguageAssessment_assessmentDate}
                                                        type="text" className="form-control" placeholder="MM/DD/YYYY"/>
                                             </div>
@@ -629,10 +796,11 @@ class IARAssessmentSubmission extends Component {
                                     <p>(for workshops / WLT courses intermediate level is required) </p>
                                     <div className="form-row">
                                         <div className="form-group col-md-4">
-                                            <label htmlFor="exampleFormControlSelect1">MS Word</label>
+                                            <label htmlFor="msWord_skillLevel">MS Word</label>
                                             <select className="form-control" id="msWord_skillLevel"
                                                     name="msWord_skillLevel" readOnly={!isEditable}
-                                                    onChange={(e) => {}}
+                                                    onChange={(e) => {
+                                                    }}
                                                     defaultValue={submission.content.msWord_skillLevel}>
                                                 <option>N/A</option>
                                                 <option>Basic</option>
@@ -641,10 +809,11 @@ class IARAssessmentSubmission extends Component {
                                             </select>
                                         </div>
                                         <div className="form-group col-md-4">
-                                            <label htmlFor="exampleFormControlSelect1">Email</label>
+                                            <label htmlFor="email_skillLevel">Email</label>
                                             <select className="form-control" id="email_skillLevel"
                                                     name="email_skillLevel" readOnly={!isEditable}
-                                                    onChange={(e) => {}}
+                                                    onChange={(e) => {
+                                                    }}
                                                     defaultValue={submission.content.email_skillLevel}>
                                                 <option>N/A</option>
                                                 <option>Basic</option>
@@ -653,10 +822,11 @@ class IARAssessmentSubmission extends Component {
                                             </select>
                                         </div>
                                         <div className="form-group col-md-4">
-                                            <label htmlFor="exampleFormControlSelect1">Internet</label>
+                                            <label htmlFor="internet_skillLevel">Internet</label>
                                             <select className="form-control" id="internet_skillLevel"
                                                     name="internet_skillLevel" readOnly={!isEditable}
-                                                    onChange={(e) => {}}
+                                                    onChange={(e) => {
+                                                    }}
                                                     defaultValue={submission.content.internet_skillLevel}>
                                                 <option>N/A</option>
                                                 <option>Basic</option>
@@ -681,7 +851,8 @@ class IARAssessmentSubmission extends Component {
                                                     <input id="resumeBrought_yes" name="resumeBrought"
                                                            readOnly={!isEditable}
                                                            checked={submission.content.resumeBrought_yes} type="radio"
-                                                           onChange={(e) => {}}
+                                                           onChange={(e) => {
+                                                           }}
                                                            className="custom-control-input"
                                                     />
                                                     <span className="custom-control-label">Yes</span>
@@ -690,7 +861,8 @@ class IARAssessmentSubmission extends Component {
                                                     <input id="resumeBrought_no" name="resumeBrought"
                                                            readOnly={!isEditable}
                                                            checked={submission.content.resumeBrought_no} type="radio"
-                                                           onChange={(e) => {}}
+                                                           onChange={(e) => {
+                                                           }}
                                                            className="custom-control-input"/>
                                                     <span className="custom-control-label">No</span>
                                                 </label>
@@ -699,9 +871,11 @@ class IARAssessmentSubmission extends Component {
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-12">
-                                            <label htmlFor="inputCity">Notes for improvement on resume:</label>
+                                            <label htmlFor="improvementToResume">Notes for improvement on
+                                                resume:</label>
                                             <input type="text" className="form-control" id="improvementToResume"
-                                                   name="improvementToResume" readOnly={!isEditable} onChange={(e) => {}}
+                                                   name="improvementToResume" readOnly={!isEditable} onChange={(e) => {
+                                            }}
                                                    defaultValue={submission.content.improvementToResume}/>
                                         </div>
                                     </div>
@@ -709,11 +883,14 @@ class IARAssessmentSubmission extends Component {
                                     <p>Describe work experience (or education if no work experience):</p>
                                     <div className="form-row">
                                         <div className="form-group col-md-3">
-                                            <label htmlFor="exampleFormControlSelect1">Years of experience in your
+                                            <label htmlFor="yearsOfExperience_primaryOccupation">Years of experience in
+                                                your
                                                 primary profession/occupation:
                                             </label>
                                             <select className="form-control" id="yearsOfExperience_primaryOccupation"
-                                                    name="yearsOfExperience_primaryOccupation" readOnly={!isEditable} onChange={(e) => {}}
+                                                    name="yearsOfExperience_primaryOccupation" readOnly={!isEditable}
+                                                    onChange={(e) => {
+                                                    }}
                                                     defaultValue={submission.content.yearsOfExperience_primaryOccupation}>
                                                 <option value="">--</option>
                                                 <option>&lt; 3 years</option>
@@ -724,10 +901,13 @@ class IARAssessmentSubmission extends Component {
                                             </select>
                                         </div>
                                         <div className="form-group col-md-3">
-                                            <label htmlFor="exampleFormControlSelect1">Secondary occupation or more, if
+                                            <label htmlFor="yearsOfExperience_secondaryOccupation">Secondary occupation
+                                                or more, if
                                                 applicable:</label>
                                             <select className="form-control" id="yearsOfExperience_secondaryOccupation"
-                                                    name="yearsOfExperience_secondaryOccupation" readOnly={!isEditable} onChange={(e) => {}}
+                                                    name="yearsOfExperience_secondaryOccupation" readOnly={!isEditable}
+                                                    onChange={(e) => {
+                                                    }}
                                                     defaultValue={submission.content.yearsOfExperience_secondaryOccupation}>
                                                 <option value="">--</option>
                                                 <option>&#60; 3 years</option>
@@ -738,13 +918,15 @@ class IARAssessmentSubmission extends Component {
                                             </select>
                                         </div>
                                         <div className="form-group col-md-3">
-                                            <label htmlFor="exampleFormControlSelect1">Length of time in Canada not
+                                            <label htmlFor="periodInCanadaWithoutWorkInPrimaryField">Length of time in
+                                                Canada not
                                                 working in field?</label>
                                             <select className="form-control"
                                                     id="periodInCanadaWithoutWorkInPrimaryField"
                                                     name="periodInCanadaWithoutWorkInPrimaryField"
                                                     readOnly={!isEditable}
-                                                    onChange={(e) => {}}
+                                                    onChange={(e) => {
+                                                    }}
                                                     defaultValue={submission.content.periodInCanadaWithoutWorkInPrimaryField}>
                                                 <option value="">--</option>
                                                 <option>&#60; 1 year</option>
@@ -757,55 +939,65 @@ class IARAssessmentSubmission extends Component {
                                     <h5>Career Goals in Canada</h5>
                                     <div className="form-row">
                                         <div className="form-group col-md-12">
-                                            <label htmlFor="inputCity">Short-term Goals</label>
+                                            <label htmlFor="shortTermGoals">Short-term Goals</label>
                                             <input type="text" className="form-control" id="shortTermGoals"
-                                                   name="shortTermGoals" readOnly={!isEditable} onChange={(e) => {}}
+                                                   name="shortTermGoals" readOnly={!isEditable} onChange={(e) => {
+                                            }}
                                                    defaultValue={submission.content.shortTermGoals}/>
                                         </div>
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-12">
-                                            <label htmlFor="inputCity">Long-term Goals</label>
+                                            <label htmlFor="longTermGoals">Long-term Goals</label>
                                             <input type="text" className="form-control" id="longTermGoals"
-                                                   name="longTermGoals" readOnly={!isEditable} onChange={(e) => {}}
+                                                   name="longTermGoals" readOnly={!isEditable} onChange={(e) => {
+                                            }}
                                                    defaultValue={submission.content.longTermGoals}/>
                                         </div>
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-12">
-                                            <label htmlFor="inputCity">Intended Occupation</label>
+                                            <label htmlFor="intendedOccupation">Intended Occupation</label>
                                             <input type="text" className="form-control" id="intendedOccupation"
-                                                   name="intendedOccupation" readOnly={!isEditable} onChange={(e) => {}}
+                                                   name="intendedOccupation" readOnly={!isEditable} onChange={(e) => {
+                                            }}
                                                    defaultValue={submission.content.intendedOccupation}/>
                                         </div>
                                     </div>
                                     <h5>Knowledge of Labour Market</h5>
                                     <div className="form-row">
                                         <div className="form-group col-md-12">
-                                            <label htmlFor="inputCity">Where (geographical location) currently looking
+                                            <label htmlFor="desiredJobLocation">Where (geographical location) currently
+                                                looking
                                                 for work opportunities in field?</label>
                                             <input type="text" className="form-control" id="desiredJobLocation"
-                                                   name="desiredJobLocation" readOnly={!isEditable} onChange={(e) => {}}
+                                                   name="desiredJobLocation" readOnly={!isEditable} onChange={(e) => {
+                                            }}
                                                    defaultValue={submission.content.desiredJobLocation}/>
                                         </div>
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-12">
-                                            <label htmlFor="inputCity">What level of knowledge about the occupation /
+                                            <label htmlFor="levelOfKnowledgeOfIndustry">What level of knowledge about
+                                                the occupation /
                                                 industry in Ottawa? (names of companies, labour market demand, salary,
                                                 etc)</label>
                                             <input type="text" className="form-control" id="levelOfKnowledgeOfIndustry"
-                                                   name="levelOfKnowledgeOfIndustry" readOnly={!isEditable} onChange={(e) => {}}
+                                                   name="levelOfKnowledgeOfIndustry" readOnly={!isEditable}
+                                                   onChange={(e) => {
+                                                   }}
                                                    defaultValue={submission.content.levelOfKnowledgeOfIndustry}/>
                                         </div>
                                     </div>
                                     <h5>Job Search Methods and Networking</h5>
                                     <div className="form-row">
                                         <div className="form-group col-md-12">
-                                            <label htmlFor="inputCity">What job search methods are currently in
+                                            <label htmlFor="usedJobSearchMethods">What job search methods are currently
+                                                in
                                                 use?</label>
                                             <input type="text" className="form-control" id="usedJobSearchMethods"
-                                                   name="usedJobSearchMethods" readOnly={!isEditable} onChange={(e) => {}}
+                                                   name="usedJobSearchMethods" readOnly={!isEditable} onChange={(e) => {
+                                            }}
                                                    defaultValue={submission.content.usedJobSearchMethods}/>
                                         </div>
                                     </div>
@@ -818,7 +1010,8 @@ class IARAssessmentSubmission extends Component {
                                                     <input id="connectedWithPeopleInDesiredField_yes"
                                                            name="connectedWithPeopleInDesiredField"
                                                            readOnly={!isEditable}
-                                                           onChange={(e) => {}}
+                                                           onChange={(e) => {
+                                                           }}
                                                            checked={submission.content.connectedWithPeopleInDesiredField_yes}
                                                            type="radio" className="custom-control-input"
                                                     />
@@ -828,7 +1021,8 @@ class IARAssessmentSubmission extends Component {
                                                     <input id="connectedWithPeopleInDesiredField_no"
                                                            name="connectedWithPeopleInDesiredField"
                                                            readOnly={!isEditable}
-                                                           onChange={(e) => {}}
+                                                           onChange={(e) => {
+                                                           }}
                                                            checked={submission.content.connectedWithPeopleInDesiredField_no}
                                                            type="radio" className="custom-control-input"/>
                                                     <span className="custom-control-label">No</span>
@@ -839,11 +1033,12 @@ class IARAssessmentSubmission extends Component {
                                     <h5>Interviewing: Getting the Job</h5>
                                     <div className="form-row">
                                         <div className="form-group col-md-3">
-                                            <label htmlFor="exampleFormControlSelect1">Number of job application (in the
+                                            <label htmlFor="numberOfJobApplication">Number of job application (in the
                                                 past month)</label>
                                             <select className="form-control" id="numberOfJobApplication"
                                                     name="numberOfJobApplication" readOnly={!isEditable}
-                                                    onChange={(e) => {}}
+                                                    onChange={(e) => {
+                                                    }}
                                                     defaultValue={submission.content.numberOfJobApplication}>
                                                 <option value="">--</option>
                                                 <option>0</option>
@@ -868,7 +1063,8 @@ class IARAssessmentSubmission extends Component {
                                                 <label className="custom-control custom-radio">
                                                     <input id="interviews_yes" name="interviews" readOnly={!isEditable}
                                                            checked={submission.content.interviews_yes} type="radio"
-                                                           onChange={(e) => {}}
+                                                           onChange={(e) => {
+                                                           }}
                                                            className="custom-control-input"
                                                     />
                                                     <span className="custom-control-label">Yes</span>
@@ -876,7 +1072,8 @@ class IARAssessmentSubmission extends Component {
                                                 <label className="custom-control custom-radio">
                                                     <input id="interviews_no" name="interviews" readOnly={!isEditable}
                                                            checked={submission.content.interviews_no} type="radio"
-                                                           onChange={(e) => {}}
+                                                           onChange={(e) => {
+                                                           }}
                                                            className="custom-control-input"/>
                                                     <span className="custom-control-label">No</span>
                                                 </label>
@@ -885,10 +1082,11 @@ class IARAssessmentSubmission extends Component {
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-3">
-                                            <label htmlFor="exampleFormControlSelect1">Numbers of interviews:</label>
+                                            <label htmlFor="numberOfInterviews">Numbers of interviews:</label>
                                             <select className="form-control" id="numberOfInterviews"
                                                     name="numberOfInterviews" readOnly={!isEditable}
-                                                    onChange={(e) => {}}
+                                                    onChange={(e) => {
+                                                    }}
                                                     defaultValue={submission.content.numberOfInterviews}>
                                                 <option value="">--</option>
                                                 <option>0</option>
@@ -907,10 +1105,12 @@ class IARAssessmentSubmission extends Component {
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-12">
-                                            <label htmlFor="inputCity">Thoughts / Comments / Concerns regarding
+                                            <label htmlFor="thoughtsAndComments">Thoughts / Comments / Concerns
+                                                regarding
                                                 interviews??</label>
                                             <input type="text" className="form-control" id="thoughtsAndComments"
-                                                   onChange={(e) => {}}
+                                                   onChange={(e) => {
+                                                   }}
                                                    name="thoughtsAndComments" readOnly={!isEditable}
                                                    defaultValue={submission.content.thoughtsAndComments}/>
                                         </div>
@@ -923,7 +1123,8 @@ class IARAssessmentSubmission extends Component {
                                         <input className="form-check-input" type="checkbox" readOnly={!isEditable}
                                                disabled={!isEditable} value="" id="hasResearchedTheField"
                                                name="hasResearchedTheField"
-                                               onChange={(e) => {}}
+                                               onChange={(e) => {
+                                               }}
                                                checked={submission.content.hasResearchedTheField}/>
                                         <label className="form-check-label" htmlFor="hasResearchedTheField">
                                             has researched the field/industry
@@ -932,7 +1133,8 @@ class IARAssessmentSubmission extends Component {
                                     <div className="form-check form-group">
                                         <input className="form-check-input" type="checkbox" readOnly={!isEditable}
                                                disabled={!isEditable} value="" id="isSearching" name="isSearching"
-                                               onChange={(e) => {}}
+                                               onChange={(e) => {
+                                               }}
                                                checked={submission.content.isSearching}/>
                                         <label className="form-check-label" htmlFor="isSearching">
                                             is searching for a comparable job in his/her field in Canada
@@ -941,7 +1143,8 @@ class IARAssessmentSubmission extends Component {
                                     <div className="form-check form-group">
                                         <input className="form-check-input" type="checkbox" readOnly={!isEditable}
                                                disabled={!isEditable} value="" id="hasTransferableSkills"
-                                               onChange={(e) => {}}
+                                               onChange={(e) => {
+                                               }}
                                                name="hasTransferableSkills"
                                                checked={submission.content.hasTransferableSkills}/>
                                         <label className="form-check-label" htmlFor="hasTransferableSkills">
@@ -951,7 +1154,8 @@ class IARAssessmentSubmission extends Component {
                                     <div className="form-check form-group">
                                         <input className="form-check-input" type="checkbox" readOnly={!isEditable}
                                                disabled={!isEditable} value="" id="hasStrongResume"
-                                               onChange={(e) => {}}
+                                               onChange={(e) => {
+                                               }}
                                                name="hasStrongResume" checked={submission.content.hasStrongResume}/>
                                         <label className="form-check-label" htmlFor="hasStrongResume">
                                             has a strong resume detailing qualifications and competencies
@@ -961,7 +1165,8 @@ class IARAssessmentSubmission extends Component {
                                         <input className="form-check-input" type="checkbox" readOnly={!isEditable}
                                                disabled={!isEditable} value="" id="ableToTargetResumeforOpportunities"
                                                name="ableToTargetResumeforOpportunities"
-                                               onChange={(e) => {}}
+                                               onChange={(e) => {
+                                               }}
                                                checked={submission.content.ableToTargetResumeforOpportunities}/>
                                         <label className="form-check-label"
                                                htmlFor="ableToTargetResumeforOpportunities">
@@ -971,7 +1176,8 @@ class IARAssessmentSubmission extends Component {
                                     <div className="form-check form-group">
                                         <input className="form-check-input" type="checkbox" readOnly={!isEditable}
                                                disabled={!isEditable} value="" id="canUseSTAR" name="canUseSTAR"
-                                               onChange={(e) => {}}
+                                               onChange={(e) => {
+                                               }}
                                                checked={submission.content.canUseSTAR}/>
                                         <label className="form-check-label" htmlFor="canUseSTAR">
                                             can use STAR technique when answering interview questions
@@ -980,7 +1186,8 @@ class IARAssessmentSubmission extends Component {
                                     <div className="form-check form-group">
                                         <input className="form-check-input" type="checkbox" readOnly={!isEditable}
                                                disabled={!isEditable} value="" id="positiveAttitude"
-                                               onChange={(e) => {}}
+                                               onChange={(e) => {
+                                               }}
                                                name="positiveAttitude" checked={submission.content.positiveAttitude}/>
                                         <label className="form-check-label" htmlFor="positiveAttitude">
                                             demonstrates a positive attitude
@@ -1001,7 +1208,8 @@ class IARAssessmentSubmission extends Component {
                                             <input className="form-check-input" type="checkbox" readOnly={!isEditable}
                                                    disabled={!isEditable} value="" id="elegibleForJobSearchWorkshop"
                                                    name="elegibleForJobSearchWorkshop"
-                                                   onChange={(e) => {}}
+                                                   onChange={(e) => {
+                                                   }}
                                                    checked={submission.content.elegibleForJobSearchWorkshop}/>
                                             <label className="form-check-label" htmlFor="elegibleForJobSearchWorkshop">
                                                 Client is eligible and suitable for Job Search Workshop (JSW) and will
@@ -1014,7 +1222,8 @@ class IARAssessmentSubmission extends Component {
                                         <input className="form-check-input" type="checkbox" readOnly={!isEditable}
                                                disabled={!isEditable} value="" id="referredToCareerAccessForNewcomers"
                                                name="referredToCareerAccessForNewcomers"
-                                               onChange={(e) => {}}
+                                               onChange={(e) => {
+                                               }}
                                                checked={submission.content.referredToCareerAccessForNewcomers}/>
                                         <label className="form-check-label"
                                                htmlFor="referredToCareerAccessForNewcomers">
@@ -1026,6 +1235,8 @@ class IARAssessmentSubmission extends Component {
                                         <input className="form-check-input" type="checkbox" readOnly={!isEditable}
                                                disabled={!isEditable} value="" id="referredToRoadmapToEmployment"
                                                name="referredToRoadmapToEmployment"
+                                               onChange={(e) => {
+                                               }}
                                                checked={submission.content.referredToRoadmapToEmployment}/>
                                         <label className="form-check-label" htmlFor="referredToRoadmapToEmployment">
                                             Client is not suitable for JSW or CAN, but will be referred to Roadmap to
@@ -1035,7 +1246,8 @@ class IARAssessmentSubmission extends Component {
                                     <div className="form-check form-group">
                                         <input className="form-check-input" type="checkbox" readOnly={!isEditable}
                                                disabled={!isEditable} value="" id="clientNotReferred"
-                                               onChange={(e) => {}}
+                                               onChange={(e) => {
+                                               }}
                                                name="clientNotReferred" checked={submission.content.clientNotReferred}/>
                                         <label className="form-check-label" htmlFor="clientNotReferred">
                                             Client will not be referred to JSW, CAN, or RTE because …
@@ -1047,7 +1259,8 @@ class IARAssessmentSubmission extends Component {
                                                    disabled={!isEditable} value=""
                                                    id="clientNotReferred_attendingSchool"
                                                    name="clientNotReferred_attendingSchool"
-                                                   onChange={(e) => {}}
+                                                   onChange={(e) => {
+                                                   }}
                                                    checked={submission.content.clientNotReferred_attendingSchool}/>
                                             <label className="form-check-label"
                                                    htmlFor="clientNotReferred_attendingSchool">
@@ -1058,7 +1271,8 @@ class IARAssessmentSubmission extends Component {
                                             <input className="form-check-input" type="checkbox" readOnly={!isEditable}
                                                    disabled={!isEditable} value="" id="clientNotReferred_languageSkills"
                                                    name="clientNotReferred_languageSkills"
-                                                   onChange={(e) => {}}
+                                                   onChange={(e) => {
+                                                   }}
                                                    checked={submission.content.clientNotReferred_languageSkills}/>
                                             <label className="form-check-label"
                                                    htmlFor="clientNotReferred_languageSkills">
@@ -1069,7 +1283,8 @@ class IARAssessmentSubmission extends Component {
                                             <input className="form-check-input" type="checkbox" readOnly={!isEditable}
                                                    disabled={!isEditable} value="" id="clientNotReferred_childCare"
                                                    name="clientNotReferred_childCare"
-                                                   onChange={(e) => {}}
+                                                   onChange={(e) => {
+                                                   }}
                                                    checked={submission.content.clientNotReferred_childCare}/>
                                             <label className="form-check-label" htmlFor="clientNotReferred_childCare">
                                                 Childcare needs
@@ -1080,7 +1295,8 @@ class IARAssessmentSubmission extends Component {
                                                    disabled={!isEditable} value=""
                                                    id="clientNotReferred_noOccupationGoal"
                                                    name="clientNotReferred_noOccupationGoal"
-                                                   onChange={(e) => {}}
+                                                   onChange={(e) => {
+                                                   }}
                                                    checked={submission.content.clientNotReferred_noOccupationGoal}/>
                                             <label className="form-check-label"
                                                    htmlFor="clientNotReferred_noOccupationGoal">
@@ -1091,7 +1307,8 @@ class IARAssessmentSubmission extends Component {
                                             <input className="form-check-input" type="checkbox" readOnly={!isEditable}
                                                    disabled={!isEditable} value="" id="clientNotReferred_transportation"
                                                    name="clientNotReferred_transportation"
-                                                   onChange={(e) => {}}
+                                                   onChange={(e) => {
+                                                   }}
                                                    checked={submission.content.clientNotReferred_transportation}/>
                                             <label className="form-check-label"
                                                    htmlFor="clientNotReferred_transportation">
@@ -1104,7 +1321,8 @@ class IARAssessmentSubmission extends Component {
                                             <input className="form-check-input" type="checkbox" readOnly={!isEditable}
                                                    disabled={!isEditable} value="" id="clientNotReferred_health"
                                                    name="clientNotReferred_health"
-                                                   onChange={(e) => {}}
+                                                   onChange={(e) => {
+                                                   }}
                                                    checked={submission.content.clientNotReferred_health}/>
                                             <label className="form-check-label" htmlFor="clientNotReferred_health">
                                                 Health
@@ -1115,7 +1333,8 @@ class IARAssessmentSubmission extends Component {
                                                    disabled={!isEditable} value=""
                                                    id="clientNotReferred_unsuitableExpectation"
                                                    name="clientNotReferred_unsuitableExpectation"
-                                                   onChange={(e) => {}}
+                                                   onChange={(e) => {
+                                                   }}
                                                    checked={submission.content.clientNotReferred_unsuitableExpectation}/>
                                             <label className="form-check-label"
                                                    htmlFor="clientNotReferred_unsuitableExpectation">
@@ -1127,7 +1346,8 @@ class IARAssessmentSubmission extends Component {
                                                    disabled={!isEditable} value=""
                                                    id="clientNotReferred_noTimeForAssignments"
                                                    name="clientNotReferred_noTimeForAssignments"
-                                                   onChange={(e) => {}}
+                                                   onChange={(e) => {
+                                                   }}
                                                    checked={submission.content.clientNotReferred_noTimeForAssignments}/>
                                             <label className="form-check-label"
                                                    htmlFor="clientNotReferred_noTimeForAssignments">
@@ -1139,7 +1359,8 @@ class IARAssessmentSubmission extends Component {
                                                    disabled={!isEditable} value=""
                                                    id="clientNotReferred_needsJobQuickly"
                                                    name="clientNotReferred_needsJobQuickly"
-                                                   onChange={(e) => {}}
+                                                   onChange={(e) => {
+                                                   }}
                                                    checked={submission.content.clientNotReferred_needsJobQuickly}/>
                                             <label className="form-check-label"
                                                    htmlFor="clientNotReferred_needsJobQuickly">
@@ -1151,7 +1372,8 @@ class IARAssessmentSubmission extends Component {
                                                    disabled={!isEditable} value=""
                                                    id="clientNotReferred_lowComputerSkills"
                                                    name="clientNotReferred_lowComputerSkills"
-                                                   onChange={(e) => {}}
+                                                   onChange={(e) => {
+                                                   }}
                                                    checked={submission.content.clientNotReferred_lowComputerSkills}/>
                                             <label className="form-check-label"
                                                    htmlFor="clientNotReferred_lowComputerSkills">
@@ -1165,7 +1387,8 @@ class IARAssessmentSubmission extends Component {
                                                    disabled={!isEditable} value=""
                                                    id="clientNotReferred_limitedInterests"
                                                    name="clientNotReferred_limitedInterests"
-                                                   onChange={(e) => {}}
+                                                   onChange={(e) => {
+                                                   }}
                                                    checked={submission.content.clientNotReferred_limitedInterests}/>
                                             <label className="form-check-label"
                                                    htmlFor="clientNotReferred_limitedInterests">
@@ -1177,7 +1400,8 @@ class IARAssessmentSubmission extends Component {
                                                    disabled={!isEditable} value=""
                                                    id="clientNotReferred_directReferrals"
                                                    name="clientNotReferred_directReferrals"
-                                                   onChange={(e) => {}}
+                                                   onChange={(e) => {
+                                                   }}
                                                    checked={submission.content.clientNotReferred_directReferrals}/>
                                             <label className="form-check-label"
                                                    htmlFor="clientNotReferred_directReferrals">
@@ -1188,7 +1412,8 @@ class IARAssessmentSubmission extends Component {
                                             <input className="form-check-input" type="checkbox " readOnly={!isEditable}
                                                    disabled={!isEditable} value="" id="clientNotReferred_other"
                                                    name="clientNotReferred_other"
-                                                   onChange={(e) => {}}
+                                                   onChange={(e) => {
+                                                   }}
                                                    checked={submission.content.clientNotReferred_other}/>
                                             <label className="form-check-label" htmlFor="clientNotReferred_other">
                                                 Other (please specify):
@@ -1204,7 +1429,8 @@ class IARAssessmentSubmission extends Component {
                                                 <label className="custom-control custom-radio">
                                                     <input id="childCareRequested_yes" name="childCareRequested"
                                                            type="radio" className="custom-control-input"
-                                                           onChange={(e) => {}}
+                                                           onChange={(e) => {
+                                                           }}
                                                            readOnly={!isEditable}
                                                            checked={submission.content.childCareRequested_yes}
                                                     />
@@ -1213,7 +1439,8 @@ class IARAssessmentSubmission extends Component {
                                                 <label className="custom-control custom-radio">
                                                     <input id="childCareRequested_no" name="childCareRequested"
                                                            type="radio" className="custom-control-input"
-                                                           onChange={(e) => {}}
+                                                           onChange={(e) => {
+                                                           }}
                                                            readOnly={!isEditable}
                                                            checked={submission.content.childCareRequested_no}/>
                                                     <span className="custom-control-label">No</span>
@@ -1228,7 +1455,8 @@ class IARAssessmentSubmission extends Component {
                                             <div className="custom-controls-stacked">
                                                 <label className="custom-control custom-radio">
                                                     <input id="eligibleForFINP_yes" name="eligibleForFINP"
-                                                           onChange={(e) => {}}
+                                                           onChange={(e) => {
+                                                           }}
                                                            readOnly={!isEditable}
                                                            checked={submission.content.eligibleForFINP_yes} type="radio"
                                                            className="custom-control-input"
@@ -1238,7 +1466,8 @@ class IARAssessmentSubmission extends Component {
                                                 <label className="custom-control custom-radio">
                                                     <input id="eligibleForFINP_no" name="eligibleForFINP"
                                                            readOnly={!isEditable}
-                                                           onChange={(e) => {}}
+                                                           onChange={(e) => {
+                                                           }}
                                                            checked={submission.content.eligibleForFINP_no} type="radio"
                                                            className="custom-control-input"/>
                                                     <span className="custom-control-label">No</span>
@@ -1256,7 +1485,8 @@ class IARAssessmentSubmission extends Component {
                                     <div className="form-check form-group">
                                         <input id="actionPlanCheckBox_one" name="actionPlanCheckBox_one"
                                                readOnly={!isEditable} disabled={!isEditable}
-                                               onChange={(e) => {}}
+                                               onChange={(e) => {
+                                               }}
                                                className="form-check-input" type="checkbox" value=""
                                                checked={submission.content.actionPlanCheckBox_one}/>
                                         <label className="form-check-label" htmlFor="actionPlanCheckBox_one">
@@ -1267,7 +1497,8 @@ class IARAssessmentSubmission extends Component {
                                     <div className="form-check form-group">
                                         <input id="actionPlanCheckBox_two" name="actionPlanCheckBox_two"
                                                readOnly={!isEditable} disabled={!isEditable}
-                                               onChange={(e) => {}}
+                                               onChange={(e) => {
+                                               }}
                                                className="form-check-input" type="checkbox" value=""
                                                checked={submission.content.actionPlanCheckBox_two}/>
                                         <label className="form-check-label" htmlFor="actionPlanCheckBox_two">
