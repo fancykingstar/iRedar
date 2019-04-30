@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux'
 import Spinner from '../../../../Elements/Spinner';
 import {editSubmission} from "../../../../../actions/submissionActions";
+import $ from "jquery";
 
 class RegistrationSubmission extends Component {
     componentDidUpdate() {
@@ -16,7 +17,80 @@ class RegistrationSubmission extends Component {
             onFinished: async function (event, currentIndex) {
                 if (isEditable) {
                     let content = {
-
+                        fromForm: self.props.submission.content.fromForm,
+                        salutation: $("[name=salutation]").find(":selected").text(),
+                        firstName: $("[name=firstName]").val(),
+                        lastName: $("[name=lastName]").val(),
+                        preferredName: $("[name=preferredName]").val(),
+                        streetAddress: $("[name=streetAddress]").val(),
+                        city: $("[name=city]").val(),
+                        province: $("[name=province]").find(":selected").text(),
+                        postalCode: $("[name=postalCode]").val(),
+                        primaryPhoneNumber: $("[name=primaryPhoneNumber]").val(),
+                        primaryPhoneNumber_voicemail: $("[name=primaryPhoneNumber_voiceMail]").find(":selected").text(),
+                        secondaryPhoneNumber: $("[name=secondaryPhoneNumber]").val(),
+                        secondaryPhoneNumber_voicemail: $("[name=secondaryPhoneNumber_voicemail]").find(":selected").text(),
+                        email: $("[name=emailAddress]").val(),
+                        confirmEmail: $("[name=confirmEmailAddress]").val(),
+                        birthDate: $("[name=birthDate]").val(),
+                        gender: $("[name=gender]").find(":selected").text(),
+                        countryOfOrigin: $("[name=countryOfOrigin]").find(":selected").text(),
+                        nationality: $("[name=nationality]").find(":selected").text(),
+                        nativeLanguage: $("[name=nativeLanguage]").val(),
+                        occupation: $("[name=occupation]").find(":selected").text(),
+                        occupation_other: $("[name=occupation_other]").val(),
+                        primaryOccupation: $("[name=primaryOccupation]").val(),
+                        regulatedProfession_yes: $("#regulatedProfession_yes").is(":checked"),
+                        regulatedProfession_no: $("#regulatedProfession_no").is(":checked"),
+                        regulatedProfession_unknown: $("#regulatedProfession_unknown").is(":checked"),
+                        licensed_yes: $("#licensed_yes").is(":checked"),
+                        licensed_no: $("#licensed_no").is(":checked"),
+                        licensed_inProgress: $("#licensed_inProgress").is(":checked"),
+                        licensed_unknown: $("#licensed_unknown").is(":checked"),
+                        licensed_na: $("#licensed_na").is(":checked"),
+                        degree: $("[name=degree]").find(":selected").text(),
+                        degree_other: $("[name=degree_other]").val(),
+                        fieldOfStudy: $("[name=fieldOfStudy]").find(":selected").text(),
+                        nameOfMajor: $("[name=nameOfMajor]").val(),
+                        postSecondaryOutsideCanada_yesSame: $("#postSecondaryOutsideCanada_yesSame").is(":checked"),
+                        postSecondaryOutsideCanada_yesOther: $("#postSecondaryOutsideCanada_yesOther").is(":checked"),
+                        postSecondaryOutsideCanada_no: $("#postSecondaryOutsideCanada_no").is(":checked"),
+                        degreeEvaluated_yes: $("#degreeEvaluated_yes").is(":checked"),
+                        degreeEvaluated_no: $("#degreeEvaluated_no").is(":checked"),
+                        degreeEvaluated_na: $("#degreeEvaluated_na").is(":checked"),
+                        degreeEvaluated_inProgress: $("#degreeEvaluated_inProgress").is(":checked"),
+                        securityClearance_yes: $("#securityClearance_yes").is(":checked"),
+                        securityClearance_no: $("#securityClearance_no").is(":checked"),
+                        foreignBornCanadian: $("[name=foreignBornCanadian]").find(":selected").text(),
+                        landingDate_citizen: $("[name=landingDate_citizen]").val(),
+                        yearOfCitizenship: $("[name=yearOfCitizenship]").val(),
+                        permanentResidencyClass: $("[name=permanentResidencyClass]").find(":selected").text(),
+                        landingDate_permanentResident: $("[name=landingDate_permanentResident]").val(),
+                        conventionRefugee: $("[name=conventionRefugee]").find(":selected").text(),
+                        temporaryResident_inlandRefugeeClaimant: $("#temporaryResident_inlandRefugeeClaimant").is(":checked"),
+                        temporaryResident_foreignWorker: $("#temporaryResident_foreignWorker").is(":checked"),
+                        temporaryResident_liveInCaregiver: $("#temporaryResident_liveInCaregiver").is(":checked"),
+                        temporaryResident_protectedResident: $("#temporaryResident_protectedResident").is(":checked"),
+                        temporaryResident_student: $("#temporaryResident_student").is(":checked"),
+                        temporaryResident_other: $("#temporaryResident_other").is(":checked"),
+                        temporaryResident_diplomat: $("#temporaryResident_diplomat").is(":checked"),
+                        temporaryResident_noWorkPermit_inlandRefugee: $("#temporaryResident_noWorkPermit_inlandRefugee").is(":checked"),
+                        temporaryResident_noWorkPermit_internationalStudent: $("#temporaryResident_noWorkPermit_internationalStudent").is(":checked"),
+                        temporaryResident_noWorkPermit_visitorVisa: $("#temporaryResident_noWorkPermit_visitorVisa").is(":checked"),
+                        temporaryResident_noWorkPermit_diplomat: $("#temporaryResident_noWorkPermit_diplomat").is(":checked"),
+                        temporaryResident_noWorkPermit_other: $("#temporaryResident_noWorkPermit_other").is(":checked"),
+                        immigrationStatus_other: $("[name=immigrationStatus_other]").val(),
+                        immigrationDocumentNumber: $("[name=immigrationDocumentNumber]").val(),
+                        periodInCanada: $("[name=periodInCanada]").find(":selected").text(),
+                        legallyWorkInCanada_yes: $("#legallyWorkInCanada_yes").is(":checked"),
+                        legallyWorkInCanada_no: $("#legallyWorkInCanada_no").is(":checked"),
+                        legallyWorkInCanada_unknown: $("#legallyWorkInCanada_unknown").is(":checked"),
+                        heardAboutUs: $("[name=heardAboutUs]").find(":selected").text(),
+                        heardAboutUs_other: $("[name=heardAboutUs_other]").val(),
+                        addEmailToDistributionList_yes: $("#addEmailToDistributionList_yes").is(":checked"),
+                        addEmailToDistributionList_no: $("#addEmailToDistributionList_no").is(":checked"),
+                        sourceOfIncome: $("[name=sourceOfIncome]").find(":selected").text(),
+                        sourceOfIncome_other: $("[name=sourceOfIncome_other]").val()
                     };
                     console.log(content);
                     let permission = self.props.permissions[0];
@@ -64,7 +138,7 @@ class RegistrationSubmission extends Component {
                         <form id="immigrationForm" method="post" action="/forms">
 
                             <div className="form-group col-md-2">
-                                <input type="hidden" name="fromForm" value="5bedaa68f65be80016ef5a19"/>
+                                <input readOnly type="hidden" name="fromForm" value={submission.content.fromForm}/>
                             </div>
 
                             <div id="wizard6">
@@ -74,7 +148,9 @@ class RegistrationSubmission extends Component {
                                         <div className="form-group col-md-1">
                                             <label htmlFor="salutation">Salutation</label>
                                             <select className="form-control" id="salutation" name="salutation"
-                                                    readOnly={!isEditable} defaultValue={submission.content.salutation}>
+                                                    readOnly={!isEditable} defaultValue={submission.content.salutation}
+                                                    onChange={(e) => {
+                                                    }}>
                                                 <option value="">--</option>
                                                 <option>Mr</option>
                                                 <option>Mrs</option>
@@ -87,7 +163,8 @@ class RegistrationSubmission extends Component {
                                             <label htmlFor="firstName">First Name</label>
                                             <input type="text" className="form-control" id="firstName" name="firstName"
                                                    placeholder="First Name" readOnly={!isEditable}
-                                                   defaultValue={submission.content.firstName}/>
+                                                   defaultValue={submission.content.firstName} onChange={(e) => {
+                                            }}/>
                                         </div>
 
 
@@ -103,7 +180,8 @@ class RegistrationSubmission extends Component {
                                             <input type="text" className="form-control" id="preferredName"
                                                    name="preferredName" readOnly={!isEditable}
                                                    defaultValue={submission.content.preferredName}
-                                                   placeholder="Preferred First Name"/>
+                                                   placeholder="Preferred First Name" onChange={(e) => {
+                                            }}/>
                                         </div>
 
                                     </div>
@@ -112,17 +190,23 @@ class RegistrationSubmission extends Component {
                                             <label htmlFor="streetAddress">Street Address</label>
                                             <input type="text" className="form-control" id="streetAddress"
                                                    name="streetAddress" readOnly={!isEditable}
-                                                   defaultValue={submission.content.streetAddress}/>
+                                                   defaultValue={submission.content.streetAddress} onChange={(e) => {
+                                            }}
+                                            />
                                         </div>
                                         <div className="form-group col-md-3">
                                             <label htmlFor="city">City</label>
                                             <input type="text" className="form-control" id="city" name="city"
-                                                   readOnly={!isEditable} defaultValue={submission.content.city}/>
+                                                   readOnly={!isEditable} defaultValue={submission.content.city}
+                                                   onChange={(e) => {
+                                                   }}/>
                                         </div>
                                         <div className="form-group col-md-2">
                                             <label htmlFor="province">Province</label>
                                             <select id="province" className="form-control" name="province"
-                                                    readOnly={!isEditable} defaultValue={submission.content.province}>
+                                                    readOnly={!isEditable} defaultValue={submission.content.province}
+                                                    onChange={(e) => {
+                                                    }}>
                                                 <option value="">Province</option>
                                                 <option>Alberta</option>
                                                 <option>British Columbia</option>
@@ -143,7 +227,8 @@ class RegistrationSubmission extends Component {
                                             <label htmlFor="postalCode">Postal Code</label>
                                             <input type="text" className="form-control" id="postalCode"
                                                    name="postalCode" readOnly={!isEditable}
-                                                   defaultValue={submission.content.postalCode}/>
+                                                   defaultValue={submission.content.postalCode} onChange={(e) => {
+                                            }}/>
                                         </div>
                                     </div>
                                     <div className="form-row">
@@ -151,7 +236,9 @@ class RegistrationSubmission extends Component {
                                             <label htmlFor="primaryPhoneNumber">Primary Phone Number</label>
                                             <input type="text" className="form-control" id="primaryPhoneNumber"
                                                    name="primaryPhoneNumber" readOnly={!isEditable}
-                                                   defaultValue={submission.content.primaryPhoneNumber}/>
+                                                   defaultValue={submission.content.primaryPhoneNumber}
+                                                   onChange={(e) => {
+                                                   }}/>
                                         </div>
                                         <div className="form-group col-md-1">
                                             <label htmlFor="primaryPhoneNumber_voicemail">Voicemail?</label>
@@ -167,13 +254,17 @@ class RegistrationSubmission extends Component {
                                             <label htmlFor="secondaryPhoneNumber">Secondary Phone Number</label>
                                             <input type="text" className="form-control" id="secondaryPhoneNumber"
                                                    name="secondaryPhoneNumber" readOnly={!isEditable}
-                                                   defaultValue={submission.content.secondaryPhoneNumber}/>
+                                                   defaultValue={submission.content.secondaryPhoneNumber}
+                                                   onChange={(e) => {
+                                                   }}/>
                                         </div>
                                         <div className="form-group col-md-1">
                                             <label htmlFor="secondaryPhoneNumber_voicemail">Voicemail?</label>
                                             <select id="secondaryPhoneNumber_voicemail" className="form-control"
                                                     name="secondaryPhoneNumber_voicemail" readOnly={!isEditable}
-                                                    defaultValue={submission.content.secondaryPhoneNumber_voicemail}>
+                                                    defaultValue={submission.content.secondaryPhoneNumber_voicemail}
+                                                    onChange={(e) => {
+                                                    }}>
                                                 <option value="">--</option>
                                                 <option>Yes</option>
                                                 <option>No</option>
@@ -186,7 +277,8 @@ class RegistrationSubmission extends Component {
                                             <label htmlFor="email">Email address</label>
                                             <input type="email" className="form-control" id="email" name="email"
                                                    readOnly={!isEditable} defaultValue={submission.content.email}
-                                                   placeholder="name@example.com"/>
+                                                   placeholder="name@example.com" onChange={(e) => {
+                                            }}/>
 
                                         </div>
                                         <div className="form-group col-md-6">
@@ -194,7 +286,8 @@ class RegistrationSubmission extends Component {
                                             <input type="email" className="form-control" id="confirmEmail"
                                                    name="confirmEmail" readOnly={!isEditable}
                                                    defaultValue={submission.content.confirmEmail}
-                                                   placeholder="name@example.com"/>
+                                                   placeholder="name@example.com" onChange={(e) => {
+                                            }}/>
                                         </div>
                                     </div>
 
@@ -209,7 +302,9 @@ class RegistrationSubmission extends Component {
                                             </div>
                                             <input name="birthDate" id="birthDate" readOnly={!isEditable}
                                                    defaultValue={submission.content.birthDate} type="text"
-                                                   className="form-control" placeholder="MM/DD/YYYY"/>
+                                                   className="form-control" placeholder="MM/DD/YYYY"
+                                                   onChange={(e) => {
+                                                   }}/>
                                         </div>
                                     </div>
 
@@ -217,7 +312,9 @@ class RegistrationSubmission extends Component {
                                         <div className="form-group col-md-2">
                                             <label htmlFor="gender">Gender</label>
                                             <select id="gender" className="form-control" name="gender"
-                                                    readOnly={!isEditable} defaultValue={submission.content.gender}>
+                                                    readOnly={!isEditable} defaultValue={submission.content.gender}
+                                                    onChange={(e) => {
+                                                    }}>
                                                 <option value="">--</option>
                                                 <option>Male</option>
                                                 <option>Female</option>
@@ -228,7 +325,9 @@ class RegistrationSubmission extends Component {
                                             <label htmlFor="countryOfOrigin">Country of Origin</label>
                                             <select id="countryOfOrigin" className="form-control" name="countryOfOrigin"
                                                     readOnly={!isEditable}
-                                                    defaultValue={submission.content.countryOfOrigin}>
+                                                    defaultValue={submission.content.countryOfOrigin}
+                                                    onChange={(e) => {
+                                                    }}>
                                                 <option value="">--</option>
                                                 <option>Afghanistan</option>
                                                 <option>Albania</option>
@@ -434,7 +533,9 @@ class RegistrationSubmission extends Component {
                                             <label htmlFor="nationality">Nationality</label>
                                             <select id="nationality" className="form-control" name="nationality"
                                                     readOnly={!isEditable}
-                                                    defaultValue={submission.content.nationality}>
+                                                    defaultValue={submission.content.nationality}
+                                                    onChange={(e) => {
+                                                    }}>
                                                 <option value="">--</option>
                                                 <option>Afghanistan</option>
                                                 <option>Albania</option>
@@ -640,7 +741,9 @@ class RegistrationSubmission extends Component {
                                             <label htmlFor="nativeLanguage">Native Language</label>
                                             <input type="text" id="nativeLanguage" className="form-control"
                                                    name="nativeLanguage" readOnly={!isEditable}
-                                                   defaultValue={submission.content.nativeLanguage}/>
+                                                   defaultValue={submission.content.nativeLanguage}
+                                                   onChange={(e) => {
+                                                   }}/>
                                         </div>
                                     </div>
                                 </section>
@@ -655,7 +758,9 @@ class RegistrationSubmission extends Component {
                                                 below
                                             </label>
                                             <select className="form-control" id="occupation" name="occupation"
-                                                    readOnly={!isEditable} defaultValue={submission.content.occupation}>
+                                                    readOnly={!isEditable} defaultValue={submission.content.occupation}
+                                                    onChange={(e) => {
+                                                    }}>
                                                 <option value="">--</option>
                                                 <option>Management</option>
                                                 <option>Business, Finance & Administration</option>
@@ -673,9 +778,11 @@ class RegistrationSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-5">
                                             <label htmlFor="occupation_other">If Other, Specify</label>
-                                            <input type="email" className="form-control" id="occupation_other"
+                                            <input type="text" className="form-control" id="occupation_other"
                                                    name="occupation_other" readOnly={!isEditable}
-                                                   defaultValue={submission.content.occupation_other}/>
+                                                   defaultValue={submission.content.occupation_other}
+                                                   onChange={(e) => {
+                                                   }}/>
                                         </div>
                                     </div>
                                     <div className="row">
@@ -683,7 +790,9 @@ class RegistrationSubmission extends Component {
                                             <label htmlFor="primaryOccupation">Name of Primary Profession</label>
                                             <input type="text" className="form-control" id="primaryOccupation"
                                                    name="primaryOccupation" readOnly={!isEditable}
-                                                   defaultValue={submission.content.primaryOccupation}/>
+                                                   defaultValue={submission.content.primaryOccupation}
+                                                   onChange={(e) => {
+                                                   }}/>
                                         </div>
                                     </div>
 
@@ -700,6 +809,8 @@ class RegistrationSubmission extends Component {
                                                                    name="regulatedProfession" readOnly={!isEditable}
                                                                    checked={submission.content.regulatedProfession_yes}
                                                                    type="radio" className="custom-control-input"
+                                                                   onChange={(e) => {
+                                                                   }}
                                                             />
                                                             <span className="custom-control-label">Yes</span>
                                                         </label>
@@ -707,7 +818,9 @@ class RegistrationSubmission extends Component {
                                                             <input id="regulatedProfession_no"
                                                                    name="regulatedProfession" readOnly={!isEditable}
                                                                    checked={submission.content.regulatedProfession_no}
-                                                                   type="radio" className="custom-control-input"/>
+                                                                   type="radio" className="custom-control-input"
+                                                                   onChange={(e) => {
+                                                                   }}/>
                                                             <span className="custom-control-label">No</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
@@ -715,6 +828,8 @@ class RegistrationSubmission extends Component {
                                                                    name="regulatedProfession" readOnly={!isEditable}
                                                                    checked={submission.content.regulatedProfession_unknown}
                                                                    type="radio" className="custom-control-input"
+                                                                   onChange={(e) => {
+                                                                   }}
                                                             />
                                                             <span className="custom-control-label">Unknown</span>
                                                         </label>
@@ -732,35 +847,40 @@ class RegistrationSubmission extends Component {
                                                 <label className="custom-control custom-radio">
                                                     <input id="licensed_yes" name="licensed" readOnly={!isEditable}
                                                            checked={submission.content.licensed_yes} type="radio"
-                                                           className="custom-control-input"
+                                                           className="custom-control-input" onChange={(e) => {
+                                                    }}
                                                     />
                                                     <span className="custom-control-label">Yes</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
                                                     <input id="licensed_no" name="licensed" readOnly={!isEditable}
                                                            checked={submission.content.licensed_no} type="radio"
-                                                           className="custom-control-input"/>
+                                                           className="custom-control-input" onChange={(e) => {
+                                                    }}/>
                                                     <span className="custom-control-label">No</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
                                                     <input id="licensed_inProgress" name="licensed"
                                                            readOnly={!isEditable}
                                                            checked={submission.content.licensed_inProgress} type="radio"
-                                                           className="custom-control-input"
+                                                           className="custom-control-input" onChange={(e) => {
+                                                    }}
                                                     />
                                                     <span className="custom-control-label">Licensing in Progress</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
                                                     <input id="licensed_unknown" name="licensed" readOnly={!isEditable}
                                                            checked={submission.content.licensed_unknown} type="radio"
-                                                           className="custom-control-input"
+                                                           className="custom-control-input" onChange={(e) => {
+                                                    }}
                                                     />
                                                     <span className="custom-control-label">Unknown</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
                                                     <input id="licensed_na" name="licensed" readOnly={!isEditable}
                                                            checked={submission.content.licensed_na} type="radio"
-                                                           className="custom-control-input"
+                                                           className="custom-control-input" onChange={(e) => {
+                                                    }}
                                                     />
                                                     <span className="custom-control-label">N/A</span>
                                                 </label>
@@ -774,22 +894,26 @@ class RegistrationSubmission extends Component {
                                                 Please select your highest level of education
                                             </label>
                                             <select className="form-control" id="degree" name="degree"
-                                                    readOnly={!isEditable} defaultValue={submission.content.degree}>
+                                                    readOnly={!isEditable} defaultValue={submission.content.degree}
+                                                    onChange={(e) => {
+                                                    }}>
                                                 <option value="">--</option>
-                                                <option value="phD">PhD</option>
-                                                <option value="masters">Masters</option>
-                                                <option value="bachelor">Bachelor</option>
-                                                <option value="certificate">Certificate</option>
-                                                <option value="diploma">Diploma</option>
-                                                <option value="highSchool">High School</option>
-                                                <option value="other">Other</option>
+                                                <option>PhD</option>
+                                                <option>Masters</option>
+                                                <option>Bachelor</option>
+                                                <option>Certificate</option>
+                                                <option>Diploma</option>
+                                                <option>High School</option>
+                                                <option>Other</option>
                                             </select>
                                         </div>
                                         <div className="form-group col-md-6">
                                             <label htmlFor="degree_other">If Other, Specify</label>
-                                            <input type="email" className="form-control" id="degree_other"
+                                            <input type="text" className="form-control" id="degree_other"
                                                    name="degree_other" readOnly={!isEditable}
-                                                   defaultValue={submission.content.degree_other}/>
+                                                   defaultValue={submission.content.degree_other}
+                                                   onChange={(e) => {
+                                                   }}/>
                                         </div>
                                     </div>
 
@@ -800,7 +924,9 @@ class RegistrationSubmission extends Component {
                                             </label>
                                             <select className="form-control" id="fieldOfStudy" name="fieldOfStudy"
                                                     readOnly={!isEditable}
-                                                    defaultValue={submission.content.fieldOfStudy}>
+                                                    defaultValue={submission.content.fieldOfStudy}
+                                                    onChange={(e) => {
+                                                    }}>
                                                 <option value="">--</option>
                                                 <option>Education (e.g. teacher training)</option>
                                                 <option>Visual & performing arts (e.g. music, art)</option>
@@ -832,7 +958,9 @@ class RegistrationSubmission extends Component {
                                                 specialization:</label>
                                             <input type="text" className="form-control" id="nameOfMajor"
                                                    name="nameOfMajor" readOnly={!isEditable}
-                                                   defaultValue={submission.content.nameOfMajor}/>
+                                                   defaultValue={submission.content.nameOfMajor}
+                                                   onChange={(e) => {
+                                                   }}/>
                                         </div>
                                     </div>
                                     <div className="form-row">
@@ -845,6 +973,8 @@ class RegistrationSubmission extends Component {
                                                            name="postSecondaryOutsideCanada" readOnly={!isEditable}
                                                            checked={submission.content.postSecondaryOutsideCanada_yesSame}
                                                            type="radio" className="custom-control-input"
+                                                           onChange={(e) => {
+                                                           }}
                                                     />
                                                     <span className="custom-control-label">YES (same as above)</span>
                                                 </label>
@@ -852,14 +982,18 @@ class RegistrationSubmission extends Component {
                                                     <input id="postSecondaryOutsideCanada_yesOther"
                                                            name="postSecondaryOutsideCanada" readOnly={!isEditable}
                                                            checked={submission.content.postSecondaryOutsideCanada_yesOther}
-                                                           type="radio" className="custom-control-input"/>
+                                                           type="radio" className="custom-control-input"
+                                                           onChange={(e) => {
+                                                           }}/>
                                                     <span className="custom-control-label">YES (other)</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
                                                     <input id="postSecondaryOutsideCanada_no"
                                                            name="postSecondaryOutsideCanada" readOnly={!isEditable}
                                                            checked={submission.content.postSecondaryOutsideCanada_no}
-                                                           type="radio" className="custom-control-input"/>
+                                                           type="radio" className="custom-control-input"
+                                                           onChange={(e) => {
+                                                           }}/>
                                                     <span className="custom-control-label">NO</span>
                                                 </label>
                                             </div>
@@ -874,7 +1008,8 @@ class RegistrationSubmission extends Component {
                                                     <input id="degreeEvaluated_yes" name="degreeEvaluated"
                                                            readOnly={!isEditable}
                                                            checked={submission.content.degreeEvaluated_yes} type="radio"
-                                                           className="custom-control-input"
+                                                           className="custom-control-input" onChange={(e) => {
+                                                    }}
                                                     />
                                                     <span className="custom-control-label">YES</span>
                                                 </label>
@@ -882,21 +1017,25 @@ class RegistrationSubmission extends Component {
                                                     <input id="degreeEvaluated_no" name="degreeEvaluated"
                                                            readOnly={!isEditable}
                                                            checked={submission.content.degreeEvaluated_no} type="radio"
-                                                           className="custom-control-input"/>
+                                                           className="custom-control-input" onChange={(e) => {
+                                                    }}/>
                                                     <span className="custom-control-label">NO</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
                                                     <input id="degreeEvaluated_na" name="degreeEvaluated"
                                                            readOnly={!isEditable}
                                                            checked={submission.content.degreeEvaluated_na} type="radio"
-                                                           className="custom-control-input"/>
+                                                           className="custom-control-input" onChange={(e) => {
+                                                    }}/>
                                                     <span className="custom-control-label">N/A</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
                                                     <input id="degreeEvaluated_inProgress" name="degreeEvaluated"
                                                            readOnly={!isEditable}
                                                            checked={submission.content.degreeEvaluated_inProgress}
-                                                           type="radio" className="custom-control-input"/>
+                                                           type="radio" className="custom-control-input"
+                                                           onChange={(e) => {
+                                                           }}/>
                                                     <span className="custom-control-label">In progress</span>
                                                 </label>
                                             </div>
@@ -913,6 +1052,8 @@ class RegistrationSubmission extends Component {
                                                            readOnly={!isEditable}
                                                            checked={submission.content.securityClearance_yes}
                                                            type="radio" className="custom-control-input"
+                                                           onChange={(e) => {
+                                                           }}
                                                     />
                                                     <span className="custom-control-label">YES</span>
                                                 </label>
@@ -920,7 +1061,9 @@ class RegistrationSubmission extends Component {
                                                     <input id="securityClearance_no" name="securityClearance"
                                                            readOnly={!isEditable}
                                                            checked={submission.content.securityClearance_no}
-                                                           type="radio" className="custom-control-input"/>
+                                                           type="radio" className="custom-control-input"
+                                                           onChange={(e) => {
+                                                           }}/>
                                                     <span className="custom-control-label">NO</span>
                                                 </label>
 
@@ -938,7 +1081,9 @@ class RegistrationSubmission extends Component {
                                             <label htmlFor="foreignBornCanadian">Foreign born Canadian?</label>
                                             <select className="form-control" id="foreignBornCanadian"
                                                     name="foreignBornCanadian" readOnly={!isEditable}
-                                                    defaultValue={submission.content.foreignBornCanadian}>
+                                                    defaultValue={submission.content.foreignBornCanadian}
+                                                    onChange={(e) => {
+                                                    }}>
                                                 <option value="">--</option>
                                                 <option>Yes</option>
                                                 <option>No</option>
@@ -955,14 +1100,18 @@ class RegistrationSubmission extends Component {
                                                 <input name="landingDate_citizen" id="landingDate_citizen"
                                                        readOnly={!isEditable}
                                                        defaultValue={submission.content.landingDate_citizen} type="text"
-                                                       className="form-control" placeholder="MM/DD/YYYY"/>
+                                                       className="form-control" placeholder="MM/DD/YYYY"
+                                                       onChange={(e) => {
+                                                       }}/>
                                             </div>
                                         </div>
                                         <div className="form-group col-md-3">
                                             <label htmlFor="yearOfCitizenship">Year of Citizenship</label>
                                             <input type="text" className="form-control" id="yearOfCitizenship"
                                                    name="yearOfCitizenship" readOnly={!isEditable}
-                                                   defaultValue={submission.content.yearOfCitizenship}/>
+                                                   defaultValue={submission.content.yearOfCitizenship}
+                                                   onChange={(e) => {
+                                                   }}/>
                                         </div>
                                     </div>
                                     <h5>OR</h5>
@@ -971,7 +1120,9 @@ class RegistrationSubmission extends Component {
                                             <label htmlFor="permanentResidencyClass">Permanent Residence Class</label>
                                             <select className="form-control" id="permanentResidencyClass"
                                                     name="permanentResidencyClass" readOnly={!isEditable}
-                                                    defaultValue={submission.content.permanentResidencyClass}>
+                                                    defaultValue={submission.content.permanentResidencyClass}
+                                                    onChange={(e) => {
+                                                    }}>
                                                 <option value="">--</option>
                                                 <option>Skilled Worker</option>
                                                 <option>Family Class</option>
@@ -992,7 +1143,9 @@ class RegistrationSubmission extends Component {
                                                 <input name="landingDate_permanentResident"
                                                        id="landingDate_permanentResident" readOnly={!isEditable}
                                                        defaultValue={submission.content.landingDate_permanentResident}
-                                                       type="text" className="form-control" placeholder="MM/DD/YYYY"/>
+                                                       type="text" className="form-control" placeholder="MM/DD/YYYY"
+                                                       onChange={(e) => {
+                                                       }}/>
                                             </div>
                                         </div>
                                     </div>
@@ -1002,7 +1155,9 @@ class RegistrationSubmission extends Component {
                                             <label htmlFor="conventionRefugee">Are you A Convention Refugee?</label>
                                             <select className="form-control" id="conventionRefugee"
                                                     name="conventionRefugee" readOnly={!isEditable}
-                                                    defaultValue={submission.content.conventionRefugee}>
+                                                    defaultValue={submission.content.conventionRefugee}
+                                                    onChange={(e) => {
+                                                    }}>
                                                 <option value="">--</option>
                                                 <option>Yes</option>
                                                 <option>No</option>
@@ -1022,6 +1177,8 @@ class RegistrationSubmission extends Component {
                                                                    name="temporaryResident" readOnly={!isEditable}
                                                                    checked={submission.content.temporaryResident_inlandRefugeeClaimant}
                                                                    type="radio" className="custom-control-input"
+                                                                   onChange={(e) => {
+                                                                   }}
                                                             />
                                                             <span className="custom-control-label">Inland Refugee Claimant</span>
                                                         </label>
@@ -1029,7 +1186,9 @@ class RegistrationSubmission extends Component {
                                                             <input id="temporaryResident_foreignWorker"
                                                                    name="temporaryResident" readOnly={!isEditable}
                                                                    checked={submission.content.temporaryResident_foreignWorker}
-                                                                   type="radio" className="custom-control-input"/>
+                                                                   type="radio" className="custom-control-input"
+                                                                   onChange={(e) => {
+                                                                   }}/>
                                                             <span className="custom-control-label">Temporary Foreign Worker (Employer Sponsored)</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
@@ -1037,6 +1196,8 @@ class RegistrationSubmission extends Component {
                                                                    name="temporaryResident" readOnly={!isEditable}
                                                                    checked={submission.content.temporaryResident_liveInCaregiver}
                                                                    type="radio" className="custom-control-input"
+                                                                   onChange={(e) => {
+                                                                   }}
                                                             />
                                                             <span
                                                                 className="custom-control-label">Live-In Caregiver</span>
@@ -1046,6 +1207,8 @@ class RegistrationSubmission extends Component {
                                                                    name="temporaryResident" readOnly={!isEditable}
                                                                    checked={submission.content.temporaryResident_protectedResident}
                                                                    type="radio" className="custom-control-input"
+                                                                   onChange={(e) => {
+                                                                   }}
                                                             />
                                                             <span className="custom-control-label">Temporary Protected Resident</span>
                                                         </label>
@@ -1054,6 +1217,8 @@ class RegistrationSubmission extends Component {
                                                                    name="temporaryResident" readOnly={!isEditable}
                                                                    checked={submission.content.temporaryResident_student}
                                                                    type="radio" className="custom-control-input"
+                                                                   onChange={(e) => {
+                                                                   }}
                                                             />
                                                             <span className="custom-control-label">Student or Graduate Work Permit</span>
                                                         </label>
@@ -1062,6 +1227,8 @@ class RegistrationSubmission extends Component {
                                                                    readOnly={!isEditable}
                                                                    checked={submission.content.temporaryResident_other}
                                                                    type="radio" className="custom-control-input"
+                                                                   onChange={(e) => {
+                                                                   }}
                                                             />
                                                             <span className="custom-control-label">Other</span>
                                                         </label>
@@ -1070,6 +1237,8 @@ class RegistrationSubmission extends Component {
                                                                    name="temporaryResident" readOnly={!isEditable}
                                                                    checked={submission.content.temporaryResident_diplomat}
                                                                    type="radio" className="custom-control-input"
+                                                                   onChange={(e) => {
+                                                                   }}
                                                             />
                                                             <span className="custom-control-label">Diplomat</span>
                                                         </label>
@@ -1093,6 +1262,8 @@ class RegistrationSubmission extends Component {
                                                                    readOnly={!isEditable}
                                                                    checked={submission.content.temporaryResident_noWorkPermit_inlandRefugee}
                                                                    type="radio" className="custom-control-input"
+                                                                   onChange={(e) => {
+                                                                   }}
                                                             />
                                                             <span className="custom-control-label">Inland Refugee Claimant</span>
                                                         </label>
@@ -1102,7 +1273,9 @@ class RegistrationSubmission extends Component {
                                                                 name="temporaryResident_noWorkPermit"
                                                                 readOnly={!isEditable}
                                                                 checked={submission.content.temporaryResident_noWorkPermit_internationalStudent}
-                                                                type="radio" className="custom-control-input"/>
+                                                                type="radio" className="custom-control-input"
+                                                                onChange={(e) => {
+                                                                }}/>
                                                             <span
                                                                 className="custom-control-label">International Student</span>
                                                         </label>
@@ -1112,6 +1285,8 @@ class RegistrationSubmission extends Component {
                                                                    readOnly={!isEditable}
                                                                    checked={submission.content.temporaryResident_noWorkPermit_visitorVisa}
                                                                    type="radio" className="custom-control-input"
+                                                                   onChange={(e) => {
+                                                                   }}
                                                             />
                                                             <span className="custom-control-label">Visitor Visa</span>
                                                         </label>
@@ -1121,6 +1296,8 @@ class RegistrationSubmission extends Component {
                                                                    readOnly={!isEditable}
                                                                    checked={submission.content.temporaryResident_noWorkPermit_diplomat}
                                                                    type="radio" className="custom-control-input"
+                                                                   onChange={(e) => {
+                                                                   }}
                                                             />
                                                             <span className="custom-control-label">Diplomat</span>
                                                         </label>
@@ -1130,6 +1307,8 @@ class RegistrationSubmission extends Component {
                                                                    readOnly={!isEditable}
                                                                    checked={submission.content.temporaryResident_noWorkPermit_other}
                                                                    type="radio" className="custom-control-input"
+                                                                   onChange={(e) => {
+                                                                   }}
                                                             />
                                                             <span className="custom-control-label">Other</span>
                                                         </label>
@@ -1141,18 +1320,22 @@ class RegistrationSubmission extends Component {
                                     <div className="form-row">
                                         <div className="form-group col-md-8">
                                             <label htmlFor="immigrationStatus_other">If Other, Specify</label>
-                                            <input type="email" className="form-control" id="immigrationStatus_other"
+                                            <input type="text" className="form-control" id="immigrationStatus_other"
                                                    name="immigrationStatus_other" readOnly={!isEditable}
-                                                   defaultValue={submission.content.immigrationStatus_other}/>
+                                                   defaultValue={submission.content.immigrationStatus_other}
+                                                   onChange={(e) => {
+                                                   }}/>
                                         </div>
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-8">
                                             <label htmlFor="immigrationDocumentNumber">Immigration Document
                                                 Number:</label>
-                                            <input type="email" className="form-control" id="immigrationDocumentNumber"
+                                            <input type="text" className="form-control" id="immigrationDocumentNumber"
                                                    name="immigrationDocumentNumber" readOnly={!isEditable}
-                                                   defaultValue={submission.content.immigrationDocumentNumber}/>
+                                                   defaultValue={submission.content.immigrationDocumentNumber}
+                                                   onChange={(e) => {
+                                                   }}/>
                                         </div>
                                     </div>
                                     <div className="form-row">
@@ -1160,7 +1343,8 @@ class RegistrationSubmission extends Component {
                                             <label htmlFor="periodInCanada">How long have you been in Canada?</label>
                                             <select className="form-control" id="periodInCanada" name="periodInCanada"
                                                     readOnly={!isEditable}
-                                                    defaultValue={submission.content.periodInCanada}>
+                                                    defaultValue={submission.content.periodInCanada} onChange={(e) => {
+                                            }}>
                                                 <option value="">--</option>
                                                 <option>0-12 months</option>
                                                 <option>1-3 years</option>
@@ -1184,6 +1368,8 @@ class RegistrationSubmission extends Component {
                                                                    name="legallyWorkInCanada" readOnly={!isEditable}
                                                                    checked={submission.content.legallyWorkInCanada_yes}
                                                                    type="radio" className="custom-control-input"
+                                                                   onChange={(e) => {
+                                                                   }}
                                                             />
                                                             <span className="custom-control-label">YES</span>
                                                         </label>
@@ -1191,7 +1377,9 @@ class RegistrationSubmission extends Component {
                                                             <input id="legallyWorkInCanada_no"
                                                                    name="legallyWorkInCanada" readOnly={!isEditable}
                                                                    checked={submission.content.legallyWorkInCanada_no}
-                                                                   type="radio" className="custom-control-input"/>
+                                                                   type="radio" className="custom-control-input"
+                                                                   onChange={(e) => {
+                                                                   }}/>
                                                             <span className="custom-control-label">NO</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
@@ -1199,6 +1387,8 @@ class RegistrationSubmission extends Component {
                                                                    name="legallyWorkInCanada" readOnly={!isEditable}
                                                                    checked={submission.content.legallyWorkInCanada_unknown}
                                                                    type="radio" className="custom-control-input"
+                                                                   onChange={(e) => {
+                                                                   }}
                                                             />
                                                             <span className="custom-control-label">UNKNOWN</span>
                                                         </label>
@@ -1213,7 +1403,8 @@ class RegistrationSubmission extends Component {
                                                 Centre?</label>
                                             <select className="form-control" id="heardAboutUs" name="heardAboutUs"
                                                     readOnly={!isEditable}
-                                                    defaultValue={submission.content.heardAboutUs}>
+                                                    defaultValue={submission.content.heardAboutUs} onChange={(e) => {
+                                            }}>
                                                 <option value="">--</option>
                                                 <option>Immigrant serving organization (CCI, IWSO, JFS, OCCSC, SCFS,
                                                     OCISO, LASSA, YMCA, PQHC, YSB etc.)
@@ -1235,9 +1426,11 @@ class RegistrationSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-6">
                                             <label htmlFor="heardAboutUs_other">If Other, Specify</label>
-                                            <input type="email" className="form-control" id="heardAboutUs_other"
+                                            <input type="text" className="form-control" id="heardAboutUs_other"
                                                    name="heardAboutUs_other" readOnly={!isEditable}
-                                                   defaultValue={submission.content.heardAboutUs_other}/>
+                                                   defaultValue={submission.content.heardAboutUs_other}
+                                                   onChange={(e) => {
+                                                   }}/>
                                         </div>
                                     </div>
                                     <div className="form-row">
@@ -1253,6 +1446,8 @@ class RegistrationSubmission extends Component {
                                                                    readOnly={!isEditable}
                                                                    checked={submission.content.addEmailToDistributionList_yes}
                                                                    type="radio" className="custom-control-input"
+                                                                   onChange={(e) => {
+                                                                   }}
                                                             />
                                                             <span className="custom-control-label">YES</span>
                                                         </label>
@@ -1261,7 +1456,9 @@ class RegistrationSubmission extends Component {
                                                                    name="addEmailToDistributionList"
                                                                    readOnly={!isEditable}
                                                                    checked={submission.content.addEmailToDistributionList_no}
-                                                                   type="radio" className="custom-control-input"/>
+                                                                   type="radio" className="custom-control-input"
+                                                                   onChange={(e) => {
+                                                                   }}/>
                                                             <span className="custom-control-label">NO</span>
                                                         </label>
                                                     </div>
@@ -1273,7 +1470,9 @@ class RegistrationSubmission extends Component {
                                                 <label htmlFor="sourceOfIncome">Source of income (optional):</label>
                                                 <select className="form-control" id="sourceOfIncome"
                                                         name="sourceOfIncome" readOnly={!isEditable}
-                                                        defaultValue={submission.content.sourceOfIncome}>
+                                                        defaultValue={submission.content.sourceOfIncome}
+                                                        onChange={(e) => {
+                                                        }}>
                                                     <option value="">--</option>
                                                     <option>EI</option>
                                                     <option>ODSP</option>
@@ -1290,9 +1489,11 @@ class RegistrationSubmission extends Component {
                                             </div>
                                             <div className="form-group col-md-6">
                                                 <label htmlFor="sourceOfIncome_other">If Other, Specify</label>
-                                                <input type="email" className="form-control" id="sourceOfIncome_other"
+                                                <input type="text" className="form-control" id="sourceOfIncome_other"
                                                        name="sourceOfIncome_other" readOnly={!isEditable}
-                                                       defaultValue={submission.content.sourceOfIncome_other}/>
+                                                       defaultValue={submission.content.sourceOfIncome_other}
+                                                       onChange={(e) => {
+                                                       }}/>
                                             </div>
                                         </div>
                                     </div>
