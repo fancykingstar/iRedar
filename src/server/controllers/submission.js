@@ -198,7 +198,7 @@ exports.getSubmissionView = async (req, res) => {
   try {
       const allSubmissions = await Submission.find({
           'content.fromForm': formType,
-      });
+      }).sort({dateSubmitted: 'desc'});
       return res.json({
           success: true,
           allSubmissions,
