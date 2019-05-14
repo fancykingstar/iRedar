@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import TextFieldGroup from '../../Elements/TextFieldGroup';
+import Select from 'react-select';
 import SelectGroup from '../../Elements/SelectGroup';
 
 export class AddNewContact extends Component {
@@ -45,7 +46,7 @@ export class AddNewContact extends Component {
    * because jQuery select2() overrides onChange event in select html
    */
   componentDidMount() {
-    window.$('.select2').change(e => {
+    window.$('.select2:not(.row-select)').change(e => {
       this.setState({ [e.target.name]: e.target.value });
     });
   }
@@ -60,10 +61,15 @@ export class AddNewContact extends Component {
   }
 
   onChange = event => {
-    //access even in an asynchronous way
+    //access event in an asynchronous way
     event.persist();
 
     this.setState(previousState => ({ ...previousState, [event.target.name]: event.target.value }));
+  };
+
+  onSelectChange = (key, value) => {
+    // event.persist();
+    this.setState(previousState => ({ ...previousState, [key]: value }));
   };
 
   onSubmit = e => {
@@ -92,125 +98,158 @@ export class AddNewContact extends Component {
   };
 
   render() {
-    let contactTypes = [
+    const contactTypes = [
       { label: 'Select type', value: '', disabled: true },
-      { label: 'Client', value: 'C' },
-      { label: 'Partner', value: 'P' },
-      { label: 'Staff', value: 'S' }
+      { label: 'Client', value: 'CLIENT' },
+      { label: 'Partner', value: 'PARTNER' },
+      { label: 'Staff', value: 'STAFF' }
     ];
 
-    let languages = [ { label: 'Select language', value: '', disabled: true }, { label: 'English', value: 'english' } ];
+    const languages = [
+      { label: 'Select language', value: '', disabled: true },
+      { label: 'English', value: 'english' }
+    ];
 
-    let groups = [ { label: 'Select group', value: '', disabled: true } ];
+    const groups = [ { label: 'Select group', value: '', disabled: true } ];
+
+    const selectCustomStyle = {
+      container: provided => {
+        return { ...provided, marginBottom: '1rem' };
+      },
+      menu: provided => {
+        return { ...provided, zIndex: '100000' };
+      }
+    };
 
     return (
-      <div className="slim-mainpanel">
-        <div className="container">
-          <div className="manager-header">
-            <div className="slim-pageheader">
-              <ol className="breadcrumb slim-breadcrumb" />
-              <h6 className="slim-pagetitle">Add new contact</h6>
+      <div className='slim-mainpanel'>
+        <div className='container'>
+          <div className='manager-header'>
+            <div className='slim-pageheader'>
+              <ol className='breadcrumb slim-breadcrumb' />
+              <h6 className='slim-pagetitle'>Add new contact</h6>
             </div>
           </div>
           <form onSubmit={this.onSubmit}>
-            <div className="section-wrapper mg-b-20">
-              <label className="section-title mg-b-20">Personal Information</label>
-              <div className="row">
-                <div className="col-lg mg-t-10 mg-lg-t-0">
-                  <TextFieldGroup name="firstname" placeholder="First Name" onChange={this.onChange} />
+            <div className='section-wrapper mg-b-20'>
+              <label className='section-title mg-b-20'>Personal Information</label>
+              <div className='row'>
+                <div className='col-lg mg-t-10 mg-lg-t-0'>
+                  <TextFieldGroup name='firstname' placeholder='First Name' onChange={this.onChange} />
                 </div>
-                <div className="col-lg mg-t-10 mg-lg-t-0">
-                  <TextFieldGroup name="lastname" placeholder="Last Name" onChange={this.onChange} />
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-lg mg-t-10 mg-lg-t-0">
-                  <TextFieldGroup name="company" placeholder="Company" onChange={this.onChange} />
-                </div>
-                <div className="col-lg mg-t-10 mg-lg-t-0">
-                  <TextFieldGroup name="profession" placeholder="Profession" onChange={this.onChange} />
+                <div className='col-lg mg-t-10 mg-lg-t-0'>
+                  <TextFieldGroup name='lastname' placeholder='Last Name' onChange={this.onChange} />
                 </div>
               </div>
-            </div>
-            <div className="section-wrapper mg-b-20">
-              <label className="section-title mg-b-20">Other Information</label>
-              <div className="row">
-                <div className="col-lg mg-t-10 mg-lg-t-0">
-                  <SelectGroup name="type" options={contactTypes} value={this.state.type} />
+              <div className='row'>
+                <div className='col-lg mg-t-10 mg-lg-t-0'>
+                  <TextFieldGroup name='company' placeholder='Company' onChange={this.onChange} />
                 </div>
-                <div className="col-lg mg-t-10 mg-lg-t-0">
-                  <SelectGroup name="language" options={languages} value={this.state.language} />
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-lg-6 mg-t-10 mg-lg-t-0">
-                  <SelectGroup name="group" options={groups} value={this.state.group} />
+                <div className='col-lg mg-t-10 mg-lg-t-0'>
+                  <TextFieldGroup name='profession' placeholder='Profession' onChange={this.onChange} />
                 </div>
               </div>
             </div>
-            <div className="card ">
-              <div className="card-header">
-                <ul className="nav nav-tabs card-header-tabs">
-                  <li className="nav-item">
-                    <a className="nav-link" href="#email_addresses" data-toggle="tab">
+            <div className='section-wrapper mg-b-20'>
+              <label className='section-title mg-b-20'>Other Information</label>
+              <div className='row'>
+                <div className='col-lg mg-t-10 mg-lg-t-0'>
+                  <Select
+                    styles={selectCustomStyle}
+                    options={contactTypes}
+                    name='type'
+                    onChange={e => {
+                      this.onSelectChange('type', e.value);
+                    }}
+                  />
+                </div>
+                <div className='col-lg mg-t-10 mg-lg-t-0'>
+                  <Select
+                    styles={selectCustomStyle}
+                    options={languages}
+                    name='language'
+                    onChange={e => {
+                      this.onSelectChange('language', e.value);
+                    }}
+                  />
+                </div>
+              </div>
+              <div className='row'>
+                <div className='col-lg-6 mg-t-10 mg-lg-t-0'>
+                  <Select
+                    styles={selectCustomStyle}
+                    options={groups}
+                    name='group'
+                    onChange={e => {
+                      this.onSelectChange('group', e.value);
+                    }}
+                  />
+                  {/* <SelectGroup name='group' options={groups} value={this.state.group} /> */}
+                </div>
+              </div>
+            </div>
+            <div className='card '>
+              <div className='card-header'>
+                <ul className='nav nav-tabs card-header-tabs'>
+                  <li className='nav-item'>
+                    <a className='nav-link active show' href='#email_addresses' data-toggle='tab'>
                       Emails Addresses
                     </a>
                   </li>
-                  <li className="nav-item">
-                    <a className="nav-link  active show" href="#addresses" data-toggle="tab">
+                  <li className='nav-item'>
+                    <a className='nav-link' href='#addresses' data-toggle='tab'>
                       Addresses
                     </a>
                   </li>
-                  <li className="nav-item">
-                    <a className="nav-link" href="#phone_numbers" data-toggle="tab">
+                  <li className='nav-item'>
+                    <a className='nav-link' href='#phone_numbers' data-toggle='tab'>
                       Phone Numbers
                     </a>
                   </li>
                 </ul>
               </div>
-              <div className="card-body">
-                <div className="tab-content">
-                  <div className="tab-pane" id="email_addresses">
+              <div className='card-body'>
+                <div className='tab-content'>
+                  <div className='tab-pane active show' id='email_addresses'>
                     {this.state.email_addresses.map((value, key) => {
                       let parentKey = 'email_addresses';
+                      console.log(value.email_for);
                       return (
-                        <div className="row">
-                          <div className="col-lg">
-                            <SelectGroup
-                              style={{ width: '336px' }}
-                              name="email_for"
+                        <div className='row'>
+                          <div className='col-lg'>
+                            <Select
                               options={contactTypes}
-                              value={value.email_for}
+                              name='email_for'
                               onChange={e => {
-                                this.onChageRowValue(parentKey, e.target.name, e.target.value, key);
+                                this.onChageRowValue(parentKey, 'email_for', e.value, key);
                               }}
                             />
                           </div>
-                          <div className="col-lg">
+                          <div className='col-lg'>
                             <TextFieldGroup
-                              name="email_address"
-                              placeholder="Email Address"
+                              name='email_address'
+                              placeholder='Email Address'
                               value={value.email_address}
                               onChange={e => {
                                 this.onChageRowValue(parentKey, e.target.name, e.target.value, key);
                               }}
                             />
                           </div>
-                          <div className="col-lg">
+                          <div className='col-lg'>
                             <button
-                              className="btn btn-danger"
+                              className='btn btn-danger'
                               onClick={() => {
                                 this.removeRow(parentKey, key);
                               }}
                             >
-                              <span className="fa fa-times" />
+                              <span className='fa fa-times' />
                             </button>
                           </div>
                         </div>
                       );
                     })}
                     <button
-                      className="btn btn-sm btn-success"
+                      className='btn btn-sm btn-success'
                       onClick={() => {
                         this.addRow('email_addresses', { email_for: '', email_address: '' });
                       }}
@@ -218,86 +257,84 @@ export class AddNewContact extends Component {
                       Add row
                     </button>
                   </div>
-                  <div className="tab-pane  active show" id="addresses">
+                  <div className='tab-pane' id='addresses'>
                     {this.state.addresses.map((value, key) => {
                       let parentKey = 'addresses';
                       return (
-                        <div className="row">
-                          <div className="col-lg">
-                            <SelectGroup
-                              name="address_for"
+                        <div className='row'>
+                          <div className='col-lg'>
+                            <Select
                               options={contactTypes}
-                              value={value.address_for}
+                              name='address_for'
                               onChange={e => {
-                                this.onChageRowValue(parentKey, e.target.name, e.target.value, key);
+                                this.onChageRowValue(parentKey, 'address_for', e.value, key);
                               }}
                             />
                           </div>
-                          <div className="col-lg">
+                          <div className='col-lg'>
                             <TextFieldGroup
-                              name="address"
-                              placeholder="Address"
+                              name='address'
+                              placeholder='Address'
                               value={value.address}
                               onChange={e => {
                                 this.onChageRowValue(parentKey, e.target.name, e.target.value, key);
                               }}
                             />
                           </div>
-                          <div className="col-lg">
+                          <div className='col-lg'>
                             <TextFieldGroup
-                              name="city"
-                              placeholder="City"
+                              name='city'
+                              placeholder='City'
                               value={value.city}
                               onChange={e => {
                                 this.onChageRowValue(parentKey, e.target.name, e.target.value, key);
                               }}
                             />
                           </div>
-                          <div className="col-lg">
+                          <div className='col-lg'>
                             <TextFieldGroup
-                              name="state"
-                              placeholder="State"
+                              name='state'
+                              placeholder='State'
                               value={value.state}
                               onChange={e => {
                                 this.onChageRowValue(parentKey, e.target.name, e.target.value, key);
                               }}
                             />
                           </div>
-                          <div className="col-lg">
+                          <div className='col-lg'>
                             <TextFieldGroup
-                              name="zip_code"
-                              placeholder="Zip Code"
+                              name='zip_code'
+                              placeholder='Zip Code'
                               value={value.zip_code}
                               onChange={e => {
                                 this.onChageRowValue(parentKey, e.target.name, e.target.value, key);
                               }}
                             />
                           </div>
-                          <div className="col-lg">
-                            <SelectGroup
-                              name="country"
-                              options={[ { label: 'Select country', value: '' } ]}
-                              value={value.country}
+                          <div className='col-lg'>
+                            <Select
+                              options={contactTypes}
+                              name='country'
                               onChange={e => {
-                                this.onChageRowValue(parentKey, e.target.name, e.target.value, key);
+                                this.onChageRowValue(parentKey, 'country', e.value, key);
                               }}
                             />
                           </div>
-                          <div className="col-lg">
+                          <div className='col-lg'>
                             <button
-                              className="btn btn-danger"
+                              className='btn btn-danger'
                               onClick={() => {
                                 this.removeRow(parentKey, key);
                               }}
                             >
-                              <span className="fa fa-times" />
+                              <span className='fa fa-times' />
                             </button>
                           </div>
                         </div>
                       );
                     })}
                     <button
-                      className="btn btn-sm btn-success"
+                      className='btn btn-sm btn-success'
                       onClick={() => {
                         this.addRow('addresses', {
                           address_for: '',
@@ -312,47 +349,45 @@ export class AddNewContact extends Component {
                       Add row
                     </button>
                   </div>
-                  <div className="tab-pane " id="phone_numbers">
+                  <div className='tab-pane ' id='phone_numbers'>
                     {this.state.phone_numbers.map((value, key) => {
                       let parentKey = 'phone_numbers';
                       return (
-                        <div className="row">
-                          <div className="col-lg">
-                            <SelectGroup
-                              style={{ width: '336px' }}
-                              name="phone_number_for"
+                        <div className='row'>
+                          <div className='col-lg'>
+                            <Select
                               options={contactTypes}
-                              value={value.phone_number_for}
+                              name='phone_number_for'
                               onChange={e => {
-                                this.onChageRowValue(parentKey, e.target.name, e.target.value, key);
+                                this.onChageRowValue(parentKey, 'phone_number_for', e.value, key);
                               }}
                             />
                           </div>
-                          <div className="col-lg">
+                          <div className='col-lg'>
                             <TextFieldGroup
-                              name="phone_number"
-                              placeholder="Phone number"
+                              name='phone_number'
+                              placeholder='Phone number'
                               value={value.phone_number}
                               onChange={e => {
                                 this.onChageRowValue(parentKey, e.target.name, e.target.value, key);
                               }}
                             />
                           </div>
-                          <div className="col-lg">
+                          <div className='col-lg'>
                             <button
-                              className="btn btn-danger"
+                              className='btn btn-danger'
                               onClick={() => {
                                 this.removeRow(parentKey, key);
                               }}
                             >
-                              <span className="fa fa-times" />
+                              <span className='fa fa-times' />
                             </button>
                           </div>
                         </div>
                       );
                     })}
                     <button
-                      className="btn btn-sm btn-success"
+                      className='btn btn-sm btn-success'
                       onClick={() => {
                         this.addRow('phone_numbers', {
                           phone_number_for: '',
@@ -366,7 +401,7 @@ export class AddNewContact extends Component {
                 </div>
               </div>
             </div>
-            <button htmlType="submit" className="btn btn-success float-right mg-t-20">
+            <button htmlType='submit' className='btn btn-success float-right mg-t-20'>
               Save
             </button>
           </form>
