@@ -216,7 +216,7 @@ export class AddNewContact extends Component {
                       console.log(value.email_for);
                       return (
                         <div className='row'>
-                          <div className='col-lg'>
+                          <div className='col-lg mg-t-20'>
                             <Select
                               options={contactTypes}
                               name='email_for'
@@ -235,7 +235,7 @@ export class AddNewContact extends Component {
                               }}
                             />
                           </div>
-                          <div className='col-lg'>
+                          <div className='col-lg mg-t-20'>
                             <button
                               className='btn btn-danger'
                               onClick={() => {
@@ -262,7 +262,7 @@ export class AddNewContact extends Component {
                       let parentKey = 'addresses';
                       return (
                         <div className='row'>
-                          <div className='col-lg'>
+                          <div className='col-lg mg-t-20'>
                             <Select
                               options={contactTypes}
                               name='address_for'
@@ -311,7 +311,7 @@ export class AddNewContact extends Component {
                               }}
                             />
                           </div>
-                          <div className='col-lg'>
+                          <div className='col-lg mg-t-20'>
                             <Select
                               options={contactTypes}
                               name='country'
@@ -320,7 +320,7 @@ export class AddNewContact extends Component {
                               }}
                             />
                           </div>
-                          <div className='col-lg'>
+                          <div className='col-lg mg-t-20'>
                             <button
                               className='btn btn-danger'
                               onClick={() => {
@@ -354,7 +354,7 @@ export class AddNewContact extends Component {
                       let parentKey = 'phone_numbers';
                       return (
                         <div className='row'>
-                          <div className='col-lg'>
+                          <div className='col-lg mg-t-20'>
                             <Select
                               options={contactTypes}
                               name='phone_number_for'
@@ -373,7 +373,7 @@ export class AddNewContact extends Component {
                               }}
                             />
                           </div>
-                          <div className='col-lg'>
+                          <div className='col-lg mg-t-20'>
                             <button
                               className='btn btn-danger'
                               onClick={() => {

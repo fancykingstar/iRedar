@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import store from './client/utils/store';
 import checkAuth from './client/utils/checkAuth';
-import axios from "axios"
+import axios from 'axios';
 
 import './App.css';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
@@ -19,6 +19,8 @@ import UpdatePasswordPage from './client/components/Landing/UpdatePassword';
 import DashboardPage from './client/components/App/Dashboard';
 import TasksPage from './client/components/App/Tasks';
 import ContactsPage from './client/components/App/Contacts';
+import AddNewContact from './client/components/App/Contacts/AddNewContact';
+import ViewContact from './client/components/App/Contacts/ViewContact';
 import FormsPage from './client/components/App/Forms';
 import ModulesPage from './client/components/App/Modules';
 import ReportsPage from './client/components/App/Reports';
@@ -38,21 +40,24 @@ import RegistrationSubmission from './client/components/App/Forms/Submissions/Re
 import SubmissionSuccess from './client/components/App/Forms/Submissions/SubmissionSuccess';
 import UploadFormList from './client/components/App/Forms/UploadForm';
 import ReferralForm from './client/components/App/Modules/Referrals/ReferralForm';
-import ReferralFormDetail from './client/components/App/Modules/Referrals/ReferralFormDetail'
+import ReferralFormDetail from './client/components/App/Modules/Referrals/ReferralFormDetail';
 import { GET_ERRORS } from './client/actions/types';
 
 // Check for authentication
 checkAuth(store);
 
-axios.interceptors.response.use(response => {
-  return response;
-}, error => {
-  store.dispatch({
-    type: GET_ERRORS,
-    payload: error.response.data
-  })
-  return Promise.reject(error);
-});
+axios.interceptors.response.use(
+  response => {
+    return response;
+  },
+  error => {
+    store.dispatch({
+      type: GET_ERRORS,
+      payload: error.response.data
+    });
+    return Promise.reject(error);
+  }
+);
 
 class App extends Component {
   render() {
@@ -60,153 +65,86 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <ScrollToTop>
-            <Route exact path="/" component={LoginPage} />
+            <Route exact path='/' component={LoginPage} />
             {/* <Route exact path="/" component={FormsPage} /> */}
-            <Route exact path="/register" component={RegisterPage} />
-            <Route exact path="/reset-password" component={ResetPasswordPage} />
-            <Route
-              exact
-              path="/reset-password/:confirmToken"
-              component={UpdatePasswordPage}
-            />
-            <div className="App">
+            <Route exact path='/register' component={RegisterPage} />
+            <Route exact path='/reset-password' component={ResetPasswordPage} />
+            <Route exact path='/reset-password/:confirmToken' component={UpdatePasswordPage} />
+            <div className='App'>
               <Switch>
-                <PrivateRoute
-                  exact
-                  path="/dashboard"
-                  component={DashboardPage}
-                />
+                <PrivateRoute exact path='/dashboard' component={DashboardPage} />
               </Switch>
               <Switch>
-                <PrivateRoute exact path="/tasks" component={TasksPage} />
+                <PrivateRoute exact path='/tasks' component={TasksPage} />
               </Switch>
               <Switch>
-                <PrivateRoute exact path="/contacts" component={ContactsPage} />
+                <PrivateRoute exact path='/contacts' component={ContactsPage} />
               </Switch>
               <Switch>
-                <PrivateRoute exact path="/forms" component={FormsPage} />
+                <PrivateRoute exact strict path='/contacts/view/:contactId' component={ViewContact} />
               </Switch>
               <Switch>
-                <PrivateRoute exact path="/modules" component={ModulesPage} />
-              </Switch>
-              <Switch>
-                <PrivateRoute exact path="/reports" component={ReportsPage} />
-              </Switch>
-              <Switch>
-                <PrivateRoute
-                  exact
-                  path="/settings/admin-settings"
-                  component={AdminSettings}
-                />
+                <PrivateRoute exact path='/contacts/add-new-contact' component={AddNewContact} />
               </Switch>
 
               <Switch>
-                <PrivateRoute
-                    exact
-                    path="/settings/add-new-users"
-                    component={AddNewUsers}
-                />
+                <PrivateRoute exact path='/forms' component={FormsPage} />
               </Switch>
               <Switch>
-                <PrivateRoute
-                  exact
-                  path="/modules/submissions"
-                  component={Submissions}
-                />
+                <PrivateRoute exact path='/modules' component={ModulesPage} />
               </Switch>
               <Switch>
-                <PrivateRoute
-                  exact
-                  path="/modules/referrals"
-                  component={Referrals}
-                />
+                <PrivateRoute exact path='/reports' component={ReportsPage} />
+              </Switch>
+              <Switch>
+                <PrivateRoute exact path='/settings/admin-settings' component={AdminSettings} />
+              </Switch>
+              <Switch>
+                <PrivateRoute exact path='/settings/add-new-users' component={AddNewUsers} />
+              </Switch>
+              <Switch>
+                <PrivateRoute exact path='/modules/submissions' component={Submissions} />
+              </Switch>
+              <Switch>
+                <PrivateRoute exact path='/modules/referrals' component={Referrals} />
+              </Switch>
+
+              <Switch>
+                <Route exact path='/forms/all-forms/client-action' component={ClientAction} />
+              </Switch>
+              <Switch>
+                <Route exact path='/forms/all-forms/iar-assessment' component={IARAssessment} />
+              </Switch>
+              <Switch>
+                <Route exact path='/forms/all-forms/fcrp-loan' component={FCRPLoan} />
+              </Switch>
+              <Switch>
+                <Route exact path='/forms/all-forms/registration' component={Registration} />
               </Switch>
 
               <Switch>
-                <Route
-                  exact
-                  path="/forms/all-forms/client-action"
-                  component={ClientAction}
-                />
+                <Route exact path='/forms/submission-success' component={SubmissionSuccess} />
               </Switch>
               <Switch>
-                <Route
-                  exact
-                  path="/forms/all-forms/iar-assessment"
-                  component={IARAssessment}
-                />
+                <Route exact path='/forms/client-action/:submissionId' component={ClientActionSubmission} />
               </Switch>
               <Switch>
-                <Route
-                  exact
-                  path="/forms/all-forms/fcrp-loan"
-                  component={FCRPLoan}
-                />
+                <Route exact path='/forms/iar-assessment/:submissionId' component={IARAssessmentSubmission} />
               </Switch>
               <Switch>
-                <Route
-                  exact
-                  path="/forms/all-forms/registration"
-                  component={Registration}
-                />
-              </Switch>
-
-
-              <Switch>
-                <Route
-                  exact
-                  path="/forms/submission-success"
-                  component={SubmissionSuccess}
-                />
+                <Route exact path='/forms/fcrp-loan/:submissionId' component={FCRPLoanSubmission} />
               </Switch>
               <Switch>
-                <Route
-                  exact
-                  path="/forms/client-action/:submissionId"
-                  component={ClientActionSubmission}
-                />
+                <Route exact path='/forms/registration/:submissionId' component={RegistrationSubmission} />
               </Switch>
               <Switch>
-                <Route
-                  exact
-                  path="/forms/iar-assessment/:submissionId"
-                  component={IARAssessmentSubmission}
-                />
+                <PrivateRoute exact path='/forms/upload-forms/:filterType' component={UploadFormList} />
               </Switch>
               <Switch>
-                <Route
-                  exact
-                  path="/forms/fcrp-loan/:submissionId"
-                  component={FCRPLoanSubmission}
-                />
+                <PrivateRoute exact path='/referrals/:submissionId' component={ReferralForm} />
               </Switch>
               <Switch>
-                <Route
-                  exact
-                  path="/forms/registration/:submissionId"
-                  component={RegistrationSubmission}
-                />
-              </Switch>
-              <Switch>
-                <PrivateRoute
-                  exact
-                  path="/forms/upload-forms/:filterType"
-                  component={UploadFormList}
-                />
-              </Switch>
-              <Switch>
-                <PrivateRoute
-                  exact
-                  path="/referrals/:submissionId"
-                  component={ReferralForm}
-                />
-              </Switch>
-              <Switch>
-                <Route
-                  exact
-                  path="/referrals/detail/:referralId"
-                  component={ReferralFormDetail}
-                />
+                <Route exact path='/referrals/detail/:referralId' component={ReferralFormDetail} />
               </Switch>
             </div>
           </ScrollToTop>
