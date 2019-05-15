@@ -137,7 +137,7 @@ class ContactsPage extends React.Component {
             </div>
           </div>
           <div className='section-wrapper'>
-            <ContactTable data={data} permissions={permissions} onSelected={this.getData} />
+            <ContactTable data={[]} permissions={permissions} onSelected={this.getData} />
           </div>
         </div>
       </div>
