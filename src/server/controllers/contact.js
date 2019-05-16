@@ -19,7 +19,7 @@ exports.index = async (req, res) => {
   try {
     let contacts = await Contact.listIndexes();
 
-    return res.status(200).json({ success: true, data: contacts });
+    return res.json({ success: true, data: contacts });
   } catch (error) {
     logger.error(error);
     return res.status(422).json({
@@ -42,7 +42,7 @@ exports.store = (req, res) => {
         return res.status(422).json({ success: false, data: err });
       } else {
         const contacts = await Contact(value).save();
-        return res.status(200).json({ success: true, data: contacts });
+        return res.json({ success: true, data: contacts });
       }
     });
 
@@ -67,7 +67,7 @@ exports.edit = async (req, res) => {
   try {
     let contact = await Contact.findOne({ _id: id });
 
-    return res.status(200).json({ success: true, data: contact });
+    return res.json({ success: true, data: contact });
   } catch (error) {
     logger.error(error);
     return res.status(422).json({
@@ -95,7 +95,7 @@ exports.update = (req, res) => {
           if (error) {
             return res.status(422).json({ success: false, data: error });
           } else {
-            return res.status(200).json({
+            return res.json({
               success: true,
               data: {
                 _id: response._id
@@ -126,7 +126,7 @@ exports.delete = async (req, res) => {
   try {
     let contact = await Contact.remove({ _id: id });
 
-    return res.status(200).json({ success: true, data: contact });
+    return res.json({ success: true, data: contact });
   } catch (error) {
     logger.error(error);
     return res.status(422).json({
