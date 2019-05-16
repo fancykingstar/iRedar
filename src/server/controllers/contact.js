@@ -17,7 +17,7 @@ const rules = Joi.object().keys({
  */
 exports.index = async (req, res) => {
   try {
-    let contacts = await Contact.listIndexes();
+    let contacts = await Contact.find();
 
     return res.json({ success: true, data: contacts });
   } catch (error) {
