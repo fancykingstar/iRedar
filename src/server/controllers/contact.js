@@ -40,10 +40,11 @@ exports.store = (req, res) => {
     Joi.validate(req.body, rules, async (err, value) => {
       if (err) {
         return res.status(422).json({ success: false, data: err });
-      } else {
-        const contacts = await Contact(value).save();
-        return res.json({ success: true, data: contacts });
       }
+
+      const contacts = await Contact(value).save();
+
+      return res.json({ success: true, data: contacts });
     });
 
   } catch (e) {
@@ -90,20 +91,20 @@ exports.update = (req, res) => {
     Joi.validate(req.body, rules, async (error, value) => {
       if (error) {
         return res.status(422).json({ success: false, data: error });
-      } else {
-        await Contact.findByIdAndUpdate(id, value, (error, response) => {
-          if (error) {
-            return res.status(422).json({ success: false, data: error });
-          } else {
-            return res.json({
-              success: true,
-              data: {
-                _id: response._id
-              }
-            });
+      }
+
+      await Contact.findByIdAndUpdate(id, value, (error, response) => {
+        if (error) {
+          return res.status(422).json({ success: false, data: error });
+        }
+
+        return res.json({
+          success: true,
+          data: {
+            _id: response._id
           }
         });
-      }
+      });
     });
   } catch (error) {
     logger.error(error);
