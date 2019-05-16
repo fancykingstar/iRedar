@@ -83,11 +83,6 @@ export class DataTable extends Component {
 
     // NOTE: Have to use arrow function to access "this"
     const beforeSaveCell = (oldValue, newValue, row, column, done) => {
-      console.log(oldValue);
-      console.log(newValue);
-      console.log(row);
-      console.log(column);
-      console.log(done);
       //eslint-disable-next-line
       if (confirm('Do you want to accept change for the user ?')) {
         if (column.dataField !== "role") {
@@ -95,7 +90,6 @@ export class DataTable extends Component {
             permissionId: row.permissionId,
             [column.dataField]: newValue
           };
-          console.log(userData);
           this.props.updateuser(userData);
           done(true);
         } else {
@@ -106,10 +100,8 @@ export class DataTable extends Component {
       }
       return { async: true };
     };
-
     // const beforeSaveCell = this.beforeSaveCell;
     let { data } = this.props;
-
     return (
       <ToolkitProvider
         keyField="permissionId"

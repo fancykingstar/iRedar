@@ -7,16 +7,8 @@ import {getSubmissionView} from "../../../../actions/submissionActions";
 
 export class ViewClientSubmission extends Component {
 
-    componentDidMount() {
-        const { getSubmissionView } = this.props;
-        getSubmissionView("registration");
-    }
-    render() {
-        const { submissions, permissions } = this.props;
-        if (!(permissions[0].role === 'admin' || permissions[0].role === 'staff')) {
-            this.props.history.push('/dashboard');
-            return
-        }
+    getSubmissionData() {
+        const {submissions} = this.props;
         let data = [];
         let i = 0;
         submissions.allSubmissions.forEach(submission => {
@@ -30,6 +22,22 @@ export class ViewClientSubmission extends Component {
             });
             i = i+1;
         });
+        return data;
+    }
+
+    componentDidMount() {
+        const {getSubmissionView} = this.props;
+        const {permissions} = this.props;
+        if (!(permissions[0].role === 'admin' || permissions[0].role === 'staff')) {
+            this.props.history.push('/dashboard');
+            return;
+        }
+        getSubmissionView("registration");
+    }
+
+
+    render() {
+        const data = this.getSubmissionData();
         const columns = [
             {
                 dataField: 'submissionId',
@@ -69,26 +77,25 @@ export class ViewClientSubmission extends Component {
                 }
             }
         ];
-
         return (
-        <div className="slim-mainpanel">
-            <div className="container">
-                <div className="manager-header">
-                    <div className="slim-pageheader">
-                        <ol className="breadcrumb slim-breadcrumb" />
-                        <h6 className="slim-pagetitle">View all Client Forms </h6>
-                    </div>
-                </div>
-                <div className="manager-wrapper">
-                    <div className="section-wrapper">
-                        <div className="table-wrapper">
-                            <SubmissionDataTable columns={columns} data={data} />
+            <div className="slim-mainpanel">
+                <div className="container">
+                    <div className="manager-header">
+                        <div className="slim-pageheader">
+                            <ol className="breadcrumb slim-breadcrumb" />
+                            <h6 className="slim-pagetitle">View all Client Forms </h6>
                         </div>
                     </div>
-                </div>
+                    <div className="manager-wrapper">
+                        <div className="section-wrapper">
+                            <div className="table-wrapper">
+                                <SubmissionDataTable columns={columns} data={data} />
+                            </div>
+                        </div>
+                    </div>
 
+                </div>
             </div>
-        </div>
         );
     }
 }

@@ -23,6 +23,10 @@ UserSchema.methods.hasSamePassword = function (requestedPassword) {
   return bcrypt.compareSync(requestedPassword, this.password);
 };
 
+UserSchema.methods.hasSameConfirmToken = function (confirmToken) {
+    return (confirmToken === this.confirmToken);
+};
+
 UserSchema.pre('save', async function (next) {
   const user = this;
   if (user.isModified('password')) {

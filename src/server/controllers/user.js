@@ -625,7 +625,7 @@ exports.postResetPassword = async (req, res) => {
 
     const token = jwt.sign(
       {
-        userId: user.id,
+        userId: user._id,
         email,
       },
       keys.secretOrKey,
@@ -637,34 +637,36 @@ exports.postResetPassword = async (req, res) => {
     await user.save();
 
     const mailOptions = {
-      from: '"iAuto" <iauto.iradardata@gmail.com>', // sender address
+      //from: '"iAuto" <iauto.iradardata@gmail.com>', // sender address
+      from: keys.infoEmail,
       to: email, // list of receivers
       subject: 'Password Reset', // Subject line
-      html: resetPasswordEmail('localhost:3000', token), // html body
+      html: resetPasswordEmail('localhost:5000', token), // html body
     };
 
-    try {
-      nodeMailer(mailOptions);
-    } catch (error) {
-      logger.error(error);
-      return res.status(422).json({
+    nodeMailer(mailOptions, keys.infoEmail, keys.infoEmailPassword).then(() => {
+      res.json({
+        success: true,
         alert: {
-          title: 'Error!',
-          detail: 'An error occurred while sending password reset',
+          title: 'Success!',
+          detail: "We've sent an email to reset password",
         },
       });
-    }
-
-    return res.json({
-      success: true,
-      alert: {
-        title: 'Success!',
-        detail: "We've sent an email to reset password",
-      },
+    }).catch((error) => {
+      console.log("ERROR ==> ");
+      console.log(error);
+      res.status(422).json({
+        success: false,
+        alert: {
+          title: 'Error!',
+          detail: "We've not sent an email to reset password",
+        },
+      });
     });
   } catch (error) {
     logger.error(error);
     return res.status(422).json({
+      success: false,
       alert: {
         title: 'Error!',
         detail: 'Server occurred an error,  please try again',
@@ -678,15 +680,52 @@ exports.postResetPassword = async (req, res) => {
 // @access  Public
 exports.putResetPassword = async (req, res) => {
   const { passwordCurrent, password, passwordConfirmation } = req.body;
+  const {confirmToken} = req.body;
   try {
     const header = req.headers['authorization'];
     let tokenUserId = null;
     let tokenUserRole = null;
     let tokenProfileId = null;
-    if (typeof header !== 'undefined') {
+    if (confirmToken !== undefined) {
+      console.log("Token received in url is " + confirmToken);
+      jwt.verify(confirmToken, keys.secretOrKey, function (err, decoded) {
+        if (err) {
+          return res.status(403).json({
+            error: 'Token is invalid and expired'
+          });
+        }
+        console.log("userId received from token is " + decoded.userId);
+        tokenUserId = decoded.userId.toString();
+      });
+      const user = await User.findById(tokenUserId);
+      const matched = await user.hasSameConfirmToken(confirmToken);
+      if (matched) {
+        if (password.length < 6) {
+          return res.status(422).json({
+            password: 'Password must be at least 6 characters',
+          });
+        }
+
+        if (password !== passwordConfirmation) {
+          return res.status(422).json({
+            passwordConfirmation: 'Password is not a same as confirmation',
+          });
+        }
+        user.password = password;
+        delete user.confirmToken;
+        await user.save();
+      }
+      return res.json({
+        success: true,
+        alert: {
+          title: 'Success!',
+          detail: 'Password has been reset',
+        },
+      });
+    } else if (typeof header !== 'undefined') {
       const bearer = header.split(' ');
       const token = bearer[1];
-      console.log("Token received is " + token);
+      console.log("Token received in header is " + token);
       jwt.verify(token, keys.secretOrKey, function (err, decoded) {
         if (err) {
           return res.status(403).json({

@@ -39,9 +39,6 @@ export const addUsers = (userData, history) => async dispatch => {
     // getter
     const token = localStorage.getItem('jwtToken');
 
-    console.log("JwtToken" + token);
-    console.log("JwtToken" + userData);
-
     // Set token to Auth header
     setAuthToken(token);
 
@@ -66,9 +63,6 @@ export const updateUser = (
   try {
     const token = localStorage.getItem('jwtToken');
 
-    console.log("JwtToken" + token);
-    console.log("JwtToken" + userData);
-
     // Set token to Auth header
     setAuthToken(token);
 
@@ -86,12 +80,9 @@ export const deleteUsers = (permissionIds, history) => async dispatch => {
   try {
     // getter
     const token = localStorage.getItem('jwtToken');
-    console.log("JwtToken " + token);
-
     const payload = {
       permissionIds: Array.from(permissionIds)
     };
-
     // Set token to Auth header
     setAuthToken(token);
     await axios.post(
@@ -116,23 +107,17 @@ export const deleteUsers = (permissionIds, history) => async dispatch => {
 export const loginUser = userData => async dispatch => {
   try {
     const res = await axios.post(`${API_URL}/api/users/login`, userData);
-
     const { token } = res.data;
     // Set token to lS
     localStorage.setItem('jwtToken', token);
-
     // Set token to Auth header
     setAuthToken(token);
-
     // Decode token to get user data
     const decoded = jwt_decode(token);
-
     // Get current user profile
     dispatch(getCurrentUserProfile(decoded.userId));
-
     //Get current user permissons
     dispatch(getCurrentUserPermissions(decoded.profileId));
-
     // Set current user
     dispatch(setCurrentUser(decoded));
   } catch (error) {
@@ -176,14 +161,12 @@ export const getCurrentUserProfile = userId => async dispatch => {
       type: GET_CURRENT_USER_PROFILE,
       payload: res.data
     });
-
   } catch (error) {
     dispatch({
       type: GET_ERRORS,
       payload: error.response.data
     });
     throw new Error(error);
-
   }
 };
 
@@ -205,14 +188,12 @@ export const resetPassword = (email, history) => async dispatch => {
 
 // Update Password
 export const updatePassword = (userData, history) => async dispatch => {
+  console.log("helllooooo");
   try {
     const token = localStorage.getItem('jwtToken');
-
-    console.log("JwtToken" + token);
-    console.log("JwtToken" + userData);
-
     // Set token to Auth header
     setAuthToken(token);
+
     await axios.put(`${API_URL}/api/users/reset-password`, userData);
     history.push({
       pathname: '/',
