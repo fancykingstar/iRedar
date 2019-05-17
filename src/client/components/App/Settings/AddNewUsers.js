@@ -7,7 +7,7 @@ import Select from "react-select";
 import Alert from "../../Elements/Alert";
 import TextFieldGroup from "../../Elements/TextFieldGroup";
 
-import { addUsers } from "../../../actions/authActions";
+import {registerUser} from "../../../actions/authActions";
 
 export class AddNewUsers extends Component {
   constructor() {
@@ -42,7 +42,7 @@ export class AddNewUsers extends Component {
       role: this.state.role
     };
 
-    this.props.addUsers(newUser, this.props.history);
+    this.props.registerUser(newUser, this.props.history);
   };
   render() {
 
@@ -50,11 +50,10 @@ export class AddNewUsers extends Component {
     let countAll = adminCount + staffCount + partnerCount + clientCount;
 
     const roleOfUser = [
-      { label: "User", value: "USER" },
-      { label: "Staff", value: "STAFF" },
-      { label: "Client", value: "CLIENT" },
-      { label: "Partner", value: "PARTNER" },
-      { label: "Admin", value: "ADMIN" }
+      {label: "User", value: "user"},
+      {label: "Staff", value: "staff"},
+      {label: "Partner", value: "partner"},
+      {label: "Admin", value: "admin"}
     ];
 
     let { errors } = this.state;
@@ -186,7 +185,7 @@ export class AddNewUsers extends Component {
 }
 
 AddNewUsers.propTypes = {
-  addUsers: propTypes.func.isRequired,
+  registerUser: propTypes.func.isRequired,
   auth: propTypes.object.isRequired,
   errors: propTypes.object.isRequired
 };
@@ -199,6 +198,6 @@ const mapStateToProps = state => ({
 export default withRouter(
   connect(
     mapStateToProps,
-    { addUsers }
+      {registerUser}
   )(AddNewUsers)
 );

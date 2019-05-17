@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const UploadedFormSchema = new mongoose.Schema(
   {
@@ -13,6 +13,6 @@ const UploadedFormSchema = new mongoose.Schema(
       require: true,
     }
   }
-)
+);
 
-module.exports = mongoose.model('UploadedForm', UploadedFormSchema)
+module.exports = mongoose.model('UploadedForm', UploadedFormSchema);

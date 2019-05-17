@@ -5,41 +5,49 @@ const logger = require('../configs/logger');
 const Organization = require('../models/Organization');
 const Permission = require('../models/Permission');
 const Profile = require('../models/Profile');
+const User = require('../models/User');
 
 ///  Mapping for Role-Permission
 const rolesToPermission = {
-  //rolesToPermission["USER"]
-  "USER": ["canRead"],
-  "CLIENT": ["canRead","canWrite","canSubmit"],
-  "PARTNER": ["canWrite","canUpdate","canRead","canSubmit"],
-  "STAFF": ["canCreate","canWrite","canUpdate","canRead","canSubmit"],
-  "ADMIN": ["canRead", "canCreate", "canWrite", "canUpdate", "canDelete", "canSubmit", "canAddUser", "canEditUser", "canViewUser", "canDeleteUser"]
+  "user": ["canRead"],
+  "client": ["canRead", "canWrite", "canSubmit"],
+  "partner": ["canWrite", "canUpdate", "canRead", "canSubmit"],
+  "staff": ["canCreate", "canWrite", "canUpdate", "canRead", "canSubmit"],
+  "admin": ["canRead", "canCreate", "canWrite", "canUpdate", "canDelete", "canSubmit", "canAddUser", "canEditUser", "canViewUser", "canDeleteUser"]
 };
+
+const domain_regex = new RegExp("(?<=@)[^.]+.*$");
 
 // @route POST api/organizations/register
 // @desc Register organization
 // @access Public
 exports.postRegister = async (req, res) => {
   const {
+    firstName,
+    lastName,
     name,
     email,
-    phoneNumber,
+    password,
+    passwordConfirmation,
+    phone,
     street,
     city,
     province,
     country,
-    postalCode,
+    postalCode
   } = req.body;
 
   if (
-    !name
-    || !email
-    || !phoneNumber
-    || !street
-    || !city
-    || !province
-    || !country
-    || !postalCode
+      !name
+      || !firstName
+      || !lastName
+      || !email
+      || !phone
+  //|| !street
+  //|| !city
+  //|| !province
+  //|| !country
+  //|| !postalCode
   ) {
     return res.status(422).json({
       alert: {
@@ -55,6 +63,22 @@ exports.postRegister = async (req, res) => {
     });
   }
 
+  if (password.length < 6) {
+    return res.status(422).json({
+      password: 'Password must be at least 6 characters',
+    });
+  }
+
+  if (password !== passwordConfirmation) {
+    return res.status(422).json({
+      passwordConfirmation: 'Password is not a same as confirmation',
+    });
+  }
+  // variables for domain name
+
+  let role = "admin";
+  let permission = rolesToPermission[role];
+
   try {
     const existingOrganization = await Organization.findOne({ name });
     if (existingOrganization) {
@@ -63,10 +87,28 @@ exports.postRegister = async (req, res) => {
       });
     }
 
-    const organization = await new Organization({
+    const existingUser = await User.findOne({email});
+    if (existingUser) {
+      return res.status(422).json({
+        alert: {
+          title: 'Error!',
+          detail: 'User already exists'
+        }
+      });
+    }
+
+    const r = email.match(domain_regex);
+    let userDomain = email;
+    if (r) {
+      userDomain = r[0];
+    }
+
+    let organization = await new Organization({
       name,
       email,
-      phoneNumber,
+      phoneNumber: phone,
+      userDomain
+      /*
       address: {
         street,
         city,
@@ -74,8 +116,35 @@ exports.postRegister = async (req, res) => {
         country,
         postalCode,
       },
+      */
     });
     await organization.save();
+
+    const user = await new User({
+      email,
+      password,
+    });
+    await user.save();
+
+    organization.users.push(user.id);
+    await organization.save();
+
+    let profile = await new Profile({
+      user: user._id,
+      email,
+      lastName,
+      firstName,
+      phoneNumber: phone,
+      domain: userDomain
+    }).save();
+
+    let userPermission = await new Permission({
+      profile: profile._id,
+      organization: organization._id,
+      role: role.toLowerCase(),
+      permissionRight: permission
+    });
+    await userPermission.save();
 
     return res.json({
       success: true,
@@ -254,9 +323,7 @@ exports.postAdminPermissions = async (req, res) => {
       });
     }
 
-
-    await profile.updateOne({ role: req.body.role.toUpperCase(), permissionRight: rolesToPermission[req.body.role.toUpperCase()] });
-    await permission.updateOne({ role: req.body.role });
+    await permission.updateOne({role: req.body.role, permissionRight: rolesToPermission[req.body.role]});
 
     const allPermissions = await Permission.find({
       organization: req.params.organizationId,
