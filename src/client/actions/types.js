@@ -1,5 +1,5 @@
 // NOTE: API_URL & HOST_URL need to change when deploy
-export const API_URL = (process.env.NODE_ENV === "production") ? '' : 'http://localhost:5000';
+export const API_URL = (process.env.NODE_ENV === 'production') ? '' : 'http://localhost:5000';
 export const HOST_URL = 'http://localhost:3000';
 
 export const IS_REGISTERED = 'IS_REGISTERED';
@@ -34,3 +34,9 @@ export const UPDATE_PASSWORD = 'UPDATE_PASSWORD';
 
 export const GET_ALL_SUBMISSIONS = 'GET_ALL_SUBMISSIONS';
 export const GET_SUBMISSION = 'GET_SUBMISSION';
+
+export const GET_ALL_CONTACTS = 'GET_ALL_CONTACTS';
+export const ADD_CONTACT = 'ADD_CONTACT';
+export const EDIT_CONTACT = 'EDIT_CONTACT';
+export const UPDATE_CONTACT = 'UPDATE_CONTACT';
+export const DELETE_CONTACT = 'DELETE_CONTACT';

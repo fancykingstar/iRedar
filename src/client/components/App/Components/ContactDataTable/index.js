@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import BootstrapTable from 'react-bootstrap-table-next';
-import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
+import ToolkitProvider, {Search} from 'react-bootstrap-table2-toolkit';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import cellEditFactory, { Type } from 'react-bootstrap-table2-editor';
 import Select from 'react-select';
 
 import './index.css';
-import { editAdminPermissions } from '../../../../actions/accessActions';
+import {editAdminPermissions} from '../../../../actions/accessActions';
 
 export class DataTable extends Component {
   state = {
     showFilterDropdown: false
   };
+
   componentDidMount() {
     window.$('.select2').select2({
       minimumResultsForSearch: Infinity
@@ -55,7 +55,7 @@ export class DataTable extends Component {
         this.props.sendData(deletedItems);
       }
     };
-    const { SearchBar } = Search;
+    const {SearchBar} = Search;
     const columns = [
       {
         dataField: 'permissionId',
@@ -80,7 +80,7 @@ export class DataTable extends Component {
         sort: true,
         editable: false,
         headerStyle: (colum, colIndex) => {
-          return { width: '25%' };
+          return {width: '25%'};
         }
       },
       {
@@ -89,11 +89,11 @@ export class DataTable extends Component {
         sort: true,
         editable: false,
         headerStyle: (colum, colIndex) => {
-          return { width: '25%' };
+          return {width: '25%'};
         }
       }
     ];
-    const sizePerPageOptionRenderer = ({ text, page, onSizePerPageChange }) => (
+    const sizePerPageOptionRenderer = ({text, page, onSizePerPageChange}) => (
       <li key={text} role='presentation' className='dropdown-item'>
         <div
           href='#'
@@ -104,7 +104,7 @@ export class DataTable extends Component {
             e.preventDefault();
             onSizePerPageChange(page);
           }}
-          style={{ display: 'block', cursor: 'pointer' }}
+          style={{display: 'block', cursor: 'pointer'}}
         >
           {text}
         </div>
@@ -124,10 +124,10 @@ export class DataTable extends Component {
 
     const selectCustomStyle = {
       container: provided => {
-        return { ...provided, marginBottom: '1rem' };
+        return {...provided, marginBottom: '1rem'};
       },
       menu: provided => {
-        return { ...provided, zIndex: '100000' };
+        return {...provided, zIndex: '100000'};
       }
     };
 
@@ -150,14 +150,18 @@ export class DataTable extends Component {
         done(false);
       }
 
-      return { async: true };
+      return {async: true};
     };
 
     // const beforeSaveCell = this.beforeSaveCell;
-    let { data } = this.props;
+    let {data} = this.props;
+
+    let contactData = data.map(value => {
+      return {...value, contact: `${value.lastName}, ${value.firstName}`};
+    });
 
     return (
-      <ToolkitProvider keyField='permissionId' data={data} columns={columns} search>
+      <ToolkitProvider keyField='permissionId' data={contactData} columns={columns} search>
         {props => (
           <div>
             <div className='row'>
@@ -172,7 +176,7 @@ export class DataTable extends Component {
                     aria-expanded='false'
                     onClick={this.handleShowFilterDropdown}
                   >
-                    <i className='fa fa-filter' /> Filters
+                    <i className='fa fa-filter'/> Filters
                   </button>
                   <div
                     class='dropdown-menu filter-dropdown-menu pd-30 pd-sm-20 wd-sm-400'
@@ -188,18 +192,18 @@ export class DataTable extends Component {
                   >
                     <div className='row'>
                       <div className='col-6'>
-                        <Select options={[]} styles={selectCustomStyle} placeholder='Alphabetic' name='role' />
+                        <Select options={[]} styles={selectCustomStyle} placeholder='Alphabetic' name='role'/>
                       </div>
                       <div className='col-6'>
-                        <Select options={[]} styles={selectCustomStyle} placeholder='Type' name='role' />
+                        <Select options={[]} styles={selectCustomStyle} placeholder='Type' name='role'/>
                       </div>
                     </div>
                     <div className='row'>
                       <div className='col-6'>
-                        <Select options={[]} styles={selectCustomStyle} placeholder='Profession' name='role' />
+                        <Select options={[]} styles={selectCustomStyle} placeholder='Profession' name='role'/>
                       </div>
                       <div className='col-6'>
-                        <Select options={[]} styles={selectCustomStyle} placeholder='Company' name='role' />
+                        <Select options={[]} styles={selectCustomStyle} placeholder='Company' name='role'/>
                       </div>
                     </div>
                     <div className='row'>
@@ -221,7 +225,7 @@ export class DataTable extends Component {
                     aria-haspopup='true'
                     aria-expanded='false'
                   >
-                    <i className='fa fa-bolt' /> Actions
+                    <i className='fa fa-bolt'/> Actions
                   </button>
                   <div
                     class='dropdown-menu'
@@ -236,10 +240,10 @@ export class DataTable extends Component {
                     }}
                   >
                     <a class='dropdown-item' href='#'>
-                      <i className='fa fa-file' /> Microsoft Excel or CSV file
+                      <i className='fa fa-file'/> Microsoft Excel or CSV file
                     </a>
                     <a class='dropdown-item' href='#'>
-                      <i className='fa fa-google' /> Google contacts
+                      <i className='fa fa-google'/> Google contacts
                     </a>
                   </div>
                 </div>
@@ -252,7 +256,7 @@ export class DataTable extends Component {
                     aria-haspopup='true'
                     aria-expanded='false'
                   >
-                    <i className='fa fa-columns' /> Columns
+                    <i className='fa fa-columns'/> Columns
                   </button>
                   <div
                     class='dropdown-menu'
@@ -267,10 +271,10 @@ export class DataTable extends Component {
                     }}
                   >
                     <a class='dropdown-item' href='#'>
-                      <i className='fa fa-file' /> Microsoft Excel or CSV file
+                      <i className='fa fa-file'/> Microsoft Excel or CSV file
                     </a>
                     <a class='dropdown-item' href='#'>
-                      <i className='fa fa-google' /> Google contacts
+                      <i className='fa fa-google'/> Google contacts
                     </a>
                   </div>
                 </div>
@@ -279,7 +283,7 @@ export class DataTable extends Component {
                 <SearchBar {...props.searchProps} />
               </div>
             </div>
-            <hr />
+            <hr/>
             <BootstrapTable
               bootstrap4
               hover
@@ -301,4 +305,4 @@ export class DataTable extends Component {
   }
 }
 
-export default connect(null, { editAdminPermissions })(DataTable);
+export default connect(null, {editAdminPermissions})(DataTable);
