@@ -22,7 +22,7 @@ class CheckoutForm extends Component {
             state: "",
             zipcode: "",
             country: "Canada",
-            selectedPlan: "Subscribe",
+            selectedPlan: "Smart",
             errors: {}
         };
     }
@@ -118,11 +118,33 @@ class CheckoutForm extends Component {
                                     className="custom-control-input"
                                     type="radio"
                                     name="planRadio"
-                                    id="Subscribe"
-                                    value="Subscribe"
-                                    checked={this.state.selectedPlan === 'Subscribe'}
+                                    id="Smart"
+                                    value="Smart"
+                                    checked={this.state.selectedPlan === 'Smart'}
                                     onChange={this.onOptionChange}/>
-                                <span className="custom-control-label">Subscribe</span>
+                                <span className="custom-control-label">Smart</span>
+                            </label>
+                            <label className="custom-control custom-radio">
+                                <input
+                                    className="custom-control-input"
+                                    type="radio"
+                                    name="planRadio"
+                                    id="Business"
+                                    value="Business"
+                                    checked={this.state.selectedPlan === 'Business'}
+                                    onChange={this.onOptionChange}/>
+                                <span className="custom-control-label">Business</span>
+                            </label>
+                            <label className="custom-control custom-radio">
+                                <input
+                                    className="custom-control-input"
+                                    type="radio"
+                                    name="planRadio"
+                                    id="Enterprise"
+                                    value="Enterprise"
+                                    checked={this.state.selectedPlan === 'Enterprise'}
+                                    onChange={this.onOptionChange}/>
+                                <span className="custom-control-label">Enterprise</span>
                             </label>
                             <label className="custom-control custom-radio">
                                 <input

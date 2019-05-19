@@ -98,3 +98,24 @@ exports.doUpdatePayment = async (profileId, token) => {
             source: token
         });
 };
+
+// Unsubscriped the account
+exports.doUnsubscribe = async profileId => {
+    let profile = await Profile.findOne({_id: profileId});
+    let permission = await Permission.findOne({profile: profileId});
+    let organization = await Organization.findOne({_id: permission.organization});
+    let user = await User.findOne({_id: profile.user});
+
+    await stripe.subscriptions.del(user.stripeSubscriptionId);
+    await stripe.plans.del(organization.stripePlanId);
+
+
+    user.stripeCustomerId = undefined;
+    user.stripeSubscriptionId = undefined;
+    await user.save();
+    organization.stripeAdminCustomerId = undefined;
+    organization.stripeSubscriptionPlanId = undefined;
+    organization.stripePlanId = undefined;
+    organization.stripeAdminCustomerToken = undefined;
+    await organization.save();
+};
