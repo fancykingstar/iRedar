@@ -110,7 +110,7 @@ exports.postRegister = async (req, res) => {
       name,
       email,
       phoneNumber: phone,
-      userDomain
+        domain: userDomain
       /*
       address: {
         street,

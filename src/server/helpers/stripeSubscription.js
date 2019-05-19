@@ -1,6 +1,6 @@
 const logger = require("../configs/logger");
 const stripe_key = require('../configs/keys').stripe.secret_key;
-const stripe = require("stripe")(stripe_key);
+const stripe = require("stripe")(stripe_key.toString());
 const productPlan = require('../configs/keys').stripe.product;
 
 // Load models
@@ -22,26 +22,24 @@ const yearlyPlanToPrice = {
 };
 
 // CREATE CUSTOMER and SUBSCRIPTION
-exports.doCreateAdminUserWithPlanAndSubscribe = async (profileId, plan = "Smart", interval = "monthly") => {
+exports.doCreateAdminUserWithPlanAndSubscribe = async (profileId, plan = "Smart", interval = "month") => {
     let profile = await Profile.findOne({_id: profileId});
     let permission = await Permission.findOne({profile: profileId});
     let user = await User.findOne({_id: profile.user});
     let organization = await Organization.findOne({_id: permission.organization});
 
-    logger.debug("Organization Found for Customer is: ", organization);
-
     let amount = 7500;
-    if (interval === "monthly") {
+    if (interval === "month") {
         amount = monthlyPlanToPrice[plan];
     } else {
         amount = yearlyPlanToPrice[plan];
     }
 
-    let planName = organization.domain.replace(/\s+/g, "-").toLowerCase();
+    let planName = organization.domain.replace(/\s+/g, "-").replace(".", "-").toLowerCase() + "-" + plan.toLowerCase();
     const stripePlan = await stripe.plans.create({
         product: productPlan,
-        id: planName + "-" + plan + "-plan",
-        nickname: organization.name + " plan",
+        id: planName + "-plan",
+        nickname: organization.name + " " + interval + "ly " + plan + " plan",
         currency: "usd",
         amount: amount,
         interval: interval,
@@ -69,32 +67,34 @@ exports.doCreateAdminUserWithPlanAndSubscribe = async (profileId, plan = "Smart"
         ]
     });
     console.log(stripeSubscription);
-    user.stripeCustomerId = stripeCustomer.id;
-    user.stripeSubscriptionId = stripeSubscription.id;
+    user.stripe.stripeCustomerId = stripeCustomer.id;
+    user.stripe.stripeSubscriptionId = stripeSubscription.id;
     await user.save();
-    organization.stripeAdminCustomerId = stripeCustomer.id;
-    organization.stripeSubscriptionPlanId = stripeSubscription.items.data[0].id;
-    organization.stripePlanId = stripePlan.id;
-    organization.stripeAdminCustomerToken = "tok_visa";
-    organization.plan = plan;
-    organization.interval = interval;
+    organization.stripe.stripeAdminCustomerId = stripeCustomer.id;
+    organization.stripe.stripeSubscriptionPlanId = stripeSubscription.items.data[0].id;
+    organization.stripe.stripePlanId = stripePlan.id;
+    organization.stripe.stripeAdminCustomerToken = "tok_visa";
+    organization.stripe.plan = plan;
+    organization.stripe.interval = interval;
     await organization.save();
 };
 
 // UPDATE SUBSCRIPTION
 exports.doUpdateSubscription = async (profileId) => {
+    let profile = await Profile.findOne({_id: profileId});
     let permission = await Permission.findOne({profile: profileId});
     let organization = await Organization.findOne({_id: permission.organization});
+    let user = await User.findOne({_id: profile.user});
 
     logger.debug("Business Found for Customer is: ", organization);
     let post_message = {
         "items": [{
-            id: organization.stripeSubscriptionPlanId,
+            id: organization.stripe.stripeSubscriptionPlanId,
             quantity: organization.users.length
         }]
     };
 
-    return await stripe.subscriptions.update(organization.stripeAdminCustomerId, post_message);
+    return await stripe.subscriptions.update(user.stripe.stripeSubscriptionId, post_message);
 };
 
 // UPDATE Customer user information
@@ -102,7 +102,7 @@ exports.doUpdateAdminCustomer = async (profileId, firstName, lastName, email, ph
     let permission = await Permission.findOne({profile: profileId});
     let organization = await Organization.findOne({_id: permission.organization});
     return await stripe.customers.update(
-        organization.stripeAdminCustomerId,
+        organization.stripe.stripeAdminCustomerId,
         {
             name: firstName + " " + lastName,
             email: email,
@@ -115,29 +115,31 @@ exports.doUpdatePayment = async (profileId, token) => {
     let permission = await Permission.findOne({profile: profileId});
     let organization = await Organization.findOne({_id: permission.organization});
     return await stripe.customers.update(
-        organization.stripeAdminCustomerId,
+        organization.stripe.stripeAdminCustomerId,
         {
             source: token
         });
 };
 
-// Unsubscriped the account
+// Unsubscribed the account
 exports.doUnsubscribe = async profileId => {
     let profile = await Profile.findOne({_id: profileId});
     let permission = await Permission.findOne({profile: profileId});
     let organization = await Organization.findOne({_id: permission.organization});
     let user = await User.findOne({_id: profile.user});
 
-    await stripe.subscriptions.del(user.stripeSubscriptionId);
-    await stripe.plans.del(organization.stripePlanId);
+    await stripe.subscriptions.del(user.stripe.stripeSubscriptionId);
+    await stripe.plans.del(organization.stripe.stripePlanId);
 
 
-    user.stripeCustomerId = undefined;
-    user.stripeSubscriptionId = undefined;
+    user.stripe.stripeCustomerId = undefined;
+    user.stripe.stripeSubscriptionId = undefined;
     await user.save();
-    organization.stripeAdminCustomerId = undefined;
-    organization.stripeSubscriptionPlanId = undefined;
-    organization.stripePlanId = undefined;
-    organization.stripeAdminCustomerToken = undefined;
+    organization.stripe.stripeAdminCustomerId = undefined;
+    organization.stripe.stripeSubscriptionPlanId = undefined;
+    organization.stripe.stripePlanId = undefined;
+    organization.stripe.stripeAdminCustomerToken = undefined;
+    organization.stripe.plan = undefined;
+    organization.stripe.interval = undefined;
     await organization.save();
 };

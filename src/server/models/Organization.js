@@ -15,10 +15,10 @@ const OrganizationSchema = new mongoose.Schema({
     type: String,
     //required: true,
   },
-    domain: {
-        type: String,
-        required: true
-    },
+  domain: {
+    type: String,
+    required: true
+  },
   phoneNumber: {
     type: String,
       required: true,
@@ -46,6 +46,26 @@ const OrganizationSchema = new mongoose.Schema({
      // required: true,
     },
   },
+  stripe: {
+    stripeAdminCustomerId: {
+      type: String,
+    },
+    stripeSubscriptionPlanId: {
+      type: String,
+    },
+    stripePlanId: {
+      type: String,
+    },
+    stripeAdminCustomerToken: {
+      type: String,
+    },
+    plan: {
+      type: String,
+    },
+    interval: {
+      type: String,
+    }
+  }
 });
 
 module.exports = mongoose.model('Organization', OrganizationSchema);
