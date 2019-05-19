@@ -14,4 +14,13 @@ router.post(
     paymentController.postPayment,
 );
 
+// @route DELETE api/payment/deregister
+// @desc Register organizations
+// @access Private
+router.delete(
+    '/deregister',
+    passport.authenticate('jwt', {session: false}),
+    paymentController.deletePaymentAndSubscription,
+);
+
 module.exports = router;

@@ -4,7 +4,7 @@ import TextFieldGroup from "../../Elements/TextFieldGroup";
 import {CardCVCElement, CardExpiryElement, CardNumberElement, injectStripe} from "react-stripe-elements";
 import en from "react-phone-number-input/locale/en";
 import PhoneInput, {isValidPhoneNumber} from "react-phone-number-input";
-import {registerPayment} from "../../../actions/paymentActions";
+import {registerPayment, deRegisterPayment} from "../../../actions/paymentActions";
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import propTypes from "prop-types";
@@ -42,36 +42,41 @@ class CheckoutForm extends Component {
     handleSubmit = (ev) => {
         ev.preventDefault();
         this.setState({submitTime: this.state.submitTime + 1});
-        // create source
-        if (this.props.stripe) {
-            this.props.stripe
-                .createSource({
-                    type: 'card',
-                    owner: {
-                        name: this.state.cardHolderName,
-                        email: this.state.email,
-                        phone: this.state.phone
-                    },
-                })
-                .then((payload) => {
-                    const paymentInformation = {
-                        cardHolderName: this.state.cardHolderName,
-                        email: this.state.email,
-                        phone: this.state.phone,
-                        street1: this.state.street1,
-                        street2: this.state.street2,
-                        city: this.state.city,
-                        state: this.state.state,
-                        zipcode: this.state.zipcode,
-                        country: this.state.country,
-                        source: payload.source
-                    };
-                    console.log(paymentInformation);
-                    // handle payment to stripe by making backend calls
-                    this.props.registerPayment(paymentInformation, this.props.history);
-                });
+
+        if (this.state.selectedPlan === "Unsubscribe") {
+            this.props.deRegisterPayment(this.props.history);
         } else {
-            console.log("Stripe.js hasn't loaded yet.");
+            // create source
+            if (this.props.stripe) {
+                this.props.stripe
+                    .createSource({
+                        type: 'card',
+                        owner: {
+                            name: this.state.cardHolderName,
+                            email: this.state.email,
+                            phone: this.state.phone
+                        },
+                    })
+                    .then((payload) => {
+                        const paymentInformation = {
+                            cardHolderName: this.state.cardHolderName,
+                            email: this.state.email,
+                            phone: this.state.phone,
+                            street1: this.state.street1,
+                            street2: this.state.street2,
+                            city: this.state.city,
+                            state: this.state.state,
+                            zipcode: this.state.zipcode,
+                            country: this.state.country,
+                            source: payload.source
+                        };
+                        console.log(paymentInformation);
+                        // handle payment to stripe by making backend calls
+                        this.props.registerPayment(paymentInformation, this.props.history);
+                    });
+            } else {
+                console.log("Stripe.js hasn't loaded yet.");
+            }
         }
     };
 
@@ -377,6 +382,7 @@ class CheckoutForm extends Component {
 
 CheckoutForm.propTypes = {
     registerPayment: propTypes.func.isRequired,
+    deRegisterPayment: propTypes.func.isRequired,
     auth: propTypes.object.isRequired,
     errors: propTypes.object.isRequired
 };
@@ -389,6 +395,6 @@ const mapStateToProps = state => ({
 export default withRouter(
     connect(
         mapStateToProps,
-        {registerPayment}
+        {registerPayment, deRegisterPayment}
     )(injectStripe(CheckoutForm))
 );

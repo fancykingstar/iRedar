@@ -113,7 +113,7 @@ class BusinessRegistration extends Component {
                 />
                 <PhoneInput
                     labels={en}
-                    placeholder="(000) 000-0000"
+                    placeholder="+1 (000) 000-0000"
                     name="phone"
                     country={'CA'}
                     value={this.state.phone}
