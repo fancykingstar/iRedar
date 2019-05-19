@@ -132,7 +132,6 @@ exports.doUnsubscribe = async profileId => {
     await stripe.subscriptions.del(user.stripe.stripeSubscriptionId);
     await stripe.plans.del(organization.stripe.stripePlanId);
 
-
     user.stripe.stripeCustomerId = undefined;
     user.stripe.stripeSubscriptionId = undefined;
     await user.save();
