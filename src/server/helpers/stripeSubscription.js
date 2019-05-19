@@ -111,13 +111,14 @@ exports.doUpdateAdminCustomer = async (profileId, firstName, lastName, email, ph
 };
 
 // UPDATE Customer payment information
-exports.doUpdatePayment = async (profileId, token) => {
+exports.doUpdatePayment = async (profileId, source) => {
+    console.log(source);
     let permission = await Permission.findOne({profile: profileId});
     let organization = await Organization.findOne({_id: permission.organization});
     return await stripe.customers.update(
         organization.stripe.stripeAdminCustomerId,
         {
-            source: token
+            source: source
         });
 };
 

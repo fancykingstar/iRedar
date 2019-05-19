@@ -65,7 +65,41 @@ const OrganizationSchema = new mongoose.Schema({
     interval: {
       type: String,
     }
-  }
+  },
+    billing: {
+        cardHolderName: {
+            type: String,
+        },
+        email: {
+            type: String,
+        },
+        phone: {
+            type: String,
+        },
+        address: {
+            street1: {
+                type: String,
+            },
+            street2: {
+                type: String,
+            },
+            city: {
+                type: String,
+            },
+            state: {
+                type: String,
+            },
+            zipcode: {
+                type: String,
+            },
+            country: {
+                type: String,
+            }
+        },
+        stripeSource: {
+            type: String,
+        }
+    }
 });
 
 module.exports = mongoose.model('Organization', OrganizationSchema);

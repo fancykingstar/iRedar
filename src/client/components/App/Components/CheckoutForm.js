@@ -8,6 +8,7 @@ import {registerPayment, deRegisterPayment} from "../../../actions/paymentAction
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import propTypes from "prop-types";
+import {getOrganization} from "../../../actions/organizationAction";
 
 class CheckoutForm extends Component {
     constructor() {
@@ -22,7 +23,8 @@ class CheckoutForm extends Component {
             state: "",
             zipcode: "",
             country: "Canada",
-            selectedPlan: "Smart",
+            selectedPlan: "",
+            organization: {},
             errors: {}
         };
     }
@@ -31,6 +33,19 @@ class CheckoutForm extends Component {
         if (!this.props.auth.isAuthenticated) {
             this.props.history.push('/');
         }
+
+        // get organization
+        const {getOrganization, permissions} = this.props;
+        getOrganization(permissions[0].organization).then(
+            () => {
+                let plan = "Smart";
+                let {organization} = this.props.organization;
+                if (organization && organization.stripe) {
+                    plan = organization.stripe.plan
+                }
+                this.setState({selectedPlan: plan});
+            }
+        );
     }
 
     componentWillReceiveProps(nextProps) {
@@ -43,40 +58,35 @@ class CheckoutForm extends Component {
         ev.preventDefault();
         this.setState({submitTime: this.state.submitTime + 1});
 
-        if (this.state.selectedPlan === "Unsubscribe") {
-            this.props.deRegisterPayment(this.props.history);
+        // create source
+        if (this.props.stripe) {
+            this.props.stripe
+                .createSource({
+                    type: 'card',
+                    owner: {
+                        name: this.state.cardHolderName,
+                        email: this.state.email,
+                        phone: this.state.phone
+                    },
+                })
+                .then((payload) => {
+                    const paymentInformation = {
+                        cardHolderName: this.state.cardHolderName,
+                        email: this.state.email,
+                        phone: this.state.phone,
+                        street1: this.state.street1,
+                        street2: this.state.street2,
+                        city: this.state.city,
+                        state: this.state.state,
+                        zipcode: this.state.zipcode,
+                        country: this.state.country,
+                        source: payload.source.id
+                    };
+                    // handle payment to stripe by making backend calls
+                    this.props.registerPayment(paymentInformation, this.props.history);
+                });
         } else {
-            // create source
-            if (this.props.stripe) {
-                this.props.stripe
-                    .createSource({
-                        type: 'card',
-                        owner: {
-                            name: this.state.cardHolderName,
-                            email: this.state.email,
-                            phone: this.state.phone
-                        },
-                    })
-                    .then((payload) => {
-                        const paymentInformation = {
-                            cardHolderName: this.state.cardHolderName,
-                            email: this.state.email,
-                            phone: this.state.phone,
-                            street1: this.state.street1,
-                            street2: this.state.street2,
-                            city: this.state.city,
-                            state: this.state.state,
-                            zipcode: this.state.zipcode,
-                            country: this.state.country,
-                            source: payload.source
-                        };
-                        console.log(paymentInformation);
-                        // handle payment to stripe by making backend calls
-                        this.props.registerPayment(paymentInformation, this.props.history);
-                    });
-            } else {
-                console.log("Stripe.js hasn't loaded yet.");
-            }
+            console.log("Stripe.js hasn't loaded yet.");
         }
     };
 
@@ -100,14 +110,19 @@ class CheckoutForm extends Component {
     };
 
     onOptionChange = changeEvent => {
-        this.setState({
-            selectedPlan: changeEvent.target.value
-        });
+        if (changeEvent.target.value === "Unsubscribe") {
+            if (window.confirm('Do you want to unsubscribe ?')) {
+                this.props.deRegisterPayment(this.props.history);
+            }
+        } else {
+            this.setState({
+                selectedPlan: changeEvent.target.value
+            });
+        }
     };
 
     render() {
         let {errors} = this.state;
-
         return (
             <div className="payment">
                 <form onSubmit={this.handleSubmit}>
@@ -383,11 +398,14 @@ class CheckoutForm extends Component {
 CheckoutForm.propTypes = {
     registerPayment: propTypes.func.isRequired,
     deRegisterPayment: propTypes.func.isRequired,
+    getOrganization: propTypes.func.isRequired,
     auth: propTypes.object.isRequired,
     errors: propTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
+    permissions: state.access.permissions,
+    organization: state.organization,
     auth: state.auth,
     errors: state.errors
 });
@@ -395,6 +413,6 @@ const mapStateToProps = state => ({
 export default withRouter(
     connect(
         mapStateToProps,
-        {registerPayment, deRegisterPayment}
+        {registerPayment, deRegisterPayment, getOrganization}
     )(injectStripe(CheckoutForm))
 );

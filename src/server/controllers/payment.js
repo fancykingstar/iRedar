@@ -1,4 +1,13 @@
 const jwt = require('jsonwebtoken');
+const keys = require('../configs/keys');
+
+// Load models
+const User = require('../models/User');
+const Profile = require('../models/Profile');
+const Permission = require('../models/Permission');
+const Organization = require('../models/Organization');
+
+const stripeLibrary = require('../helpers/stripeSubscription');
 
 exports.postPayment = async (req, res) => {
     const {
@@ -32,27 +41,34 @@ exports.postPayment = async (req, res) => {
             tokenProfileId = decoded.profileId.toString();
         });
 
-        const permission = await Permission.findOne({profile: tokenProfileId});
-        let organization = await Organization.findOne({_id: permission.organization});
-        let user = await User.findOne({_id: profile.user});
-
         console.log("tokenUserId : " + tokenUserId);
         console.log("tokenUserRole : " + tokenUserRole);
         console.log("tokenProfileId : " + tokenProfileId);
-        //await organization
 
-        /*
-        let userProfileId = profileId;
-        if (!userProfileId) {
-            const permission = await Permission.findById(permissionId);
-            userProfileId = permission.profile.toString();
-        }
-        if (tokenUserRole !== "admin" && userProfileId !== tokenProfileId) {
+        if (tokenUserRole === "admin") {
+            const permission = await Permission.findOne({profile: tokenProfileId});
+            let organization = await Organization.findOne({_id: permission.organization});
+
+            organization.billing.cardHolderName = cardHolderName;
+            organization.billing.email = email;
+            organization.billing.phone = phone;
+            organization.billing.address.street1 = street1;
+            organization.billing.address.street2 = street2;
+            organization.billing.address.city = city;
+            organization.billing.address.state = state;
+            organization.billing.address.country = country;
+            organization.billing.address.zipcode = zipcode;
+            organization.billing.stripeSource = source;
+            await organization.save();
+            await stripeLibrary.doUpdatePayment(tokenProfileId, source);
+        } else {
             return res.status(403).json({
-                error: 'User does not have rights to change payment information'
+                alert: {
+                    title: 'Error!',
+                    detail: 'User not authorization to make payment'
+                }
             });
         }
-        */
 
         return res.json({
             success: true,
@@ -96,18 +112,10 @@ exports.deletePaymentAndSubscription = async (req, res) => {
         console.log("tokenUserRole : " + tokenUserRole);
         console.log("tokenProfileId : " + tokenProfileId);
 
-        /*
-        let userProfileId = profileId;
-        if (!userProfileId) {
-            const permission = await Permission.findById(permissionId);
-            userProfileId = permission.profile.toString();
+        if (tokenUserRole === "admin") {
+            console.log("Delete subscription ...")
+            // await stripeLibrary.doUnsubscribe(tokenProfileId);
         }
-        if (tokenUserRole !== "admin" && userProfileId !== tokenProfileId) {
-            return res.status(403).json({
-                error: 'User does not have rights to change payment information'
-            });
-        }
-        */
 
         return res.json({
             success: true,

@@ -10,6 +10,15 @@ const organizationController = require('../controllers/organization');
 // @access Public
 router.post('/register', organizationController.postRegister);
 
+// @route GET api/organizations/:organizationId
+// @desc Return all organization's permissions
+// @access Private
+router.get(
+    '/:organizationId',
+    passport.authenticate('jwt', {session: false}),
+    organizationController.getOrganization,
+);
+
 // @route POST api/organizations/permission
 // @desc Register organizations
 // @access Private

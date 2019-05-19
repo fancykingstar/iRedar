@@ -187,7 +187,6 @@ export const resetPassword = (email, history) => async dispatch => {
 
 // Update Password
 export const updatePassword = (userData, history) => async dispatch => {
-  console.log("helllooooo");
   try {
     const token = localStorage.getItem('jwtToken');
     // Set token to Auth header
