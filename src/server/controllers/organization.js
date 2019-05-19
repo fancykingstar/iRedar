@@ -35,8 +35,8 @@ exports.postRegister = async (req, res) => {
     city,
     province,
     country,
-      postalCode,
-      selectedPlan
+    postalCode,
+    selectedPlan
   } = req.body;
 
   if (
@@ -148,7 +148,7 @@ exports.postRegister = async (req, res) => {
       permissionRight: permission
     });
     await userPermission.save();
-      await stripeLibrary.doCreateAdminUserWithPlanAndSubscribe(profile._id, selectedPlan);
+    await stripeLibrary.doCreateAdminUserWithPlanAndSubscribe(profile._id, selectedPlan);
 
     return res.json({
       success: true,

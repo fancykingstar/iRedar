@@ -83,7 +83,20 @@ class CheckoutForm extends Component {
                         source: payload.source.id
                     };
                     // handle payment to stripe by making backend calls
-                    this.props.registerPayment(paymentInformation, this.props.history);
+                    let plan = this.state.selectedPlan;
+                    let {organization} = this.props.organization;
+                    if (organization && organization.stripe) {
+                        plan = organization.stripe.plan
+                    }
+
+                    if (plan === this.state.selectedPlan) {
+                        this.props.registerPayment(paymentInformation, this.props.history);
+                    } else {
+                        this.props.changePaymentPlan({
+                            plan: this.state.selectedPlan,
+                            paymentData: paymentInformation
+                        }, this.props.history);
+                    }
                 });
         } else {
             console.log("Stripe.js hasn't loaded yet.");
@@ -116,7 +129,6 @@ class CheckoutForm extends Component {
             }
         } else {
             if (window.confirm('Do you want to change the plan ? It will take effect from next billing cycle')) {
-                this.props.changePaymentPlan({plan: changeEvent.target.value}, this.props.history);
                 this.setState({
                     selectedPlan: changeEvent.target.value
                 });

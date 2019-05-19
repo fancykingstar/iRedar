@@ -76,6 +76,10 @@ const OrganizationSchema = new mongoose.Schema({
         phone: {
             type: String,
         },
+        isTrial: {
+            type: Boolean,
+            default: false
+        },
         address: {
             street1: {
                 type: String,

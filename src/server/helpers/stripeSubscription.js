@@ -76,6 +76,7 @@ exports.doCreateAdminUserWithPlanAndSubscribe = async (profileId, plan = "Smart"
     organization.stripe.stripeAdminCustomerToken = "tok_visa";
     organization.stripe.plan = plan;
     organization.stripe.interval = interval;
+    organization.stripe.isTrial = true; // TODO turn to false when webhook subscription is expired in trial phase
     await organization.save();
 };
 
@@ -122,6 +123,85 @@ exports.doUpdatePayment = async (profileId, source) => {
         });
 };
 
+// Change plan for the account
+exports.doChangePlan = async (profileId, plan = "Smart", interval = "month", source = "tok_visa") => {
+    let profile = await Profile.findOne({_id: profileId});
+    let permission = await Permission.findOne({profile: profileId});
+    let user = await User.findOne({_id: profile.user});
+    let organization = await Organization.findOne({_id: permission.organization});
+    let trialDays = 0;
+    if (organization.stripe.isTrial) {
+        // TODO: understand how the trial works and ensure trial is transferred or take necessary actions
+        // TODO: After trial transition is create new plan and move subscribed users to next plans
+        // TODO: calculate remaining days instead of resetting it to 30
+        trialDays = 30;
+    }
+    let amount = 7500;
+    if (interval === "month") {
+        amount = monthlyPlanToPrice[plan];
+    } else {
+        amount = yearlyPlanToPrice[plan];
+    }
+
+    let planName = organization.domain.replace(/\s+/g, "-").replace(".", "-").toLowerCase() + "-" + plan.toLowerCase();
+    const stripePlan = await stripe.plans.create({
+        product: productPlan,
+        id: planName + "-plan",
+        nickname: organization.name + " " + interval + "ly " + plan + " plan",
+        currency: "usd",
+        amount: amount,
+        interval: interval,
+        usage_type: "licensed",
+        billing_scheme: "per_unit",
+        trial_period_days: trialDays
+    });
+
+    const stripeSubscription = await stripe.subscriptions.create({
+        customer: organization.stripe.stripeAdminCustomerId,
+        items: [
+            {
+                plan: stripePlan.id,
+                quantity: organization.users.length
+            }
+        ]
+    });
+    console.log(stripeSubscription);
+
+    // remove old subscription before update
+    await stripe.subscriptions.del(user.stripe.stripeSubscriptionId);
+    await stripe.plans.del(organization.stripe.stripePlanId);
+
+    // update subscription with new payment information
+    await stripe.customers.update(
+        organization.stripe.stripeAdminCustomerId,
+        {
+            source: source
+        });
+
+    // update new subscription and plans
+    user.stripe.stripeSubscriptionId = stripeSubscription.id;
+    await user.save();
+    organization.stripe.stripeSubscriptionPlanId = stripeSubscription.items.data[0].id;
+    organization.stripe.stripePlanId = stripePlan.id;
+    organization.stripe.stripeAdminCustomerToken = source;
+    organization.stripe.plan = plan;
+    organization.stripe.interval = interval;
+    organization.stripe.isTrial = (trialDays > 2);
+    await organization.save();
+};
+
+// Returning users for subscription
+exports.doSubscribe = async (profileId, plan = "Smart", interval = "month") => {
+    await doChangePlan(profileId, plan, interval);
+
+    // TODO: returning users after unsubscription
+    let permission = await Permission.findOne({profile: profileId});
+    let organization = await Organization.findOne({_id: permission.organization});
+
+    organization.stripe.stripeAdminCustomerToken = "tok_visa";
+    await organization.save();
+};
+
 // Unsubscribed the account
 exports.doUnsubscribe = async profileId => {
     let profile = await Profile.findOne({_id: profileId});
@@ -132,10 +212,8 @@ exports.doUnsubscribe = async profileId => {
     await stripe.subscriptions.del(user.stripe.stripeSubscriptionId);
     await stripe.plans.del(organization.stripe.stripePlanId);
 
-    user.stripe.stripeCustomerId = undefined;
     user.stripe.stripeSubscriptionId = undefined;
     await user.save();
-    organization.stripe.stripeAdminCustomerId = undefined;
     organization.stripe.stripeSubscriptionPlanId = undefined;
     organization.stripe.stripePlanId = undefined;
     organization.stripe.stripeAdminCustomerToken = undefined;

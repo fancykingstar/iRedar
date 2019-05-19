@@ -90,8 +90,11 @@ exports.postPayment = async (req, res) => {
 
 exports.changePlan = async (req, res) => {
     const {
-        plan
+        plan,
+        paymentData
     } = req.body;
+
+    console.log(paymentData);
 
     const header = req.headers['authorization'];
     let tokenUserId = null;
@@ -117,8 +120,30 @@ exports.changePlan = async (req, res) => {
         console.log("new plan : " + plan);
 
         if (tokenUserRole === "admin") {
-            console.log("Change subscription ...")
-            // await stripeLibrary.doUnsubscribe(tokenProfileId);
+            console.log("Change subscription ...");
+
+            const permission = await Permission.findOne({profile: tokenProfileId});
+            let organization = await Organization.findOne({_id: permission.organization});
+
+            organization.billing.cardHolderName = paymentData.cardHolderName;
+            organization.billing.email = paymentData.email;
+            organization.billing.phone = paymentData.phone;
+            organization.billing.address.street1 = paymentData.street1;
+            organization.billing.address.street2 = paymentData.street2;
+            organization.billing.address.city = paymentData.city;
+            organization.billing.address.state = paymentData.state;
+            organization.billing.address.country = paymentData.country;
+            organization.billing.address.zipcode = paymentData.zipcode;
+            organization.billing.stripeSource = paymentData.source;
+            await organization.save();
+            await stripeLibrary.doChangePlan(tokenProfileId, plan, "month", paymentData.source);
+        } else {
+            return res.status(403).json({
+                alert: {
+                    title: 'Error!',
+                    detail: 'User not authorization to change subscription'
+                }
+            });
         }
         return res.json({
             success: true,
@@ -127,7 +152,6 @@ exports.changePlan = async (req, res) => {
                 detail: 'Subscription information changed successfully'
             },
         });
-
     } else {
         return res.status(403).json({
             alert: {

@@ -30,7 +30,7 @@ export const registerPayment = (paymentData, history) => async dispatch => {
     }
 };
 
-export const changePaymentPlan = (plan, history) => async dispatch => {
+export const changePaymentPlan = (payload, history) => async dispatch => {
     try {
         // getter
         const token = localStorage.getItem('jwtToken');
@@ -38,7 +38,7 @@ export const changePaymentPlan = (plan, history) => async dispatch => {
         // Set token to Auth header
         setAuthToken(token);
 
-        await axios.post(`${API_URL}/api/payment/changePlan`, plan);
+        await axios.post(`${API_URL}/api/payment/changePlan`, payload);
         history.push({
             pathname: '/settings/admin-settings',
             isRegistered: true,
