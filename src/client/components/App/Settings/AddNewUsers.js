@@ -18,7 +18,6 @@ export class AddNewUsers extends Component {
       email: "",
       password: "",
       role: "",
-        stripe: "",
       errors: {}
     };
   }
