@@ -86,7 +86,6 @@ exports.postPayment = async (req, res) => {
             }
         });
     }
-
 };
 
 exports.changePlan = async (req, res) => {
