@@ -89,6 +89,56 @@ exports.postPayment = async (req, res) => {
 
 };
 
+exports.changePlan = async (req, res) => {
+    const {
+        plan
+    } = req.body;
+
+    const header = req.headers['authorization'];
+    let tokenUserId = null;
+    let tokenUserRole = null;
+    let tokenProfileId = null;
+    if (typeof header !== 'undefined') {
+        const bearer = header.split(' ');
+        const token = bearer[1];
+        jwt.verify(token, keys.secretOrKey, function (err, decoded) {
+            if (err) {
+                return res.status(403).json({
+                    error: 'Token is invalid and expired'
+                });
+            }
+            tokenUserId = decoded.userId.toString();
+            tokenUserRole = decoded.role.toString();
+            tokenProfileId = decoded.profileId.toString();
+        });
+
+        console.log("tokenUserId : " + tokenUserId);
+        console.log("tokenUserRole : " + tokenUserRole);
+        console.log("tokenProfileId : " + tokenProfileId);
+        console.log("new plan : " + plan);
+
+        if (tokenUserRole === "admin") {
+            console.log("Change subscription ...")
+            // await stripeLibrary.doUnsubscribe(tokenProfileId);
+        }
+        return res.json({
+            success: true,
+            alert: {
+                title: 'Success!',
+                detail: 'Subscription information changed successfully'
+            },
+        });
+
+    } else {
+        return res.status(403).json({
+            alert: {
+                title: 'Error!',
+                detail: 'Authorization token not found'
+            }
+        });
+    }
+};
+
 exports.deletePaymentAndSubscription = async (req, res) => {
     const header = req.headers['authorization'];
     let tokenUserId = null;

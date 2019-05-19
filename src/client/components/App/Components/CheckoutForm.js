@@ -4,7 +4,7 @@ import TextFieldGroup from "../../Elements/TextFieldGroup";
 import {CardCVCElement, CardExpiryElement, CardNumberElement, injectStripe} from "react-stripe-elements";
 import en from "react-phone-number-input/locale/en";
 import PhoneInput, {isValidPhoneNumber} from "react-phone-number-input";
-import {registerPayment, deRegisterPayment} from "../../../actions/paymentActions";
+import {registerPayment, changePaymentPlan, deRegisterPayment} from "../../../actions/paymentActions";
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import propTypes from "prop-types";
@@ -115,9 +115,12 @@ class CheckoutForm extends Component {
                 this.props.deRegisterPayment(this.props.history);
             }
         } else {
-            this.setState({
-                selectedPlan: changeEvent.target.value
-            });
+            if (window.confirm('Do you want to change the plan ? It will take effect from next billing cycle')) {
+                this.props.changePaymentPlan({plan: changeEvent.target.value}, this.props.history);
+                this.setState({
+                    selectedPlan: changeEvent.target.value
+                });
+            }
         }
     };
 
@@ -397,6 +400,7 @@ class CheckoutForm extends Component {
 
 CheckoutForm.propTypes = {
     registerPayment: propTypes.func.isRequired,
+    changePaymentPlan: propTypes.func.isRequired,
     deRegisterPayment: propTypes.func.isRequired,
     getOrganization: propTypes.func.isRequired,
     auth: propTypes.object.isRequired,
@@ -413,6 +417,6 @@ const mapStateToProps = state => ({
 export default withRouter(
     connect(
         mapStateToProps,
-        {registerPayment, deRegisterPayment, getOrganization}
+        {registerPayment, changePaymentPlan, deRegisterPayment, getOrganization}
     )(injectStripe(CheckoutForm))
 );

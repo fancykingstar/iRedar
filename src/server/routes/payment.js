@@ -14,8 +14,17 @@ router.post(
     paymentController.postPayment,
 );
 
+// @route POST api/payment/changePlan
+// @desc Register subscription plans
+// @access Private
+router.post(
+    '/changePlan',
+    passport.authenticate('jwt', {session: false}),
+    paymentController.changePlan,
+);
+
 // @route DELETE api/payment/deregister
-// @desc Register organizations
+// @desc Remove subscription plans
 // @access Private
 router.delete(
     '/deregister',

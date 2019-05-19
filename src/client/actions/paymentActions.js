@@ -6,7 +6,6 @@ import {
 } from './types';
 import setAuthToken from "../utils/setAuthToken";
 
-//Add new user through ADMIN Role
 export const registerPayment = (paymentData, history) => async dispatch => {
     try {
         console.log(paymentData);
@@ -22,6 +21,28 @@ export const registerPayment = (paymentData, history) => async dispatch => {
             pathname: '/settings/admin-settings',
             isRegistered: true,
             detail: 'Payment information created!'
+        });
+    } catch (error) {
+        dispatch({
+            type: GET_ERRORS,
+            payload: error.response.data
+        });
+    }
+};
+
+export const changePaymentPlan = (plan, history) => async dispatch => {
+    try {
+        // getter
+        const token = localStorage.getItem('jwtToken');
+
+        // Set token to Auth header
+        setAuthToken(token);
+
+        await axios.post(`${API_URL}/api/payment/changePlan`, plan);
+        history.push({
+            pathname: '/settings/admin-settings',
+            isRegistered: true,
+            detail: 'Payment plan changed!'
         });
     } catch (error) {
         dispatch({
