@@ -25,6 +25,7 @@ import ReportsPage from './client/components/App/Reports';
 import AdminSettings from './client/components/App/Settings/AdminSettings';
 import AddNewUsers from './client/components/App/Settings/AddNewUsers';
 import UpdatePassword from './client/components/App/Settings/UpdatePassword';
+import Payment from './client/components/App/Settings/Payment';
 import Settings from './client/components/App/Settings/Settings';
 import ClientAction from './client/components/App/Forms/AllForms/ClientAction';
 import IARAssessment from './client/components/App/Forms/AllForms/IARAssessment';
@@ -125,6 +126,13 @@ class App extends Component {
                     exact
                     path="/settings/update-admin-password"
                     component={UpdatePassword}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                    exact
+                    path="/settings/payment"
+                    component={Payment}
                 />
               </Switch>
               <Switch>

@@ -137,12 +137,25 @@ export class AdminSettings extends Component {
               </Link>
               <Link
                   to={{
+                    pathname: "/settings/payment",
+                    adminCount: adminCount,
+                    staffCount: staffCount,
+                    partnerCount: partnerCount,
+                    clientCount: clientCount
+                  }}
+                  className="btn btn-contact-new"
+              >
+                Subscription and Payment
+              </Link>
+              <Link
+                  to={{
                     pathname: "/settings/admin-settings",
                     adminCount: adminCount,
                     staffCount: staffCount,
                     partnerCount: partnerCount,
                     clientCount: clientCount
                   }}
+                  style={{backgroundColor: '#FF7F50'}}
                   className="btn btn-contact-new"
                   onClick={handleDelete}
               >

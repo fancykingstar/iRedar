@@ -18,10 +18,13 @@ export class AddNewUsers extends Component {
       email: "",
       password: "",
       role: "",
+        stripe: "",
       errors: {}
     };
   }
-  componentDidMount() {}
+
+    componentDidMount() {
+    }
 
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -66,7 +69,6 @@ export class AddNewUsers extends Component {
               <h6 className="slim-pagetitle">Admin Settings</h6>
             </div>
           </div>
-
           <div className="manager-wrapper">
             <div className="manager-right">
               <div className="section-wrapper">
