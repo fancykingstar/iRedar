@@ -9,8 +9,20 @@ const Permission = require('../models/Permission');
 const Profile = require('../models/Profile');
 const User = require('../models/User');
 
+const monthlyPlanToPrice = {
+    Smart: 7500,
+    Business: 15000,
+    Enterprise: 25000
+};
+
+const yearlyPlanToPrice = {
+    Smart: 81588,
+    Business: 162000,
+    Enterprise: 269988
+};
+
 // CREATE CUSTOMER and SUBSCRIPTION
-exports.doCreateAdminUserWithPlanAndSubscribe = async (profileId, plan = "smart", interval = "monthly") => {
+exports.doCreateAdminUserWithPlanAndSubscribe = async (profileId, plan = "Smart", interval = "monthly") => {
     let profile = await Profile.findOne({_id: profileId});
     let permission = await Permission.findOne({profile: profileId});
     let user = await User.findOne({_id: profile.user});
@@ -18,12 +30,20 @@ exports.doCreateAdminUserWithPlanAndSubscribe = async (profileId, plan = "smart"
 
     logger.debug("Organization Found for Customer is: ", organization);
 
+    let amount = 7500;
+    if (interval === "monthly") {
+        amount = monthlyPlanToPrice[plan];
+    } else {
+        amount = yearlyPlanToPrice[plan];
+    }
+
     let planName = organization.domain.replace(/\s+/g, "-").toLowerCase();
     const stripePlan = await stripe.plans.create({
         product: productPlan,
         id: planName + "-" + plan + "-plan",
         nickname: organization.name + " plan",
         currency: "usd",
+        amount: amount,
         interval: interval,
         usage_type: "licensed",
         billing_scheme: "per_unit",
@@ -56,6 +76,8 @@ exports.doCreateAdminUserWithPlanAndSubscribe = async (profileId, plan = "smart"
     organization.stripeSubscriptionPlanId = stripeSubscription.items.data[0].id;
     organization.stripePlanId = stripePlan.id;
     organization.stripeAdminCustomerToken = "tok_visa";
+    organization.plan = plan;
+    organization.interval = interval;
     await organization.save();
 };
 
@@ -76,7 +98,7 @@ exports.doUpdateSubscription = async (profileId) => {
 };
 
 // UPDATE Customer user information
-exports.doUpdatAdminCustomer = async (profileId, firstName, lastName, email, phoneNumber) => {
+exports.doUpdateAdminCustomer = async (profileId, firstName, lastName, email, phoneNumber) => {
     let permission = await Permission.findOne({profile: profileId});
     let organization = await Organization.findOne({_id: permission.organization});
     return await stripe.customers.update(

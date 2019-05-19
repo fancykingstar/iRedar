@@ -39,6 +39,9 @@ class ClientRegistration extends Component {
         if (e) {
             if (isValidPhoneNumber(e)) {
                 this.setState({phone: e});
+                this.setState({errors: {phone: ""}});
+            } else {
+                this.setState({errors: {phone: "Invalid phone number"}});
             }
         }
     };
@@ -97,7 +100,7 @@ class ClientRegistration extends Component {
                     country={'CA'}
                     value={this.state.phone}
                     onChange={this.onChangePhone}
-                    error={this.state.phone ? (isValidPhoneNumber(this.state.phone) ? undefined : 'Invalid phone number') : 'Phone number required'}
+                    error={errors.phone}
                     required
                 />
 

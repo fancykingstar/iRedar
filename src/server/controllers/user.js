@@ -3,6 +3,7 @@ const validator = require('validator');
 const keys = require('../configs/keys');
 const logger = require('../configs/logger');
 const nodeMailer = require('../helpers/nodemailer');
+const stripeLibrary = require('../helpers/stripeSubscription');
 
 const { resetPasswordEmail } = require('../helpers/htmlMails/reset-password');
 
@@ -319,6 +320,8 @@ try {
     await userPermission.save();
   }
 
+    await stripeLibrary.doUpdateSubscription(adminProfile._id);
+
   return res.json({
     success: true,
     alert: {
@@ -408,6 +411,12 @@ exports.putUpdateUser = async (req, res) => {
         );
       }
     }
+
+      // update admin for stripe
+      if (tokenUserRole === "admin" && userProfileId === tokenProfileId) {
+          await stripeLibrary.doUpdateAdminCustomer(userProfileId, firstName, lastName, email, phoneNumber);
+      }
+
   } else {
     return res.status(403).json({
       alert: {

@@ -122,7 +122,7 @@ class CheckoutForm extends Component {
                                     value="Smart"
                                     checked={this.state.selectedPlan === 'Smart'}
                                     onChange={this.onOptionChange}/>
-                                <span className="custom-control-label">Smart</span>
+                                <span className="custom-control-label">Smart ($75.00 user / month)</span>
                             </label>
                             <label className="custom-control custom-radio">
                                 <input
@@ -133,7 +133,7 @@ class CheckoutForm extends Component {
                                     value="Business"
                                     checked={this.state.selectedPlan === 'Business'}
                                     onChange={this.onOptionChange}/>
-                                <span className="custom-control-label">Business</span>
+                                <span className="custom-control-label">Business ($150.00 user / month)</span>
                             </label>
                             <label className="custom-control custom-radio">
                                 <input
@@ -144,7 +144,7 @@ class CheckoutForm extends Component {
                                     value="Enterprise"
                                     checked={this.state.selectedPlan === 'Enterprise'}
                                     onChange={this.onOptionChange}/>
-                                <span className="custom-control-label">Enterprise</span>
+                                <span className="custom-control-label">Enterprise ($250.00 user / month)</span>
                             </label>
                             <label className="custom-control custom-radio">
                                 <input

@@ -1,5 +1,6 @@
 const validator = require('validator');
 const logger = require('../configs/logger');
+const stripeLibrary = require('../helpers/stripeSubscription');
 
 // Load models
 const Organization = require('../models/Organization');
@@ -34,7 +35,8 @@ exports.postRegister = async (req, res) => {
     city,
     province,
     country,
-    postalCode
+      postalCode,
+      selectedPlan
   } = req.body;
 
   if (
@@ -43,6 +45,7 @@ exports.postRegister = async (req, res) => {
       || !lastName
       || !email
       || !phone
+      || !selectedPlan
   //|| !street
   //|| !city
   //|| !province
@@ -145,6 +148,7 @@ exports.postRegister = async (req, res) => {
       permissionRight: permission
     });
     await userPermission.save();
+      await stripeLibrary.doCreateAdminUserWithPlanAndSubscribe(profile._id, selectedPlan);
 
     return res.json({
       success: true,
