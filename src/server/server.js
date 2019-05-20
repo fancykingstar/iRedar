@@ -59,6 +59,8 @@ if (!debugMode) {
   app.use(express.static(path.join(__dirname, relativePath, 'build')));
 }
 
+app.use(require('./helpers/error-handler'));
+
 app.get('/*', function (req, res) {
 
   if (req.xhr || req.headers.accept.indexOf('json') > -1) {
