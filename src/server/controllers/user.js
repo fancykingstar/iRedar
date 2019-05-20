@@ -33,6 +33,7 @@ exports.postClientRegister = async (req, res) => {
     password,
     passwordConfirmation,
     phone,
+      services,
     firstName,
     lastName
   } = req.body;
@@ -89,6 +90,7 @@ exports.postClientRegister = async (req, res) => {
       email,
       lastName,
       firstName,
+        services,
       phoneNumber: phone,
       domain: userDomain
     }).save();
