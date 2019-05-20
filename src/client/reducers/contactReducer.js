@@ -9,12 +9,14 @@ import {
 
 const initialState = {
   loading: true,
-  allContacts: []
+  allContacts: [],
+  contact: {}
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case GET_ALL_CONTACTS:
+      console.log(action.payload, 'actionpayload');
       return {
         ...state,
         loading: false,
@@ -25,7 +27,11 @@ export default (state = initialState, action) => {
     case UPDATE_CONTACT:
       return state;
     case EDIT_CONTACT:
-      return state;
+      return {
+        ...state,
+        loading: false,
+        contact: action.payload
+      };
     case DELETE_CONTACT:
       return state;
     case GET_ERRORS:

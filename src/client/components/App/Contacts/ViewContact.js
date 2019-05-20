@@ -1,36 +1,79 @@
-import React, { Component } from 'react';
+import moment from 'moment';
 import propTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React from 'react';
+import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
+import {getContact} from '../../../actions/contactAction';
 
 class EditContact extends React.Component {
+  state = {
+    _id: '',
+    loading: true,
+    firstName: '',
+    lastName: '',
+    type: '',
+    profession: '',
+    company: '',
+    group: '',
+    language: '',
+    created_at: '',
+    updated_at: '',
+    phoneNumbers: [],
+    addresses: [],
+    emailAddresses: []
+  };
+  
+  componentDidMount() {
+    const {getContact, match: {params: {contactId}}} = this.props;
+    
+    getContact(contactId);
+  }
+  
+  componentWillReceiveProps(nextProps, nextContext) {
+    this.setState({
+      ...nextProps.contact,
+      loading: nextProps.loading
+    });
+  }
+  
   render() {
+    let {_id, firstName, lastName, type, profession, company, group, language, created_at, updated_at, emailAddresses, phoneNumbers, addresses, loading} = this.state;
+    
     return (
       <div className='slim-mainpanel'>
         <div className='container'>
           <div className='manager-header'>
             <div className='slim-pageheader'>
-              <ol className='breadcrumb slim-breadcrumb' />
+              <div className='breadcrumb slim-breadcrumb'>
+                <Link to={`/contacts/edit/${_id}`}
+                      className={'btn btn-primary btn-sm'}>
+                  <i className={'fa fa-pencil'}/> Edit</Link>
+              </div>
               <h6 className='slim-pagetitle'>View Contact</h6>
             </div>
           </div>
-          <div className='row'>
+          {loading ? <div className="sk-three-bounce">
+            <div className="sk-child sk-bounce1 bg-gray-800"/>
+            <div className="sk-child sk-bounce2 bg-gray-800"/>
+            <div className="sk-child sk-bounce3 bg-gray-800"/>
+          </div> : <div className='row'>
             <div className='col-8'>
               <div className='card card-profile'>
                 <div className='card-body'>
                   <div className='media'>
-                    <img src='http://via.placeholder.com/500x500' alt='' />
+                    <img src='http://via.placeholder.com/500x500' alt=''/>
                     <div className='media-body'>
-                      <p className='card-profile-position'>Client</p>
-                      <h3 className='card-profile-name'>Katherine Lumaad</h3>
+                      <p className='card-profile-position'>{type}</p>
+                      <h3 className='card-profile-name'>{`${firstName} ${lastName}`}</h3>
                       <p className='card-profile-position'>
-                        Executive Director at <a href=''>ThemePixels, Inc.</a>
+                        {profession} at <a href=''>{company}</a>
                       </p>
                       <p className='mg-b-0'>
                         <button className='btn btn-outline-success btn-sm mg-r-5' disabled>
-                          Group
+                          {group}
                         </button>
                         <button className='btn btn-outline-primary btn-sm' disabled>
-                          Language
+                          {language}
                         </button>
                       </p>
                     </div>
@@ -39,31 +82,31 @@ class EditContact extends React.Component {
                     <div className='col-4'>
                       <div className='media mg-t-25'>
                         <div>
-                          <i className='fa fa-plus tx-24 tx-success lh-0' />
+                          <i className='fa fa-plus tx-24 tx-success lh-0'/>
                         </div>
-                        <div className='media-body mg-t-4' style={{ marginLeft: '15px' }}>
+                        <div className='media-body mg-t-4' style={{marginLeft: '15px'}}>
                           <h6 className='tx-14 tx-gray-700'>Created At</h6>
-                          <span className='d-block'>May 15 2019 10:53:36</span>
+                          <span className='d-block'>{moment(created_at).format('LLL')}</span>
                         </div>
                       </div>
                     </div>
                     <div className='col-4'>
                       <div className='media mg-t-25'>
                         <div>
-                          <i className='fa fa-pencil tx-24 tx-primary lh-0' />
+                          <i className='fa fa-pencil tx-24 tx-primary lh-0'/>
                         </div>
-                        <div className='media-body mg-t-4' style={{ marginLeft: '15px' }}>
+                        <div className='media-body mg-t-4' style={{marginLeft: '15px'}}>
                           <h6 className='tx-14 tx-gray-700'>Modified At</h6>
-                          <span className='d-block'>May 15 2019 10:53:36</span>
+                          <span className='d-block'>{moment(updated_at).format('LLL')}</span>
                         </div>
                       </div>
                     </div>
                     <div className='col-4'>
                       <div className='media mg-t-25'>
                         <div>
-                          <i className='fa fa-user tx-24 tx-danger lh-0' />
+                          <i className='fa fa-user tx-24 tx-danger lh-0'/>
                         </div>
-                        <div className='media-body mg-t-4' style={{ marginLeft: '15px' }}>
+                        <div className='media-body mg-t-4' style={{marginLeft: '15px'}}>
                           <h6 className='tx-14 tx-gray-700'>Created By</h6>
                           <span className='d-block'>yourname@sample.com</span>
                         </div>
@@ -96,88 +139,69 @@ class EditContact extends React.Component {
                   <div className='tab-content'>
                     <div className='tab-pane show active' id='email_addresses'>
                       <div className='list-group  list-group-user'>
-                        <div className='list-group-item'>
-                          <div className='user-name-address'>
-                            <p>zesterquinn.albano@gmail.com</p>
-                            <span>
+                        {emailAddresses.length ? emailAddresses.map((value, key) => {
+                          return <div className='list-group-item' key={key}>
+                            <div className='user-name-address'>
+                              <p>{value.emailAddress}</p>
+                              <span>
                               Client Portal: <b className='tx-success'>Confirmed Access</b> |{' '}
-                              <b className='tx-primary'>
+                                <b className='tx-primary'>
                                 <a href='#'>Revoke Access</a>
                               </b>
                             </span>
-                          </div>
-                          <div className='user-btn-wrapper'>
-                            <button href='#' className='btn btn-outline-primary btn-sm' disabled>
-                              Work
-                            </button>
-                          </div>
-                        </div>
-                        <div className='list-group-item'>
+                            </div>
+                            <div className='user-btn-wrapper'>
+                              <button className='btn btn-outline-primary btn-sm' disabled>
+                                {value.emailFor}
+                              </button>
+                            </div>
+                          </div>;
+                        }) : <div className='list-group-item'>
                           <div className='user-name-address'>
-                            <p>zesterquinn@gmail.com</p>
-                            <span>
-                              Client Portal: <b className='tx-default'>No Access</b> |{' '}
-                              <b className='tx-primary'>
-                                <a href='#'>Invite</a>
-                              </b>
-                            </span>
+                            <p>{'N/A'}</p>
                           </div>
-                          <div className='user-btn-wrapper'>
-                            <button href='#' className='btn btn-outline-primary btn-sm' disabled>
-                              Work
-                            </button>
-                          </div>
-                        </div>
+                        </div>}
                       </div>
                     </div>
                     <div className='tab-pane' id='addresses'>
                       <div className='list-group  list-group-user'>
-                        <div className='list-group-item'>
+                        {addresses.length ? addresses.map((value, key) => {
+                          return <div className='list-group-item' key={key}>
+                            <div className='user-name-address'>
+                              <p>{value.country}, {value.zipCode}</p>
+                              <span>{value.address}, {value.city}, {value.state}</span>
+                            </div>
+                            <div className='user-btn-wrapper'>
+                              <button className='btn btn-outline-primary btn-sm' disabled>
+                                {value.addressFor}
+                              </button>
+                            </div>
+                          </div>;
+                        }) : <div className='list-group-item'>
                           <div className='user-name-address'>
-                            <p>Cebu, 6000</p>
-                            <span>B1, L43, Andalucia Cres, Gabi, Cordova</span>
+                            <p>{'N/A'}</p>
                           </div>
-                          <div className='user-btn-wrapper'>
-                            <button href='#' className='btn btn-outline-primary btn-sm' disabled>
-                              Work
-                            </button>
-                          </div>
-                        </div>
-                        <div className='list-group-item'>
-                          <div className='user-name-address'>
-                            <p>Cebu, 6000</p>
-                            <span>B1, L43, Andalucia Cres, Gabi, Cordova</span>
-                          </div>
-                          <div className='user-btn-wrapper'>
-                            <button href='#' className='btn btn-outline-primary btn-sm' disabled>
-                              Work
-                            </button>
-                          </div>
-                        </div>
+                        </div>}
                       </div>
                     </div>
                     <div className='tab-pane' id='phone_numbers'>
                       <div className='list-group  list-group-user'>
-                        <div className='list-group-item'>
+                        {phoneNumbers.length ? phoneNumbers.map((value, key) => {
+                          return <div className='list-group-item' key={key}>
+                            <div className='user-name-address'>
+                              <p>{value.phoneNumber}</p>
+                            </div>
+                            <div className='user-btn-wrapper'>
+                              <button className='btn btn-outline-primary btn-sm' disabled>
+                                {value.phoneNumberFor}
+                              </button>
+                            </div>
+                          </div>;
+                        }) : <div className='list-group-item'>
                           <div className='user-name-address'>
-                            <p>09361350510</p>
+                            <p>{'N/A'}</p>
                           </div>
-                          <div className='user-btn-wrapper'>
-                            <button href='#' className='btn btn-outline-primary btn-sm' disabled>
-                              Work
-                            </button>
-                          </div>
-                        </div>
-                        <div className='list-group-item'>
-                          <div className='user-name-address'>
-                            <p>09152597171</p>
-                          </div>
-                          <div className='user-btn-wrapper'>
-                            <button href='#' className='btn btn-outline-primary btn-sm' disabled>
-                              Work
-                            </button>
-                          </div>
-                        </div>
+                        </div>}
                       </div>
                     </div>
                   </div>
@@ -235,37 +259,38 @@ class EditContact extends React.Component {
               </div>
             </div>
             <div className='col-4'>
-              <div class='card-contact mg-b-20'>
-                <div class='tx-center'>
-                  <h5 class='mg-t-10 mg-b-5'>
-                    <a href='' class='contact-name'>
+              <div className='card-contact mg-b-20'>
+                <div className='tx-center'>
+                  <h5 className='mg-t-10 mg-b-5'>
+                    <a href='' className='contact-name'>
                       Client Portal
                     </a>
                   </h5>
                   <p>The contact is invite to the client portal</p>
                 </div>
-
-                <p class='contact-item'>
+                
+                <p className='contact-item'>
                   <span>Portal URL:</span>
                   <a href=''>http://thmpxls.me</a>
                 </p>
-                <p class='contact-item'>
+                <p className='contact-item'>
                   <span>Last client login:</span>
                   <a href=''>May 15 2019 10:53:36</a>
                 </p>
               </div>
-              <div class='card card-recommendation'>
-                <div class='card-body pd-25'>
-                  <div class='slim-card-title'>Private notes</div>
-                  <p class='tx-13 mg-b-0'>
+              <div className='card card-recommendation'>
+                <div className='card-body pd-25'>
+                  <div className='slim-card-title'>Private notes</div>
+                  <p className='tx-13 mg-b-0'>
                     Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis
-                    enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut,
+                    enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus
+                    ut,
                     imperdiet a, venenatis vitae, justo.
                   </p>
                 </div>
               </div>
             </div>
-          </div>
+          </div>}
         </div>
       </div>
     );
@@ -278,8 +303,10 @@ EditContact.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  contact: state.contacts.contact,
+  loading: state.contacts.loading,
   auth: state.auth,
   errors: state.errors
 });
 
-export default connect(mapStateToProps)(EditContact);
+export default connect(mapStateToProps, {getContact})(EditContact);

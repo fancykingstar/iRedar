@@ -1,23 +1,26 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import ContactTable from '../Components/ContactDataTable';
 import {Link} from 'react-router-dom';
-import {getContacts} from '../../../actions/contactAction';
+import {deleteContacts, getContacts} from '../../../actions/contactAction';
+import ContactTable from '../Components/ContactDataTable';
 
 class ContactsPage extends React.Component {
-  constructor() {
-    super();
-    this.getData = this.getData.bind(this);
-  }
-
   componentDidMount() {
     const {getContacts} = this.props;
     getContacts();
   }
-
-  getData(data) {
-  }
-
+  
+  getData = (data) => {
+    console.log(data);
+    this.deleteItems = data;
+  };
+  
+  removeContacts = (ids) => {
+    const {deleteContacts, getContacts} = this.props;
+    deleteContacts(ids, this.props.history);
+    getContacts();
+  };
+  
   render() {
     const {contacts} = this.props;
     return (
@@ -70,7 +73,12 @@ class ContactsPage extends React.Component {
             </div>
           </div>
           <div className='section-wrapper'>
-            <ContactTable data={contacts} permissions={{}} onSelected={this.getData}/>
+            <ContactTable
+              data={contacts}
+              permissions={{}}
+              onSelected={this.getData}
+              deleteContacts={() => {this.removeContacts(this.deleteItems);}}
+              archiveContacts={() => {this.removeContacts(this.deleteItems);}}/>
           </div>
         </div>
       </div>
@@ -85,4 +93,7 @@ const mapStateToProps = state => ({
   profile: state.auth.profile
 });
 
-export default connect(mapStateToProps, {getContacts})(ContactsPage);
+export default connect(mapStateToProps, {
+  getContacts,
+  deleteContacts
+})(ContactsPage);

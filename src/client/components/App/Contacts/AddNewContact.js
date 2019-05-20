@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
 import propTypes from 'prop-types';
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import TextFieldGroup from '../../Elements/TextFieldGroup';
 import Select from 'react-select';
 import {addContact} from '../../../actions/contactAction';
+import TextFieldGroup from '../../Elements/TextFieldGroup';
 
 export class AddNewContact extends Component {
   constructor() {
@@ -49,16 +49,19 @@ export class AddNewContact extends Component {
     
     this.state.errors = [];
     
-    if (Object.keys(errors).length) {
-      let receivedErrors = [];
-      const {data: {details}} = errors;
-      
-      details.forEach(value => {
-        receivedErrors.push(value.message);
-      });
-      
-      this.setState(oldState => ({...oldState, errors: receivedErrors}));
-    }
+    //if (Object.keys(errors).length) {
+    //  let receivedErrors = [];
+    //  const {data: {details}} = errors;
+    //
+    //  details.forEach(value => {
+    //    receivedErrors.push(value.message);
+    //  });
+    //
+    //  this.setState(oldState => ({
+    //    ...oldState,
+    //    errors: receivedErrors
+    //  }));
+    //}
   }
   
   onSubmit = e => {
@@ -73,12 +76,24 @@ export class AddNewContact extends Component {
     event.persist();
     
     this.setState(
-      previousState => ({...previousState, form: {...this.state.form, [event.target.name]: event.target.value}}));
+      previousState => ({
+        ...previousState,
+        form: {
+          ...this.state.form,
+          [event.target.name]: event.target.value
+        }
+      }));
   };
   
   onSelectChange = (key, value) => {
     // event.persist();
-    this.setState(previousState => ({...previousState, form: {...this.state.form, [key]: value}}));
+    this.setState(previousState => ({
+      ...previousState,
+      form: {
+        ...this.state.form,
+        [key]: value
+      }
+    }));
   };
   
   onChangeRowValue = (parentKey, childKey, value, index) => {
@@ -86,21 +101,30 @@ export class AddNewContact extends Component {
     //console.log(this.state.form[parentKey][index][childKey]);
     this.setState(previousState => ({
       ...previousState,
-      form: {...this.state.form, [parentKey]: this.state.form[parentKey]}
+      form: {
+        ...this.state.form,
+        [parentKey]: this.state.form[parentKey]
+      }
     }));
   };
   
   addRow = (parentKey, object) => {
     this.setState(previousState => ({
       ...previousState,
-      form: {...this.state.form, [parentKey]: [...this.state[parentKey], object]}
+      form: {
+        ...this.state.form,
+        [parentKey]: [...this.state.form[parentKey], object]
+      }
     }));
   };
   
   removeRow = (parentKey, indexKey) => {
     this.setState(previousState => ({
       ...previousState,
-      form: {...this.state.form, [parentKey]: this.state[parentKey].filter((value, index) => index != indexKey)}
+      form: {
+        ...this.state.form,
+        [parentKey]: this.state.formt[parentKey].filter((value, index) => index != indexKey)
+      }
     }));
   };
   
@@ -108,29 +132,67 @@ export class AddNewContact extends Component {
     const {errors, form} = this.state;
     
     const contactTypes = [
-      {label: 'Select type', value: '', disabled: true},
-      {label: 'Client', value: 'CLIENT'},
-      {label: 'Partner', value: 'PARTNER'},
-      {label: 'Staff', value: 'STAFF'}
+      {
+        label: 'Select type',
+        value: '',
+        disabled: true
+      },
+      {
+        label: 'Client',
+        value: 'CLIENT'
+      },
+      {
+        label: 'Partner',
+        value: 'PARTNER'
+      },
+      {
+        label: 'Staff',
+        value: 'STAFF'
+      }
     ];
     
     const languages = [
-      {label: 'Select language', value: '', disabled: true},
-      {label: 'English', value: 'English'}
+      {
+        label: 'Select language',
+        value: '',
+        disabled: true
+      },
+      {
+        label: 'English',
+        value: 'English'
+      }
     ];
     
     const groups = [
-      {label: 'Select group', value: '', disabled: true},
-      {label: 'Zester', value: 'Zester', disabled: true},
-      {label: 'Albano', value: 'Albano', disabled: true}
+      {
+        label: 'Select group',
+        value: '',
+        disabled: true
+      },
+      {
+        label: 'Zester',
+        value: 'Zester',
+        disabled: true
+      },
+      {
+        label: 'Albano',
+        value: 'Albano',
+        disabled: true
+      }
     ];
     
     const selectCustomStyle = {
       container: provided => {
-        return {...provided, marginBottom: '1rem'};
+        return {
+          ...provided,
+          marginBottom: '1rem'
+        };
       },
       menu: provided => {
-        return {...provided, zIndex: '100000'};
+        return {
+          ...provided,
+          zIndex: '100000'
+        };
       }
     };
     
@@ -292,7 +354,10 @@ export class AddNewContact extends Component {
                     <button
                       className='btn btn-sm btn-success'
                       onClick={() => {
-                        this.addRow('emailAddresses', {emailFor: '', emailAddress: ''});
+                        this.addRow('emailAddresses', {
+                          emailFor: '',
+                          emailAddress: ''
+                        });
                       }}
                     >
                       Add row
