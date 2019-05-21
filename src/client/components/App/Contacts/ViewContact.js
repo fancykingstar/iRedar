@@ -40,7 +40,6 @@ class EditContact extends React.Component {
   
   updatePrivateNotes = (notes) => {
     const {updateContactPrivateNotes} = this.props;
-    
     updateContactPrivateNotes({
       _id: this.state._id,
       notes
@@ -53,7 +52,7 @@ class EditContact extends React.Component {
     
     if (!this.textarea) {
       this.updatePrivateNotes(this.state.notes);
-      getContact();
+      getContact(this.state._id);
     }
   };
   
