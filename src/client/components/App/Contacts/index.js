@@ -1,3 +1,4 @@
+import propTypes from 'prop-types';
 import React from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
@@ -11,13 +12,12 @@ class ContactsPage extends React.Component {
   }
   
   getData = (data) => {
-    console.log(data);
     this.deleteItems = data;
   };
   
   removeContacts = (ids) => {
     const {deleteContacts, getContacts} = this.props;
-    deleteContacts(ids, this.props.history);
+    deleteContacts(ids);
     getContacts();
   };
   
@@ -75,7 +75,6 @@ class ContactsPage extends React.Component {
           <div className='section-wrapper'>
             <ContactTable
               data={contacts}
-              permissions={{}}
               onSelected={this.getData}
               deleteContacts={() => {this.removeContacts(this.deleteItems);}}
               archiveContacts={() => {this.removeContacts(this.deleteItems);}}/>
@@ -85,6 +84,13 @@ class ContactsPage extends React.Component {
     );
   }
 }
+
+ContactsPage.propTypes = {
+  deleteContacts: propTypes.func.isRequired,
+  getContacts: propTypes.func.isRequired,
+  auth: propTypes.object.isRequired,
+  errors: propTypes.object.isRequired
+};
 
 const mapStateToProps = state => ({
   contacts: state.contacts.allContacts,

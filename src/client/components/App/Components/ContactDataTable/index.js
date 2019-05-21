@@ -15,9 +15,6 @@ export class DataTable extends Component {
   };
   
   componentDidMount() {
-    window.$('.select2').select2({
-      minimumResultsForSearch: Infinity
-    });
     window.$('.filter-dropdown-button').click(function () {
       if (!window.$('.filter-dropdown-menu').hasClass('show')) {
         window.$('.filter-dropdown-menu').addClass('show');
@@ -193,29 +190,6 @@ export class DataTable extends Component {
       }
     };
     
-    // NOTE: Have to use arrow function to access "this"
-    const beforeSaveCell = (oldValue, newValue, row, column, done) => {
-      //eslint-disable-next-line
-      if (confirm('Do you want to accept this change?')) {
-        const userData = {
-          permissionId: row.permissionId,
-          role: newValue
-        };
-        
-        this.props.editAdminPermissions(
-          userData,
-          this.props.permissions[0].organization,
-          this.props.permissions[0].profile
-        );
-        done(true);
-      } else {
-        done(false);
-      }
-      
-      return {async: true};
-    };
-    
-    // const beforeSaveCell = this.beforeSaveCell;
     let {data} = this.props;
     
     let contactData = data.map(value => {
@@ -231,12 +205,11 @@ export class DataTable extends Component {
           <div>
             <div className='row'>
               <div className='col-6 d-sm-flex'>
-                <div class='dropdown filter-dropdown'>
+                <div className='dropdown filter-dropdown'>
                   <button
-                    class='btn btn-primary btn-sm mg-l-5 dropdown-toggle filter-dropdown-button'
+                    className='btn btn-primary btn-sm mg-l-5 dropdown-toggle filter-dropdown-button'
                     type='button'
                     id='dropdownMenuButton2'
-                    // data-toggle='dropdown'
                     aria-haspopup='true'
                     aria-expanded='false'
                     onClick={this.handleShowFilterDropdown}
@@ -244,7 +217,7 @@ export class DataTable extends Component {
                     <i className='fa fa-filter'/> Filters
                   </button>
                   <div
-                    class='dropdown-menu filter-dropdown-menu pd-30 pd-sm-20 wd-sm-400'
+                    className='dropdown-menu filter-dropdown-menu pd-30 pd-sm-20 wd-sm-400'
                     aria-labelledby='dropdownMenuButton2'
                     x-placement='bottom-start'
                     style={{
@@ -281,9 +254,9 @@ export class DataTable extends Component {
                     </div>
                   </div>
                 </div>
-                <div class='dropdown'>
+                <div className='dropdown'>
                   <button
-                    class='btn btn-primary btn-sm dropdown-toggle  mg-l-5'
+                    className='btn btn-primary btn-sm dropdown-toggle mg-l-5'
                     type='button'
                     id='dropdownMenuButton2'
                     data-toggle='dropdown'
@@ -293,7 +266,7 @@ export class DataTable extends Component {
                     <i className='fa fa-bolt'/> Actions
                   </button>
                   <div
-                    class='dropdown-menu'
+                    className='dropdown-menu'
                     aria-labelledby='dropdownMenuButton2'
                     x-placement='bottom-start'
                     style={{
@@ -304,17 +277,17 @@ export class DataTable extends Component {
                       'will-change': 'transform'
                     }}
                   >
-                    <a class='dropdown-item' href='#' onClick={() => {this.props.archiveContacts();}}>
+                    <a className='dropdown-item' href='#' onClick={() => {this.props.archiveContacts();}}>
                       <i className='fa fa-file'/> Archive contacts
                     </a>
-                    <a class='dropdown-item' href='#' onClick={() => {this.props.deleteContacts();}}>
+                    <a className='dropdown-item' href='#' onClick={() => {this.props.deleteContacts();}}>
                       <i className='fa trash'/> Delete contacts
                     </a>
                   </div>
                 </div>
-                <div class='dropdown'>
+                <div className='dropdown'>
                   <button
-                    class='btn btn-primary btn-sm dropdown-toggle mg-l-5'
+                    className='btn btn-primary btn-sm dropdown-toggle mg-l-5'
                     type='button'
                     id='dropdownMenuButton2'
                     data-toggle='dropdown'
@@ -324,7 +297,7 @@ export class DataTable extends Component {
                     <i className='fa fa-columns'/> Columns
                   </button>
                   <div
-                    class='dropdown-menu'
+                    className='dropdown-menu'
                     aria-labelledby='dropdownMenuButton2'
                     x-placement='bottom-start'
                     style={{
@@ -335,10 +308,10 @@ export class DataTable extends Component {
                       'will-change': 'transform'
                     }}
                   >
-                    <a class='dropdown-item' href='#'>
+                    <a className='dropdown-item' href='#'>
                       <i className='fa fa-file'/> Microsoft Excel or CSV file
                     </a>
-                    <a class='dropdown-item' href='#'>
+                    <a className='dropdown-item' href='#'>
                       <i className='fa fa-google'/> Google contacts
                     </a>
                   </div>
@@ -355,11 +328,6 @@ export class DataTable extends Component {
               defaultSorted={defaultSorted}
               bordered={false}
               selectRow={selectRowProp}
-              // cellEdit={cellEditFactory({
-              //   mode: 'click',
-              //   beforeSaveCell,
-              //   blurToSave: true
-              // })}
               {...props.baseProps}
               pagination={paginationFactory(options)}
             />
