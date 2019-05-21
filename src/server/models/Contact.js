@@ -71,12 +71,15 @@ const contactSchema = new mongoose.Schema({
     required: 'Profession field is required'
   },
   type: {
-    type: [String],
+    type: String,
     required: 'Type field is required'
   },
   language: {
     type: String,
     required: 'Language field is required'
+  },
+  notes: {
+    type: String
   },
   phoneNumbers: [phoneNumberSchema],
   emailAddresses: [emailSchema],

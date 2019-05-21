@@ -38,4 +38,11 @@ router.patch('/:id', contactController.update);
  **/
 router.delete('/', contactController.delete);
 
+/**
+ * @route /api/contacts/:id/private-notes
+ * @description Update the contact's private notes
+ * @access Private
+ **/
+router.patch('/:id/private-notes', contactController.updatePrivateNotes);
+
 module.exports = router;

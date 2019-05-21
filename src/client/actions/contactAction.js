@@ -38,3 +38,8 @@ export const deleteContacts = (ids) => async () => {
     }
   });
 };
+
+export const updateContactPrivateNotes = (payload) => async () => {
+  console.log(payload);
+  await axios.patch(`${API_URL}/api/contacts/${payload._id}/private-notes`, {notes: payload.notes});
+};

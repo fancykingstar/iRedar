@@ -64,13 +64,12 @@ exports.index = async (req, res) => {
 exports.store = async (req, res, next) => {
   try {
     let {body} = req;
-    const contact = await Contact.create(body);
+    const contact = await Contact(body).save();
     return res.json({
       success: true,
       data: contact
     });
   } catch (e) {
-    console.log(e);
     next(e);
   }
 };
@@ -140,5 +139,24 @@ exports.delete = async (req, res) => {
         detail: 'Server occurred an error,  please try again'
       }
     });
+  }
+};
+
+/**
+ * @description Update the contact resource
+ * @returns {res}
+ */
+exports.updatePrivateNotes = async (req, res, next) => {
+  try {
+    const {id} = req.params;
+    const response = await Contact.findByIdAndUpdate(id, req.body);
+    return res.json({
+      success: true,
+      data: {
+        _id: response._id
+      }
+    });
+  } catch (error) {
+    next(error);
   }
 };
