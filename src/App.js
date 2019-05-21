@@ -17,7 +17,7 @@ import RegisterPage from './client/components/Landing/Register';
 import ResetPasswordPage from './client/components/Landing/ResetPassword';
 import UpdatePasswordPage from './client/components/Landing/UpdatePassword';
 import DashboardPage from './client/components/App/Dashboard';
-import TasksPage from './client/components/App/Tasks';
+import LogsPage from './client/components/App/Logs';
 import ContactsPage from './client/components/App/Contacts';
 import FormsPage from './client/components/App/Forms';
 import ModulesPage from './client/components/App/Modules';
@@ -57,7 +57,7 @@ axios.interceptors.response.use(response => {
   store.dispatch({
     type: GET_ERRORS,
     payload: error.response.data
-  })
+  });
   return Promise.reject(error);
 });
 
@@ -85,7 +85,7 @@ class App extends Component {
                 />
               </Switch>
               <Switch>
-                <PrivateRoute exact path="/tasks" component={TasksPage} />
+                <PrivateRoute exact path="/logs" component={LogsPage}/>
               </Switch>
               <Switch>
                 <PrivateRoute exact path="/contacts" component={ContactsPage} />

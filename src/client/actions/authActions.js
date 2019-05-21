@@ -15,11 +15,9 @@ import {
   clearCurrentPermission,
 } from './accessActions';
 
-export const registerUser = (userData, history) => async dispatch => {
-  // const isRegistered = true;
-
+export const registerClientUser = (userData, history) => async dispatch => {
   try {
-    await axios.post(`${API_URL}/api/users/register`, userData);
+    await axios.post(`${API_URL}/api/users/register/client`, userData);
     history.push({
       pathname: '/',
       isRegistered: true,
@@ -34,7 +32,7 @@ export const registerUser = (userData, history) => async dispatch => {
 };
 
 //Add new user through ADMIN Role
-export const addUsers = (userData, history) => async dispatch => {
+export const registerUser = (userData, history) => async dispatch => {
   try {
     // getter
     const token = localStorage.getItem('jwtToken');
@@ -42,7 +40,7 @@ export const addUsers = (userData, history) => async dispatch => {
     // Set token to Auth header
     setAuthToken(token);
 
-    await axios.post(`${API_URL}/api/users/adduser`, userData);
+    await axios.post(`${API_URL}/api/users/register/user`, userData);
     history.push({
       pathname: '/settings/admin-settings',
       isRegistered: true,
@@ -121,6 +119,7 @@ export const loginUser = userData => async dispatch => {
     // Set current user
     dispatch(setCurrentUser(decoded));
   } catch (error) {
+    console.log(error);
     return dispatch({
       type: GET_ERRORS,
       payload: error.response.data

@@ -8,19 +8,21 @@ const OrganizationSchema = new mongoose.Schema({
   users: [
       {
         type: mongoose.Schema.ObjectId,
-        ref: "users"
+          ref: "User"
       }
-      ],
+  ],
   email: {
     type: String,
     //required: true,
   },
-
+    domain: {
+        type: String,
+        required: true
+    },
   phoneNumber: {
     type: String,
-    //required: true,
+      required: true,
   },
-
   address: {
     street: {
       type: String,

@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Alert from "../../Elements/Alert";
 import TextFieldGroup from "../../Elements/TextFieldGroup";
-import en from 'react-phone-number-input/locale/en'
-import 'react-phone-number-input/style.css'
-import PhoneInput from 'react-phone-number-input'
-import { isValidPhoneNumber } from 'react-phone-number-input'
+import en from 'react-phone-number-input/locale/en';
+import 'react-phone-number-input/style.css';
+import PhoneInput from 'react-phone-number-input';
+import {isValidPhoneNumber} from 'react-phone-number-input';
 
 import {updatePassword, updateUser} from "../../../actions/authActions";
 
