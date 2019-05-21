@@ -3,7 +3,7 @@ import propTypes from 'prop-types';
 import React from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
-import {getContact} from '../../../actions/contactAction';
+import {getContact, updateContactPrivateNotes} from '../../../actions/contactAction';
 
 class EditContact extends React.Component {
   state = {
@@ -16,6 +16,7 @@ class EditContact extends React.Component {
     company: '',
     group: '',
     language: '',
+    notes: '',
     created_at: '',
     updated_at: '',
     phoneNumbers: [],
@@ -24,6 +25,7 @@ class EditContact extends React.Component {
   };
   
   componentDidMount() {
+    this.textarea = false;
     const {getContact, match: {params: {contactId}}} = this.props;
     
     getContact(contactId);
@@ -35,6 +37,42 @@ class EditContact extends React.Component {
       loading: nextProps.loading
     });
   }
+  
+  updatePrivateNotes = (notes) => {
+    const {updateContactPrivateNotes} = this.props;
+    
+    updateContactPrivateNotes({
+      _id: this.state._id,
+      notes
+    });
+  };
+  
+  showTextarea = () => {
+    const {getContact} = this.props;
+    this.textarea = !this.textarea;
+    
+    if (!this.textarea) {
+      this.updatePrivateNotes(this.state.notes);
+      getContact();
+    }
+  };
+  
+  onChange = (event) => {
+    event.persist();
+    
+    this.setState(oldState => ({
+      ...oldState,
+      notes: event.target.value
+    }));
+  };
+  
+  textareaComponent = () => (
+    <textarea rows="3"
+      value={this.state.notes}
+      className="form-control"
+      placeholder="Textarea"
+      onChange={this.onChange}/>
+  );
   
   render() {
     let {_id, firstName, lastName, type, profession, company, group, language, created_at, updated_at, emailAddresses, phoneNumbers, addresses, loading} = this.state;
@@ -284,13 +322,17 @@ class EditContact extends React.Component {
                 </div>
                 <div className='card card-recommendation'>
                   <div className='card-body pd-25'>
-                    <div className='slim-card-title'>Private notes</div>
-                    <p className='tx-13 mg-b-0'>
-                      Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis
-                      enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus
-                      ut,
-                      imperdiet a, venenatis vitae, justo.
-                    </p>
+                    <div className='slim-card-title'>
+                      Private notes
+                      <a href='#'
+                        onClick={this.showTextarea}>
+                        <i className={'fa fa-pencil float-right'}/>
+                      </a>
+                    </div>
+                    {this.textarea ? this.textareaComponent() :
+                      <p className='tx-13 mg-b-0'>
+                        {this.state.notes || 'N/A'}
+                      </p>}
                   </div>
                 </div>
               </div>
@@ -302,6 +344,7 @@ class EditContact extends React.Component {
 }
 
 EditContact.propTypes = {
+  updateContactPrivateNotes: propTypes.func.isRequired,
   getContact: propTypes.func.isRequired,
   auth: propTypes.object.isRequired,
   errors: propTypes.object.isRequired
@@ -314,4 +357,7 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-export default connect(mapStateToProps, {getContact})(EditContact);
+export default connect(mapStateToProps, {
+  getContact,
+  updateContactPrivateNotes
+})(EditContact);
