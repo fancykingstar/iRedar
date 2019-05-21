@@ -54,7 +54,7 @@ export class EditContact extends Component {
   
   componentWillReceiveProps(nextProps, nextContext) {
     const {errors, contact, loading} = nextProps;
-    console.log(this.state, 'updated');
+    
     this.setState({
       form: contact,
       loading,
@@ -101,7 +101,6 @@ export class EditContact extends Component {
   
   onSelectChange = (key, value) => {
     // event.persist();
-    console.log(key, value);
     this.setState(previousState => ({
       ...previousState,
       form: {
@@ -113,7 +112,7 @@ export class EditContact extends Component {
   
   onChangeRowValue = (parentKey, childKey, value, index) => {
     this.state.form[parentKey][index][childKey] = value;
-    //console.log(this.state.form[parentKey][index][childKey]);
+    
     this.setState(previousState => ({
       ...previousState,
       form: {
@@ -209,8 +208,6 @@ export class EditContact extends Component {
       }
     };
     
-    console.log(form);
-    
     return (
       <div className='slim-mainpanel'>
         <div className='container'>
@@ -220,14 +217,16 @@ export class EditContact extends Component {
               <h6 className='slim-pagetitle'>Edit contact</h6>
             </div>
           </div>
-          {loading ? <div className="sk-three-bounce">
+          {loading ?
+            <div className="sk-three-bounce">
               <div className="sk-child sk-bounce1 bg-gray-800"/>
               <div className="sk-child sk-bounce2 bg-gray-800"/>
               <div className="sk-child sk-bounce3 bg-gray-800"/>
             </div> :
             <form onSubmit={this.onSubmit}>
               {
-                errors.length ? <div className="alert alert-danger mg-b-20" role="alert">
+                errors.length ? <div className="alert alert-danger mg-b-20"
+                  role="alert">
                   <strong>Oh snap!</strong> Change a few things up and try submitting again.
                   <ol className="mg-t-10">
                     {errors.map(value => (
@@ -319,7 +318,7 @@ export class EditContact extends Component {
                         onChange={e => {
                           this.onSelectChange('group', e.value);
                         }}
-                      /> {/* <SelectGroup name='group' options={groups} value={this.state.group} /> */}
+                      />
                     </div>
                   </div>
                 </div>
@@ -328,20 +327,28 @@ export class EditContact extends Component {
                 <div className='card-header'>
                   <ul className='nav nav-tabs card-header-tabs'>
                     <li className='nav-item'>
-                      <a className='nav-link active show' href='#emailAddresses' data-toggle='tab'> Emails
-                        Addresses </a>
+                      <a className='nav-link active show'
+                        href='#emailAddresses'
+                        data-toggle='tab'>
+                        Email Addresses
+                      </a>
                     </li>
                     <li className='nav-item'>
-                      <a className='nav-link' href='#addresses' data-toggle='tab'> Addresses </a>
+                      <a className='nav-link'
+                        href='#addresses'
+                        data-toggle='tab'> Addresses </a>
                     </li>
                     <li className='nav-item'>
-                      <a className='nav-link' href='#phoneNumbers' data-toggle='tab'> Phone Numbers </a>
+                      <a className='nav-link'
+                        href='#phoneNumbers'
+                        data-toggle='tab'> Phone Numbers </a>
                     </li>
                   </ul>
                 </div>
                 <div className='card-body'>
                   <div className='tab-content'>
-                    <div className='tab-pane active show' id='emailAddresses'>
+                    <div className='tab-pane active show'
+                      id='emailAddresses'>
                       {form.emailAddresses.map((value, key) => {
                         let parentKey = 'emailAddresses';
                         return (
@@ -393,7 +400,8 @@ export class EditContact extends Component {
                         Add row
                       </button>
                     </div>
-                    <div className='tab-pane' id='addresses'>
+                    <div className='tab-pane'
+                      id='addresses'>
                       {form.addresses.map((value, key) => {
                         let parentKey = 'addresses';
                         return (
@@ -489,7 +497,8 @@ export class EditContact extends Component {
                         Add row
                       </button>
                     </div>
-                    <div className='tab-pane ' id='phoneNumbers'>
+                    <div className='tab-pane '
+                      id='phoneNumbers'>
                       {form.phoneNumbers.map((value, key) => {
                         let parentKey = 'phoneNumbers';
                         return (
@@ -544,7 +553,8 @@ export class EditContact extends Component {
                   </div>
                 </div>
               </div>
-              <button type='submit' className='btn btn-success float-right mg-t-20'>
+              <button type='submit'
+                className='btn btn-success float-right mg-t-20'>
                 Save
               </button>
             </form>}
@@ -556,6 +566,7 @@ export class EditContact extends Component {
 }
 
 EditContact.propTypes = {
+  updateContact: propTypes.func.isRequired,
   getContact: propTypes.func.isRequired,
   auth: propTypes.object.isRequired,
   errors: propTypes.object.isRequired

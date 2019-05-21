@@ -98,7 +98,7 @@ export class AddNewContact extends Component {
   
   onChangeRowValue = (parentKey, childKey, value, index) => {
     this.state.form[parentKey][index][childKey] = value;
-    //console.log(this.state.form[parentKey][index][childKey]);
+    
     this.setState(previousState => ({
       ...previousState,
       form: {
@@ -196,8 +196,6 @@ export class AddNewContact extends Component {
       }
     };
     
-    console.log(errors);
-    
     return (
       <div className='slim-mainpanel'>
         <div className='container'>
@@ -207,14 +205,15 @@ export class AddNewContact extends Component {
               <h6 className='slim-pagetitle'>Add new contact</h6>
             </div>
           </div>
-          {errors.length ? <div className="alert alert-danger mg-b-20" role="alert">
-            <strong>Oh snap!</strong> Change a few things up and try submitting again.
-            <ol className="mg-t-10">
-              {errors.map(value => (
-                <li>{value}</li>
-              ))}
-            </ol>
-          </div> : null}
+          {errors.length ?
+            <div className="alert alert-danger mg-b-20" role="alert">
+              <strong>Oh snap!</strong> Change a few things up and try submitting again.
+              <ol className="mg-t-10">
+                {errors.map(value => (
+                  <li>{value}</li>
+                ))}
+              </ol>
+            </div> : null}
           <form onSubmit={this.onSubmit}>
             <div className='section-wrapper mg-b-20'>
               <label className='section-title mg-b-20'>Personal Information</label>
@@ -292,7 +291,7 @@ export class AddNewContact extends Component {
                       onChange={e => {
                         this.onSelectChange('group', e.value);
                       }}
-                    /> {/* <SelectGroup name='group' options={groups} value={this.state.group} /> */}
+                    />
                   </div>
                 </div>
               </div>
@@ -301,7 +300,7 @@ export class AddNewContact extends Component {
               <div className='card-header'>
                 <ul className='nav nav-tabs card-header-tabs'>
                   <li className='nav-item'>
-                    <a className='nav-link active show' href='#emailAddresses' data-toggle='tab'> Emails Addresses </a>
+                    <a className='nav-link active show' href='#emailAddresses' data-toggle='tab'> Email Addresses </a>
                   </li>
                   <li className='nav-item'>
                     <a className='nav-link' href='#addresses' data-toggle='tab'> Addresses </a>
@@ -316,7 +315,6 @@ export class AddNewContact extends Component {
                   <div className='tab-pane active show' id='emailAddresses'>
                     {form.emailAddresses.map((value, key) => {
                       let parentKey = 'emailAddresses';
-                      console.log(value.emailFor);
                       return (
                         <div className='row'>
                           <div className='col-lg mg-t-20'>
