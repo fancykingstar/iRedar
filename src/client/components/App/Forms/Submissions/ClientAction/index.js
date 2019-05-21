@@ -12,18 +12,19 @@ class ClientActionSubmission extends Component {
             dateSubmitted: ''
         }
     };
+    edit = false;
 
     componentDidMount() {
         const {getSubmission, permissions} = this.props;
 
         let profile;
         if (permissions.length === 0) {
-            let token = localStorage.getItem('jwtToken')
+            let token = localStorage.getItem('jwtToken');
             if (token == null) {
-                this.props.history.push('/dashboard')
+                this.props.history.push('/dashboard');
                 return
             }
-            const decoded = jwt_decode(token)
+            const decoded = jwt_decode(token);
             profile = decoded.profileId
         } else {
             profile = permissions[0].profile
@@ -35,6 +36,12 @@ class ClientActionSubmission extends Component {
         };
         const {submissionId} = this.props.match.params;
         getSubmission(userData, submissionId);
+
+        let edit = this.props.location.state.edit;
+        if (typeof edit === "undefined") {
+            edit = false;
+        }
+        this.edit = edit;
     }
 
     componentWillReceiveProps(nextProps) {
@@ -44,12 +51,8 @@ class ClientActionSubmission extends Component {
     }
 
     render() {
-        let edit = this.props.location.state.edit;
-        if (typeof edit === "undefined") {
-            edit = false;
-        }
         return <ClientAction permissions={this.props.permissions} submission={this.state.submission}
-                             history={this.props.history} edit={edit}/>;
+                             history={this.props.history} edit={this.edit}/>;
     }
 }
 

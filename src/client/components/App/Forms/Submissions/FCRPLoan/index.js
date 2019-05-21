@@ -12,6 +12,7 @@ class FCRPLoanSubmission extends Component {
             dateSubmitted: ''
         }
     };
+    edit = false;
 
     componentDidMount() {
         const {getSubmission, permissions} = this.props;
@@ -35,6 +36,12 @@ class FCRPLoanSubmission extends Component {
         };
         const {submissionId} = this.props.match.params;
         getSubmission(userData, submissionId);
+
+        let edit = this.props.location.state.edit;
+        if (typeof edit === "undefined") {
+            edit = false;
+        }
+        this.edit = edit;
     }
 
     componentWillReceiveProps(nextProps) {
@@ -44,12 +51,8 @@ class FCRPLoanSubmission extends Component {
     }
 
     render() {
-        let edit = this.props.location.state.edit;
-        if (typeof edit === "undefined") {
-            edit = false;
-        }
         return <FCRPLoan permissions={this.props.permissions} submission={this.state.submission}
-                         history={this.props.history} edit={edit}/>;
+                         history={this.props.history} edit={this.edit}/>;
     }
 }
 

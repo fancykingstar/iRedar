@@ -20,6 +20,14 @@ const UserSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
+    stripe: {
+        stripeCustomerId: {
+            type: String
+        },
+        stripeSubscriptionId: {
+            type: String
+        }
+    }
 });
 
 UserSchema.methods.hasSamePassword = function (requestedPassword) {

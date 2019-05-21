@@ -15,10 +15,10 @@ const OrganizationSchema = new mongoose.Schema({
     type: String,
     //required: true,
   },
-    domain: {
-        type: String,
-        required: true
-    },
+  domain: {
+    type: String,
+    required: true
+  },
   phoneNumber: {
     type: String,
       required: true,
@@ -46,6 +46,64 @@ const OrganizationSchema = new mongoose.Schema({
      // required: true,
     },
   },
+  stripe: {
+    stripeAdminCustomerId: {
+      type: String,
+    },
+    stripeSubscriptionPlanId: {
+      type: String,
+    },
+    stripePlanId: {
+      type: String,
+    },
+    stripeAdminCustomerToken: {
+      type: String,
+    },
+    plan: {
+      type: String,
+    },
+    interval: {
+      type: String,
+    }
+  },
+    billing: {
+        cardHolderName: {
+            type: String,
+        },
+        email: {
+            type: String,
+        },
+        phone: {
+            type: String,
+        },
+        isTrial: {
+            type: Boolean,
+            default: false
+        },
+        address: {
+            street1: {
+                type: String,
+            },
+            street2: {
+                type: String,
+            },
+            city: {
+                type: String,
+            },
+            state: {
+                type: String,
+            },
+            zipcode: {
+                type: String,
+            },
+            country: {
+                type: String,
+            }
+        },
+        stripeSource: {
+            type: String,
+        }
+    }
 });
 
 module.exports = mongoose.model('Organization', OrganizationSchema);

@@ -1,5 +1,6 @@
 const validator = require('validator');
 const logger = require('../configs/logger');
+const stripeLibrary = require('../helpers/stripeSubscription');
 
 // Load models
 const Organization = require('../models/Organization');
@@ -30,11 +31,7 @@ exports.postRegister = async (req, res) => {
     password,
     passwordConfirmation,
     phone,
-    street,
-    city,
-    province,
-    country,
-    postalCode
+    selectedPlan
   } = req.body;
 
   if (
@@ -43,11 +40,7 @@ exports.postRegister = async (req, res) => {
       || !lastName
       || !email
       || !phone
-  //|| !street
-  //|| !city
-  //|| !province
-  //|| !country
-  //|| !postalCode
+      || !selectedPlan
   ) {
     return res.status(422).json({
       alert: {
@@ -107,7 +100,7 @@ exports.postRegister = async (req, res) => {
       name,
       email,
       phoneNumber: phone,
-      userDomain
+        domain: userDomain
       /*
       address: {
         street,
@@ -145,6 +138,7 @@ exports.postRegister = async (req, res) => {
       permissionRight: permission
     });
     await userPermission.save();
+    await stripeLibrary.doCreateAdminUserWithPlanAndSubscribe(profile._id, selectedPlan);
 
     return res.json({
       success: true,
@@ -162,6 +156,30 @@ exports.postRegister = async (req, res) => {
       },
     });
   }
+};
+
+// @route GET api/organizations/:organizationId
+// @desc Get organization
+// @access Private
+exports.getOrganization = async (req, res) => {
+    try {
+        const organization = await Organization.findOne({
+            _id: req.params.organizationId
+        });
+
+        return res.json({
+            success: true,
+            organization,
+        });
+    } catch (error) {
+        logger.error(error);
+        return res.status(422).json({
+            alert: {
+                title: 'Error!',
+                detail: 'Server occurred an error,  please try again',
+            },
+        });
+    }
 };
 
 // @route POST api/organizations/permission

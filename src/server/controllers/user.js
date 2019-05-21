@@ -3,6 +3,7 @@ const validator = require('validator');
 const keys = require('../configs/keys');
 const logger = require('../configs/logger');
 const nodeMailer = require('../helpers/nodemailer');
+const stripeLibrary = require('../helpers/stripeSubscription');
 
 const { resetPasswordEmail } = require('../helpers/htmlMails/reset-password');
 
@@ -32,6 +33,7 @@ exports.postClientRegister = async (req, res) => {
     password,
     passwordConfirmation,
     phone,
+      services,
     firstName,
     lastName
   } = req.body;
@@ -88,6 +90,7 @@ exports.postClientRegister = async (req, res) => {
       email,
       lastName,
       firstName,
+        services,
       phoneNumber: phone,
       domain: userDomain
     }).save();
@@ -319,6 +322,8 @@ try {
     await userPermission.save();
   }
 
+    await stripeLibrary.doUpdateSubscription(adminProfile._id);
+
   return res.json({
     success: true,
     alert: {
@@ -408,6 +413,12 @@ exports.putUpdateUser = async (req, res) => {
         );
       }
     }
+
+      // update admin for stripe
+      if (tokenUserRole === "admin" && userProfileId === tokenProfileId) {
+          await stripeLibrary.doUpdateAdminCustomer(userProfileId, firstName, lastName, email, phoneNumber);
+      }
+
   } else {
     return res.status(403).json({
       alert: {
@@ -499,6 +510,7 @@ exports.deleteUser = async (req, res) => {
         console.log("Cannot delete admin user " + profile.email);
       }
     });
+      await stripeLibrary.doUpdateSubscription(adminProfileId);
 
     return res.json({
       success: true,

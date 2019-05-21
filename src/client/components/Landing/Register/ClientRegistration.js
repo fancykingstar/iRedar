@@ -2,11 +2,12 @@ import React, {Component} from 'react';
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import propTypes from 'prop-types';
+import Select from "react-select";
 import {registerClientUser} from "../../../actions/authActions";
 import TextFieldGroup from "../../Elements/TextFieldGroup";
 import PhoneInput, {isValidPhoneNumber} from "react-phone-number-input";
 import en from "react-phone-number-input/locale/en";
-import 'react-phone-number-input/style.css'
+import 'react-phone-number-input/style.css';
 
 class ClientRegistration extends Component {
 
@@ -15,6 +16,7 @@ class ClientRegistration extends Component {
         this.state = {
             firstName: '',
             lastName: '',
+            services: '',
             phone: '',
             email: '',
             password: '',
@@ -35,10 +37,16 @@ class ClientRegistration extends Component {
         }
     }
 
+    OnSelectChange = e => {
+        this.setState({services: e.value});
+    };
     onChangePhone = e => {
         if (e) {
             if (isValidPhoneNumber(e)) {
                 this.setState({phone: e});
+                this.setState({errors: {phone: ""}});
+            } else {
+                this.setState({errors: {phone: "Invalid phone number"}});
             }
         }
     };
@@ -53,6 +61,7 @@ class ClientRegistration extends Component {
         const newUser = {
             firstName: this.state.firstName,
             lastName: this.state.lastName,
+            services: this.state.services,
             phone: this.state.phone,
             email: this.state.email,
             password: this.state.password,
@@ -63,6 +72,16 @@ class ClientRegistration extends Component {
 
     render() {
         let {errors} = this.state;
+        const ServicesForClient = [
+            {label: "Settlement and Integration", value: "Settlement and Integration"},
+            {label: "Employment", value: "Employment"},
+            {label: "Clinical Counselling", value: "Clinical Counselling"},
+            {label: "School Support", value: "School Support"},
+            {label: "Language Instruction", value: "Language Instruction"},
+            {label: "Youth Program", value: "Youth Program"},
+            {label: "Marion Dewan Scholarship Fund", value: "Marion Dewan Scholarship Fund"},
+            {label: "Legal Services", value: "Legal Services"}
+        ];
         return (
             <form onSubmit={this.onSubmit}>
                 <div className="row row-xs mg-b-10">
@@ -89,7 +108,15 @@ class ClientRegistration extends Component {
                         />
                     </div>
                 </div>
-
+                <Select options={ServicesForClient}
+                        style={{marginTop: 5}}
+                        placeholder="Select The Service"
+                        name="services"
+                        value={this.state.label}
+                        onChange={this.OnSelectChange}
+                        error={errors.services}
+                        required
+                /><br/>
                 <PhoneInput
                     labels={en}
                     placeholder="+1 (000) 000-0000"
@@ -97,7 +124,7 @@ class ClientRegistration extends Component {
                     country={'CA'}
                     value={this.state.phone}
                     onChange={this.onChangePhone}
-                    error={this.state.phone ? (isValidPhoneNumber(this.state.phone) ? undefined : 'Invalid phone number') : 'Phone number required'}
+                    error={errors.phone}
                     required
                 />
 
@@ -131,7 +158,6 @@ class ClientRegistration extends Component {
                     error={errors.passwordConfirmation}
                     required
                 />
-
                 <button
                     className="btn btn-primary btn-block btn-signin"
                     type="submit"

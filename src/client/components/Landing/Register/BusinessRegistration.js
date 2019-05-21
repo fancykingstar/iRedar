@@ -19,6 +19,7 @@ class BusinessRegistration extends Component {
             email: '',
             password: '',
             passwordConfirmation: '',
+            selectedPlan: "Smart",
             errors: {}
         };
     }
@@ -39,13 +40,21 @@ class BusinessRegistration extends Component {
         if (e) {
             if (isValidPhoneNumber(e)) {
                 this.setState({phone: e});
-                console.log(e);
+                this.setState({errors: {phone: ""}});
+            } else {
+                this.setState({errors: {phone: "Invalid phone number"}});
             }
         }
     };
 
     onChange = e => {
         this.setState({[e.target.name]: e.target.value});
+    };
+
+    onOptionChange = changeEvent => {
+        this.setState({
+            selectedPlan: changeEvent.target.value
+        });
     };
 
     onSubmit = e => {
@@ -58,7 +67,8 @@ class BusinessRegistration extends Component {
             phone: this.state.phone,
             email: this.state.email,
             password: this.state.password,
-            passwordConfirmation: this.state.passwordConfirmation
+            passwordConfirmation: this.state.passwordConfirmation,
+            selectedPlan: this.state.selectedPlan
         };
 
         this.props.registerBusiness(newBusiness, this.props.history);
@@ -103,12 +113,12 @@ class BusinessRegistration extends Component {
                 />
                 <PhoneInput
                     labels={en}
-                    placeholder="(000) 000-0000"
+                    placeholder="+1 (000) 000-0000"
                     name="phone"
                     country={'CA'}
                     value={this.state.phone}
                     onChange={this.onChangePhone}
-                    error={this.state.phone ? (isValidPhoneNumber(this.state.phone) ? undefined : 'Invalid phone number') : 'Phone number required'}
+                    error={errors.phone}
                     required
                 />
 
@@ -142,6 +152,47 @@ class BusinessRegistration extends Component {
                     error={errors.passwordConfirmation}
                     required
                 />
+
+                <div className="row row-xs mg-b-5">
+                    <div className="col-sm">
+                        <label className="custom-control custom-radio">
+                            Start your 30 days trial today by selecting appropriate plan for your business ...
+                        </label>
+                        <label className="custom-control custom-radio">
+                            <input
+                                className="custom-control-input"
+                                type="radio"
+                                name="planRadio"
+                                id="Smart"
+                                value="Smart"
+                                checked={this.state.selectedPlan === 'Smart'}
+                                onChange={this.onOptionChange}/>
+                            <span className="custom-control-label">Smart ($75.00 user / month)</span>
+                        </label>
+                        <label className="custom-control custom-radio">
+                            <input
+                                className="custom-control-input"
+                                type="radio"
+                                name="planRadio"
+                                id="Business"
+                                value="Business"
+                                checked={this.state.selectedPlan === 'Business'}
+                                onChange={this.onOptionChange}/>
+                            <span className="custom-control-label">Business ($150.00 user / month)</span>
+                        </label>
+                        <label className="custom-control custom-radio">
+                            <input
+                                className="custom-control-input"
+                                type="radio"
+                                name="planRadio"
+                                id="Enterprise"
+                                value="Enterprise"
+                                checked={this.state.selectedPlan === 'Enterprise'}
+                                onChange={this.onOptionChange}/>
+                            <span className="custom-control-label">Enterprise ($250.00 user / month)</span>
+                        </label>
+                    </div>
+                </div>
 
                 <button
                     className="btn btn-primary btn-block btn-signin"

@@ -6,5 +6,10 @@ module.exports = {
   email: 'forms@iradardata.com',
   emailPassword: 'Di3hidic*',
   infoEmail: 'info@iradardata.com',
-  infoEmailPassword: '1nfoD4t4*'
+    infoEmailPassword: '1nfoD4t4*',
+    stripe: {
+        publishable_key: "pk_test_7H1zrBLZ6IP5FtXsTRCDww53",
+        secret_key: 'sk_test_ycPljLCVZt4Y3Wcff5eCfRJr',
+        product: 'prod_F5RHRYBALJbmyp',
+    }
 };
