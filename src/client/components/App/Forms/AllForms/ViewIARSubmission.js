@@ -6,17 +6,8 @@ import {getSubmissionView} from "../../../../actions/submissionActions";
 
 
 export class ViewIARSubmission extends Component {
-
-    componentDidMount() {
-        const { getSubmissionView } = this.props;
-        getSubmissionView("registration");
-    }
-    render() {
-        const { submissions, permissions } = this.props;
-        if (!(permissions[0].role === 'admin' || permissions[0].role === 'staff')) {
-            this.props.history.push('/dashboard');
-            return
-        }
+    getSubmissionData() {
+        const {submissions} = this.props;
         let data = [];
         let i = 0;
         submissions.allSubmissions.forEach(submission => {
@@ -33,6 +24,20 @@ export class ViewIARSubmission extends Component {
             });
             i = i+1;
         });
+    }
+
+    componentDidMount() {
+        const {getSubmissionView} = this.props;
+        const {permissions} = this.props;
+        if (!(permissions[0].role === 'admin' || permissions[0].role === 'staff')) {
+            this.props.history.push('/dashboard');
+            return;
+        }
+        getSubmissionView("registration");
+    }
+
+    render() {
+        const data = this.getSubmissionData();
         const columns = [
             {
                 dataField: 'submissionId',

@@ -7,31 +7,39 @@ import {SubmissionDataTable} from "../../Components/DataTables/SubmissionDataTab
 
 export class ViewRegistrationSubmission extends Component {
 
-    componentDidMount() {
-        const { getSubmissionView } = this.props;
-        getSubmissionView("registration");
-    }
-    render() {
-        const { submissions, permissions } = this.props;
-        if (!(permissions[0].role === 'admin' || permissions[0].role === 'staff')) {
-            this.props.history.push('/dashboard');
-            return
-        }
+    getSubmissionData() {
+        const {submissions} = this.props;
         let data = [];
         let i = 0;
         submissions.allSubmissions.forEach(submission => {
             data.push({
                 submissionId: submission._id,
-                id: i+1,
+                id: i + 1,
                 lastName: submission.content.lastName,
                 firstName: submission.content.firstName,
-                phoneNumber: submission.content.primaryPhoneNumber,
+                primaryPhoneNumber: submission.content.primaryPhoneNumber,
                 email: submission.content.email,
-                province: submission.content.province,
-                occupation: submission.content.occupation,
+                streetAddress: submission.content.streetAddress,
+                city: submission.content.city,
+                highestDegree: submission.content.highestDegree
             });
-            i = i+1;
+            i = i + 1;
         });
+        return data;
+    }
+
+    componentDidMount() {
+        const {getSubmissionView} = this.props;
+        const {permissions} = this.props;
+        if (!(permissions[0].role === 'admin' || permissions[0].role === 'staff')) {
+            this.props.history.push('/dashboard');
+            return;
+        }
+        getSubmissionView("registration");
+    }
+
+    render() {
+        const data = this.getSubmissionData();
         const columns = [
             {
                 dataField: 'submissionId',
@@ -67,7 +75,7 @@ export class ViewRegistrationSubmission extends Component {
                 sort: true,
                 editable: false,
                 headerStyle: (colum, colIndex) => {
-                    return { width: '25%' };
+                    return {width: '25%'};
                 }
             },
             {
@@ -95,23 +103,23 @@ export class ViewRegistrationSubmission extends Component {
                 <div className="container">
                     <div className="manager-header">
                         <div className="slim-pageheader">
-                            <ol className="breadcrumb slim-breadcrumb" />
+                            <ol className="breadcrumb slim-breadcrumb"/>
                             <h6 className="slim-pagetitle">View All Registration Forms </h6>
                         </div>
                     </div>
                     <div className="manager-wrapper">
                         <div className="section-wrapper">
                             <div className="table-wrapper">
-                                <SubmissionDataTable columns={columns} data={data} />
+                                <SubmissionDataTable columns={columns} data={data}/>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         );
+
     }
 }
-
 
 const mapStateToProps = state => ({
     permissions: state.access.permissions,
@@ -121,8 +129,7 @@ const mapStateToProps = state => ({
     errors: state.errors,
     profile: state.auth.profile
 });
-
 export default connect(
     mapStateToProps,
-    { getAdminPermissions, getSubmissionView }
+    {getAdminPermissions, getSubmissionView}
 )(ViewRegistrationSubmission);
