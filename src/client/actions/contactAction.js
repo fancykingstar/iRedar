@@ -12,7 +12,7 @@ export const getContacts = () => async dispatch => {
 export const addContact = (payload, history) => async () => {
   const {data: {data}} = await axios.post(`${API_URL}/api/contacts/`, payload);
   history.push({
-    pathname: `/contacts/view/${data._id}`
+    pathname: `/contacts`
   });
 };
 

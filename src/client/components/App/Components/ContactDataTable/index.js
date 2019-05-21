@@ -128,18 +128,19 @@ export class DataTable extends Component {
         text: '',
         sort: true,
         editable: false,
-        formatter: (text, record) => {
-          let {type} = record;
-          switch (type) {
-            case 'PARTNER':
-              return <button className={'btn btn-outline-success btn-sm'}>P</button>;
-            case 'STAFF':
-              return <button className={'btn btn-outline-danger btn-sm'} disabled>S</button>;
-            case 'CLIENT':
-              return <button className={'btn btn-outline-primary btn-sm'} disabled>C</button>;
-            default:
-              break;
-          }
+        formatter: (text) => {
+          return text.map((value) => {
+            switch (String(value).toLowerCase()) {
+              case 'partner':
+                return <button className={'btn btn-outline-success btn-sm mg-l-10'} disabled>P</button>;
+              case 'staff':
+                return <button className={'btn btn-outline-danger btn-sm mg-l-10'} disabled>S</button>;
+              case 'client':
+                return <button className={'btn btn-outline-primary btn-sm mg-l-10'} disabled>C</button>;
+              default:
+                break;
+            }
+          });
         }
       }
     ];

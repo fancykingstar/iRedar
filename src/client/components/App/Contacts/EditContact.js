@@ -17,7 +17,7 @@ export class EditContact extends Component {
         lastName: '',
         company: '',
         profession: '',
-        type: '',
+        type: [],
         language: '',
         group: '',
         emailAddresses: [
@@ -153,15 +153,15 @@ export class EditContact extends Component {
       },
       {
         label: 'Client',
-        value: 'CLIENT'
+        value: 'Client'
       },
       {
         label: 'Partner',
-        value: 'PARTNER'
+        value: 'Partner'
       },
       {
         label: 'Staff',
-        value: 'STAFF'
+        value: 'Staff'
       }
     ];
     
@@ -190,6 +190,29 @@ export class EditContact extends Component {
       {
         label: 'Albano',
         value: 'Albano'
+      }
+    ];
+    
+    let type = [
+      {
+        label: 'Select for',
+        value: '',
+        disabled: true
+      },
+      {
+        label: 'Billing',
+        value: 'Billing',
+        disabled: true
+      },
+      {
+        label: 'Shipping',
+        value: 'Shipping',
+        disabled: true
+      },
+      {
+        label: 'Other',
+        value: 'Other',
+        disabled: true
       }
     ];
     
@@ -278,13 +301,17 @@ export class EditContact extends Component {
                     <div className="form-group">
                       <label className="cols-sm-2 control-label m-0"/>
                       <Select
-                        defaultInputValue={form.type}
+                        defaultValue={form.type.map(value => ({
+                          label: value,
+                          value
+                        }))}
                         styles={selectCustomStyle}
+                        isMulti
                         options={contactTypes}
                         name='type'
                         placeholder={'Select type'}
                         onChange={e => {
-                          this.onSelectChange('type', e.value);
+                          this.onSelectChange('type', e.map(({value}) => value));
                         }}
                       />
                     </div>
@@ -356,7 +383,7 @@ export class EditContact extends Component {
                             <div className='col-lg mg-t-20'>
                               <Select
                                 defaultInputValue={value.emailFor}
-                                options={contactTypes}
+                                options={type}
                                 name='emailFor'
                                 onChange={e => {
                                   this.onChangeRowValue(parentKey, 'emailFor', e.value, key);
@@ -409,7 +436,7 @@ export class EditContact extends Component {
                             <div className='col-lg mg-t-20'>
                               <Select
                                 defaultInputValue={value.addressFor}
-                                options={contactTypes}
+                                options={type}
                                 name='addressFor'
                                 onChange={e => {
                                   this.onChangeRowValue(parentKey, 'addressFor', e.value, key);
@@ -506,7 +533,7 @@ export class EditContact extends Component {
                             <div className='col-lg mg-t-20'>
                               <Select
                                 defaultInputValue={value.phoneNumberFor}
-                                options={contactTypes}
+                                options={type}
                                 name='phoneNumberFor'
                                 onChange={e => {
                                   this.onChangeRowValue(parentKey, 'phoneNumberFor', e.value, key);
