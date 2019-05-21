@@ -11,7 +11,17 @@ import './index.css';
 
 export class DataTable extends Component {
   state = {
-    showFilterDropdown: false
+    showFilterDropdown: false,
+    columns: {
+      contact: true,
+      company: true,
+      emailAddresses: true,
+      phoneNumbers: true,
+      type: true,
+      group: false,
+      profession: false,
+      language: false
+    }
   };
   
   componentDidMount() {
@@ -22,10 +32,36 @@ export class DataTable extends Component {
         window.$('.filter-dropdown-menu.show').removeClass('show');
       }
     });
+    
+    window.$('.columns-dropdown-button').click(function () {
+      if (!window.$('.columns-dropdown-menu').hasClass('show')) {
+        window.$('.columns-dropdown-menu').addClass('show');
+      } else {
+        window.$('.columns-dropdown-menu.show').removeClass('show');
+      }
+    });
   }
   
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    console.log(this.state.columns);
+  }
+  
+  showColumns = (key, value) => () => {
+    console.log(key, value);
+    this.setState(oldState => ({
+      ...oldState,
+      columns: {
+        ...this.state.columns,
+        [key]: value
+      }
+    }))
+    ;
+  };
+  
   render() {
+    const {SearchBar} = Search;
     let deletedItems = [];
+    
     const selectRowProp = {
       mode: 'checkbox',
       onSelect: (row, isSelect, rowIndex, e) => {
@@ -53,7 +89,7 @@ export class DataTable extends Component {
         this.props.onSelected(deletedItems);
       }
     };
-    const {SearchBar} = Search;
+    
     const columns = [
       {
         dataField: '_id',
@@ -65,6 +101,7 @@ export class DataTable extends Component {
         text: 'Contact',
         sort: true,
         editable: false,
+        hidden: !this.state.columns.contact,
         formatter: (text, record) => {
           return <Link to={`/contacts/view/${record._id}`}>{text}</Link>;
         }
@@ -73,13 +110,15 @@ export class DataTable extends Component {
         dataField: 'company',
         text: 'Company',
         sort: true,
-        editable: false
+        editable: false,
+        hidden: !this.state.columns.company
       },
       {
         dataField: 'emailAddresses',
         text: 'Email Address',
         sort: true,
         editable: false,
+        hidden: !this.state.columns.emailAddresses,
         headerStyle: (colum, colIndex) => {
           return {width: '25%'};
         },
@@ -92,7 +131,7 @@ export class DataTable extends Component {
             case emailAddresses.length > 1:
               return <Fragment>
                 <span>{emailAddresses[0].emailAddress}</span>{' '}
-                <button className={'btn btn-outline-primary btn-sm'} disabled>{`+${emailAddresses.length}`}</button>
+                <button className={'btn btn-outline-primary btn-sm'} disabled>{`+${emailAddresses.length - 1}`}</button>
               </Fragment>;
             default:
               return <span>{emailAddresses[0].emailAddress}</span>;
@@ -104,6 +143,7 @@ export class DataTable extends Component {
         text: 'Phone Number',
         sort: true,
         editable: false,
+        hidden: !this.state.columns.phoneNumbers,
         headerStyle: (colum, colIndex) => {
           return {width: '25%'};
         },
@@ -116,7 +156,7 @@ export class DataTable extends Component {
             case phoneNumbers.length > 1:
               return <Fragment>
                 <span>{phoneNumbers[0].phoneNumber}</span>{' '}
-                <button className={'btn btn-outline-primary btn-sm'} disabled>{`+${phoneNumbers.length}`}</button>
+                <button className={'btn btn-outline-primary btn-sm'} disabled>{`+${phoneNumbers.length - 1}`}</button>
               </Fragment>;
             default:
               return <span>{phoneNumbers[0].phoneNumber}</span>;
@@ -125,9 +165,10 @@ export class DataTable extends Component {
       },
       {
         dataField: 'type',
-        text: '',
+        text: 'Type',
         sort: true,
         editable: false,
+        hidden: !this.state.columns.type,
         formatter: (text, record) => {
           let {type} = record;
           switch (type) {
@@ -141,8 +182,30 @@ export class DataTable extends Component {
               break;
           }
         }
+      },
+      {
+        dataField: 'group',
+        text: 'Group',
+        sort: true,
+        editable: false,
+        hidden: !this.state.columns.group
+      },
+      {
+        dataField: 'language',
+        text: 'Language',
+        sort: true,
+        editable: false,
+        hidden: !this.state.columns.language
+      },
+      {
+        dataField: 'profession',
+        text: 'Profession',
+        sort: true,
+        editable: false,
+        hidden: !this.state.columns.profession
       }
     ];
+    
     const sizePerPageOptionRenderer = ({text, page, onSizePerPageChange}) => (
       <li key={text} role='presentation' className='dropdown-item'>
         <div
@@ -230,16 +293,13 @@ export class DataTable extends Component {
                   >
                     <div className='row'>
                       <div className='col-6'>
-                        <Select options={[]} styles={selectCustomStyle} placeholder='Alphabetic' name='role'/>
+                        <Select options={[]} styles={selectCustomStyle} placeholder='Profession' name='role'/>
                       </div>
                       <div className='col-6'>
                         <Select options={[]} styles={selectCustomStyle} placeholder='Type' name='role'/>
                       </div>
                     </div>
                     <div className='row'>
-                      <div className='col-6'>
-                        <Select options={[]} styles={selectCustomStyle} placeholder='Profession' name='role'/>
-                      </div>
                       <div className='col-6'>
                         <Select options={[]} styles={selectCustomStyle} placeholder='Company' name='role'/>
                       </div>
@@ -281,23 +341,23 @@ export class DataTable extends Component {
                       <i className='fa fa-file'/> Archive contacts
                     </a>
                     <a className='dropdown-item' href='#' onClick={() => {this.props.deleteContacts();}}>
-                      <i className='fa trash'/> Delete contacts
+                      <i className='fa fa-trash'/> Delete contacts
                     </a>
                   </div>
                 </div>
-                <div className='dropdown'>
+                <div className='dropdown columns-dropdown'>
                   <button
-                    className='btn btn-primary btn-sm dropdown-toggle mg-l-5'
+                    className='btn btn-primary btn-sm mg-l-5 dropdown-toggle columns-dropdown-button'
                     type='button'
                     id='dropdownMenuButton2'
-                    data-toggle='dropdown'
                     aria-haspopup='true'
                     aria-expanded='false'
+                    onClick={this.handleShowFilterDropdown}
                   >
-                    <i className='fa fa-columns'/> Columns
+                    <i className='fa fa-filter'/> Columns
                   </button>
                   <div
-                    className='dropdown-menu'
+                    className='dropdown-menu columns-dropdown-menu pd-25 pd-sm-20 wd-sm-200'
                     aria-labelledby='dropdownMenuButton2'
                     x-placement='bottom-start'
                     style={{
@@ -308,12 +368,54 @@ export class DataTable extends Component {
                       'will-change': 'transform'
                     }}
                   >
-                    <a className='dropdown-item' href='#'>
-                      <i className='fa fa-file'/> Microsoft Excel or CSV file
-                    </a>
-                    <a className='dropdown-item' href='#'>
-                      <i className='fa fa-google'/> Google contacts
-                    </a>
+                    <label className="ckbox">
+                      <input type="checkbox"
+                        checked={this.state.columns.contact}
+                        onChange={this.showColumns('contact', !this.state.columns.contact)}/>
+                      <span>Contact</span>
+                    </label>
+                    <label className="ckbox">
+                      <input type="checkbox"
+                        checked={this.state.columns.company}
+                        onChange={this.showColumns('company', !this.state.columns.company)}/>
+                      <span>Company</span>
+                    </label>
+                    <label className="ckbox">
+                      <input type="checkbox"
+                        checked={this.state.columns.emailAddresses}
+                        onChange={this.showColumns('emailAddresses', !this.state.columns.emailAddresses)}/>
+                      <span>Email Address</span>
+                    </label>
+                    <label className="ckbox">
+                      <input type="checkbox"
+                        checked={this.state.columns.phoneNumbers}
+                        onChange={this.showColumns('phoneNumbers', !this.state.columns.phoneNumbers)}/>
+                      <span>Phone Number</span>
+                    </label>
+                    <label className="ckbox">
+                      <input type="checkbox"
+                        checked={this.state.columns.type}
+                        onChange={this.showColumns('type', !this.state.columns.type)}/>
+                      <span>Type</span>
+                    </label>
+                    <label className="ckbox">
+                      <input type="checkbox"
+                        checked={this.state.columns.group}
+                        onChange={this.showColumns('group', !this.state.columns.group)}/>
+                      <span>Group</span>
+                    </label>
+                    <label className="ckbox">
+                      <input type="checkbox"
+                        checked={this.state.columns.profession}
+                        onChange={this.showColumns('profession', !this.state.columns.profession)}/>
+                      <span>Profession</span>
+                    </label>
+                    <label className="ckbox">
+                      <input type="checkbox"
+                        checked={this.state.columns.language}
+                        onChange={this.showColumns('language', !this.state.columns.language)}/>
+                      <span>Language</span>
+                    </label>
                   </div>
                 </div>
               </div>
