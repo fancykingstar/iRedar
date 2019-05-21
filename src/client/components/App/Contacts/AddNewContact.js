@@ -15,7 +15,7 @@ export class AddNewContact extends Component {
         lastName: '',
         company: '',
         profession: '',
-        type: '',
+        type: [],
         language: '',
         group: '',
         emailAddresses: [
@@ -139,15 +139,15 @@ export class AddNewContact extends Component {
       },
       {
         label: 'Client',
-        value: 'CLIENT'
+        value: 'Client'
       },
       {
         label: 'Partner',
-        value: 'PARTNER'
+        value: 'Partner'
       },
       {
         label: 'Staff',
-        value: 'STAFF'
+        value: 'Staff'
       }
     ];
     
@@ -177,6 +177,29 @@ export class AddNewContact extends Component {
       {
         label: 'Albano',
         value: 'Albano',
+        disabled: true
+      }
+    ];
+    
+    let type = [
+      {
+        label: 'Select for',
+        value: '',
+        disabled: true
+      },
+      {
+        label: 'Billing',
+        value: 'Billing',
+        disabled: true
+      },
+      {
+        label: 'Shipping',
+        value: 'Shipping',
+        disabled: true
+      },
+      {
+        label: 'Other',
+        value: 'Other',
         disabled: true
       }
     ];
@@ -256,10 +279,11 @@ export class AddNewContact extends Component {
                     <Select
                       styles={selectCustomStyle}
                       options={contactTypes}
+                      isMulti
                       name='type'
                       placeholder={'Select type'}
                       onChange={e => {
-                        this.onSelectChange('type', e.value);
+                        this.onSelectChange('type', e.map(({value}) => value));
                       }}
                     />
                   </div>
@@ -319,7 +343,7 @@ export class AddNewContact extends Component {
                         <div className='row'>
                           <div className='col-lg mg-t-20'>
                             <Select
-                              options={contactTypes}
+                              options={type}
                               name='emailFor'
                               onChange={e => {
                                 this.onChangeRowValue(parentKey, 'emailFor', e.value, key);
@@ -368,7 +392,7 @@ export class AddNewContact extends Component {
                         <div className='row'>
                           <div className='col-lg mg-t-20'>
                             <Select
-                              options={contactTypes}
+                              options={type}
                               name='addressFor'
                               onChange={e => {
                                 this.onChangeRowValue(parentKey, 'addressFor', e.value, key);
@@ -460,7 +484,7 @@ export class AddNewContact extends Component {
                         <div className='row'>
                           <div className='col-lg mg-t-20'>
                             <Select
-                              options={contactTypes}
+                              options={type}
                               name='phoneNumberFor'
                               onChange={e => {
                                 this.onChangeRowValue(parentKey, 'phoneNumberFor', e.value, key);

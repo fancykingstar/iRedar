@@ -102,7 +102,6 @@ class EditContact extends React.Component {
                     <div className='media'>
                       <img src='http://via.placeholder.com/500x500' alt=''/>
                       <div className='media-body'>
-                        <p className='card-profile-position'>{type}</p>
                         <h3 className='card-profile-name'>{`${firstName} ${lastName}`}</h3>
                         <p className='card-profile-position'>
                           {profession} at <a href=''>{company}</a>
