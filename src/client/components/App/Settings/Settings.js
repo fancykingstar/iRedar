@@ -6,7 +6,6 @@ import en from 'react-phone-number-input/locale/en';
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
 import {isValidPhoneNumber} from 'react-phone-number-input';
-
 import {updatePassword, updateUser} from "../../../actions/authActions";
 
 export class Settings extends Component {
@@ -23,10 +22,28 @@ export class Settings extends Component {
             errors: {}
         };
         this.profileId = "";
+        this.permissionId = "";
     }
 
-    componentDidMount() {}
+    getUserData() {
+        const {profile, permissions} = this.props;
+        let data = [];
+        data.push({
+            profileId: profile._id,
+            permissionId: permissions[0]._id,
+            role: permissions[0].role,
+            firstName: profile.firstName,
+            lastName: profile.lastName,
+            email: profile.email,
+            phoneNumber: profile.phoneNumber
+        });
 
+        this.profileId = data[0].profileId;
+        this.permissionId = data[0].permissionId;
+        this.phone = data[0].phoneNumber;
+        return data;
+    }
+    componentDidMount() {}
     onChangePhone = e => {
         if (e) {
             if (isValidPhoneNumber(e)) {
@@ -59,6 +76,7 @@ export class Settings extends Component {
         this.setState({ submitTime: this.state.submitTime + 1 });
         const updateUser = {};
         updateUser["profileId"] = this.profileId.toString();
+        updateUser["permissionId"] = this.permissionId.toString();
         if (this.state.firstName !== "") {
             updateUser["firstName"] = this.state.firstName;
         }
@@ -75,22 +93,7 @@ export class Settings extends Component {
         this.props.updateUser(updateUser, this.props.history);
     };
     render() {
-        const { profile, permissions } = this.props;
-        let data = [];
-
-        data.push({
-            profileId: profile._id,
-            permissionId: permissions[0]._id,
-            role: permissions[0].role,
-            firstName: profile.firstName,
-            lastName: profile.lastName,
-            email: profile.email,
-            phoneNumber: profile.phoneNumber
-        });
-
-        this.profileId = data[0].profileId;
-        this.phone = data[0].phoneNumber;
-
+        const data = this.getUserData();
         let { errors } = this.state;
 
         return (
