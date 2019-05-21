@@ -41,10 +41,6 @@ exports.postPayment = async (req, res) => {
             tokenProfileId = decoded.profileId.toString();
         });
 
-        console.log("tokenUserId : " + tokenUserId);
-        console.log("tokenUserRole : " + tokenUserRole);
-        console.log("tokenProfileId : " + tokenProfileId);
-
         if (tokenUserRole === "admin") {
             const permission = await Permission.findOne({profile: tokenProfileId});
             let organization = await Organization.findOne({_id: permission.organization});
@@ -114,11 +110,6 @@ exports.changePlan = async (req, res) => {
             tokenProfileId = decoded.profileId.toString();
         });
 
-        console.log("tokenUserId : " + tokenUserId);
-        console.log("tokenUserRole : " + tokenUserRole);
-        console.log("tokenProfileId : " + tokenProfileId);
-        console.log("new plan : " + plan);
-
         if (tokenUserRole === "admin") {
             console.log("Change subscription ...");
 
@@ -180,10 +171,6 @@ exports.deletePaymentAndSubscription = async (req, res) => {
             tokenUserRole = decoded.role.toString();
             tokenProfileId = decoded.profileId.toString();
         });
-
-        console.log("tokenUserId : " + tokenUserId);
-        console.log("tokenUserRole : " + tokenUserRole);
-        console.log("tokenProfileId : " + tokenProfileId);
 
         if (tokenUserRole === "admin") {
             console.log("Delete subscription ...")

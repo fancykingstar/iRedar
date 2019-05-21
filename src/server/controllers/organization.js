@@ -31,11 +31,6 @@ exports.postRegister = async (req, res) => {
     password,
     passwordConfirmation,
     phone,
-    street,
-    city,
-    province,
-    country,
-    postalCode,
     selectedPlan
   } = req.body;
 
@@ -46,11 +41,6 @@ exports.postRegister = async (req, res) => {
       || !email
       || !phone
       || !selectedPlan
-  //|| !street
-  //|| !city
-  //|| !province
-  //|| !country
-  //|| !postalCode
   ) {
     return res.status(422).json({
       alert: {
