@@ -1,41 +1,42 @@
 const express = require('express');
 const router = express.Router();
+const middleware = require('./middleware');
 
-const contactController = require('../controllers/group');
-
-/**
- * @route /api/contacts/
- * @description Get the list of contacts
- * @access Private
- **/
-router.get('/', contactController.index);
+const groupController = require('../controllers/group');
 
 /**
- * @route /api/contacts/store
- * @description Store new contact resource
+ * @route /api/groups/
+ * @description Get the list of group
  * @access Private
  **/
-router.post('/', contactController.store);
+router.get('/', middleware(groupController.index));
 
 /**
- * @route /api/contacts/:id/edit
- * @description Get the contact resource
+ * @route /api/groups/
+ * @description Store new group resource
  * @access Private
  **/
-router.get('/:id', contactController.edit);
+router.post('/', middleware(groupController.store));
 
 /**
- * @route /api/contacts/:id/update
- * @description Update the contact resource
+ * @route /api/groups/:id/
+ * @description Get the group resource
  * @access Private
  **/
-router.patch('/:id', contactController.update);
+router.get('/:id', middleware(groupController.edit));
 
 /**
- * @route /api/contacts/:id/delete
- * @description Delete the contact resource
+ * @route /api/groups/:id/
+ * @description Update the group resource
  * @access Private
  **/
-router.delete('/:id/delete', contactController.delete);
+router.patch('/:id', middleware(groupController.update));
+
+/**
+ * @route /api/groups/:id/
+ * @description Delete the group resource
+ * @access Private
+ **/
+router.delete('/:id', middleware(groupController.delete));
 
 module.exports = router;

@@ -74,7 +74,7 @@ class EditContact extends React.Component {
   );
   
   render() {
-    let {_id, firstName, lastName, type, profession, company, group, language, created_at, updated_at, emailAddresses, phoneNumbers, addresses, loading} = this.state;
+    let {_id, firstName, lastName, type, profession, company, groups, language, created_at, updated_at, emailAddresses, phoneNumbers, addresses, loading} = this.state;
     
     return (
       <div className='slim-mainpanel'>
@@ -107,9 +107,11 @@ class EditContact extends React.Component {
                           {profession} at <a href=''>{company}</a>
                         </p>
                         <p className='mg-b-0'>
-                          <button className='btn btn-outline-success btn-sm mg-r-5' disabled>
-                            {group}
-                          </button>
+                          {groups.map(({name}) => {
+                            return <button className='btn btn-outline-success btn-sm mg-r-5' disabled>
+                              {name}
+                            </button>;
+                          })}
                           <button className='btn btn-outline-primary btn-sm' disabled>
                             {language}
                           </button>

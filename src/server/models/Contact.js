@@ -62,10 +62,6 @@ const contactSchema = new mongoose.Schema({
     type: String,
     required: 'Company field is required'
   },
-  group: {
-    type: String,
-    required: 'Group field is required'
-  },
   profession: {
     type: String,
     required: 'Profession field is required'
@@ -81,6 +77,12 @@ const contactSchema = new mongoose.Schema({
   notes: {
     type: String
   },
+  groups: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Group'
+    }
+  ],
   phoneNumbers: [phoneNumberSchema],
   emailAddresses: [emailSchema],
   addresses: [addressSchema]
