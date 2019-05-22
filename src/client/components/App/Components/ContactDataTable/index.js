@@ -6,91 +6,25 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import Select from 'react-select';
 import {editAdminPermissions} from '../../../../actions/accessActions';
-
 import './index.css';
 
 export class DataTable extends Component {
-  state = {
-    showFilterDropdown: false,
-    columns: {
-      contact: true,
-      company: true,
-      emailAddresses: true,
-      phoneNumbers: true,
-      type: true,
-      group: false,
-      profession: false,
-      language: false
-    }
-  };
-  
-  componentDidMount() {
-    window.$('.filter-dropdown-button').click(function () {
-      if (!window.$('.filter-dropdown-menu').hasClass('show')) {
-        window.$('.filter-dropdown-menu').addClass('show');
-      } else {
-        window.$('.filter-dropdown-menu.show').removeClass('show');
-      }
-    });
-    
-    window.$('.columns-dropdown-button').click(function () {
-      if (!window.$('.columns-dropdown-menu').hasClass('show')) {
-        window.$('.columns-dropdown-menu').addClass('show');
-      } else {
-        window.$('.columns-dropdown-menu.show').removeClass('show');
-      }
-    });
-  }
-  
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log(this.state.columns);
-  }
-  
-  showColumns = (key, value) => () => {
-    console.log(key, value);
-    this.setState(oldState => ({
-      ...oldState,
+  constructor() {
+    super();
+    this.state = {
+      showFilterDropdown: false,
       columns: {
-        ...this.state.columns,
-        [key]: value
-      }
-    }))
-    ;
-  };
-  
-  render() {
-    const {SearchBar} = Search;
-    let deletedItems = [];
-    
-    const selectRowProp = {
-      mode: 'checkbox',
-      onSelect: (row, isSelect, rowIndex, e) => {
-        if (isSelect) {
-          deletedItems.push(row._id);
-        } else {
-          if (deletedItems.find(value => value === row._id)) {
-            deletedItems = deletedItems.filter(value => value !== row._id);
-          }
-        }
-        this.props.onSelected(deletedItems);
-      },
-      onSelectAll: (isSelect, rows, e) => {
-        if (isSelect) {
-          rows.forEach(function (row) {
-            deletedItems.push(row._id);
-          });
-        } else {
-          rows.forEach(function (row) {
-            if (deletedItems.find(value => value === row._id)) {
-              deletedItems = deletedItems.filter(value => value !== row._id);
-            }
-          });
-        }
-        this.props.onSelected(deletedItems);
+        contact: true,
+        company: true,
+        emailAddresses: true,
+        phoneNumbers: true,
+        type: true,
+        group: false,
+        profession: false,
+        language: false
       }
     };
-    
-    const columns = [
+    this.columns = [
       {
         dataField: '_id',
         text: 'ID',
@@ -206,6 +140,73 @@ export class DataTable extends Component {
         hidden: !this.state.columns.profession
       }
     ];
+  }
+  
+  componentDidMount() {
+    window.$('.filter-dropdown-button').click(function () {
+      if (!window.$('.filter-dropdown-menu').hasClass('show')) {
+        window.$('.filter-dropdown-menu').addClass('show');
+      } else {
+        window.$('.filter-dropdown-menu.show').removeClass('show');
+      }
+    });
+    
+    window.$('.columns-dropdown-button').click(function () {
+      if (!window.$('.columns-dropdown-menu').hasClass('show')) {
+        window.$('.columns-dropdown-menu').addClass('show');
+      } else {
+        window.$('.columns-dropdown-menu.show').removeClass('show');
+      }
+    });
+  }
+  
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    console.log(this.state.columns);
+  }
+  
+  showColumns = (key, value) => () => {
+    console.log(key, value);
+    this.setState(oldState => ({
+      ...oldState,
+      columns: {
+        ...this.state.columns,
+        [key]: value
+      }
+    }))
+    ;
+  };
+  
+  render() {
+    const {SearchBar} = Search;
+    let deletedItems = [];
+    
+    const selectRowProp = {
+      mode: 'checkbox',
+      onSelect: (row, isSelect, rowIndex, e) => {
+        if (isSelect) {
+          deletedItems.push(row._id);
+        } else {
+          if (deletedItems.find(value => value === row._id)) {
+            deletedItems = deletedItems.filter(value => value !== row._id);
+          }
+        }
+        this.props.onSelected(deletedItems);
+      },
+      onSelectAll: (isSelect, rows, e) => {
+        if (isSelect) {
+          rows.forEach(function (row) {
+            deletedItems.push(row._id);
+          });
+        } else {
+          rows.forEach(function (row) {
+            if (deletedItems.find(value => value === row._id)) {
+              deletedItems = deletedItems.filter(value => value !== row._id);
+            }
+          });
+        }
+        this.props.onSelected(deletedItems);
+      }
+    };
     
     const sizePerPageOptionRenderer = ({text, page, onSizePerPageChange}) => (
       <li key={text} role='presentation' className='dropdown-item'>
@@ -264,7 +265,7 @@ export class DataTable extends Component {
     });
     
     return (
-      <ToolkitProvider keyField='_id' data={contactData} columns={columns} search>
+      <ToolkitProvider keyField='_id' data={contactData} columns={this.columns} search>
         {props => (
           <div>
             <div className='row'>
