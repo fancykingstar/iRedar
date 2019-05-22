@@ -1,8 +1,10 @@
+import axios from 'axios';
 import propTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Select from 'react-select';
 import {addContact} from '../../../actions/contactAction';
+import {API_URL} from '../../../actions/types';
 import TextFieldGroup from '../../Elements/TextFieldGroup';
 
 export class AddNewContact extends Component {
@@ -10,6 +12,7 @@ export class AddNewContact extends Component {
     super();
     this.state = {
       errors: [],
+      groups: [],
       form: {
         firstName: '',
         lastName: '',
@@ -17,7 +20,7 @@ export class AddNewContact extends Component {
         profession: '',
         type: [],
         language: '',
-        group: '',
+        groups: [],
         emailAddresses: [
           {
             emailFor: '',
@@ -44,11 +47,18 @@ export class AddNewContact extends Component {
     };
   }
   
+  componentDidMount() {
+    this.getGroups();
+  }
+  
   componentWillReceiveProps(nextProps, nextContext) {
     const {errors} = nextProps;
     
     this.state.errors = [];
     
+    /*
+    * NOT YET CLEAR IF WE DISPLAY ERRORS IN ALERT OR PER INPUT
+    * */
     //if (Object.keys(errors).length) {
     //  let receivedErrors = [];
     //  const {data: {details}} = errors;
@@ -63,6 +73,23 @@ export class AddNewContact extends Component {
     //  }));
     //}
   }
+  
+  getGroups = async () => {
+    const {data: {data}} = await axios.get(`${API_URL}/api/groups`);
+    
+    this.setState(oldState => ({
+      ...oldState,
+      groups: [
+        {
+          label: 'Select group',
+          value: '',
+          isDisabled: true
+        }, ...data.map(({name, _id}) => ({
+          label: name,
+          value: _id
+        }))]
+    }));
+  };
   
   onSubmit = e => {
     e.preventDefault();
@@ -135,7 +162,7 @@ export class AddNewContact extends Component {
       {
         label: 'Select type',
         value: '',
-        disabled: true
+        isDisabled: true
       },
       {
         label: 'Client',
@@ -155,7 +182,7 @@ export class AddNewContact extends Component {
       {
         label: 'Select language',
         value: '',
-        disabled: true
+        isDisabled: true
       },
       {
         label: 'English',
@@ -163,44 +190,23 @@ export class AddNewContact extends Component {
       }
     ];
     
-    const groups = [
-      {
-        label: 'Select group',
-        value: '',
-        disabled: true
-      },
-      {
-        label: 'Zester',
-        value: 'Zester',
-        disabled: true
-      },
-      {
-        label: 'Albano',
-        value: 'Albano',
-        disabled: true
-      }
-    ];
-    
     let type = [
       {
         label: 'Select for',
         value: '',
-        disabled: true
+        isDisabled: true
       },
       {
         label: 'Billing',
-        value: 'Billing',
-        disabled: true
+        value: 'Billing'
       },
       {
         label: 'Shipping',
-        value: 'Shipping',
-        disabled: true
+        value: 'Shipping'
       },
       {
         label: 'Other',
-        value: 'Other',
-        disabled: true
+        value: 'Other'
       }
     ];
     
@@ -309,11 +315,12 @@ export class AddNewContact extends Component {
                     <label className="cols-sm-2 control-label m-0"/>
                     <Select
                       styles={selectCustomStyle}
-                      options={groups}
+                      options={this.state.groups}
                       name='group'
+                      isMulti
                       placeholder={'Select group'}
                       onChange={e => {
-                        this.onSelectChange('group', e.value);
+                        this.onSelectChange('groups', e.map(({value}) => value));
                       }}
                     />
                   </div>
