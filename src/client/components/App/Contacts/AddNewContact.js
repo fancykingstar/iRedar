@@ -56,6 +56,9 @@ export class AddNewContact extends Component {
     
     this.state.errors = [];
     
+    /*
+    * NOT YET CLEAR IF WE DISPLAY ERRORS IN ALERT OR PER INPUT
+    * */
     //if (Object.keys(errors).length) {
     //  let receivedErrors = [];
     //  const {data: {details}} = errors;
