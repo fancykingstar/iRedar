@@ -19,7 +19,7 @@ exports.index = async (req, res) => {
  */
 exports.store = async (req, res) => {
   let {body} = req;
-  console.log(body);
+  
   const contact = await Contact.create(body);
   
   return res.json({

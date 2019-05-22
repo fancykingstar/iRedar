@@ -233,8 +233,6 @@ export class EditContact extends Component {
       }
     };
     
-    console.log(this.state.groups);
-    
     return (
       <div className='slim-mainpanel'>
         <div className='container'>
