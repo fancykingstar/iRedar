@@ -1,13 +1,12 @@
-import React, { Component } from 'react';
 import propTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {Link, withRouter} from 'react-router-dom';
 
-import { loginUser } from '../../../actions/authActions';
+import {loginUser} from '../../../actions/authActions';
 import Alert from '../../Elements/Alert';
 import TextFieldGroup from '../../Elements/TextFieldGroup';
-import { inputStyleBackground } from '../../Elements/Variables';
+import {inputStyleBackground} from '../../Elements/Variables';
 
 class Login extends Component {
   constructor() {
@@ -18,45 +17,46 @@ class Login extends Component {
       errors: {}
     };
   }
-
+  
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
       this.props.history.push('/dashboard');
     }
   }
-
+  
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
       this.props.history.push('/dashboard');
     }
-
+    
     if (nextProps.errors) {
-      this.setState({ errors: nextProps.errors });
+      this.setState({errors: nextProps.errors});
     }
   }
-
+  
   onSubmit = e => {
     e.preventDefault();
-
+    
     const userData = {
       email: this.state.email,
       password: this.state.password
     };
-
+    
     this.props.loginUser(userData);
   };
-
+  
   onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState({[e.target.name]: e.target.value});
   };
+  
   render() {
-    const { errors } = this.state;
-
+    const {errors} = this.state;
+    
     const isSuccess =
-      this.props.location.isRegistered || this.props.location.isReset || null;
-
+            this.props.location.isRegistered || this.props.location.isReset || null;
+    
     const detail = this.props.location.detail || null;
-
+    
     return (
       <div className="signin-right">
         <div>
@@ -67,20 +67,20 @@ class Login extends Component {
                   type="success"
                   title="Success!"
                   detail={detail}
-                  style={{ marginBottom: 15 }}
+                  style={{marginBottom: 15}}
                 />
               )}
-
+              
               {errors.alert && (
                 <Alert
                   type="danger"
                   title={errors.alert.title}
                   close={false}
                   detail={errors.alert.detail}
-                  style={{ marginBottom: 15 }}
+                  style={{marginBottom: 15}}
                 />
               )}
-
+              
               <h2 className="signin-title-primary">Welcome to iAuto!</h2>
               <h3 className="signin-title-secondary">Sign in to continue.</h3>
               <TextFieldGroup
@@ -93,9 +93,9 @@ class Login extends Component {
                 error={errors.email}
                 required
               />
-
+              
               <TextFieldGroup
-                style={{ marginBottom: 50 }}
+                style={{marginBottom: 50}}
                 inputStyle={inputStyleBackground}
                 placeholder="Enter your password"
                 name="password"
@@ -105,7 +105,7 @@ class Login extends Component {
                 error={errors.password}
                 required
               />
-
+              
               <button
                 className="btn btn-primary btn-block btn-signin"
                 type="submit"
@@ -141,6 +141,6 @@ const mapStateToProps = state => ({
 export default withRouter(
   connect(
     mapStateToProps,
-    { loginUser }
+    {loginUser}
   )(Login)
 );

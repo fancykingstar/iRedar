@@ -1,8 +1,10 @@
+import axios from 'axios';
 import propTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Select from 'react-select';
 import {getContact, updateContact} from '../../../actions/contactAction';
+import {API_URL} from '../../../actions/types';
 import TextFieldGroup from '../../Elements/TextFieldGroup';
 
 export class EditContact extends Component {
@@ -12,6 +14,7 @@ export class EditContact extends Component {
       _id: '',
       loading: true,
       errors: [],
+      groups: [],
       form: {
         firstName: '',
         lastName: '',
@@ -19,7 +22,7 @@ export class EditContact extends Component {
         profession: '',
         type: [],
         language: '',
-        group: '',
+        groups: [],
         emailAddresses: [
           {
             emailFor: '',
@@ -46,10 +49,28 @@ export class EditContact extends Component {
     };
   }
   
+  getGroups = async () => {
+    const {data: {data}} = await axios.get(`${API_URL}/api/groups`);
+    
+    this.setState(oldState => ({
+      ...oldState,
+      groups: [
+        {
+          label: 'Select group',
+          value: '',
+          isDisabled: true
+        }, ...data.map(({name, _id}) => ({
+          label: name,
+          value: _id
+        }))]
+    }));
+    
+  };
+  
   componentDidMount() {
     const {getContact, match: {params: {contactId}}} = this.props;
-    
     getContact(contactId);
+    this.getGroups();
   }
   
   componentWillReceiveProps(nextProps, nextContext) {
@@ -149,7 +170,7 @@ export class EditContact extends Component {
       {
         label: 'Select type',
         value: '',
-        disabled: true
+        isDisabled: true
       },
       {
         label: 'Client',
@@ -169,7 +190,7 @@ export class EditContact extends Component {
       {
         label: 'Select language',
         value: '',
-        disabled: true
+        isDisabled: true
       },
       {
         label: 'English',
@@ -177,42 +198,23 @@ export class EditContact extends Component {
       }
     ];
     
-    const groups = [
-      {
-        label: 'Select group',
-        value: '',
-        disabled: true
-      },
-      {
-        label: 'Zester',
-        value: 'Zester'
-      },
-      {
-        label: 'Albano',
-        value: 'Albano'
-      }
-    ];
-    
     let type = [
       {
         label: 'Select for',
         value: '',
-        disabled: true
+        isDisabled: true
       },
       {
         label: 'Billing',
-        value: 'Billing',
-        disabled: true
+        value: 'Billing'
       },
       {
         label: 'Shipping',
-        value: 'Shipping',
-        disabled: true
+        value: 'Shipping'
       },
       {
         label: 'Other',
-        value: 'Other',
-        disabled: true
+        value: 'Other'
       }
     ];
     
@@ -230,6 +232,8 @@ export class EditContact extends Component {
         };
       }
     };
+    
+    console.log(this.state.groups);
     
     return (
       <div className='slim-mainpanel'>
@@ -337,13 +341,17 @@ export class EditContact extends Component {
                     <div className="form-group">
                       <label className="cols-sm-2 control-label m-0"/>
                       <Select
-                        defaultInputValue={form.group}
+                        defaultValue={form.groups.map(({name, _id}) => ({
+                          label: name,
+                          value: _id
+                        }))}
                         styles={selectCustomStyle}
-                        options={groups}
+                        options={this.state.groups}
                         name='group'
+                        isMulti
                         placeholder={'Select group'}
                         onChange={e => {
-                          this.onSelectChange('group', e.value);
+                          this.onSelectChange('groups', e.map(({value}) => value));
                         }}
                       />
                     </div>
