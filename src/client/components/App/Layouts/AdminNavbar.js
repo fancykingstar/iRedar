@@ -73,7 +73,16 @@ class AdminNavbar extends Component {
                 </ul>
               </div>
             </li>
-
+            <li
+              className={classnames('nav-item', {
+                active: this.props.location.pathname === '/notifications'
+              })}
+            >
+              <Link className="nav-link" to="/notifications">
+                <i className="icon ion-ios-email-outline" />
+                <span>Notifications</span>
+              </Link>
+            </li>
             <li
               className={classnames('nav-item with-sub', {
                 active: this.props.location.pathname === '/modules'
