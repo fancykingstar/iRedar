@@ -30,13 +30,12 @@ class AdminNavbar extends Component {
 
             <li
               className={classnames('nav-item', {
-                active: this.props.location.pathname === '/tasks'
+                active: this.props.location.pathname === '/logs'
               })}
             >
-              <Link className="nav-link" to="/tasks">
+              <Link className="nav-link" to="/logs">
                 <i className="icon ion-ios-browsers-outline" />
-                <span>Tasks</span>
-                <span className="square-8" />
+                <span>Logs</span>
               </Link>
             </li>
 

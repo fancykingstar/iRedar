@@ -13,18 +13,18 @@ import EditContact from './client/components/App/Contacts/EditContact';
 import ViewContact from './client/components/App/Contacts/ViewContact';
 import DashboardPage from './client/components/App/Dashboard';
 import FormsPage from './client/components/App/Forms';
-import ClientAction from './client/components/App/Forms/AllForms/ClientAction';
-import FCRPLoan from './client/components/App/Forms/AllForms/FCRPLoan';
-import IARAssessment from './client/components/App/Forms/AllForms/IARAssessment';
-import Registration from './client/components/App/Forms/AllForms/Registration';
+import ViewClientSubmission from './client/components/App/Forms/AllForms/ViewClientSubmission';
+import ViewFCRPSubmission from './client/components/App/Forms/AllForms/ViewFCRPSubmission';
+import ViewIARSubmission from './client/components/App/Forms/AllForms/ViewIARSubmission';
+import ViewRegistrationSubmission from './client/components/App/Forms/AllForms/ViewRegistrationSubmission';
 import ClientActionSubmission from './client/components/App/Forms/Submissions/ClientAction';
 import FCRPLoanSubmission from './client/components/App/Forms/Submissions/FCRPLoan';
 import IARAssessmentSubmission from './client/components/App/Forms/Submissions/IARAssessment';
 import RegistrationSubmission from './client/components/App/Forms/Submissions/Registration';
 import SubmissionSuccess from './client/components/App/Forms/Submissions/SubmissionSuccess';
 import UploadFormList from './client/components/App/Forms/UploadForm';
+import LogsPage from './client/components/App/Logs';
 import ModulesPage from './client/components/App/Modules';
-import Referrals from './client/components/App/Modules/Referrals';
 import ReferralForm from './client/components/App/Modules/Referrals/ReferralForm';
 import ReferralFormDetail from './client/components/App/Modules/Referrals/ReferralFormDetail';
 
@@ -35,13 +35,15 @@ import ViewNotification from './client/components/App/Notifications/ViewNotifica
 import ReportsPage from './client/components/App/Reports';
 import AddNewUsers from './client/components/App/Settings/AddNewUsers';
 import AdminSettings from './client/components/App/Settings/AdminSettings';
+import Payment from './client/components/App/Settings/Payment';
+import Settings from './client/components/App/Settings/Settings';
+import UpdatePassword from './client/components/App/Settings/UpdatePassword';
 import TasksPage from './client/components/App/Tasks';
 import LoginPage from './client/components/Landing/Login';
 import RegisterPage from './client/components/Landing/Register';
 import ResetPasswordPage from './client/components/Landing/ResetPassword';
 import UpdatePasswordPage from './client/components/Landing/UpdatePassword';
 import checkAuth from './client/utils/checkAuth';
-
 import PrivateRoute from './client/utils/PrivateRoute';
 import ScrollToTop from './client/utils/ScrollToTop';
 
@@ -80,6 +82,7 @@ class App extends Component {
               </Switch>
               <Switch>
                 <PrivateRoute exact path='/tasks' component={TasksPage}/>
+                <PrivateRoute exact path='/logs' component={LogsPage}/>
               </Switch>
               <Switch>
                 <PrivateRoute exact path='/contacts' component={ContactsPage}/>
@@ -98,10 +101,20 @@ class App extends Component {
                 <PrivateRoute exact path='/notifications' component={NotificationsPage}/>
               </Switch>
               <Switch>
+                <PrivateRoute exact path='/settings/settings' component={Settings}/>
+              </Switch>
+              <Switch>
                 <PrivateRoute exact path='/notifications/add-new-notification' component={AddNewNotification}/>
               </Switch>
               <Switch>
                 <PrivateRoute exact path='/notifications/view/:notificationId' component={ViewNotification}/>
+                <PrivateRoute exact path='/settings/update-admin-password' component={UpdatePassword}/>
+              </Switch>
+              <Switch>
+                <PrivateRoute exact path='/settings/payment' component={Payment}/>
+              </Switch>
+              <Switch>
+                <PrivateRoute exact path='/modules/submissions' component={Submissions}/>
               </Switch>
               
               <Switch>
@@ -120,25 +133,24 @@ class App extends Component {
                 <PrivateRoute exact path='/settings/add-new-users' component={AddNewUsers}/>
               </Switch>
               <Switch>
-                <PrivateRoute exact path='/modules/submissions' component={Submissions}/>
-              </Switch>
-              <Switch>
-                <PrivateRoute exact path='/modules/referrals' component={Referrals}/>
+                <PrivateRoute exact path='/forms/all-forms/view-client-submission' component={ViewClientSubmission}/>
               </Switch>
               
               <Switch>
-                <Route exact path='/forms/all-forms/client-action' component={ClientAction}/>
-              </Switch>
-              <Switch>
-                <Route exact path='/forms/all-forms/iar-assessment' component={IARAssessment}/>
-              </Switch>
-              <Switch>
-                <Route exact path='/forms/all-forms/fcrp-loan' component={FCRPLoan}/>
-              </Switch>
-              <Switch>
-                <Route exact path='/forms/all-forms/registration' component={Registration}/>
+                <PrivateRoute exact path='/forms/all-forms/view-iar-submission' component={ViewIARSubmission}/>
               </Switch>
               
+              <Switch>
+                <PrivateRoute exact path='/forms/all-forms/view-fcrp-submission' component={ViewFCRPSubmission}/>
+              </Switch>
+              
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path='/forms/all-forms/view-registration-submission'
+                  component={ViewRegistrationSubmission}
+                />
+              </Switch>
               <Switch>
                 <Route exact path='/forms/submission-success' component={SubmissionSuccess}/>
               </Switch>

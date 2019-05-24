@@ -8,7 +8,7 @@ const userController = require('../controllers/user');
 // @route POST api/users/register
 // @desc Register user
 // @access Public
-router.post('/register', userController.postRegister);
+router.post('/register/client', userController.postClientRegister);
 
 // @route POST api/users/login
 // @desc Login user / Returning JWT token
@@ -18,7 +18,7 @@ router.post('/login', userController.postLogin);
 // @route POST api/users/adduser
 // @desc Add new user
 // @access Private
-router.post('/adduser', userController.postAddUser);
+router.post('/register/user', userController.postRegister);
 
 // @route POST api/users/deleteuser
 // @desc Add new user
@@ -28,7 +28,7 @@ router.post('/deleteuser', userController.deleteUser);
 // @route   PUT api/users/updateuser
 // @desc    Update User
 // @access  Public
-//router.put('/updateuser', userController.postUpdateUser);
+router.put('/updateuser', userController.putUpdateUser);
 
 // @route POST api/users/reset-password
 // @desc Reset user password

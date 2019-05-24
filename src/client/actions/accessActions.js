@@ -67,7 +67,7 @@ export const getAdminPermissions = (
   }
 };
 
-//
+//Edit User Permissions throught Admin Account
 export const editAdminPermissions = (
   userData,
   organizationId,

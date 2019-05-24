@@ -134,6 +134,11 @@ class Header extends Component {
                       <i className="icon ion-ios-gear" /> Admin Settings
                     </Link>
                   )}
+                  {role !== 'admin' && (
+                      <Link to="/settings/settings" className="nav-link">
+                        <i className="icon ion-ios-gear" /> Settings
+                      </Link>
+                  )}
 
                   <Link to="" className="nav-link" onClick={this.onLogoutClick}>
                     <i className="icon ion-forward" /> Sign Out

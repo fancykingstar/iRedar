@@ -16,6 +16,7 @@ const referralController = require('./routes/referral');
 const contacts = require('./routes/contacts');
 const groups = require('./routes/group');
 const notifications = require('./routes/notifications');
+const payment = require('./routes/payment');
 
 // eslint-disable no-console
 
@@ -29,22 +30,25 @@ app.use(morgan('dev'));
 app.use(cors());
 
 // Body parser middleware
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(bodyParser.urlencoded({
-  limit: '50mb',
-  extended: true
-}));
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(
+  bodyParser.urlencoded({
+    limit: '50mb',
+    extended: true
+  })
+);
 
 // Database config
 const db = require('./configs/keys').mongoURI;
 
 // Connect to MongoDB
-mongoose.connect(db, {useNewUrlParser: true}).
-  then(() => logger.info('MongoDB connected')).
-  catch(err => logger.error(err));
+mongoose
+  .connect(db, { useNewUrlParser: true })
+  .then(() => logger.info('MongoDB connected'))
+  .catch(err => logger.error(err));
 mongoose.set('useCreateIndex', true);
 
-const debugMode = (process.env.NODE_ENV === 'development');
+const debugMode = process.env.NODE_ENV === 'development';
 const relativePath = debugMode ? '../../' : '../..';
 
 // Passport Config
@@ -54,6 +58,7 @@ require('./configs/passport')(passport);
 // Use routes
 app.use('/api/users', users);
 app.use('/api/organizations', organizations);
+app.use('/api/payment', payment);
 app.use('/api/submissions', submissions);
 app.use('/api/upload-forms', uploadedForms);
 app.use('/api/upload-referral', referralController);
@@ -67,8 +72,7 @@ if (!debugMode) {
 
 app.use(require('./helpers/error-handler'));
 
-app.get('/*', function (req, res) {
-  
+app.get('/*', function(req, res) {
   if (req.xhr || req.headers.accept.indexOf('json') > -1) {
     // send your xhr response here
     res.sendStatus(404);
@@ -76,7 +80,6 @@ app.get('/*', function (req, res) {
     // send your normal response here
     res.sendFile(path.join(__dirname, relativePath, 'build', 'index.html'));
   }
-  
 });
 
 const port = process.env.PORT || 5000;
