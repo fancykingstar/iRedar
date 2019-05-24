@@ -1,30 +1,123 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux'
-import Spinner from '../../../../Elements/Spinner';
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import Spinner from "../../../../Elements/Spinner";
+import {editSubmission} from "../../../../../actions/submissionActions";
+import $ from "jquery";
 
 class FCRPLoanSubmission extends Component {
+
     componentDidUpdate() {
-        var self = this
-        window.$('#wizard6').steps({
-            headerTag: 'h3',
-            bodyTag: 'section',
+        const self = this;
+        const isEditable = (self.props.edit === "true");
+        window.$("#wizard6").steps({
+            headerTag: "h3",
+            bodyTag: "section",
             autoFocus: true,
             titleTemplate: '<span class="number">#index#</span> <span class="title">#title#</span>',
-            cssClass: 'wizard wizard-style-2',
+            cssClass: "wizard wizard-style-2",
+            onStepChanging: function (event, currentIndex, newIndex) {
+                return true
+            },
+            onFinishing: function (event, currentIndex) {
+                return true
+            },
             onFinished: async function (event, currentIndex) {
-                self.props.history.push('/modules/submissions')
+                if (isEditable) {
+                    let content = {
+                        fromForm: self.props.submission.content.fromForm,
+                        salutation: $("[name=salutation]").find(":selected").text(),
+                        firstName: $("[name=firstName]").val(),
+                        lastName: $("[name=lastName]").val(),
+                        preferredName: $("[name=preferredName]").val(),
+                        streetAddress: $("[name=streetAddress]").val(),
+                        city: $("[name=city]").val(),
+                        province: $("[name=province]").find(":selected").text(),
+                        postalCode: $("[name=postalCode]").val(),
+                        primaryPhoneNumber: $("[name=primaryPhoneNumber]").val(),
+                        primaryPhoneNumber_voiceMail: $("[name=primaryPhoneNumber_voiceMail]").find(":selected").text(),
+                        secondaryPhoneNumber: $("[name=secondaryPhoneNumber]").val(),
+                        secondaryPhoneNumber_voicemail: $("[name=secondaryPhoneNumber_voicemail]").find(":selected").text(),
+                        emailAddress: $("[name=emailAddress]").val(),
+                        confirmEmailAddress: $("[name=confirmEmailAddress]").val(),
+                        birthDate: $("[name=birthDate]").val(),
+                        gender: $("[name=gender]").find(":selected").text(),
+                        countryOfOrigin: $("[name=countryOfOrigin]").find(":selected").text(),
+                        nationality: $("[name=nationality]").find(":selected").text(),
+                        nativeLanguage: $("[name=nativeLanguage]").val(),
+                        maritalStatus: $("[name=maritalStatus]").find(":selected").text(),
+                        maritalStatus_other: $("[name=maritalStatus_other]").val(),
+                        foreignBornCanadian: $("[name=foreignBornCanadian]").find(":selected").text(),
+                        landingDate: $("[name=landingDate]").val(),
+                        yearOfCitizenship: $("[name=yearOfCitizenship]").val(),
+                        permanentResidencyClass: $("[name=permanentResidencyClass]").find(":selected").text(),
+                        conventionRefugee: $("[name=conventionRefugee]").find(":selected").text(),
+                        howDidYouHearAboutUs: $("[name=howDidYouHearAboutUs]").val(),
+                        landingDocumentString: self.props.submission.content.landingDocumentString,
+                        landingDocumentName: self.props.submission.content.landingDocumentName,
+                        occupation: $("[name=occupation]").find(":selected").text(),
+                        primaryOccupation: $("[name=primaryOccupation]").val(),
+                        regulatedProfession_yes: $("#regulatedProfession_yes").is(":checked"),
+                        regulatedProfession_no: $("#regulatedProfession_no").is(":checked"),
+                        regulatedProfession_unknown: $("#regulatedProfession_unknown").is(":checked"),
+                        licensedToPracticeInCanada_yes: $("#licensedToPracticeInCanada_yes").is(":checked"),
+                        licensedToPracticeInCanada_no: $("#licensedToPracticeInCanada_no").is(":checked"),
+                        licensedToPracticeInCanada_inProgres: $("#licensedToPracticeInCanada_inProgres").is(":checked"),
+                        licensedToPracticeInCanada_unknown: $("#licensedToPracticeInCanada_unknown").is(":checked"),
+                        licensedToPracticeInCanada_na: $("#licensedToPracticeInCanada_na").is(":checked"),
+                        helpRequestedDomain: $("[name=helpRequestedDomain]").find(":selected").text(),
+                        helpRequestedDomain_other: $("[name=helpRequestedDomain_other]").val(),
+                        shortTermGoals: $("[name=shortTermGoals]").val(),
+                        longTermGoals: $("[name=longTermGoals]").val(),
+                        intendedOccupation: $("[name=intendedOccupation]").val(),
+                        occupationFromOutsideCanada_yes: $("#occupationFromOutsideCanada_yes").is(":checked"),
+                        occupationFromOutsideCanada_no: $("#occupationFromOutsideCanada_no").is(":checked"),
+                        highestDegree: $("[name=highestDegree]").find(":selected").text(),
+                        highestDegree_other: $("[name=highestDegree_other]").val(),
+                        englishLanguageAssessed_yes: true,
+                        englishLanguageAssessed_no: false,
+                        englishLanguageAssessment_listening: $("[name=englishLanguageAssessment_listening]").find(":selected").text(),
+                        englishLanguageAssessment_speaking: $("[name=englishLanguageAssessment_speaking]").find(":selected").text(),
+                        englishLanguageAssessment_reading: $("[name=englishLanguageAssessment_reading]").find(":selected").text(),
+                        englishLanguageAssessment_writing: $("[name=englishLanguageAssessment_writing]").find(":selected").text(),
+                        englishLanguageAssessment_assessmentDate: $("[name=englishLanguageAssessment_assessmentDate]").val()
+                    };
+                    console.log(content);
+                    let permission = self.props.permissions[0];
+                    if (permission.role === "admin" || permission.role === "staff") {
+                        try {
+                            const profileId = permission.profile;
+                            const submission = {
+                                userId: self.props.submission.userId,
+                                content
+                            };
+                            console.log(submission);
+                            let response = self.props.editSubmission(
+                                profileId,
+                                submission,
+                                self.props.submission._id
+                            );
+                            console.log(response);
+                            console.log('OK');
+                        } catch (error) {
+                            console.log(error);
+                        }
+                    }
+                    self.props.history.push('/dashboard')
+                } else {
+                    self.props.history.push('/modules/submissions')
+                }
             }
-        })
+        });
 
-        window.$('#downloadButton').click(function (event) {
-            let filename = window.landingDocumentName
-            let text = window.landingDocumentString
+        window.$("#downloadButton").click(function (event) {
+            let filename = window.landingDocumentName;
+            let text = window.landingDocumentString;
 
             // download
-            var element = document.createElement('a');
-            element.setAttribute('href', text);
-            element.setAttribute('download', filename);
-            element.style.display = 'none';
+            var element = document.createElement("a");
+            element.setAttribute("href", text);
+            element.setAttribute("download", filename);
+            element.style.display = "none";
             document.body.appendChild(element);
             element.click();
             document.body.removeChild(element);
@@ -32,29 +125,39 @@ class FCRPLoanSubmission extends Component {
     }
 
     render() {
-        let submission = this.props.submission
+        let isEditable = false;
+        if (this.props.edit && this.props.edit === "true") {
+            isEditable = true;
+        }
+        let submission = this.props.submission;
         if (Object.keys(submission.content).length === 0) {
-            return (
-                <Spinner />
-            )
+            return <Spinner/>;
         }
 
-        window.landingDocumentString = submission.content.landingDocumentString
-        window.landingDocumentName = submission.content.landingDocumentName
+        window.landingDocumentString = submission.content.landingDocumentString;
+        window.landingDocumentName = submission.content.landingDocumentName;
 
         return (
             <div className="slim-mainpanel">
                 <div className="container">
-                    <div id="google_translate_element" />
+                    <div id="google_translate_element"/>
 
                     <div className="section-wrapper mg-t-20">
-                        <label className="section-title">FCRP Loan Initiative Intake & Assessment Form</label>
-                        <p className="mg-b-20 mg-sm-b-40">Please fill out the following information. </p>
+                        <label className="section-title">
+                            FCRP Loan Initiative Intake & Assessment Form
+                        </label>
+                        <p className="mg-b-20 mg-sm-b-40">
+                            Please fill out the following information.{" "}
+                        </p>
 
                         <form id="immigrationForm" method="post" action="/forms">
-
-                            <div className="form-group col-md-2" >
-                                <input type="hidden" name="fromForm" value="5bedaa68f65be80016ef5a19" />
+                            <div className="form-group col-md-2">
+                                <input
+                                    readOnly
+                                    type="hidden"
+                                    name="fromForm"
+                                    value={submission.content.fromForm}
+                                />
                             </div>
 
                             <div id="wizard6">
@@ -63,7 +166,15 @@ class FCRPLoanSubmission extends Component {
                                     <div className="form-row">
                                         <div className="form-group col-md-1">
                                             <label htmlFor="salutation">Salutation</label>
-                                            <select className="form-control" id="salutation" name="salutation" readOnly defaultValue={submission.content.salutation}>
+                                            <select
+                                                className="form-control"
+                                                id="salutation"
+                                                name="salutation"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.salutation}
+                                                onChange={(e) => {
+                                                }}
+                                            >
                                                 <option value="">--</option>
                                                 <option>Mr</option>
                                                 <option>Mrs</option>
@@ -74,32 +185,88 @@ class FCRPLoanSubmission extends Component {
 
                                         <div className="form-group col-md-3">
                                             <label htmlFor="firstName">First Name</label>
-                                            <input type="text" className="form-control" id="firstName" name="firstName" readOnly defaultValue={submission.content.firstName} placeholder="First Name" />
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="firstName"
+                                                name="firstName"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.firstName}
+                                                placeholder="First Name"
+                                                onChange={(e) => {
+                                                }}
+                                            />
                                         </div>
-
 
                                         <div className="form-group col-md-4">
                                             <label htmlFor="lastName">Last Name</label>
-                                            <input type="text" className="form-control" id="lastName" name="lastName" readOnly defaultValue={submission.content.lastName} placeholder="Last Name" />
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="lastName"
+                                                name="lastName"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.lastName}
+                                                placeholder="Last Name"
+                                                onChange={(e) => {
+                                                }}
+                                            />
                                         </div>
                                         <div className="form-group col-md-4">
-                                            <label htmlFor="preferredName">Preferred Name (if different from First Name)</label>
-                                            <input type="text" className="form-control" id="preferredName" name="preferredName" readOnly defaultValue={submission.content.preferredName} placeholder="Preferred First Name" />
+                                            <label htmlFor="preferredName">
+                                                Preferred Name (if different from First Name)
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="preferredName"
+                                                name="preferredName"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.preferredName}
+                                                placeholder="Preferred First Name"
+                                                onChange={(e) => {
+                                                }}
+                                            />
                                         </div>
-
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-4">
                                             <label htmlFor="streetAddress">Street Address</label>
-                                            <input type="text" className="form-control" id="streetAddress" name="streetAddress" readOnly defaultValue={submission.content.streetAddress} />
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="streetAddress"
+                                                name="streetAddress"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.streetAddress}
+                                                onChange={(e) => {
+                                                }}
+                                            />
                                         </div>
                                         <div className="form-group col-md-3">
                                             <label htmlFor="city">City</label>
-                                            <input type="text" className="form-control" id="city" name="city" readOnly defaultValue={submission.content.city} />
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="city"
+                                                name="city"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.city}
+                                                onChange={(e) => {
+                                                }}
+                                            />
                                         </div>
                                         <div className="form-group col-md-2">
                                             <label htmlFor="province">Province</label>
-                                            <select id="province" className="form-control" name="province" readOnly defaultValue={submission.content.province}>
+                                            <select
+                                                id="province"
+                                                className="form-control"
+                                                name="province"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.province}
+                                                onChange={(e) => {
+                                                }}
+                                            >
                                                 <option value="">Province</option>
                                                 <option>Alberta</option>
                                                 <option>British Columbia</option>
@@ -118,29 +285,84 @@ class FCRPLoanSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-3">
                                             <label htmlFor="postalCode">Postal Code</label>
-                                            <input type="text" className="form-control" id="postalCode" name="postalCode" readOnly defaultValue={submission.content.postalCode} />
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="postalCode"
+                                                name="postalCode"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.postalCode}
+                                                onChange={(e) => {
+                                                }}
+                                            />
                                         </div>
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-4">
-                                            <label htmlFor="primaryPhoneNumber">Primary Phone Number</label>
-                                            <input type="text" className="form-control" id="primaryPhoneNumber" name="primaryPhoneNumber" readOnly defaultValue={submission.content.primaryPhoneNumber} />
+                                            <label htmlFor="primaryPhoneNumber">
+                                                Primary Phone Number
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="primaryPhoneNumber"
+                                                name="primaryPhoneNumber"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.primaryPhoneNumber}
+                                                onChange={(e) => {
+                                                }}
+                                            />
                                         </div>
                                         <div className="form-group col-md-1">
-                                            <label htmlFor="primaryPhoneNumber_voiceMail">Voicemail?</label>
-                                            <select id="primaryPhoneNumber_voiceMail" className="form-control" name="primaryPhoneNumber_voiceMail" readOnly defaultValue={submission.content.primaryPhoneNumber_voiceMail}>
+                                            <label htmlFor="primaryPhoneNumber_voiceMail">
+                                                Voicemail?
+                                            </label>
+                                            <select
+                                                id="primaryPhoneNumber_voiceMail"
+                                                className="form-control"
+                                                name="primaryPhoneNumber_voiceMail"
+                                                readOnly={!isEditable}
+                                                defaultValue={
+                                                    submission.content.primaryPhoneNumber_voiceMail
+                                                }
+                                                onChange={(e) => {
+                                                }}
+                                            >
                                                 <option value="">--</option>
                                                 <option>Yes</option>
                                                 <option>No</option>
                                             </select>
                                         </div>
                                         <div className="form-group col-md-4">
-                                            <label htmlFor="secondaryPhoneNumber">Secondary Phone Number</label>
-                                            <input type="text" className="form-control" id="secondaryPhoneNumber" name="secondaryPhoneNumber" readOnly defaultValue={submission.content.secondaryPhoneNumber} />
+                                            <label htmlFor="secondaryPhoneNumber">
+                                                Secondary Phone Number
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="secondaryPhoneNumber"
+                                                name="secondaryPhoneNumber"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.secondaryPhoneNumber}
+                                                onChange={(e) => {
+                                                }}
+                                            />
                                         </div>
                                         <div className="form-group col-md-1">
-                                            <label htmlFor="secondaryPhoneNumber_voicemail">Voicemail?</label>
-                                            <select id="secondaryPhoneNumber_voicemail" className="form-control" name="secondaryPhoneNumber_voicemail" readOnly defaultValue={submission.content.secondaryPhoneNumber_voicemail}>
+                                            <label htmlFor="secondaryPhoneNumber_voicemail">
+                                                Voicemail?
+                                            </label>
+                                            <select
+                                                id="secondaryPhoneNumber_voicemail"
+                                                className="form-control"
+                                                name="secondaryPhoneNumber_voicemail"
+                                                readOnly={!isEditable}
+                                                defaultValue={
+                                                    submission.content.secondaryPhoneNumber_voicemail
+                                                }
+                                                onChange={(e) => {
+                                                }}
+                                            >
                                                 <option value="">--</option>
                                                 <option>Yes</option>
                                                 <option>No</option>
@@ -151,32 +373,68 @@ class FCRPLoanSubmission extends Component {
                                     <div className="form-row">
                                         <div className="form-group col-md-6">
                                             <label htmlFor="emailAddress">Email address</label>
-                                            <input type="email" className="form-control" id="emailAddress" name="emailAddress" placeholder="name@example.com" readOnly defaultValue={submission.content.emailAddress} />
-
+                                            <input
+                                                type="email"
+                                                className="form-control"
+                                                id="emailAddress"
+                                                name="emailAddress"
+                                                placeholder="name@example.com"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.emailAddress}
+                                                onChange={(e) => {
+                                                }}
+                                            />
                                         </div>
                                         <div className="form-group col-md-6">
                                             <label htmlFor="confirmEmailAddress">Confirm Email</label>
-                                            <input type="email" className="form-control" id="confirmEmailAddress" name="confirmEmailAddress" placeholder="name@example.com" readOnly defaultValue={submission.content.confirmEmailAddress} />
+                                            <input
+                                                type="email"
+                                                className="form-control"
+                                                id="confirmEmailAddress"
+                                                name="confirmEmailAddress"
+                                                placeholder="name@example.com"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.confirmEmailAddress}
+                                                onChange={(e) => {
+                                                }}
+                                            />
                                         </div>
                                     </div>
-
 
                                     <div className="form-group">
                                         <label htmlFor="birthDate">Date of Birth</label>
                                         <div className="input-group">
                                             <div className="input-group-prepend">
                                                 <div className="input-group-text">
-                                                    <i className="fa fa-calendar tx-16 lh-0 op-6"></i>
+                                                    <i className="fa fa-calendar tx-16 lh-0 op-6"/>
                                                 </div>
                                             </div>
-                                            <input name="birthDate" id="birthDate" type="text" className="form-control" placeholder="MM/DD/YYYY" readOnly defaultValue={submission.content.birthDate} />
+                                            <input
+                                                name="birthDate"
+                                                id="birthDate"
+                                                type="text"
+                                                className="form-control"
+                                                placeholder="MM/DD/YYYY"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.birthDate}
+                                                onChange={(e) => {
+                                                }}
+                                            />
                                         </div>
                                     </div>
 
                                     <div className="form-row">
                                         <div className="form-group col-md-2">
                                             <label htmlFor="gender">Gender</label>
-                                            <select id="gender" className="form-control" name="gender" readOnly defaultValue={submission.content.gender}>
+                                            <select
+                                                id="gender"
+                                                className="form-control"
+                                                name="gender"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.gender}
+                                                onChange={(e) => {
+                                                }}
+                                            >
                                                 <option value="">--</option>
                                                 <option>Male</option>
                                                 <option>Female</option>
@@ -185,7 +443,15 @@ class FCRPLoanSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-4">
                                             <label htmlFor="countryOfOrigin">Country of Origin</label>
-                                            <select id="countryOfOrigin" className="form-control" name="countryOfOrigin" readOnly defaultValue={submission.content.countryOfOrigin}>
+                                            <select
+                                                id="countryOfOrigin"
+                                                className="form-control"
+                                                name="countryOfOrigin"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.countryOfOrigin}
+                                                onChange={(e) => {
+                                                }}
+                                            >
                                                 <option value="">--</option>
                                                 <option>Afghanistan</option>
                                                 <option>Albania</option>
@@ -389,7 +655,15 @@ class FCRPLoanSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-4">
                                             <label htmlFor="nationality">Nationality</label>
-                                            <select id="nationality" className="form-control" name="nationality" readOnly defaultValue={submission.content.nationality}>
+                                            <select
+                                                id="nationality"
+                                                className="form-control"
+                                                name="nationality"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.nationality}
+                                                onChange={(e) => {
+                                                }}
+                                            >
                                                 <option value="">--</option>
                                                 <option>Afghanistan</option>
                                                 <option>Albania</option>
@@ -593,13 +867,30 @@ class FCRPLoanSubmission extends Component {
                                         </div>
                                         <div className="form-group col-md-2">
                                             <label htmlFor="nativeLanguage">Native Language</label>
-                                            <input type="text" id="nativeLanguage" className="form-control" name="nativeLanguage" readOnly defaultValue={submission.content.nativeLanguage} />
+                                            <input
+                                                type="text"
+                                                id="nativeLanguage"
+                                                className="form-control"
+                                                name="nativeLanguage"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.nativeLanguage}
+                                                onChange={(e) => {
+                                                }}
+                                            />
                                         </div>
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-4">
                                             <label htmlFor="maritalStatus">Marital Status</label>
-                                            <select className="form-control" id="maritalStatus" name="maritalStatus" readOnly defaultValue={submission.content.maritalStatus}>
+                                            <select
+                                                className="form-control"
+                                                id="maritalStatus"
+                                                name="maritalStatus"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.maritalStatus}
+                                                onChange={(e) => {
+                                                }}
+                                            >
                                                 <option value="">--</option>
                                                 <option>Married/Common Law</option>
                                                 <option>Single</option>
@@ -608,10 +899,20 @@ class FCRPLoanSubmission extends Component {
                                             </select>
                                         </div>
                                         <div className="form-group col-md-4">
-                                            <label htmlFor="maritalStatus_other">If Other, specify</label>
-                                            <input type="text" className="form-control" id="maritalStatus_other" name="maritalStatus_other" readOnly defaultValue={submission.content.maritalStatus_other} />
+                                            <label htmlFor="maritalStatus_other">
+                                                If Other, specify
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="maritalStatus_other"
+                                                name="maritalStatus_other"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.maritalStatus_other}
+                                                onChange={(e) => {
+                                                }}
+                                            />
                                         </div>
-
                                     </div>
                                 </section>
 
@@ -619,8 +920,18 @@ class FCRPLoanSubmission extends Component {
                                 <section>
                                     <div className="form-row">
                                         <div className="form-group col-md-3">
-                                            <label htmlFor="foreignBornCanadian">Foreign born Canadian?</label>
-                                            <select className="form-control" id="foreignBornCanadian" name="foreignBornCanadian" readOnly defaultValue={submission.content.foreignBornCanadian}>
+                                            <label htmlFor="foreignBornCanadian">
+                                                Foreign born Canadian?
+                                            </label>
+                                            <select
+                                                className="form-control"
+                                                id="foreignBornCanadian"
+                                                name="foreignBornCanadian"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.foreignBornCanadian}
+                                                onChange={(e) => {
+                                                }}
+                                            >
                                                 <option value="">--</option>
                                                 <option>Yes</option>
                                                 <option>No</option>
@@ -631,21 +942,54 @@ class FCRPLoanSubmission extends Component {
                                             <div className="input-group">
                                                 <div className="input-group-prepend">
                                                     <div className="input-group-text">
-                                                        <i className="fa fa-calendar tx-16 lh-0 op-6"></i>
+                                                        <i className="fa fa-calendar tx-16 lh-0 op-6"/>
                                                     </div>
                                                 </div>
-                                                <input name="landingDate" id="landingDate" type="text" className="form-control" placeholder="MM/DD/YYYY" readOnly defaultValue={submission.content.landingDate} />
+                                                <input
+                                                    name="landingDate"
+                                                    id="landingDate"
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="MM/DD/YYYY"
+                                                    readOnly={!isEditable}
+                                                    defaultValue={submission.content.landingDate}
+                                                    onChange={(e) => {
+                                                    }}
+                                                />
                                             </div>
                                         </div>
                                         <div className="form-group col-md-3">
-                                            <label htmlFor="yearOfCitizenship">Year of Citizenship</label>
-                                            <input type="text" className="form-control" id="yearOfCitizenship" name="yearOfCitizenship" readOnly defaultValue={submission.content.yearOfCitizenship} />
+                                            <label htmlFor="yearOfCitizenship">
+                                                Year of Citizenship
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="yearOfCitizenship"
+                                                name="yearOfCitizenship"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.yearOfCitizenship}
+                                                onChange={(e) => {
+                                                }}
+                                            />
                                         </div>
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-6">
-                                            <label htmlFor="permanentResidencyClass">Permanent Residence Class</label>
-                                            <select className="form-control" id="permanentResidencyClass" name="permanentResidencyClass" readOnly defaultValue={submission.content.permanentResidencyClass}>
+                                            <label htmlFor="permanentResidencyClass">
+                                                Permanent Residence Class
+                                            </label>
+                                            <select
+                                                className="form-control"
+                                                id="permanentResidencyClass"
+                                                name="permanentResidencyClass"
+                                                readOnly={!isEditable}
+                                                defaultValue={
+                                                    submission.content.permanentResidencyClass
+                                                }
+                                                onChange={(e) => {
+                                                }}
+                                            >
                                                 <option value="">--</option>
                                                 <option>Skilled Worker</option>
                                                 <option>Family Class</option>
@@ -656,8 +1000,18 @@ class FCRPLoanSubmission extends Component {
                                             </select>
                                         </div>
                                         <div className="form-group">
-                                            <label htmlFor="conventionRefugee">Are you A Convention Refugee?</label>
-                                            <select className="form-control" id="conventionRefugee" name="conventionRefugee" readOnly defaultValue={submission.content.conventionRefugee}>
+                                            <label htmlFor="conventionRefugee">
+                                                Are you A Convention Refugee?
+                                            </label>
+                                            <select
+                                                className="form-control"
+                                                id="conventionRefugee"
+                                                name="conventionRefugee"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.conventionRefugee}
+                                                onChange={(e) => {
+                                                }}
+                                            >
                                                 <option value="">--</option>
                                                 <option>Yes</option>
                                                 <option>No</option>
@@ -666,17 +1020,35 @@ class FCRPLoanSubmission extends Component {
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-4">
-                                            <label htmlFor="howDidYouHearAboutUs">How did you hear about FCRP?</label>
-                                            <input type="text" className="form-control" id="howDidYouHearAboutUs" name="howDidYouHearAboutUs" readOnly defaultValue={submission.content.howDidYouHearAboutUs} />
+                                            <label htmlFor="howDidYouHearAboutUs">
+                                                How did you hear about FCRP?
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="howDidYouHearAboutUs"
+                                                name="howDidYouHearAboutUs"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.howDidYouHearAboutUs}
+                                                onChange={(e) => {
+                                                }}
+                                            />
                                         </div>
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-6">
                                             {/* <label className="btn btn-default">Upload a copy of your Long-form landing document<input type="file" id="landingDocument" name="landingDocument" /></label> */}
-                                            <label>Upload a copy of your Long-form landing document</label><br></br>
-                                            {(submission.content.landingDocumentString &&
-                                                <button id="downloadButton" type="button" className="btn btn-primary">Download</button>
-
+                                            <label>
+                                                Upload a copy of your Long-form landing document
+                                            </label>
+                                            <br/>
+                                            {submission.content.landingDocumentString && (
+                                                <button
+                                                    id="downloadButton"
+                                                    type="button"
+                                                    className="btn btn-primary">
+                                                    Download
+                                                </button>
                                             )}
                                         </div>
                                     </div>
@@ -686,20 +1058,33 @@ class FCRPLoanSubmission extends Component {
                                     <div className="form-row">
                                         <div className="form-group col-md-8">
                                             <label htmlFor="occupation">
-                                                Please select your professional occupation or field from the selection below
+                                                Please select your professional occupation or field from
+                                                the selection below
                                             </label>
-                                            <select className="form-control" id="occupation" name="occupation" readOnly defaultValue={submission.content.occupation}>
+                                            <select
+                                                className="form-control"
+                                                id="occupation"
+                                                name="occupation"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.occupation}
+                                                onChange={(e) => {
+                                                }}
+                                            >
                                                 <option value="">--</option>
                                                 <option>Accountants</option>
                                                 <option>Architects</option>
-                                                <option>Audiologists and speech language pathologists</option>
+                                                <option>
+                                                    Audiologists and speech language pathologists
+                                                </option>
                                                 <option>Carpenters</option>
                                                 <option>Dentists</option>
                                                 <option>Electricians</option>
                                                 <option>Engineers/IT</option>
                                                 <option>Engineer technicians</option>
                                                 <option>Geoscientists</option>
-                                                <option>Heavy duty equipment technicians/Truck drivers</option>
+                                                <option>
+                                                    Heavy duty equipment technicians/Truck drivers
+                                                </option>
                                                 <option>Heavy equipment operators</option>
                                                 <option>Lawyers</option>
                                                 <option>Medical lab technicians</option>
@@ -719,30 +1104,76 @@ class FCRPLoanSubmission extends Component {
                                     </div>
                                     <div className="row">
                                         <div className="form-group col-md-6">
-                                            <label htmlFor="primaryOccupation">Name of Primary Profession</label>
-                                            <input type="text" className="form-control" id="primaryOccupation" name="primaryOccupation" readOnly defaultValue={submission.content.primaryOccupation} />
+                                            <label htmlFor="primaryOccupation">
+                                                Name of Primary Profession
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="primaryOccupation"
+                                                name="primaryOccupation"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.primaryOccupation}
+                                                onChange={(e) => {
+                                                }}
+                                            />
                                         </div>
                                     </div>
 
                                     <div className="form-row">
                                         <div className="form-group col-md-12">
                                             <div className="row">
-                                                <label className="col-form-label col-sm-4 text-md-left pt-sm-0">Is this a
-                                          regulated profession?</label>
+                                                <label className="col-form-label col-sm-4 text-md-left pt-sm-0">
+                                                    Is this a regulated profession?
+                                                </label>
                                                 <div className="col">
                                                     <div className="custom-controls-stacked">
                                                         <label className="custom-control custom-radio">
-                                                            <input id="regulatedProfession_yes" name="regulatedProfession" readOnly checked={submission.content.regulatedProfession_yes} type="radio" className="custom-control-input" />
+                                                            <input
+                                                                id="regulatedProfession_yes"
+                                                                name="regulatedProfession"
+                                                                readOnly={!isEditable}
+                                                                checked={
+                                                                    submission.content.regulatedProfession_yes
+                                                                }
+                                                                type="radio"
+                                                                className="custom-control-input"
+                                                                onChange={(e) => {
+                                                                }}
+                                                            />
                                                             <span className="custom-control-label">Yes</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
-                                                            <input id="regulatedProfession_no" name="regulatedProfession" readOnly checked={submission.content.regulatedProfession_no} type="radio" className="custom-control-input" />
+                                                            <input
+                                                                id="regulatedProfession_no"
+                                                                name="regulatedProfession"
+                                                                readOnly={!isEditable}
+                                                                checked={
+                                                                    submission.content.regulatedProfession_no
+                                                                }
+                                                                type="radio"
+                                                                className="custom-control-input"
+                                                                onChange={(e) => {
+                                                                }}
+                                                            />
                                                             <span className="custom-control-label">No</span>
                                                         </label>
                                                         <label className="custom-control custom-radio">
-                                                            <input id="regulatedProfession_unknown" name="regulatedProfession" readOnly checked={submission.content.regulatedProfession_unknown} type="radio" className="custom-control-input"
+                                                            <input
+                                                                id="regulatedProfession_unknown"
+                                                                name="regulatedProfession"
+                                                                readOnly={!isEditable}
+                                                                checked={
+                                                                    submission.content.regulatedProfession_unknown
+                                                                }
+                                                                type="radio"
+                                                                className="custom-control-input"
+                                                                onChange={(e) => {
+                                                                }}
                                                             />
-                                                            <span className="custom-control-label">Unknown</span>
+                                                            <span className="custom-control-label">
+                                Unknown
+                              </span>
                                                         </label>
                                                     </div>
                                                 </div>
@@ -751,31 +1182,87 @@ class FCRPLoanSubmission extends Component {
                                     </div>
 
                                     <div className="form-row">
-                                        <label className="col-form-label col-sm-4 text-md-left pt-sm-0">Are you licensed
-                                          to practice in Canada ?</label>
+                                        <label className="col-form-label col-sm-4 text-md-left pt-sm-0">
+                                            Are you licensed to practice in Canada ?
+                                        </label>
                                         <div className="col">
                                             <div className="custom-controls-stacked">
                                                 <label className="custom-control custom-radio">
-                                                    <input id="licensedToPracticeInCanada_yes" name="licensedToPracticeInCanada" readOnly checked={submission.content.licensedToPracticeInCanada_yes} type="radio" className="custom-control-input"
+                                                    <input
+                                                        id="licensedToPracticeInCanada_yes"
+                                                        name="licensedToPracticeInCanada"
+                                                        readOnly={!isEditable}
+                                                        checked={
+                                                            submission.content.licensedToPracticeInCanada_yes
+                                                        }
+                                                        type="radio"
+                                                        className="custom-control-input"
+                                                        onChange={(e) => {
+                                                        }}
                                                     />
                                                     <span className="custom-control-label">Yes</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
-                                                    <input id="licensedToPracticeInCanada_no" name="licensedToPracticeInCanada" readOnly checked={submission.content.licensedToPracticeInCanada_no} type="radio" className="custom-control-input" />
+                                                    <input
+                                                        id="licensedToPracticeInCanada_no"
+                                                        name="licensedToPracticeInCanada"
+                                                        readOnly={!isEditable}
+                                                        checked={
+                                                            submission.content.licensedToPracticeInCanada_no
+                                                        }
+                                                        type="radio"
+                                                        className="custom-control-input"
+                                                        onChange={(e) => {
+                                                        }}
+                                                    />
                                                     <span className="custom-control-label">No</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
-                                                    <input id="licensedToPracticeInCanada_inProgres" name="licensedToPracticeInCanada" readOnly checked={submission.content.licensedToPracticeInCanada_inProgres} type="radio" className="custom-control-input"
+                                                    <input
+                                                        id="licensedToPracticeInCanada_inProgres"
+                                                        name="licensedToPracticeInCanada"
+                                                        readOnly={!isEditable}
+                                                        checked={
+                                                            submission.content
+                                                                .licensedToPracticeInCanada_inProgres
+                                                        }
+                                                        type="radio"
+                                                        className="custom-control-input"
+                                                        onChange={(e) => {
+                                                        }}
                                                     />
-                                                    <span className="custom-control-label">Licensing in Progress</span>
+                                                    <span className="custom-control-label">
+                            Licensing in Progress
+                          </span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
-                                                    <input id="licensedToPracticeInCanada_unknown" name="licensedToPracticeInCanada" readOnly checked={submission.content.licensedToPracticeInCanada_unknown} type="radio" className="custom-control-input"
+                                                    <input
+                                                        id="licensedToPracticeInCanada_unknown"
+                                                        name="licensedToPracticeInCanada"
+                                                        readOnly={!isEditable}
+                                                        checked={
+                                                            submission.content
+                                                                .licensedToPracticeInCanada_unknown
+                                                        }
+                                                        type="radio"
+                                                        className="custom-control-input"
+                                                        onChange={(e) => {
+                                                        }}
                                                     />
                                                     <span className="custom-control-label">Unknown</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
-                                                    <input id="licensedToPracticeInCanada_na" name="licensedToPracticeInCanada" readOnly checked={submission.content.licensedToPracticeInCanada_na} type="radio" className="custom-control-input"
+                                                    <input
+                                                        id="licensedToPracticeInCanada_na"
+                                                        name="licensedToPracticeInCanada"
+                                                        readOnly={!isEditable}
+                                                        checked={
+                                                            submission.content.licensedToPracticeInCanada_na
+                                                        }
+                                                        type="radio"
+                                                        className="custom-control-input"
+                                                        onChange={(e) => {
+                                                        }}
                                                     />
                                                     <span className="custom-control-label">N/A</span>
                                                 </label>
@@ -786,8 +1273,16 @@ class FCRPLoanSubmission extends Component {
                                         <div className="form-group col-md-6">
                                             <label htmlFor="helpRequestedDomain">
                                                 Which of the following do you need help with?
-                              </label>
-                                            <select className="form-control" id="helpRequestedDomain" name="helpRequestedDomain" readOnly defaultValue={submission.content.helpRequestedDomain}>
+                                            </label>
+                                            <select
+                                                className="form-control"
+                                                id="helpRequestedDomain"
+                                                name="helpRequestedDomain"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.helpRequestedDomain}
+                                                onChange={(e) => {
+                                                }}
+                                            >
                                                 <option value="">--</option>
                                                 <option>Credential Assessment</option>
                                                 <option>Loan Assistance</option>
@@ -798,8 +1293,21 @@ class FCRPLoanSubmission extends Component {
                                             </select>
                                         </div>
                                         <div className="form-group col-md-6">
-                                            <label htmlFor="helpRequestedDomain_other">If Other, Specify</label>
-                                            <input type="email" className="form-control" id="helpRequestedDomain_other" name="helpRequestedDomain_other" readOnly defaultValue={submission.content.helpRequestedDomain_other} />
+                                            <label htmlFor="helpRequestedDomain_other">
+                                                If Other, Specify
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="helpRequestedDomain_other"
+                                                name="helpRequestedDomain_other"
+                                                readOnly={!isEditable}
+                                                defaultValue={
+                                                    submission.content.helpRequestedDomain_other
+                                                }
+                                                onChange={(e) => {
+                                                }}
+                                            />
                                         </div>
                                     </div>
                                     <div className="form-row">
@@ -808,32 +1316,84 @@ class FCRPLoanSubmission extends Component {
                                     <div className="form-row">
                                         <div className="form-group col-md-12">
                                             <label htmlFor="shortTermGoals">Short-term Goals</label>
-                                            <input type="text" className="form-control" id="shortTermGoals" name="shortTermGoals" readOnly defaultValue={submission.content.shortTermGoals} />
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="shortTermGoals"
+                                                name="shortTermGoals"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.shortTermGoals}
+                                                onChange={(e) => {
+                                                }}
+                                            />
                                         </div>
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-12">
                                             <label htmlFor="longTermGoals">Long-term Goals</label>
-                                            <input type="text" className="form-control" id="longTermGoals" name="longTermGoals" readOnly defaultValue={submission.content.longTermGoals} />
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="longTermGoals"
+                                                name="longTermGoals"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.longTermGoals}
+                                                onChange={(e) => {
+                                                }}
+                                            />
                                         </div>
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-12">
-                                            <label htmlFor="intendedOccupation">Intended Occupation</label>
-                                            <input type="text" className="form-control" id="intendedOccupation" name="intendedOccupation" readOnly defaultValue={submission.content.intendedOccupation} />
+                                            <label htmlFor="intendedOccupation">
+                                                Intended Occupation
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="intendedOccupation"
+                                                name="intendedOccupation"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.intendedOccupation}
+                                                onChange={(e) => {
+                                                }}
+                                            />
                                         </div>
                                     </div>
                                     <div className="form-row">
-                                        <label className="col-form-label col-sm-4 text-md-left pt-sm-0">Is your education acquired from outside Canada?</label>
+                                        <label className="col-form-label col-sm-4 text-md-left pt-sm-0">
+                                            Is your education acquired from outside Canada?
+                                        </label>
                                         <div className="col">
                                             <div className="custom-controls-stacked">
                                                 <label className="custom-control custom-radio">
-                                                    <input id="occupationFromOutsideCanada_yes" name="occupationFromOutsideCanada" readOnly checked={submission.content.occupationFromOutsideCanada_yes} type="radio" className="custom-control-input"
+                                                    <input
+                                                        id="occupationFromOutsideCanada_yes"
+                                                        name="occupationFromOutsideCanada"
+                                                        readOnly={!isEditable}
+                                                        checked={
+                                                            submission.content.occupationFromOutsideCanada_yes
+                                                        }
+                                                        type="radio"
+                                                        className="custom-control-input"
+                                                        onChange={(e) => {
+                                                        }}
                                                     />
                                                     <span className="custom-control-label">Yes</span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
-                                                    <input id="occupationFromOutsideCanada_no" name="occupationFromOutsideCanada" readOnly checked={submission.content.occupationFromOutsideCanada_no} type="radio" className="custom-control-input" />
+                                                    <input
+                                                        id="occupationFromOutsideCanada_no"
+                                                        name="occupationFromOutsideCanada"
+                                                        readOnly={!isEditable}
+                                                        checked={
+                                                            submission.content.occupationFromOutsideCanada_no
+                                                        }
+                                                        type="radio"
+                                                        className="custom-control-input"
+                                                        onChange={(e) => {
+                                                        }}
+                                                    />
                                                     <span className="custom-control-label">No</span>
                                                 </label>
                                             </div>
@@ -844,33 +1404,75 @@ class FCRPLoanSubmission extends Component {
                                         <div className="form-group col-md-6">
                                             <label htmlFor="highestDegree">
                                                 Please select your highest level of education
-                                  </label>
-                                            <select className="form-control" id="highestDegree" name="highestDegree" readOnly defaultValue={submission.content.highestDegree}>
+                                            </label>
+                                            <select
+                                                className="form-control"
+                                                id="highestDegree"
+                                                name="highestDegree"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.highestDegree}
+                                                onChange={(e) => {
+                                                }}
+                                            >
                                                 <option value="">--</option>
-                                                <option value="phD">PhD</option>
-                                                <option value="masters">Masters</option>
-                                                <option value="bachelor">Bachelor</option>
-                                                <option value="certificate">Certificate</option>
-                                                <option value="diploma">Diploma</option>
-                                                <option value="highSchool">High School</option>
-                                                <option value="other">Other</option>
+                                                <option>PhD</option>
+                                                <option>Masters</option>
+                                                <option>Bachelor</option>
+                                                <option>Certificate</option>
+                                                <option>Diploma</option>
+                                                <option>High School</option>
+                                                <option>Other</option>
                                             </select>
                                         </div>
                                         <div className="form-group col-md-6">
-                                            <label htmlFor="highestDegree_other">If Other, Specify</label>
-                                            <input type="email" className="form-control" id="highestDegree_other" name="highestDegree_other" readOnly defaultValue={submission.content.highestDegree_other} />
+                                            <label htmlFor="highestDegree_other">
+                                                If Other, Specify
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="highestDegree_other"
+                                                name="highestDegree_other"
+                                                readOnly={!isEditable}
+                                                defaultValue={submission.content.highestDegree_other}
+                                                onChange={(e) => {
+                                                }}
+                                            />
                                         </div>
                                         <div className="form-row">
-                                            <label className="col-form-label text-md-left pt-sm-0">English Language Assessed (CLB)?</label>
+                                            <label className="col-form-label text-md-left pt-sm-0">
+                                                English Language Assessed (CLB)?
+                                            </label>
                                             <div className="col">
                                                 <div className="custom-controls-stacked">
                                                     <label className="custom-control custom-radio">
-                                                        <input id="englishLanguageAssessed_yes" name="englishLanguageAssessed" readOnly checked={submission.content.englishLanguageAssessed_yes} type="radio" className="custom-control-input"
+                                                        <input
+                                                            id="englishLanguageAssessed_yes"
+                                                            name="englishLanguageAssessed"
+                                                            readOnly={!isEditable}
+                                                            checked={
+                                                                submission.content.englishLanguageAssessed_yes
+                                                            }
+                                                            type="radio"
+                                                            className="custom-control-input"
+                                                            onChange={(e) => {
+                                                            }}
                                                         />
                                                         <span className="custom-control-label">Yes</span>
                                                     </label>
                                                     <label className="custom-control custom-radio">
-                                                        <input id="englishLanguageAssessed_no" name="englishLanguageAssessed" readOnly checked={submission.content.englishLanguageAssessed_no} type="radio" className="custom-control-input" />
+                                                        <input
+                                                            id="englishLanguageAssessed_no"
+                                                            name="englishLanguageAssessed"
+                                                            readOnly={!isEditable}
+                                                            checked={
+                                                                submission.content.englishLanguageAssessed_no
+                                                            }
+                                                            type="radio"
+                                                            className="custom-control-input"
+                                                            onChange={(e) => {
+                                                            }}
+                                                        />
                                                         <span className="custom-control-label">No</span>
                                                     </label>
                                                 </div>
@@ -883,8 +1485,20 @@ class FCRPLoanSubmission extends Component {
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-3">
-                                            <label htmlFor="englishLanguageAssessment_listening">Listening</label>
-                                            <select className="form-control" id="englishLanguageAssessment_listening" name="englishLanguageAssessment_listening" readOnly defaultValue={submission.content.englishLanguageAssessment_listening}>
+                                            <label htmlFor="englishLanguageAssessment_listening">
+                                                Listening
+                                            </label>
+                                            <select
+                                                className="form-control"
+                                                id="englishLanguageAssessment_listening"
+                                                name="englishLanguageAssessment_listening"
+                                                readOnly={!isEditable}
+                                                defaultValue={
+                                                    submission.content.englishLanguageAssessment_listening
+                                                }
+                                                onChange={(e) => {
+                                                }}
+                                            >
                                                 <option value="">--</option>
                                                 <option>1</option>
                                                 <option>2</option>
@@ -901,8 +1515,20 @@ class FCRPLoanSubmission extends Component {
                                             </select>
                                         </div>
                                         <div className="form-group col-md-3">
-                                            <label htmlFor="englishLanguageAssessment_speaking">Speaking</label>
-                                            <select className="form-control" id="englishLanguageAssessment_speaking" name="englishLanguageAssessment_speaking" readOnly defaultValue={submission.content.englishLanguageAssessment_speaking}>
+                                            <label htmlFor="englishLanguageAssessment_speaking">
+                                                Speaking
+                                            </label>
+                                            <select
+                                                className="form-control"
+                                                id="englishLanguageAssessment_speaking"
+                                                name="englishLanguageAssessment_speaking"
+                                                readOnly={!isEditable}
+                                                defaultValue={
+                                                    submission.content.englishLanguageAssessment_speaking
+                                                }
+                                                onChange={(e) => {
+                                                }}
+                                            >
                                                 <option value="">--</option>
                                                 <option>1</option>
                                                 <option>2</option>
@@ -919,8 +1545,20 @@ class FCRPLoanSubmission extends Component {
                                             </select>
                                         </div>
                                         <div className="form-group col-md-3">
-                                            <label htmlFor="englishLanguageAssessment_reading">Reading</label>
-                                            <select className="form-control" id="englishLanguageAssessment_reading" name="englishLanguageAssessment_reading" readOnly defaultValue={submission.content.englishLanguageAssessment_reading}>
+                                            <label htmlFor="englishLanguageAssessment_reading">
+                                                Reading
+                                            </label>
+                                            <select
+                                                className="form-control"
+                                                id="englishLanguageAssessment_reading"
+                                                name="englishLanguageAssessment_reading"
+                                                readOnly={!isEditable}
+                                                defaultValue={
+                                                    submission.content.englishLanguageAssessment_reading
+                                                }
+                                                onChange={(e) => {
+                                                }}
+                                            >
                                                 <option value="">--</option>
                                                 <option>1</option>
                                                 <option>2</option>
@@ -937,8 +1575,20 @@ class FCRPLoanSubmission extends Component {
                                             </select>
                                         </div>
                                         <div className="form-group col-md-3">
-                                            <label htmlFor="englishLanguageAssessment_writing">Writing</label>
-                                            <select className="form-control" id="englishLanguageAssessment_writing" name="englishLanguageAssessment_writing" readOnly defaultValue={submission.content.englishLanguageAssessment_writing}>
+                                            <label htmlFor="englishLanguageAssessment_writing">
+                                                Writing
+                                            </label>
+                                            <select
+                                                className="form-control"
+                                                id="englishLanguageAssessment_writing"
+                                                name="englishLanguageAssessment_writing"
+                                                readOnly={!isEditable}
+                                                defaultValue={
+                                                    submission.content.englishLanguageAssessment_writing
+                                                }
+                                                onChange={(e) => {
+                                                }}
+                                            >
                                                 <option value="">--</option>
                                                 <option>1</option>
                                                 <option>2</option>
@@ -957,14 +1607,29 @@ class FCRPLoanSubmission extends Component {
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-3">
-                                            <label htmlFor="englishLanguageAssessment_assessmentDate">Date of Assessment</label>
+                                            <label htmlFor="englishLanguageAssessment_assessmentDate">
+                                                Date of Assessment
+                                            </label>
                                             <div className="input-group">
                                                 <div className="input-group-prepend">
                                                     <div className="input-group-text">
-                                                        <i className="fa fa-calendar tx-16 lh-0 op-6"></i>
+                                                        <i className="fa fa-calendar tx-16 lh-0 op-6"/>
                                                     </div>
                                                 </div>
-                                                <input name="englishLanguageAssessment_assessmentDate" id="englishLanguageAssessment_assessmentDate" readOnly defaultValue={submission.content.englishLanguageAssessment_assessmentDate} type="text" className="form-control" placeholder="MM/DD/YYYY" />
+                                                <input
+                                                    name="englishLanguageAssessment_assessmentDate"
+                                                    id="englishLanguageAssessment_assessmentDate"
+                                                    readOnly={!isEditable}
+                                                    defaultValue={
+                                                        submission.content
+                                                            .englishLanguageAssessment_assessmentDate
+                                                    }
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="MM/DD/YYYY"
+                                                    onChange={(e) => {
+                                                    }}
+                                                />
                                             </div>
                                         </div>
                                     </div>
@@ -974,8 +1639,11 @@ class FCRPLoanSubmission extends Component {
                     </div>
                 </div>
             </div>
-        )
+        );
     }
 }
 
-export default connect()(FCRPLoanSubmission)
+export default connect(
+    null,
+    {editSubmission}
+)(FCRPLoanSubmission);

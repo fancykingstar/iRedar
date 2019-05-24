@@ -72,11 +72,11 @@ class ResetPassword extends Component {
         <div className="signin-box">
           {errors.alert && (
             <Alert
-              type="danger"
-              title="Error!"
-              close={false}
-              detail={errors.alert}
-              style={{ marginBottom: 15 }}
+                type="danger"
+                title="Error!"
+                close={false}
+                detail={errors.alert.detail}
+                style={{ marginBottom: 15 }}
             />
           )}
           <h2 className="signin-title-primary">Forgot your Password</h2>

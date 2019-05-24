@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom'
 import moment from 'moment';
 import Spinner from '../../../Elements/Spinner';
+import {deleteSubmission} from "../../../../actions/submissionActions";
 
 class AdminSubmissionList extends Component {
 
@@ -17,31 +18,63 @@ class AdminSubmissionList extends Component {
     });
   }
 
-  detail = event => {
-    let formName = event.target.getAttribute('form_name')
-    let submissionId = event.target.getAttribute('submission_id')
+  edit = event => {
+    let formName = event.target.getAttribute('form_name');
+    let submissionId = event.target.getAttribute('submission_id');
     this.props.history.push({
-      pathname: '/forms/' + formName + '/' + submissionId
+      pathname: '/forms/' + formName + '/' + submissionId,
+      state: { edit: 'true' }
     });
-  }
+  };
+
+  detail = event => {
+    let formName = event.target.getAttribute('form_name');
+    let submissionId = event.target.getAttribute('submission_id');
+    this.props.history.push({
+      pathname: '/forms/' + formName + '/' + submissionId,
+      state: { edit: 'false' }
+    });
+  };
+
+  delete = event => {
+      if (window.confirm('Do you want to delete the submission ?')) {
+          let submissionId = event.target.getAttribute('submission_id');
+          const {deleteSubmission, permissions} = this.props;
+          const userData = {
+              profileId: permissions[0].profile,
+              organizationId: permissions[0].organization
+          };
+          deleteSubmission(userData, submissionId);
+          this.props.history.push({
+              pathname: '/dashboard'
+          });
+      }
+  };
 
   share = event => {
-    let submissionId = event.target.getAttribute('submission_id')
+    let submissionId = event.target.getAttribute('submission_id');
     this.props.history.push({
       pathname: '/referrals/' + submissionId
     });
-  }
+  };
 
   render() {
-    let submissionList = this.props.submissionList
-    let loading = this.props.loading
+    const { permissions } = this.props;
+    const userRole = permissions[0].role;
+    const isAllowedToEdit = (userRole === "admin" || userRole === "staff");
+    const isAllowedToDelete = (userRole === "admin");
+    const isAllowedToShare = (userRole === "admin" || userRole === "staff");
+    const isAllowedDetail = (userRole === "admin" || userRole === "staff");
+
+    let submissionList = this.props.submissionList;
+    let loading = this.props.loading;
 
     for (let submission of submissionList) {
-      let birthDate = submission.content.birthDate
+      let birthDate = submission.content.birthDate;
       if (birthDate == null) {
         submission.content.age = ''
       } else {
-        let birthDate2 = new Date(birthDate)
+        let birthDate2 = new Date(birthDate);
         if (birthDate2 === "Invalid Date") {
           submission.content.age = ''
         } else {
@@ -96,16 +129,16 @@ class AdminSubmissionList extends Component {
                               )}
                             </td>
                             <td className="tx-right">
-                              <button type="button" className="btn btn-secondary btn-sm" onClick={this.detail} form_name={content.fromForm} submission_id={submission._id} >Edit</button>
+                              <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToEdit} onClick={this.edit} form_name={content.fromForm} submission_id={submission._id} >Edit</button>
                             </td>
                             <td className="tx-right">
-                              <button type="button" className="btn btn-secondary btn-sm" onClick={this.detail} form_name={content.fromForm} submission_id={submission._id} >Delete</button>
+                              <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToDelete} onClick={this.delete} form_name={content.fromForm} submission_id={submission._id} >Delete</button>
                             </td>
                             <td className="tx-right">
-                              <button type="button" className="btn btn-primary btn-sm" onClick={this.detail} form_name={content.fromForm} submission_id={submission._id} >Detail</button>
+                              <button type="button" className="btn btn-primary btn-sm" disabled={!isAllowedDetail} onClick={this.detail} form_name={content.fromForm} submission_id={submission._id} >Detail</button>
                             </td>
                             <td className="tx-right">
-                              <button type="button" className="btn btn-primary btn-sm" onClick={this.share} form_name={content.fromForm} submission_id={submission._id} >Share</button>
+                              <button type="button" className="btn btn-primary btn-sm" disabled={!isAllowedToShare} onClick={this.share} form_name={content.fromForm} submission_id={submission._id} >Share</button>
                             </td>
                           </tr>
                         </React.Fragment>
@@ -121,4 +154,15 @@ class AdminSubmissionList extends Component {
     );
   }
 }
-export default withRouter(connect()(AdminSubmissionList));
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  permissions: state.access.permissions,
+  adminPermissions: state.access.admin,
+  loading: state.access.loading,
+  access: state.access,
+  errors: state.errors,
+  profile: state.auth.profile
+});
+
+export default withRouter(connect(mapStateToProps, {deleteSubmission})(AdminSubmissionList));

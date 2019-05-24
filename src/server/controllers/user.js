@@ -3,6 +3,7 @@ const validator = require('validator');
 const keys = require('../configs/keys');
 const logger = require('../configs/logger');
 const nodeMailer = require('../helpers/nodemailer');
+const stripeLibrary = require('../helpers/stripeSubscription');
 
 const { resetPasswordEmail } = require('../helpers/htmlMails/reset-password');
 
@@ -14,29 +15,30 @@ const Organization = require('../models/Organization');
 
 ///  Mapping for Role-Permission
 const rolesToPermission = {
-    //rolesToPermission["USER"]
-    "USER": ["canRead"],
-    "CLIENT": ["canRead","canWrite","canSubmit"],
-    "PARTNER": ["canWrite","canUpdate","canRead","canSubmit"],
-    "STAFF": ["canCreate","canWrite","canUpdate","canRead","canSubmit"],
-    "ADMIN": ["canRead", "canCreate", "canWrite", "canUpdate", "canDelete", "canSubmit", "canAddUser", "canEditUser", "canViewUser", "canDeleteUser"]
+  "user": ["canRead"],
+  "client": ["canRead", "canWrite", "canSubmit"],
+  "partner": ["canWrite", "canUpdate", "canRead", "canSubmit"],
+  "staff": ["canCreate", "canWrite", "canUpdate", "canRead", "canSubmit"],
+  "admin": ["canRead", "canCreate", "canWrite", "canUpdate", "canDelete", "canSubmit", "canAddUser", "canEditUser", "canViewUser", "canDeleteUser"]
 };
 
 const domain_regex = new RegExp("(?<=@)[^.]+.*$");
 
-// @route POST api/users/register
+// @route POST api/users/register/client
 // @desc Register user
 // @access Public
-exports.postRegister = async (req, res) => {
+exports.postClientRegister = async (req, res) => {
   const {
     email,
     password,
     passwordConfirmation,
+    phone,
+      services,
     firstName,
     lastName
   } = req.body;
 
-  if (!password || !email || !firstName || !lastName) {
+  if (!password || !email || !firstName || !lastName || !phone) {
     return res.status(422).json({
       alert: {
         title: 'Error!',
@@ -62,41 +64,12 @@ exports.postRegister = async (req, res) => {
       passwordConfirmation: 'Password is not a same as confirmation',
     });
   }
-  // variables for domain name
 
-  const r = req.body.email.match(domain_regex);
-  let domain = email;
-  let role = Profile.role;
-  //// Find domain and save the domain.
-  let permission = Profile.permissionRight;
+  const r = email.match(domain_regex);
+  let userDomain = email;
   if (r) {
-    domain = r[0];
+    userDomain = r[0];
   }
-  //console.log(ROLES);
-  //console.log(ROLES.ADMIN);
-  //console.log("Before IF DOMAIN");
-  //console.log(permission);
-
-  const userPermission = Profile.findOne({ domain: domain }).then(domain_user => {
-    if (!domain_user) {
-      role = "ADMIN";
-      permission = [
-        "canRead",
-        "canCreate",
-        "canUpdate",
-        "canDelete",
-        "canAddUser",
-        "canEditUser",
-        "canViewUser",
-        "canDeleteUser"
-      ];
-    } else {
-      role = "USER";
-      permission = [
-        "canRead"
-      ];
-    }
-  });
 
   try {
     const existingUser = await User.findOne({ email });
@@ -117,26 +90,15 @@ exports.postRegister = async (req, res) => {
       email,
       lastName,
       firstName,
-      domain,
-      role,
-      permissionRight: permission
+        services,
+      phoneNumber: phone,
+      domain: userDomain
     }).save();
-
-    let organization = await Organization.findOne({ name: domain });
-    if (!organization) {
-      // create new organization
-      let newOrganization = await new Organization({
-        name: domain,
-      });
-      organization = newOrganization;
-    }
-    organization.users.push(user.id);
-    organization.save();
 
     const userPermission = await new Permission({
       profile: profile._id,
-      organization: organization._id,
-      role: role.toLowerCase()
+      role: "client",
+      permissionRight: rolesToPermission["client"]
     });
     await userPermission.save();
 
@@ -184,7 +146,6 @@ exports.postLogin = async (req, res) => {
 
   try {
     const user = await User.findOne({ email });
-    //const role = user.role;
     if (!user) {
       return res.status(422).json({ email: 'User does not exists' });
     }
@@ -198,14 +159,15 @@ exports.postLogin = async (req, res) => {
     }
 
     const profile = await Profile.findOne({ user });
-    if (profile.firstLogin) await profile.updateOne({ firstLogin: false });
+    const permission = await Permission.findOne({profile});
+    if (user.firstLogin) await user.updateOne({firstLogin: false});
 
     const token = jwt.sign(
       {
         userId: user.id,
         profileId: profile.id,
-        role: profile.role,
-        permission: profile.permissionRight
+        role: permission.role,
+        permission: permission.permissionRight
       },
       keys.secretOrKey,
       { expiresIn: '30d' },
@@ -226,10 +188,10 @@ exports.postLogin = async (req, res) => {
   }
 };
 
-// @route POST api/users/adduser
+// @route POST api/users/register/user
 // @desc Add new user
 // @access Private
-exports.postAddUser = async (req, res) => {
+exports.postRegister = async (req, res) => {
   const {
     firstName,
     lastName,
@@ -266,14 +228,12 @@ exports.postAddUser = async (req, res) => {
   if (typeof header !== 'undefined') {
     const bearer = header.split(' ');
     const token = bearer[1];
-    console.log("Token received is " + token);
     jwt.verify(token, keys.secretOrKey, function (err, decoded) {
       if (err) {
         return res.status(403).json({
           error: 'Token is invalid and expired'
         });
       }
-      console.log("userId received from token is " + decoded.userId);
       userId = decoded.userId;
       userRole = decoded.role;
       profileId = decoded.profileId;
@@ -287,11 +247,7 @@ exports.postAddUser = async (req, res) => {
     });
   }
 
-  console.log("Token : UserId " + userId);
-  console.log("Token : UserRole " + userRole);
-  console.log("Token : ProfileId " + profileId);
-
-  if (userId && userRole !== "ADMIN") {
+  if (userId && userRole !== "admin") {
     // throw error
     return res.status(403).json({
       alert: {
@@ -303,7 +259,7 @@ exports.postAddUser = async (req, res) => {
 try {
   const adminProfile = await Profile.findById(profileId);
   const adminDomain = adminProfile.domain;
-  const adminOrganization = await Organization.findOne({name: adminDomain});
+  const adminOrganization = await Organization.findOne({domain: adminDomain});
   if (!adminOrganization) {
     return res.status(422).json({
       alert: {
@@ -329,7 +285,7 @@ try {
     userDomain = r[0];
   }
 
-  if (role === "ADMIN" || role === "STAFF" || role === "USER") {
+  if (role === "admin" || role === "staff" || role === "user") {
       if (userDomain !== adminDomain) {
         return res.status(403).json({
           alert: {
@@ -350,9 +306,7 @@ try {
     email,
     lastName,
     firstName,
-    domain: adminDomain,
-    role,
-    permissionRight: rolesToPermission[role.toUpperCase()]
+    domain: adminDomain
   }).save();
 
   adminOrganization.users.push(user.id);
@@ -362,10 +316,13 @@ try {
     const userPermission = await new Permission({
       profile: profile.id,
       organization: adminOrganization.id,
-      role: role.toLowerCase()
+      role: role,
+      permissionRight: rolesToPermission[role]
     });
     await userPermission.save();
   }
+
+    await stripeLibrary.doUpdateSubscription(adminProfile._id);
 
   return res.json({
     success: true,
@@ -376,6 +333,7 @@ try {
   });
 }catch (error) {
     console.error(error);
+  console.log(error);
     return res.status(422).json({
       alert: {
         title: 'Error!',
@@ -385,6 +343,93 @@ try {
   }
 };
 
+// @route   PUT api/users/updateUser
+// @desc    Update User information by user himself / herself
+// @access  Public
+
+exports.putUpdateUser = async (req, res) => {
+  const {
+    profileId,
+    permissionId,
+    lastName,
+    firstName,
+    email,
+    phoneNumber
+  } = req.body;
+
+  const header = req.headers['authorization'];
+  let tokenUserId = null;
+  let tokenUserRole = null;
+  let tokenProfileId = null;
+  if (typeof header !== 'undefined') {
+    const bearer = header.split(' ');
+    const token = bearer[1];
+    jwt.verify(token, keys.secretOrKey, function (err, decoded) {
+      if (err) {
+        return res.status(403).json({
+          error: 'Token is invalid and expired'
+        });
+      }
+      tokenUserId = decoded.userId.toString();
+      tokenUserRole = decoded.role.toString();
+      tokenProfileId = decoded.profileId.toString();
+    });
+
+    let userProfileId = profileId;
+    if (!userProfileId) {
+      const permission = await Permission.findById(permissionId);
+      userProfileId = permission.profile.toString();
+    }
+    if (tokenUserRole !== "admin" && userProfileId !== tokenProfileId) {
+      return res.status(403).json({
+        error: 'User does not have rights to change other person profile'
+      });
+    }
+
+    let data = {};
+    if (lastName) {
+      data["lastName"] = lastName;
+    }
+    if (firstName) {
+      data["firstName"] = firstName;
+    }
+    if (phoneNumber) {
+      data["phoneNumber"] = phoneNumber;
+    }
+    if (email) {
+      data["email"] = email;
+    }
+    await Profile.findOneAndUpdate(
+        {_id: userProfileId},
+        {$set: data}
+    );
+
+    if (email) {
+      const profile = await Profile.findOne({ "_id" : userProfileId});
+      if (profile) {
+        await User.findOneAndUpdate(
+            {_id: profile.user},
+            {$set: {'email': email}}
+        );
+      }
+    }
+
+      // update admin for stripe
+      if (tokenUserRole === "admin" && userProfileId === tokenProfileId) {
+          await stripeLibrary.doUpdateAdminCustomer(userProfileId, firstName, lastName, email, phoneNumber);
+      }
+
+  } else {
+    return res.status(403).json({
+      alert: {
+        title: 'Error!',
+        detail: 'Authorization token not found'
+      }
+    });
+  }
+};
+
+
 // @route   DELETE api/users/deleteUser
 // @desc    Delete User
 // @access  Public
@@ -392,7 +437,6 @@ exports.deleteUser = async (req, res) => {
   const {
     permissionIds
   } = req.body;
-  console.log(permissionIds);
   const header = req.headers['authorization'];
   let adminUserId = null;
   let adminUserRole = null;
@@ -400,14 +444,12 @@ exports.deleteUser = async (req, res) => {
   if (typeof header !== 'undefined') {
     const bearer = header.split(' ');
     const token = bearer[1];
-    console.log("Token received is " + token);
     jwt.verify(token, keys.secretOrKey, function (err, decoded) {
       if (err) {
         return res.status(403).json({
           error: 'Token is invalid and expired'
         });
       }
-      console.log("userId received from token is " + decoded.userId);
       adminUserId = decoded.userId;
       adminUserRole = decoded.role;
       adminProfileId = decoded.profileId;
@@ -421,11 +463,7 @@ exports.deleteUser = async (req, res) => {
     });
   }
 
-  console.log("Token : UserId " + adminUserId);
-  console.log("Token : UserRole " + adminUserRole);
-  console.log("Token : ProfileId " + adminProfileId);
-
-  if (adminUserId && adminUserRole !== "ADMIN") {
+  if (adminUserId && adminUserRole !== "admin") {
     // throw error
     return res.status(403).json({
       alert: {
@@ -444,13 +482,7 @@ exports.deleteUser = async (req, res) => {
       const organization = await Organization.findById(organizationId);
       const userId = profile.user;
 
-      console.log(" Permission Id " + permissionId);
-      console.log(" Profile Id " + profileId);
-      console.log(" Organization Id " + organizationId);
-      console.log(" User Id " + userId);
-
       if (userId !== adminUserId && profile.role !== adminUserRole) {
-        console.log("Delete user " + profile.email);
         User.findOneAndRemove(userId);
         User.remove({_id: userId}, function(err,removed) {
           if (!err) {
@@ -478,6 +510,7 @@ exports.deleteUser = async (req, res) => {
         console.log("Cannot delete admin user " + profile.email);
       }
     });
+      await stripeLibrary.doUpdateSubscription(adminProfileId);
 
     return res.json({
       success: true,
@@ -541,7 +574,7 @@ exports.postResetPassword = async (req, res) => {
 
     const token = jwt.sign(
       {
-        userId: user.id,
+        userId: user._id,
         email,
       },
       keys.secretOrKey,
@@ -549,38 +582,39 @@ exports.postResetPassword = async (req, res) => {
     );
 
     user.confirmToken = token;
-
     await user.save();
 
     const mailOptions = {
-      from: '"iAuto" <iauto.iradardata@gmail.com>', // sender address
+      //from: '"iAuto" <iauto.iradardata@gmail.com>', // sender address
+      from: keys.infoEmail,
       to: email, // list of receivers
       subject: 'Password Reset', // Subject line
-      html: resetPasswordEmail('localhost:3000', token), // html body
+      html: resetPasswordEmail('localhost:5000', token), // html body
     };
 
-    try {
-      nodeMailer(mailOptions);
-    } catch (error) {
-      logger.error(error);
-      return res.status(422).json({
+    nodeMailer(mailOptions, keys.infoEmail, keys.infoEmailPassword).then(() => {
+      res.json({
+        success: true,
         alert: {
-          title: 'Error!',
-          detail: 'An error occurred while sending password reset',
+          title: 'Success!',
+          detail: "We've sent an email to reset password",
         },
       });
-    }
-
-    return res.json({
-      success: true,
-      alert: {
-        title: 'Success!',
-        detail: "We've sent an email to reset password",
-      },
+    }).catch((error) => {
+      console.log("ERROR ==> ");
+      console.log(error);
+      res.status(422).json({
+        success: false,
+        alert: {
+          title: 'Error!',
+          detail: "We've not sent an email to reset password",
+        },
+      });
     });
   } catch (error) {
     logger.error(error);
     return res.status(422).json({
+      success: false,
       alert: {
         title: 'Error!',
         detail: 'Server occurred an error,  please try again',
@@ -593,55 +627,93 @@ exports.postResetPassword = async (req, res) => {
 // @desc    Reset password
 // @access  Public
 exports.putResetPassword = async (req, res) => {
-  const { confirmToken, password, passwordConfirmation } = req.body;
-
+  const { passwordCurrent, password, passwordConfirmation } = req.body;
+  const {confirmToken} = req.body;
   try {
-    const user = await User.findOne({ confirmToken });
+    const header = req.headers['authorization'];
+    let tokenUserId = null;
+    let tokenUserRole = null;
+    let tokenProfileId = null;
+    if (confirmToken !== undefined) {
+      jwt.verify(confirmToken, keys.secretOrKey, function (err, decoded) {
+        if (err) {
+          return res.status(403).json({
+            error: 'Token is invalid and expired'
+          });
+        }
+        tokenUserId = decoded.userId.toString();
+      });
+      const user = await User.findById(tokenUserId);
+      const matched = await user.hasSameConfirmToken(confirmToken);
+      if (matched) {
+        if (password.length < 6) {
+          return res.status(422).json({
+            password: 'Password must be at least 6 characters',
+          });
+        }
 
-    if (!user || !user.confirmToken) {
-      return res.status(422).json({
+        if (password !== passwordConfirmation) {
+          return res.status(422).json({
+            passwordConfirmation: 'Password is not a same as confirmation',
+          });
+        }
+        user.password = password;
+        delete user.confirmToken;
+        await user.save();
+      }
+      return res.json({
+        success: true,
         alert: {
-          title: 'Error!',
-          detail: 'Token has expired',
+          title: 'Success!',
+          detail: 'Password has been reset',
         },
       });
-    }
+    } else if (typeof header !== 'undefined') {
+      const bearer = header.split(' ');
+      const token = bearer[1];
+      jwt.verify(token, keys.secretOrKey, function (err, decoded) {
+        if (err) {
+          return res.status(403).json({
+            error: 'Token is invalid and expired'
+          });
+        }
+        tokenUserId = decoded.userId.toString();
+        tokenUserRole = decoded.role.toString();
+        tokenProfileId = decoded.profileId.toString();
+      });
 
-    try {
-      await jwt.verify(confirmToken, keys.secretOrKey);
-    } catch (error) {
-      logger.error(error);
-      return res.status(422).json({
+      const user = await User.findById(tokenUserId);
+      const matched = await user.hasSamePassword(passwordCurrent);
+      if (matched) {
+        if (password.length < 6) {
+          return res.status(422).json({
+            password: 'Password must be at least 6 characters',
+          });
+        }
+
+        if (password !== passwordConfirmation) {
+          return res.status(422).json({
+            passwordConfirmation: 'Password is not a same as confirmation',
+          });
+        }
+        user.password = password;
+        await user.save();
+      }
+      return res.json({
+        success: true,
         alert: {
-          title: 'Error!',
-          detail: 'Token has expired',
+          title: 'Success!',
+          detail: 'Password has been reset',
         },
       });
-    }
-
-    if (password.length < 6) {
-      return res.status(422).json({
-        password: 'Password must be at least 6 characters',
+    } else {
+      return res.status(403).json({
+        alert: {
+          title: 'Error!',
+          detail: 'Authorization token not found'
+        }
       });
     }
-
-    if (password !== passwordConfirmation) {
-      return res.status(422).json({
-        passwordConfirmation: 'Password is not a same as confirmation',
-      });
-    }
-
-    user.password = password;
-    user.confirmToken = undefined;
-
-    await user.save();
-    return res.json({
-      success: true,
-      alert: {
-        title: 'Success!',
-        detail: 'Password has been reset',
-      },
-    });
   } catch (error) {
     logger.error(error);
     return res.status(422).json({

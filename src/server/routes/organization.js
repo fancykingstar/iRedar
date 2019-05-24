@@ -3,12 +3,21 @@ const passport = require('passport');
 
 const router = express.Router();
 
-const userController = require('../controllers/organization');
+const organizationController = require('../controllers/organization');
 
 // @route POST api/organizations/register
 // @desc Register organizations
 // @access Public
-router.post('/register', userController.postRegister);
+router.post('/register', organizationController.postRegister);
+
+// @route GET api/organizations/:organizationId
+// @desc Return all organization's permissions
+// @access Private
+router.get(
+    '/:organizationId',
+    passport.authenticate('jwt', {session: false}),
+    organizationController.getOrganization,
+);
 
 // @route POST api/organizations/permission
 // @desc Register organizations
@@ -16,7 +25,7 @@ router.post('/register', userController.postRegister);
 router.post(
   '/permission',
   passport.authenticate('jwt', { session: false }),
-  userController.postPermission,
+    organizationController.postPermission,
 );
 
 // @route POST api/organizations/permissions/:profileId
@@ -25,7 +34,7 @@ router.post(
 router.get(
   '/permissions/:profileId',
   passport.authenticate('jwt', { session: false }),
-  userController.getPermissions,
+    organizationController.getPermissions,
 );
 // @route GET api/organizations/permissions/admin/:organizationId/:profileId
 // @desc Return all organization's permissions
@@ -33,7 +42,7 @@ router.get(
 router.get(
   '/permissions/admin/:organizationId/:profileId',
   passport.authenticate('jwt', { session: false }),
-  userController.getAdminPermissions,
+    organizationController.getAdminPermissions,
 );
 
 // @route POST api/organizations/permissions/admin/
@@ -42,7 +51,7 @@ router.get(
 router.post(
   '/permissions/admin',
   passport.authenticate('jwt', { session: false }),
-  userController.postAdminPermissions,
+    organizationController.postAdminPermissions,
 );
 
 module.exports = router;
