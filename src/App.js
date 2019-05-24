@@ -38,7 +38,7 @@ import AdminSettings from './client/components/App/Settings/AdminSettings';
 import Payment from './client/components/App/Settings/Payment';
 import Settings from './client/components/App/Settings/Settings';
 import UpdatePassword from './client/components/App/Settings/UpdatePassword';
-import TasksPage from './client/components/App/Tasks';
+//import TasksPage from './client/components/App/Tasks';
 import LoginPage from './client/components/Landing/Login';
 import RegisterPage from './client/components/Landing/Register';
 import ResetPasswordPage from './client/components/Landing/ResetPassword';
@@ -81,7 +81,7 @@ class App extends Component {
                 <PrivateRoute exact path='/dashboard' component={DashboardPage}/>
               </Switch>
               <Switch>
-                <PrivateRoute exact path='/tasks' component={TasksPage}/>
+                {/*<PrivateRoute exact path='/tasks' component={TasksPage}/>*/}
                 <PrivateRoute exact path='/logs' component={LogsPage}/>
               </Switch>
               <Switch>
