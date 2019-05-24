@@ -15,11 +15,16 @@ const uploadedForms = require('./routes/uploadedForms');
 const referralController = require('./routes/referral');
 const contacts = require('./routes/contacts');
 const groups = require('./routes/group');
+const messages = require('./routes/message');
 
 // eslint-disable no-console
 
 // Initial express app
 const app = express();
+// Initial http server
+const server = require('http').Server(app);
+// Initial web socket
+const io = require('socket.io')(server);
 
 // Log requests info
 app.use(morgan('dev'));
@@ -58,6 +63,8 @@ app.use('/api/upload-forms', uploadedForms);
 app.use('/api/upload-referral', referralController);
 app.use('/api/contacts', contacts);
 app.use('/api/groups', groups);
+// Io init
+io.on('connection', messages.connect);
 
 if (!debugMode) {
   app.use(express.static(path.join(__dirname, relativePath, 'build')));
@@ -79,6 +86,6 @@ app.get('/*', function (req, res) {
 
 const port = process.env.PORT || 5000;
 
-app.listen(port, () => logger.info(`Server running on port ${port}`));
+server.listen(port, () => logger.info(`Server running on port ${port}`));
 
 module.exports = app;
