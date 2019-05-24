@@ -5,7 +5,6 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 import ToolkitProvider, {Search} from 'react-bootstrap-table2-toolkit';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
-import Select from 'react-select';
 import {editAdminPermissions} from '../../../../actions/accessActions';
 import './index.css';
 
@@ -155,52 +154,6 @@ export class DataTable extends Component {
           <div>
             <div className='row'>
               <div className='col-6 d-sm-flex'>
-                <div className='dropdown filter-dropdown'>
-                  <button
-                    className='btn btn-primary btn-sm mg-l-5 dropdown-toggle filter-dropdown-button'
-                    type='button'
-                    id='dropdownMenuButton2'
-                    aria-haspopup='true'
-                    aria-expanded='false'
-                    onClick={this.handleShowFilterDropdown}
-                  >
-                    <i className='fa fa-filter'/> Filters
-                  </button>
-                  <div
-                    className='dropdown-menu filter-dropdown-menu pd-30 pd-sm-20 wd-sm-400'
-                    aria-labelledby='dropdownMenuButton2'
-                    x-placement='bottom-start'
-                    style={{
-                      position: 'absolute',
-                      transform: 'translate3d(0px, 42px, 0px)',
-                      top: '0px',
-                      left: '0px',
-                      'will-change': 'transform'
-                    }}
-                  >
-                    <div className='row'>
-                      <div className='col-6'>
-                        <Select options={[]} styles={selectCustomStyle} placeholder='Profession' name='role'/>
-                      </div>
-                      <div className='col-6'>
-                        <Select options={[]} styles={selectCustomStyle} placeholder='Type' name='role'/>
-                      </div>
-                    </div>
-                    <div className='row'>
-                      <div className='col-6'>
-                        <Select options={[]} styles={selectCustomStyle} placeholder='Company' name='role'/>
-                      </div>
-                    </div>
-                    <div className='row'>
-                      <div className='col-6'>
-                        <button className='btn btn-info btn-sm'>Apply</button>
-                      </div>
-                      <div className='col-6 text-right'>
-                        <a href='#'>Clear filters</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
                 <div className='dropdown'>
                   <button
                     className='btn btn-primary btn-sm dropdown-toggle mg-l-5'
@@ -224,8 +177,8 @@ export class DataTable extends Component {
                       'will-change': 'transform'
                     }}
                   >
-                    <a className='dropdown-item' href='#' onClick={() => {this.props.archiveContacts();}}>
-                      <i className='fa fa-file'/> Archive contacts
+                    <a className='dropdown-item' href='#' onClick={() => {}}>
+                      <i className='fa fa-file'/> Archive notifications
                     </a>
                     <a className='dropdown-item' href='#' onClick={() => {this.props.deleteNotifications();}}>
                       <i className='fa fa-trash'/> Delete notifications
