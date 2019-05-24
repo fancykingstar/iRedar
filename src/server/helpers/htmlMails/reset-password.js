@@ -7,9 +7,9 @@ exports.resetPasswordEmail = (appHost, token) => `
     <title>Password Reset</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type="text/css">
-      /**
-   * Google webfonts. Recommended to include the .woff version for cross-client compatibility.
-   */
+        /**
+        * Google webfonts. Recommended to include the .woff version for cross-client compatibility.
+        */
       @media screen {
         @font-face {
           font-family: 'Source Sans Pro';
@@ -29,10 +29,10 @@ exports.resetPasswordEmail = (appHost, token) => `
         }
       }
       /**
-   * Avoid browser level font resizing.
-   * 1. Windows Mobile
-   * 2. iOS / OSX
-   */
+       * Avoid browser level font resizing.
+       * 1. Windows Mobile
+       * 2. iOS / OSX
+       */
       body,
       table,
       td,
@@ -41,22 +41,22 @@ exports.resetPasswordEmail = (appHost, token) => `
         -webkit-text-size-adjust: 100%; /* 2 */
       }
       /**
-   * Remove extra space added to tables and cells in Outlook.
-   */
+       * Remove extra space added to tables and cells in Outlook.
+       */
       table,
       td {
         mso-table-rspace: 0pt;
         mso-table-lspace: 0pt;
       }
       /**
-   * Better fluid images in Internet Explorer.
-   */
+       * Better fluid images in Internet Explorer.
+       */
       img {
         -ms-interpolation-mode: bicubic;
       }
       /**
-   * Remove blue links for iOS devices.
-   */
+       * Remove blue links for iOS devices.
+       */
       a[x-apple-data-detectors] {
         font-family: inherit !important;
         font-size: inherit !important;
@@ -66,8 +66,8 @@ exports.resetPasswordEmail = (appHost, token) => `
         text-decoration: none !important;
       }
       /**
-   * Fix centering issues in Android 4.4.
-   */
+       * Fix centering issues in Android 4.4.
+       */
       div[style*='margin: 16px 0;'] {
         margin: 0 !important;
       }
@@ -78,8 +78,8 @@ exports.resetPasswordEmail = (appHost, token) => `
         margin: 0 !important;
       }
       /**
-   * Collapse table borders to avoid space between cells.
-   */
+       * Collapse table borders to avoid space between cells.
+       */
       table {
         border-collapse: collapse !important;
       }
@@ -220,7 +220,7 @@ exports.resetPasswordEmail = (appHost, token) => `
                 </p>
                 <p style="margin: 0;">
                   <a href="http://${appHost}/reset-password/${token}" target="_blank"
-                    >http://${appHost}/reset-password/${token}</a
+                  >http://${appHost}/reset-password/${token}</a
                   >
                 </p>
               </td>

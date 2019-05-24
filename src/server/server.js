@@ -12,7 +12,8 @@ const users = require('./routes/users');
 const organizations = require('./routes/organization');
 const submissions = require('./routes/submission');
 const uploadedForms = require('./routes/uploadedForms');
-const referralController = require('./routes/referral')
+const referralController = require('./routes/referral');
+const payment = require('./routes/payment');
 
 // eslint-disable no-console
 
@@ -50,6 +51,7 @@ require('./configs/passport')(passport);
 // Use routes
 app.use('/api/users', users);
 app.use('/api/organizations', organizations);
+app.use('/api/payment', payment);
 app.use('/api/submissions', submissions);
 app.use('/api/upload-forms', uploadedForms);
 app.use('/api/upload-referral', referralController);

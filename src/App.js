@@ -17,17 +17,24 @@ import RegisterPage from './client/components/Landing/Register';
 import ResetPasswordPage from './client/components/Landing/ResetPassword';
 import UpdatePasswordPage from './client/components/Landing/UpdatePassword';
 import DashboardPage from './client/components/App/Dashboard';
-import TasksPage from './client/components/App/Tasks';
+import LogsPage from './client/components/App/Logs';
 import ContactsPage from './client/components/App/Contacts';
 import FormsPage from './client/components/App/Forms';
 import ModulesPage from './client/components/App/Modules';
 import ReportsPage from './client/components/App/Reports';
 import AdminSettings from './client/components/App/Settings/AdminSettings';
 import AddNewUsers from './client/components/App/Settings/AddNewUsers';
+import UpdatePassword from './client/components/App/Settings/UpdatePassword';
+import Payment from './client/components/App/Settings/Payment';
+import Settings from './client/components/App/Settings/Settings';
 import ClientAction from './client/components/App/Forms/AllForms/ClientAction';
 import IARAssessment from './client/components/App/Forms/AllForms/IARAssessment';
 import FCRPLoan from './client/components/App/Forms/AllForms/FCRPLoan';
 import Registration from './client/components/App/Forms/AllForms/Registration';
+import ViewClientSubmission from './client/components/App/Forms/AllForms/ViewClientSubmission';
+import ViewIARSubmission from './client/components/App/Forms/AllForms/ViewIARSubmission';
+import ViewFCRPSubmission from './client/components/App/Forms/AllForms/ViewFCRPSubmission';
+import ViewRegistrationSubmission from './client/components/App/Forms/AllForms/ViewRegistrationSubmission';
 
 import Submissions from './client/components/App/Modules/Submissions';
 import Referrals from './client/components/App/Modules/Referrals';
@@ -41,6 +48,7 @@ import ReferralForm from './client/components/App/Modules/Referrals/ReferralForm
 import ReferralFormDetail from './client/components/App/Modules/Referrals/ReferralFormDetail'
 import { GET_ERRORS } from './client/actions/types';
 
+
 // Check for authentication
 checkAuth(store);
 
@@ -50,7 +58,7 @@ axios.interceptors.response.use(response => {
   store.dispatch({
     type: GET_ERRORS,
     payload: error.response.data
-  })
+  });
   return Promise.reject(error);
 });
 
@@ -78,7 +86,7 @@ class App extends Component {
                 />
               </Switch>
               <Switch>
-                <PrivateRoute exact path="/tasks" component={TasksPage} />
+                <PrivateRoute exact path="/logs" component={LogsPage}/>
               </Switch>
               <Switch>
                 <PrivateRoute exact path="/contacts" component={ContactsPage} />
@@ -99,12 +107,32 @@ class App extends Component {
                   component={AdminSettings}
                 />
               </Switch>
-
+              <Switch>
+                <PrivateRoute
+                    exact
+                    path="/settings/settings"
+                    component={Settings}
+                />
+              </Switch>
               <Switch>
                 <PrivateRoute
                     exact
                     path="/settings/add-new-users"
                     component={AddNewUsers}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                    exact
+                    path="/settings/update-admin-password"
+                    component={UpdatePassword}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                    exact
+                    path="/settings/payment"
+                    component={Payment}
                 />
               </Switch>
               <Switch>
@@ -150,8 +178,37 @@ class App extends Component {
                   component={Registration}
                 />
               </Switch>
+              <Switch>
+                <PrivateRoute
+                    exact
+                    path="/forms/all-forms/view-client-submission"
+                    component={ViewClientSubmission}
+                />
+              </Switch>
 
+              <Switch>
+                <PrivateRoute
+                    exact
+                    path="/forms/all-forms/view-iar-submission"
+                    component={ViewIARSubmission}
+                />
+              </Switch>
 
+              <Switch>
+                <PrivateRoute
+                    exact
+                    path="/forms/all-forms/view-fcrp-submission"
+                    component={ViewFCRPSubmission}
+                />
+              </Switch>
+
+              <Switch>
+                <PrivateRoute
+                    exact
+                    path="/forms/all-forms/view-registration-submission"
+                    component={ViewRegistrationSubmission}
+                />
+              </Switch>
               <Switch>
                 <Route
                   exact

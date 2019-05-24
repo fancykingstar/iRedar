@@ -7,7 +7,7 @@ import Select from "react-select";
 import Alert from "../../Elements/Alert";
 import TextFieldGroup from "../../Elements/TextFieldGroup";
 
-import { addUsers } from "../../../actions/authActions";
+import {registerUser} from "../../../actions/authActions";
 
 export class AddNewUsers extends Component {
   constructor() {
@@ -21,7 +21,6 @@ export class AddNewUsers extends Component {
       errors: {}
     };
   }
-  componentDidMount() {}
 
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -42,7 +41,7 @@ export class AddNewUsers extends Component {
       role: this.state.role
     };
 
-    this.props.addUsers(newUser, this.props.history);
+    this.props.registerUser(newUser, this.props.history);
   };
   render() {
 
@@ -50,11 +49,10 @@ export class AddNewUsers extends Component {
     let countAll = adminCount + staffCount + partnerCount + clientCount;
 
     const roleOfUser = [
-      { label: "User", value: "USER" },
-      { label: "Staff", value: "STAFF" },
-      { label: "Client", value: "CLIENT" },
-      { label: "Partner", value: "PARTNER" },
-      { label: "Admin", value: "ADMIN" }
+      {label: "User", value: "user"},
+      {label: "Staff", value: "staff"},
+      {label: "Partner", value: "partner"},
+      {label: "Admin", value: "admin"}
     ];
 
     let { errors } = this.state;
@@ -67,83 +65,84 @@ export class AddNewUsers extends Component {
               <h6 className="slim-pagetitle">Admin Settings</h6>
             </div>
           </div>
-
           <div className="manager-wrapper">
             <div className="manager-right">
-              <form onSubmit={this.onSubmit}>
-                <div className="signin-box">
-                  {errors.alert && (
-                    <Alert
-                      type="danger"
-                      title={errors.alert.title}
-                      close={false}
-                      detail={errors.alert.detail}
-                      style={{ marginBottom: 15 }}
-                    />
-                  )}
-                  <h6 className="slim-pagetitle">User Details</h6>
-                  <div className="row row-xs mg-b-10">
-                    <div className="col-sm">
-                      <TextFieldGroup
-                        placeholder="Firstname"
-                        name="firstName"
-                        type="text"
-                        value={this.state.firstName}
-                        onChange={this.onChange}
-                        error={errors.firstName}
-                        required
-                      />
-                    </div>
-                    <div className="col-sm mg-t-10 mg-sm-t-0">
-                      <TextFieldGroup
-                        placeholder="Lastname"
-                        name="lastName"
-                        type="text"
-                        value={this.state.lastName}
-                        onChange={this.onChange}
-                        error={errors.lastName}
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <TextFieldGroup
-                      placeholder="Enter your email"
-                      name="email"
-                      type="email"
-                      value={this.state.email}
-                      onChange={this.onChange}
-                      error={errors.email}
-                      required
-                    />
-
-                    <TextFieldGroup
-                      style={{ marginTop: 5 }}
-                      placeholder="Enter your password"
-                      name="password"
-                      type="password"
-                      value={this.state.password}
-                      onChange={this.onChange}
-                      error={errors.password}
-                      required
-                    />
-                    <Select options={roleOfUser}
-                            style={{ marginTop: 5 }}
-                            placeholder="Select The Role"
-                            name="role"
-                            value={this.state.label}
-                            onChange={this.OnSelectChange}
-                            error={errors.role}
+              <div className="section-wrapper">
+                <form onSubmit={this.onSubmit}>
+                  <div className="signin-box">
+                    {errors.alert && (
+                        <Alert
+                            type="danger"
+                            title={errors.alert.title}
+                            close={false}
+                            detail={errors.alert.detail}
+                            style={{ marginBottom: 15 }}
+                        />
+                    )}
+                    <h6 className="slim-pagetitle">User Details</h6>
+                    <div className="row row-xs mg-b-10">
+                      <div className="col-sm">
+                        <TextFieldGroup
+                            placeholder="Firstname"
+                            name="firstName"
+                            type="text"
+                            value={this.state.firstName}
+                            onChange={this.onChange}
+                            error={errors.firstName}
                             required
-                    /><br />
-                    <button
-                      className="btn btn-primary btn-block btn-signin"
-                      type="submit">
-                      Add New User
-                    </button>
+                        />
+                      </div>
+                      <div className="col-sm mg-t-10 mg-sm-t-0">
+                        <TextFieldGroup
+                            placeholder="Lastname"
+                            name="lastName"
+                            type="text"
+                            value={this.state.lastName}
+                            onChange={this.onChange}
+                            error={errors.lastName}
+                            required
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <TextFieldGroup
+                          placeholder="Enter your email"
+                          name="email"
+                          type="email"
+                          value={this.state.email}
+                          onChange={this.onChange}
+                          error={errors.email}
+                          required
+                      />
+
+                      <TextFieldGroup
+                          style={{ marginTop: 5 }}
+                          placeholder="Enter your password"
+                          name="password"
+                          type="password"
+                          value={this.state.password}
+                          onChange={this.onChange}
+                          error={errors.password}
+                          required
+                      />
+                      <Select options={roleOfUser}
+                              style={{ marginTop: 5 }}
+                              placeholder="Select The Role"
+                              name="role"
+                              value={this.state.label}
+                              onChange={this.OnSelectChange}
+                              error={errors.role}
+                              required
+                      /><br />
+                      <button
+                          className="btn btn-primary btn-block btn-signin"
+                          type="submit">
+                        Add New User
+                      </button>
+                    </div>
                   </div>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
 
             <div className="manager-left">
@@ -184,7 +183,7 @@ export class AddNewUsers extends Component {
 }
 
 AddNewUsers.propTypes = {
-  addUsers: propTypes.func.isRequired,
+  registerUser: propTypes.func.isRequired,
   auth: propTypes.object.isRequired,
   errors: propTypes.object.isRequired
 };
@@ -197,6 +196,6 @@ const mapStateToProps = state => ({
 export default withRouter(
   connect(
     mapStateToProps,
-    { addUsers }
+      {registerUser}
   )(AddNewUsers)
 );

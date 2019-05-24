@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import jwt_decode from 'jwt-decode';
-import { getSubmission } from '../../../../../actions/submissionActions';
+import {getSubmission} from '../../../../../actions/submissionActions';
 import IARAssessment from './IARAssessment';
 
 class IARAssessmentSubmission extends Component {
@@ -12,17 +12,19 @@ class IARAssessmentSubmission extends Component {
             dateSubmitted: ''
         }
     };
-    componentDidMount() {
-        const { getSubmission, permissions } = this.props;
+    edit = false;
 
-        let profile
+    componentDidMount() {
+        const {getSubmission, permissions} = this.props;
+
+        let profile;
         if (permissions.length === 0) {
-            let token = localStorage.getItem('jwtToken')
+            let token = localStorage.getItem('jwtToken');
             if (token == null) {
-                this.props.history.push('/dashboard')
+                this.props.history.push('/dashboard');
                 return
             }
-            const decoded = jwt_decode(token)
+            const decoded = jwt_decode(token);
             profile = decoded.profileId
         } else {
             profile = permissions[0].profile
@@ -32,21 +34,26 @@ class IARAssessmentSubmission extends Component {
             profileId: profile,
             //organizationId: permissions[0].organization
         };
-        const { submissionId } = this.props.match.params;
+        const {submissionId} = this.props.match.params;
         getSubmission(userData, submissionId);
+
+        let edit = this.props.location.state.edit;
+        if (typeof edit === "undefined") {
+            edit = false;
+        }
+        this.edit = edit;
 
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.submissions.submission) {
-            this.setState({ submission: nextProps.submissions.submission });
-
+            this.setState({submission: nextProps.submissions.submission});
         }
-
     }
 
     render() {
-        return <IARAssessment submission={this.state.submission} history={this.props.history} />;
+        return <IARAssessment permissions={this.props.permissions} submission={this.state.submission}
+                              history={this.props.history} edit={this.edit}/>;
     }
 }
 
@@ -59,5 +66,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { getSubmission }
+    {getSubmission}
 )(IARAssessmentSubmission);

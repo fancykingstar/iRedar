@@ -5,6 +5,7 @@ import accessReducer from './accessReducer'
 import submissionReducer from './submissionReducer'
 import uploadFormReducer from './uploadFormReducer'
 import referralReducer from './referralReducer'
+import organizationReducer from './organizationReducer'
 
 export default combineReducers({
   auth: authReducer,
@@ -12,5 +13,6 @@ export default combineReducers({
   access: accessReducer,
   submissions: submissionReducer,
   uploadForms: uploadFormReducer,
-  referrals: referralReducer
+  referrals: referralReducer,
+  organization: organizationReducer
 });

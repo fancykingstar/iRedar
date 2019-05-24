@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import DataTable from '../Components/DataTables/DataTable';
+import AdminDataTable from '../Components/DataTables/AdminDataTable';
 import { getAdminPermissions } from './../../../actions/accessActions';
 import { deleteUsers } from "../../../actions/authActions";
 import queryString from 'query-string';
+
 export class AdminSettings extends Component {
 
   constructor() {
@@ -103,9 +104,7 @@ export class AdminSettings extends Component {
             <div className="manager-right">
               <div className="section-wrapper">
                 <div className="table-wrapper">
-                  <DataTable data={data}
-                             permissions={permissions}
-                             onSelected={this.getData}
+                  <AdminDataTable data={data} permissions={permissions} onSelected={this.getData}
                   />
                 </div>
               </div>
@@ -126,12 +125,37 @@ export class AdminSettings extends Component {
               </Link>
               <Link
                   to={{
+                    pathname: "/settings/update-admin-password",
+                    adminCount: adminCount,
+                    staffCount: staffCount,
+                    partnerCount: partnerCount,
+                    clientCount: clientCount
+                  }}
+                  className="btn btn-contact-new"
+              >
+                Update Password
+              </Link>
+              <Link
+                  to={{
+                    pathname: "/settings/payment",
+                    adminCount: adminCount,
+                    staffCount: staffCount,
+                    partnerCount: partnerCount,
+                    clientCount: clientCount
+                  }}
+                  className="btn btn-contact-new"
+              >
+                Subscription and Payment
+              </Link>
+              <Link
+                  to={{
                     pathname: "/settings/admin-settings",
                     adminCount: adminCount,
                     staffCount: staffCount,
                     partnerCount: partnerCount,
                     clientCount: clientCount
                   }}
+                  style={{backgroundColor: '#FF7F50'}}
                   className="btn btn-contact-new"
                   onClick={handleDelete}
               >

@@ -14,10 +14,9 @@ export default function PartnerNavbar() {
           </li>
 
           <li className="nav-item">
-            <Link className="nav-link" to="/tasks">
+              <Link className="nav-link" to="/logs">
               <i className="icon ion-ios-browsers-outline" />
-              <span>Tasks</span>
-              <span className="square-8" />
+                  <span>Logs</span>
             </Link>
           </li>
           <li className="nav-item">
