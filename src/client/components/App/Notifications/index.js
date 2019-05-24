@@ -1,11 +1,40 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
+import {deleteNotifications, getNotifications} from '../../../actions/notificationAction';
 import NotificationTable from '../Components/NotificationDataTable';
 
 class Notifications extends Component {
-  getData = async () => {
+  state = {
+    notifications: []
+  };
   
+  componentWillMount() {
+    const {getNotifications} = this.props;
+    getNotifications();
+  }
+  
+  componentWillReceiveProps(nextProps, nextContext) {
+    const {notifications} = nextProps;
+    let data = notifications.map(({_id, title, sentBy, created_at}) => {
+      return {
+        _id,
+        title,
+        sentBy,
+        created_at
+      };
+    });
+    this.setState({notifications: data});
+  }
+  
+  getData = (data) => {
+    this.deleteItems = data;
+  };
+  
+  removeNotifications = (ids) => {
+    const {deleteNotifications, getNotifications} = this.props;
+    deleteNotifications(ids);
+    getNotifications();
   };
   
   render() {
@@ -28,8 +57,9 @@ class Notifications extends Component {
         </div>
         <div className='section-wrapper'>
           <NotificationTable
-            data={[]}
+            data={this.state.notifications}
             onSelected={this.getData}
+            deleteNotifications={() => {this.removeNotifications(this.deleteItems);}}
           />
         </div>
       </div>
@@ -38,8 +68,12 @@ class Notifications extends Component {
 }
 
 const mapStateToProps = state => ({
+  notifications: state.notifications.allNotifications,
   errors: state.errors,
   profile: state.auth.profile
 });
 
-export default connect(mapStateToProps, {})(Notifications);
+export default connect(mapStateToProps, {
+  getNotifications,
+  deleteNotifications
+})(Notifications);

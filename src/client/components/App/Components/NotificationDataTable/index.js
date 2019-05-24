@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React, {Component} from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
@@ -27,14 +28,15 @@ export class DataTable extends Component {
         sort: true,
         editable: false,
         formatter: (text, record) => {
-          return <Link to={`/contacts/view/${record._id}`}>{text}</Link>;
+          return <Link to={`/notifications/view/${record._id}`}>{text}</Link>;
         }
       },
       {
-        dataField: 'dateSent',
+        dataField: 'created_at',
         text: 'Date sent',
         sort: true,
-        editable: false
+        editable: false,
+        formatter: (text, record) => text ? moment(text).format('LLL') : 'N/A'
       },
       {
         dataField: 'sentBy',
@@ -43,7 +45,8 @@ export class DataTable extends Component {
         editable: false,
         headerStyle: (colum, colIndex) => {
           return {width: '25%'};
-        }
+        },
+        formatter: (text, record) => record.sentBy ? `${record.sentBy.lastName}, ${record.sentBy.firstName}` : 'N/A'
       }
     ];
   }
@@ -224,8 +227,8 @@ export class DataTable extends Component {
                     <a className='dropdown-item' href='#' onClick={() => {this.props.archiveContacts();}}>
                       <i className='fa fa-file'/> Archive contacts
                     </a>
-                    <a className='dropdown-item' href='#' onClick={() => {this.props.deleteContacts();}}>
-                      <i className='fa fa-trash'/> Delete contacts
+                    <a className='dropdown-item' href='#' onClick={() => {this.props.deleteNotifications();}}>
+                      <i className='fa fa-trash'/> Delete notifications
                     </a>
                   </div>
                 </div>

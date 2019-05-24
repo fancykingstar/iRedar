@@ -15,6 +15,7 @@ const uploadedForms = require('./routes/uploadedForms');
 const referralController = require('./routes/referral');
 const contacts = require('./routes/contacts');
 const groups = require('./routes/group');
+const notifications = require('./routes/notifications');
 
 // eslint-disable no-console
 
@@ -58,6 +59,7 @@ app.use('/api/upload-forms', uploadedForms);
 app.use('/api/upload-referral', referralController);
 app.use('/api/contacts', contacts);
 app.use('/api/groups', groups);
+app.use('/api/notifications', notifications);
 
 if (!debugMode) {
   app.use(express.static(path.join(__dirname, relativePath, 'build')));

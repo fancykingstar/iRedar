@@ -31,6 +31,7 @@ import ReferralFormDetail from './client/components/App/Modules/Referrals/Referr
 import Submissions from './client/components/App/Modules/Submissions';
 import NotificationsPage from './client/components/App/Notifications';
 import AddNewNotification from './client/components/App/Notifications/AddNewNotification';
+import ViewNotification from './client/components/App/Notifications/ViewNotification';
 import ReportsPage from './client/components/App/Reports';
 import AddNewUsers from './client/components/App/Settings/AddNewUsers';
 import AdminSettings from './client/components/App/Settings/AdminSettings';
@@ -98,6 +99,9 @@ class App extends Component {
               </Switch>
               <Switch>
                 <PrivateRoute exact path='/notifications/add-new-notification' component={AddNewNotification}/>
+              </Switch>
+              <Switch>
+                <PrivateRoute exact path='/notifications/view/:notificationId' component={ViewNotification}/>
               </Switch>
               
               <Switch>
