@@ -113,7 +113,7 @@ export class DataTable extends Component {
               case 'client':
                 return <button className={'btn btn-outline-primary btn-sm mg-l-10'} disabled>C</button>;
               default:
-                break;
+                return null;
             }
           });
         }
