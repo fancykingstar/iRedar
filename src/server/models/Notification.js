@@ -8,11 +8,11 @@ const notificationSchema = new Schema({
   },
   title: {
     type: String,
-    required: 'Group name field is required'
+    required: 'Title field is required'
   },
   message: {
     type: String,
-    required: 'Group name field is required'
+    required: 'Message field is required'
   },
   recipients: [
     {
