@@ -24,10 +24,10 @@ import RegistrationSubmission from './client/components/App/Forms/Submissions/Re
 import SubmissionSuccess from './client/components/App/Forms/Submissions/SubmissionSuccess';
 import UploadFormList from './client/components/App/Forms/UploadForm';
 import LogsPage from './client/components/App/Logs';
+import MessagePage from './client/components/App/Message';
 import ModulesPage from './client/components/App/Modules';
 import ReferralForm from './client/components/App/Modules/Referrals/ReferralForm';
 import ReferralFormDetail from './client/components/App/Modules/Referrals/ReferralFormDetail';
-
 import Submissions from './client/components/App/Modules/Submissions';
 import NotificationsPage from './client/components/App/Notifications';
 import AddNewNotification from './client/components/App/Notifications/AddNewNotification';
@@ -101,13 +101,18 @@ class App extends Component {
                 <PrivateRoute exact path='/notifications' component={NotificationsPage}/>
               </Switch>
               <Switch>
-                <PrivateRoute exact path='/settings/settings' component={Settings}/>
-              </Switch>
-              <Switch>
                 <PrivateRoute exact path='/notifications/add-new-notification' component={AddNewNotification}/>
               </Switch>
               <Switch>
                 <PrivateRoute exact path='/notifications/view/:notificationId' component={ViewNotification}/>
+              </Switch>
+              <Switch>
+                <PrivateRoute exact path='/messages' component={MessagePage}/>
+              </Switch>
+              <Switch>
+                <PrivateRoute exact path='/settings/settings' component={Settings}/>
+              </Switch>
+              <Switch>
                 <PrivateRoute exact path='/settings/update-admin-password' component={UpdatePassword}/>
               </Switch>
               <Switch>
