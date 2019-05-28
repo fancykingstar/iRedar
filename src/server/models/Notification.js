@@ -17,7 +17,7 @@ const notificationSchema = new Schema({
   recipients: [
     {
       type: mongoose.Schema.ObjectId,
-      ref: 'Contact'
+      ref: 'Profile'
     }
   ]
 }, {
