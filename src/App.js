@@ -29,6 +29,7 @@ import ReferralForm from './client/components/App/Modules/Referrals/ReferralForm
 import ReferralFormDetail from './client/components/App/Modules/Referrals/ReferralFormDetail';
 
 import Submissions from './client/components/App/Modules/Submissions';
+import Referrals from './client/components/App/Modules/Referrals';
 import NotificationsPage from './client/components/App/Notifications';
 import AddNewNotification from './client/components/App/Notifications/AddNewNotification';
 import ViewNotification from './client/components/App/Notifications/ViewNotification';
@@ -96,7 +97,7 @@ class App extends Component {
               <Switch>
                 <PrivateRoute exact path='/contacts/add-new-contact' component={AddNewContact}/>
               </Switch>
-              
+
               <Switch>
                 <PrivateRoute exact path='/notifications' component={NotificationsPage}/>
               </Switch>
@@ -116,7 +117,10 @@ class App extends Component {
               <Switch>
                 <PrivateRoute exact path='/modules/submissions' component={Submissions}/>
               </Switch>
-              
+              <Switch>
+                <PrivateRoute exact path="/modules/referrals" component={Referrals}/>
+              </Switch>
+
               <Switch>
                 <PrivateRoute exact path='/forms' component={FormsPage}/>
               </Switch>
@@ -135,15 +139,15 @@ class App extends Component {
               <Switch>
                 <PrivateRoute exact path='/forms/all-forms/view-client-submission' component={ViewClientSubmission}/>
               </Switch>
-              
+
               <Switch>
                 <PrivateRoute exact path='/forms/all-forms/view-iar-submission' component={ViewIARSubmission}/>
               </Switch>
-              
+
               <Switch>
                 <PrivateRoute exact path='/forms/all-forms/view-fcrp-submission' component={ViewFCRPSubmission}/>
               </Switch>
-              
+
               <Switch>
                 <PrivateRoute
                   exact
