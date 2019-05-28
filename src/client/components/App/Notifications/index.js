@@ -10,8 +10,9 @@ class Notifications extends Component {
   };
   
   componentWillMount() {
-    const {getNotifications} = this.props;
-    getNotifications();
+    const {getNotifications, profile} = this.props;
+    console.log(profile);
+    getNotifications(profile._id);
   }
   
   componentWillReceiveProps(nextProps, nextContext) {

@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import propTypes from 'prop-types';
-
-import { logoutUser } from '../../../actions/authActions';
 import classnames from 'classnames';
+import propTypes from 'prop-types';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
+
+import {logoutUser} from '../../../actions/authActions';
 
 class AdminNavbar extends Component {
   onLogoutClick(e) {
     e.preventDefault();
     this.props.logoutUser();
   }
-
+  
   render() {
     return (
       <div className="slim-navbar">
@@ -23,29 +23,29 @@ class AdminNavbar extends Component {
               })}
             >
               <Link className="nav-link" to="/dashboard">
-                <i className="icon ion-ios-home-outline" />
+                <i className="icon ion-ios-home-outline"/>
                 <span>Dashboard</span>
               </Link>
             </li>
-
+            
             <li
               className={classnames('nav-item', {
                 active: this.props.location.pathname === '/logs'
               })}
             >
               <Link className="nav-link" to="/logs">
-                <i className="icon ion-ios-browsers-outline" />
+                <i className="icon ion-ios-browsers-outline"/>
                 <span>Logs</span>
               </Link>
             </li>
-
+            
             <li
               className={classnames('nav-item', {
                 active: this.props.location.pathname === '/contacts'
               })}
             >
               <Link className="nav-link" to="/contacts">
-                <i className="icon ion-ios-book-outline" />
+                <i className="icon ion-ios-book-outline"/>
                 <span>Contacts</span>
               </Link>
             </li>
@@ -55,7 +55,7 @@ class AdminNavbar extends Component {
               })}
             >
               <Link className="nav-link" to="/forms">
-                <i className="icon ion-ios-gear-outline" />
+                <i className="icon ion-ios-gear-outline"/>
                 <span>Forms</span>
               </Link>
               <div className="sub-item">
@@ -78,8 +78,18 @@ class AdminNavbar extends Component {
               })}
             >
               <Link className="nav-link" to="/notifications">
-                <i className="icon ion-ios-email-outline" />
+                <i className="icon ion-ios-email-outline"/>
                 <span>Notifications</span>
+              </Link>
+            </li>
+            <li
+              className={classnames('nav-item', {
+                active: this.props.location.pathname === '/messages'
+              })}
+            >
+              <Link className="nav-link" to="/messages">
+                <i className="icon ion-ios-email-outline"/>
+                <span>Messages</span>
               </Link>
             </li>
             <li
@@ -88,7 +98,7 @@ class AdminNavbar extends Component {
               })}
             >
               <Link className="nav-link" to="/modules">
-                <i className="icon ion-ios-filing-outline" />
+                <i className="icon ion-ios-filing-outline"/>
                 <span>Modules</span>
               </Link>
               <div className="sub-item">
@@ -102,14 +112,14 @@ class AdminNavbar extends Component {
                 </ul>
               </div>
             </li>
-
+            
             <li
               className={classnames('nav-item with-sub', {
                 active: this.props.location.pathname === '/reports'
               })}
             >
               <Link className="nav-link" to="/reports">
-                <i className="icon ion-ios-analytics-outline" />
+                <i className="icon ion-ios-analytics-outline"/>
                 <span>Report</span>
               </Link>
               <div className="sub-item">
@@ -140,7 +150,7 @@ AdminNavbar.propTypes = {
 
 export default connect(
   null,
-  { logoutUser }
+  {logoutUser}
 )(AdminNavbar);
 
 // export default withRouter(
