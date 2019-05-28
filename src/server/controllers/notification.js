@@ -5,7 +5,8 @@ const Notification = require('../models/Notification');
  * @returns {res}
  */
 exports.index = async (req, res) => {
-  let response = await Notification.find().populate('sentBy');
+  let {id} = req.query;
+  let response = await Notification.find({sentBy: id}).populate('sentBy');
   
   return res.json({
     success: true,

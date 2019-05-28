@@ -1,8 +1,8 @@
 import axios from 'axios';
 import {API_URL, GET_ALL_NOTIFICATIONS, SHOW_NOTIFICATION} from './types';
 
-export const getNotifications = () => async dispatch => {
-  const {data: {data}} = await axios.get(`${API_URL}/api/notifications`);
+export const getNotifications = (id) => async dispatch => {
+  const {data: {data}} = await axios.get(`${API_URL}/api/notifications`, {params: {id}});
   dispatch({
     type: GET_ALL_NOTIFICATIONS,
     payload: data
