@@ -17,6 +17,9 @@ import ViewClientSubmission from './client/components/App/Forms/AllForms/ViewCli
 import ViewFCRPSubmission from './client/components/App/Forms/AllForms/ViewFCRPSubmission';
 import ViewIARSubmission from './client/components/App/Forms/AllForms/ViewIARSubmission';
 import ViewRegistrationSubmission from './client/components/App/Forms/AllForms/ViewRegistrationSubmission';
+import ClientAction from './client/components/App/Forms/AllForms/ClientAction';
+import IARAssessment from './client/components/App/Forms/AllForms/IARAssessment';
+import FCRPLoan from './client/components/App/Forms/AllForms/FCRPLoan';
 import ClientActionSubmission from './client/components/App/Forms/Submissions/ClientAction';
 import FCRPLoanSubmission from './client/components/App/Forms/Submissions/FCRPLoan';
 import IARAssessmentSubmission from './client/components/App/Forms/Submissions/IARAssessment';
@@ -135,6 +138,15 @@ class App extends Component {
               </Switch>
               <Switch>
                 <PrivateRoute exact path='/settings/add-new-users' component={AddNewUsers}/>
+              </Switch>
+              <Switch>
+                <Route exact path="/forms/all-forms/client-action" component={ClientAction}/>
+              </Switch>
+              <Switch>
+                <Route exact path="/forms/all-forms/iar-assessment" component={IARAssessment}/>
+              </Switch>
+              <Switch>
+                <Route exact path="/forms/all-forms/fcrp-loan" component={FCRPLoan}/>
               </Switch>
               <Switch>
                 <PrivateRoute exact path='/forms/all-forms/view-client-submission' component={ViewClientSubmission}/>
