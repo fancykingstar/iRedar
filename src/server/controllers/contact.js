@@ -1,61 +1,31 @@
-const Joi = require('@hapi/joi');
 const Contact = require('../models/Contact');
-const logger = require('../configs/logger');
-
-const rules = Joi.object().keys({
-  firstName: Joi.string().required(),
-  lastName: Joi.string().required(),
-  company: Joi.string().required(),
-  profession: Joi.string().required(),
-  type: Joi.string().required(),
-  group: Joi.string().required()
-});
 
 /**
  * @description Get the list of contacts
  * @returns {res}
  */
 exports.index = async (req, res) => {
-  try {
-    let contacts = await Contact.find();
+  let contacts = await Contact.find().populate('groups');
 
-    return res.json({ success: true, data: contacts });
-  } catch (error) {
-    logger.error(error);
-    return res.status(422).json({
-      alert: {
-        title: 'Error!',
-        detail: 'Server occurred an error,  please try again'
-      }
-    });
-  }
+  return res.json({
+    success: true,
+    data: contacts
+  });
 };
 
 /**
  * @description Store new contact resource
  * @returns {res}
  */
-exports.store = (req, res) => {
-  try {
-    Joi.validate(req.body, rules, async (err, value) => {
-      if (err) {
-        return res.status(422).json({ success: false, data: err });
-      }
+exports.store = async (req, res) => {
+  let { body } = req;
 
-      const contacts = await Contact(value).save();
+  const contact = await Contact.create(body);
 
-      return res.json({ success: true, data: contacts });
-    });
-
-  } catch (e) {
-    logger.error(error);
-    return res.status(422).json({
-      alert: {
-        title: 'Error!',
-        detail: 'Server occurred an error,  please try again'
-      }
-    });
-  }
+  return res.json({
+    success: true,
+    data: contact
+  });
 };
 
 /**
@@ -65,56 +35,29 @@ exports.store = (req, res) => {
 exports.edit = async (req, res) => {
   const { id } = req.params;
 
-  try {
-    let contact = await Contact.findOne({ _id: id });
+  const contact = await Contact.findOne({ _id: id }).populate('groups');
 
-    return res.json({ success: true, data: contact });
-  } catch (error) {
-    logger.error(error);
-    return res.status(422).json({
-      alert: {
-        title: 'Error!',
-        detail: 'Server occurred an error,  please try again'
-      }
-    });
-  }
+  return res.json({
+    success: true,
+    data: contact
+  });
 };
 
 /**
  * @description Update the contact resource
  * @returns {res}
  */
-exports.update = (req, res) => {
+exports.update = async (req, res) => {
   const { id } = req.params;
 
-  try {
-    Joi.validate(req.body, rules, async (error, value) => {
-      if (error) {
-        return res.status(422).json({ success: false, data: error });
-      }
+  const response = await Contact.findByIdAndUpdate(id, req.body);
 
-      await Contact.findByIdAndUpdate(id, value, (error, response) => {
-        if (error) {
-          return res.status(422).json({ success: false, data: error });
-        }
-
-        return res.json({
-          success: true,
-          data: {
-            _id: response._id
-          }
-        });
-      });
-    });
-  } catch (error) {
-    logger.error(error);
-    return res.status(422).json({
-      alert: {
-        title: 'Error!',
-        detail: 'Server occurred an error,  please try again'
-      }
-    });
-  }
+  return res.json({
+    success: true,
+    data: {
+      _id: response._id
+    }
+  });
 };
 
 /**
@@ -122,21 +65,29 @@ exports.update = (req, res) => {
  * @returns {res}
  */
 exports.delete = async (req, res) => {
-  const { id } = req.params;
+  const { ids } = req.query;
 
-  try {
-    let contact = await Contact.remove({ _id: id });
+  const contact = await Contact.deleteMany({ _id: { $in: ids } });
 
-    return res.json({ success: true, data: contact });
-  } catch (error) {
-    logger.error(error);
-    return res.status(422).json({
-      alert: {
-        title: 'Error!',
-        detail: 'Server occurred an error,  please try again'
-      }
-    });
-  }
+  return res.json({
+    success: true,
+    data: contact
+  });
 };
 
+/**
+ * @description Update the contact resource
+ * @returns {res}
+ */
+exports.updatePrivateNotes = async (req, res) => {
+  const { id } = req.params;
 
+  const response = await Contact.findByIdAndUpdate(id, req.body);
+
+  return res.json({
+    success: true,
+    data: {
+      _id: response._id
+    }
+  });
+};

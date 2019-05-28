@@ -14,6 +14,8 @@ const submissions = require('./routes/submission');
 const uploadedForms = require('./routes/uploadedForms');
 const referralController = require('./routes/referral');
 const contacts = require('./routes/contacts');
+const groups = require('./routes/group');
+const notifications = require('./routes/notifications');
 const payment = require('./routes/payment');
 
 // eslint-disable no-console
@@ -29,7 +31,12 @@ app.use(cors());
 
 // Body parser middleware
 app.use(bodyParser.json({ limit: '50mb' }));
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+app.use(
+  bodyParser.urlencoded({
+    limit: '50mb',
+    extended: true
+  })
+);
 
 // Database config
 const db = require('./configs/keys').mongoURI;
@@ -56,10 +63,14 @@ app.use('/api/submissions', submissions);
 app.use('/api/upload-forms', uploadedForms);
 app.use('/api/upload-referral', referralController);
 app.use('/api/contacts', contacts);
+app.use('/api/groups', groups);
+app.use('/api/notifications', notifications);
 
 if (!debugMode) {
   app.use(express.static(path.join(__dirname, relativePath, 'build')));
 }
+
+app.use(require('./helpers/error-handler'));
 
 app.get('/*', function(req, res) {
   if (req.xhr || req.headers.accept.indexOf('json') > -1) {

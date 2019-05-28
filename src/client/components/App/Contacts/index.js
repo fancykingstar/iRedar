@@ -1,91 +1,121 @@
+import Papa from 'papaparse';
+import propTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import ContactTable from '../Components/ContactDataTable';
-import queryString from 'query-string';
-import { getAdminPermissions } from './../../../actions/accessActions';
-import { deleteUsers } from '../../../actions/authActions';
 import { Link } from 'react-router-dom';
+import { addContact, deleteContacts, getContacts } from '../../../actions/contactAction';
+import ContactTable from '../Components/ContactDataTable';
 
 class ContactsPage extends React.Component {
   constructor() {
     super();
-    this.getData = this.getData.bind(this);
-    this.selectedUsers = new Set();
+    this.importFile = React.createRef();
   }
 
   componentDidMount() {
-    const { getAdminPermissions, permissions } = this.props;
-    getAdminPermissions(permissions[0].organization, permissions[0].profile);
+    const { getContacts } = this.props;
+    getContacts();
   }
 
-  getData(data) {
-    // do not forget to bind getData in constructor
-    this.selectedUsers = data;
-  }
+  fileOnchange = event => {
+    const { getContacts, addContact, history } = this.props;
+
+    Papa.parse(event.target.files[0], {
+      complete: results => {
+        let { data } = results;
+        let contact = [];
+
+        data.forEach((value, key) => {
+          if (data[key + 1]) {
+            let type = [];
+            let client = data[key + 1][5];
+            let staff = data[key + 1][6];
+            let partner = data[key + 1][7];
+
+            if (String(client).toLowerCase() === 'yes') {
+              type.push('Client');
+            }
+
+            if (String(staff).toLowerCase() === 'yes') {
+              type.push('Staff');
+            }
+
+            if (String(partner).toLowerCase() === 'yes') {
+              type.push('Partner');
+            }
+
+            contact.push({
+              firstName: data[key + 1][0],
+              lastName: data[key + 1][1],
+              company: data[key + 1][2],
+              profession: data[key + 1][3],
+              notes: data[key + 1][4],
+              type,
+              groups: [],
+              language: data[key + 1][8],
+              addresses: [
+                {
+                  address: data[key + 1][9],
+                  city: data[key + 1][10],
+                  state: data[key + 1][11],
+                  zipCode: data[key + 1][12],
+                  country: data[key + 1][13],
+                  addressFor: data[key + 1][14]
+                },
+                {
+                  address: data[key + 1][15],
+                  city: data[key + 1][16],
+                  state: data[key + 1][17],
+                  zipCode: data[key + 1][18],
+                  country: data[key + 1][19],
+                  addressFor: data[key + 1][20]
+                }
+              ],
+              emailAddresses: [
+                {
+                  emailFor: data[key + 1][21],
+                  emailAddress: data[key + 1][22]
+                },
+                {
+                  emailFor: data[key + 1][23],
+                  emailAddress: data[key + 1][24]
+                }
+              ],
+              phoneNumbers: [
+                {
+                  phoneNumberFor: data[key + 1][25],
+                  phoneNumber: data[key + 1][26]
+                },
+                {
+                  phoneNumberFor: data[key + 1][27],
+                  phoneNumber: data[key + 1][28]
+                }
+              ]
+            });
+          }
+        });
+        addContact(contact, history);
+        getContacts();
+      }
+    });
+  };
+
+  getData = data => {
+    this.deleteItems = data;
+  };
+
+  removeContacts = ids => {
+    const { deleteContacts, getContacts } = this.props;
+    deleteContacts(ids);
+    getContacts();
+  };
+
+  openFileDIR = () => {
+    this.importFile.current.click();
+  };
 
   render() {
-    const parsedHash = queryString.parse(window.location.hash);
-    const { adminPermissions, permissions } = this.props;
-    let data = [];
-    let adminCount = 0;
-    let staffCount = 0;
-    let partnerCount = 0;
-    let clientCount = 0;
-    let filterRole = 'all';
-
-    // if filterRole is found set it
-    if (parsedHash.role) {
-      filterRole = parsedHash.role;
-    }
-
-    adminPermissions.map(permission => {
-      if (permission.role.toUpperCase() === 'ADMIN') {
-        adminCount++;
-      }
-      if (permission.role.toUpperCase() === 'STAFF') {
-        staffCount++;
-      }
-      if (permission.role.toUpperCase() === 'PARTNER') {
-        partnerCount++;
-      }
-      if (permission.role.toUpperCase() === 'CLIENT') {
-        clientCount++;
-      }
-      if (filterRole !== 'all') {
-        if (permission.role === filterRole) {
-          data.push({
-            permissionId: permission._id,
-            role: permission.role,
-            firstName: permission.profile.firstName,
-            lastName: permission.profile.lastName,
-            email: permission.profile.email,
-            phoneNumber: permission.profile.phoneNumber
-          });
-        }
-      } else {
-        data.push({
-          permissionId: permission._id,
-          role: permission.role,
-          firstName: permission.profile.firstName,
-          lastName: permission.profile.lastName,
-          email: permission.profile.email,
-          phoneNumber: permission.profile.phoneNumber
-        });
-      }
-      return true;
-    });
-
-    let countAll = adminCount + staffCount + partnerCount + clientCount;
-
-    const handleFilter = option => {
-      this.props.history.push('/settings/admin-settings#role=' + option);
-    };
-
-    const handleDelete = () => {
-      if (window.confirm('Do you want to delete these users?')) {
-        this.props.deleteUsers(this.selectedUsers, this.props.history);
-      }
-    };
+    const { contacts } = this.props;
 
     return (
       <div className='slim-mainpanel'>
@@ -101,9 +131,9 @@ class ContactsPage extends React.Component {
                 >
                   <i className='fa fa-plus' /> Add
                 </Link>
-                <div class='dropdown'>
+                <div className='dropdown'>
                   <button
-                    class='btn btn-primary btn-sm dropdown-toggle '
+                    className='btn btn-primary btn-sm dropdown-toggle '
                     type='button'
                     id='dropdownMenuButton2'
                     data-toggle='dropdown'
@@ -113,7 +143,7 @@ class ContactsPage extends React.Component {
                     Import
                   </button>
                   <div
-                    class='dropdown-menu'
+                    className='dropdown-menu'
                     aria-labelledby='dropdownMenuButton2'
                     x-placement='bottom-start'
                     style={{
@@ -124,10 +154,11 @@ class ContactsPage extends React.Component {
                       'will-change': 'transform'
                     }}
                   >
-                    <a class='dropdown-item' href='#'>
+                    <input ref={this.importFile} type={'file'} onChange={this.fileOnchange} hidden />
+                    <a className='dropdown-item' href='#' onClick={this.openFileDIR}>
                       <i className='fa fa-file' /> Microsoft Excel or CSV file
                     </a>
-                    <a class='dropdown-item' href='#'>
+                    <a className='dropdown-item' href='#'>
                       <i className='fa fa-google' /> Google contacts
                     </a>
                   </div>
@@ -137,7 +168,16 @@ class ContactsPage extends React.Component {
             </div>
           </div>
           <div className='section-wrapper'>
-            <ContactTable data={[]} permissions={permissions} onSelected={this.getData} />
+            <ContactTable
+              data={contacts}
+              onSelected={this.getData}
+              deleteContacts={() => {
+                this.removeContacts(this.deleteItems);
+              }}
+              archiveContacts={() => {
+                this.removeContacts(this.deleteItems);
+              }}
+            />
           </div>
         </div>
       </div>
@@ -145,12 +185,23 @@ class ContactsPage extends React.Component {
   }
 }
 
+ContactsPage.propTypes = {
+  addContact: propTypes.func.isRequired,
+  deleteContacts: propTypes.func.isRequired,
+  getContacts: propTypes.func.isRequired,
+  auth: propTypes.object.isRequired,
+  errors: propTypes.object.isRequired
+};
+
 const mapStateToProps = state => ({
-  adminPermissions: state.access.admin,
-  permissions: state.access.permissions,
-  loading: state.access.loading,
+  contacts: state.contacts.allContacts,
+  loading: state.contacts.loading,
   errors: state.errors,
   profile: state.auth.profile
 });
 
-export default connect(mapStateToProps, { getAdminPermissions, deleteUsers })(ContactsPage);
+export default connect(mapStateToProps, {
+  getContacts,
+  deleteContacts,
+  addContact
+})(ContactsPage);

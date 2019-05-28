@@ -1,9 +1,4 @@
-import {
-  SET_CURRENT_USER,
-  GET_CURRENT_USER_PROFILE,
-  EDIT_PROFILE,
-  CLEAR_CURRENT_PROFILE
-} from '../actions/types';
+import {CLEAR_CURRENT_PROFILE, EDIT_PROFILE, GET_CURRENT_USER_PROFILE, SET_CURRENT_USER} from '../actions/types';
 import isEmpty from '../utils/isEmpty';
 
 const initialState = {
@@ -12,7 +7,7 @@ const initialState = {
   profile: {}
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
   switch (action.type) {
     case SET_CURRENT_USER:
       return {

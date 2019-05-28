@@ -1,123 +1,228 @@
-import React, { Component } from 'react';
+import axios from 'axios';
 import propTypes from 'prop-types';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import TextFieldGroup from '../../Elements/TextFieldGroup';
 import Select from 'react-select';
-import SelectGroup from '../../Elements/SelectGroup';
+import { addContact } from '../../../actions/contactAction';
+import { API_URL } from '../../../actions/types';
+import TextFieldGroup from '../../Elements/TextFieldGroup';
 
 export class AddNewContact extends Component {
   constructor() {
     super();
     this.state = {
-      firstname: '',
-      lastname: '',
-      company: '',
-      profession: '',
-      type: '',
-      language: '',
-      group: '',
-      email_addresses: [
-        {
-          email_for: '',
-          email_address: ''
-        }
-      ],
-      addresses: [
-        {
-          address_for: '',
-          address: '',
-          city: '',
-          state: '',
-          zip_code: '',
-          country: ''
-        }
-      ],
-      phone_numbers: [
-        {
-          phone_number_for: '',
-          phone_number: ''
-        }
-      ]
+      errors: [],
+      groups: [],
+      form: {
+        firstName: '',
+        lastName: '',
+        company: '',
+        profession: '',
+        type: [],
+        language: '',
+        groups: [],
+        emailAddresses: [
+          {
+            emailFor: '',
+            emailAddress: ''
+          }
+        ],
+        addresses: [
+          {
+            addressFor: '',
+            address: '',
+            city: '',
+            state: '',
+            zipCode: '',
+            country: ''
+          }
+        ],
+        phoneNumbers: [
+          {
+            phoneNumberFor: '',
+            phoneNumber: ''
+          }
+        ]
+      }
     };
   }
 
-  /**
-   * We use window.$ here to call the jQuery instance inside our react app
-   * because jQuery select2() overrides onChange event in select html
-   */
   componentDidMount() {
-    window.$('.select2:not(.row-select)').change(e => {
-      this.setState({ [e.target.name]: e.target.value });
-    });
+    this.getGroups();
   }
 
-  /**
-   * We reinitialize select2 after adding new row with select
-   */
-  componentDidUpdate() {
-    window.$('.select2').select2({
-      minimumResultsForSearch: Infinity
-    });
+  componentWillReceiveProps(nextProps, nextContext) {
+    const { errors } = nextProps;
+
+    this.state.errors = [];
+
+    /*
+    * NOT YET CLEAR IF WE DISPLAY ERRORS IN ALERT OR PER INPUT
+    * */
+    //if (Object.keys(errors).length) {
+    //  let receivedErrors = [];
+    //  const {data: {details}} = errors;
+    //
+    //  details.forEach(value => {
+    //    receivedErrors.push(value.message);
+    //  });
+    //
+    //  this.setState(oldState => ({
+    //    ...oldState,
+    //    errors: receivedErrors
+    //  }));
+    //}
   }
+
+  getGroups = async () => {
+    const { data: { data } } = await axios.get(`${API_URL}/api/groups`);
+
+    this.setState(oldState => ({
+      ...oldState,
+      groups: [
+        {
+          label: 'Select group',
+          value: '',
+          isDisabled: true
+        },
+        ...data.map(({ name, _id }) => ({
+          label: name,
+          value: _id
+        }))
+      ]
+    }));
+  };
+
+  onSubmit = e => {
+    e.preventDefault();
+    const { addContact } = this.props;
+
+    addContact(this.state.form, this.props.history);
+  };
 
   onChange = event => {
     //access event in an asynchronous way
     event.persist();
 
-    this.setState(previousState => ({ ...previousState, [event.target.name]: event.target.value }));
+    this.setState(previousState => ({
+      ...previousState,
+      form: {
+        ...this.state.form,
+        [event.target.name]: event.target.value
+      }
+    }));
   };
 
   onSelectChange = (key, value) => {
     // event.persist();
-    this.setState(previousState => ({ ...previousState, [key]: value }));
+    this.setState(previousState => ({
+      ...previousState,
+      form: {
+        ...this.state.form,
+        [key]: value
+      }
+    }));
   };
 
-  onSubmit = e => {
-    e.preventDefault();
-    console.log(this.state);
+  onChangeRowValue = (parentKey, childKey, value, index) => {
+    this.state.form[parentKey][index][childKey] = value;
+
+    this.setState(previousState => ({
+      ...previousState,
+      form: {
+        ...this.state.form,
+        [parentKey]: this.state.form[parentKey]
+      }
+    }));
   };
 
   addRow = (parentKey, object) => {
-    this.setState(previousState => ({ ...previousState, [parentKey]: [ ...this.state[parentKey], object ] }));
+    this.setState(previousState => ({
+      ...previousState,
+      form: {
+        ...this.state.form,
+        [parentKey]: [ ...this.state.form[parentKey], object ]
+      }
+    }));
   };
 
   removeRow = (parentKey, indexKey) => {
     this.setState(previousState => ({
       ...previousState,
-      [parentKey]: this.state[parentKey].filter((value, index) => index != indexKey)
-    }));
-  };
-
-  onChageRowValue = (parentKey, childKey, value, index) => {
-    this.state[parentKey][index][childKey] = value;
-
-    this.setState(previousState => ({
-      ...previousState,
-      [parentKey]: this.state[parentKey]
+      form: {
+        ...this.state.form,
+        [parentKey]: this.state.formt[parentKey].filter((value, index) => index != indexKey)
+      }
     }));
   };
 
   render() {
+    const { errors, form } = this.state;
+
     const contactTypes = [
-      { label: 'Select type', value: '', disabled: true },
-      { label: 'Client', value: 'CLIENT' },
-      { label: 'Partner', value: 'PARTNER' },
-      { label: 'Staff', value: 'STAFF' }
+      {
+        label: 'Select type',
+        value: '',
+        isDisabled: true
+      },
+      {
+        label: 'Client',
+        value: 'Client'
+      },
+      {
+        label: 'Partner',
+        value: 'Partner'
+      },
+      {
+        label: 'Staff',
+        value: 'Staff'
+      }
     ];
 
     const languages = [
-      { label: 'Select language', value: '', disabled: true },
-      { label: 'English', value: 'english' }
+      {
+        label: 'Select language',
+        value: '',
+        isDisabled: true
+      },
+      {
+        label: 'English',
+        value: 'English'
+      }
     ];
 
-    const groups = [ { label: 'Select group', value: '', disabled: true } ];
+    let type = [
+      {
+        label: 'Select for',
+        value: '',
+        isDisabled: true
+      },
+      {
+        label: 'Billing',
+        value: 'Billing'
+      },
+      {
+        label: 'Shipping',
+        value: 'Shipping'
+      },
+      {
+        label: 'Other',
+        value: 'Other'
+      }
+    ];
 
     const selectCustomStyle = {
       container: provided => {
-        return { ...provided, marginBottom: '1rem' };
+        return {
+          ...provided,
+          marginBottom: '1rem'
+        };
       },
       menu: provided => {
-        return { ...provided, zIndex: '100000' };
+        return {
+          ...provided,
+          zIndex: '100000'
+        };
       }
     };
 
@@ -130,15 +235,21 @@ export class AddNewContact extends Component {
               <h6 className='slim-pagetitle'>Add new contact</h6>
             </div>
           </div>
+          {errors.length ? (
+            <div className='alert alert-danger mg-b-20' role='alert'>
+              <strong>Oh snap!</strong> Change a few things up and try submitting again.
+              <ol className='mg-t-10'>{errors.map(value => <li>{value}</li>)}</ol>
+            </div>
+          ) : null}
           <form onSubmit={this.onSubmit}>
             <div className='section-wrapper mg-b-20'>
               <label className='section-title mg-b-20'>Personal Information</label>
               <div className='row'>
                 <div className='col-lg mg-t-10 mg-lg-t-0'>
-                  <TextFieldGroup name='firstname' placeholder='First Name' onChange={this.onChange} />
+                  <TextFieldGroup name='firstName' placeholder='First Name' onChange={this.onChange} />
                 </div>
                 <div className='col-lg mg-t-10 mg-lg-t-0'>
-                  <TextFieldGroup name='lastname' placeholder='Last Name' onChange={this.onChange} />
+                  <TextFieldGroup name='lastName' placeholder='Last Name' onChange={this.onChange} />
                 </div>
               </div>
               <div className='row'>
@@ -154,37 +265,50 @@ export class AddNewContact extends Component {
               <label className='section-title mg-b-20'>Other Information</label>
               <div className='row'>
                 <div className='col-lg mg-t-10 mg-lg-t-0'>
-                  <Select
-                    styles={selectCustomStyle}
-                    options={contactTypes}
-                    name='type'
-                    onChange={e => {
-                      this.onSelectChange('type', e.value);
-                    }}
-                  />
+                  <div className='form-group'>
+                    <label className='cols-sm-2 control-label m-0' />
+                    <Select
+                      styles={selectCustomStyle}
+                      options={contactTypes}
+                      isMulti
+                      name='type'
+                      placeholder={'Select type'}
+                      onChange={e => {
+                        this.onSelectChange('type', e.map(({ value }) => value));
+                      }}
+                    />
+                  </div>
                 </div>
                 <div className='col-lg mg-t-10 mg-lg-t-0'>
-                  <Select
-                    styles={selectCustomStyle}
-                    options={languages}
-                    name='language'
-                    onChange={e => {
-                      this.onSelectChange('language', e.value);
-                    }}
-                  />
+                  <div className='form-group'>
+                    <label className='cols-sm-2 control-label m-0' />
+                    <Select
+                      styles={selectCustomStyle}
+                      options={languages}
+                      name='language'
+                      placeholder={'Select language'}
+                      onChange={e => {
+                        this.onSelectChange('language', e.value);
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
               <div className='row'>
                 <div className='col-lg-6 mg-t-10 mg-lg-t-0'>
-                  <Select
-                    styles={selectCustomStyle}
-                    options={groups}
-                    name='group'
-                    onChange={e => {
-                      this.onSelectChange('group', e.value);
-                    }}
-                  />
-                  {/* <SelectGroup name='group' options={groups} value={this.state.group} /> */}
+                  <div className='form-group'>
+                    <label className='cols-sm-2 control-label m-0' />
+                    <Select
+                      styles={selectCustomStyle}
+                      options={this.state.groups}
+                      name='group'
+                      isMulti
+                      placeholder={'Select group'}
+                      onChange={e => {
+                        this.onSelectChange('groups', e.map(({ value }) => value));
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -192,46 +316,48 @@ export class AddNewContact extends Component {
               <div className='card-header'>
                 <ul className='nav nav-tabs card-header-tabs'>
                   <li className='nav-item'>
-                    <a className='nav-link active show' href='#email_addresses' data-toggle='tab'>
-                      Emails Addresses
+                    <a className='nav-link active show' href='#emailAddresses' data-toggle='tab'>
+                      {' '}
+                      Email Addresses{' '}
                     </a>
                   </li>
                   <li className='nav-item'>
                     <a className='nav-link' href='#addresses' data-toggle='tab'>
-                      Addresses
+                      {' '}
+                      Addresses{' '}
                     </a>
                   </li>
                   <li className='nav-item'>
-                    <a className='nav-link' href='#phone_numbers' data-toggle='tab'>
-                      Phone Numbers
+                    <a className='nav-link' href='#phoneNumbers' data-toggle='tab'>
+                      {' '}
+                      Phone Numbers{' '}
                     </a>
                   </li>
                 </ul>
               </div>
               <div className='card-body'>
                 <div className='tab-content'>
-                  <div className='tab-pane active show' id='email_addresses'>
-                    {this.state.email_addresses.map((value, key) => {
-                      let parentKey = 'email_addresses';
-                      console.log(value.email_for);
+                  <div className='tab-pane active show' id='emailAddresses'>
+                    {form.emailAddresses.map((value, key) => {
+                      let parentKey = 'emailAddresses';
                       return (
                         <div className='row'>
                           <div className='col-lg mg-t-20'>
                             <Select
-                              options={contactTypes}
-                              name='email_for'
+                              options={type}
+                              name='emailFor'
                               onChange={e => {
-                                this.onChageRowValue(parentKey, 'email_for', e.value, key);
+                                this.onChangeRowValue(parentKey, 'emailFor', e.value, key);
                               }}
                             />
                           </div>
                           <div className='col-lg'>
                             <TextFieldGroup
-                              name='email_address'
+                              name='emailAddress'
                               placeholder='Email Address'
-                              value={value.email_address}
+                              value={value.emailAddress}
                               onChange={e => {
-                                this.onChageRowValue(parentKey, e.target.name, e.target.value, key);
+                                this.onChangeRowValue(parentKey, e.target.name, e.target.value, key);
                               }}
                             />
                           </div>
@@ -251,23 +377,26 @@ export class AddNewContact extends Component {
                     <button
                       className='btn btn-sm btn-success'
                       onClick={() => {
-                        this.addRow('email_addresses', { email_for: '', email_address: '' });
+                        this.addRow('emailAddresses', {
+                          emailFor: '',
+                          emailAddress: ''
+                        });
                       }}
                     >
                       Add row
                     </button>
                   </div>
                   <div className='tab-pane' id='addresses'>
-                    {this.state.addresses.map((value, key) => {
+                    {form.addresses.map((value, key) => {
                       let parentKey = 'addresses';
                       return (
                         <div className='row'>
                           <div className='col-lg mg-t-20'>
                             <Select
-                              options={contactTypes}
-                              name='address_for'
+                              options={type}
+                              name='addressFor'
                               onChange={e => {
-                                this.onChageRowValue(parentKey, 'address_for', e.value, key);
+                                this.onChangeRowValue(parentKey, 'addressFor', e.value, key);
                               }}
                             />
                           </div>
@@ -277,7 +406,7 @@ export class AddNewContact extends Component {
                               placeholder='Address'
                               value={value.address}
                               onChange={e => {
-                                this.onChageRowValue(parentKey, e.target.name, e.target.value, key);
+                                this.onChangeRowValue(parentKey, e.target.name, e.target.value, key);
                               }}
                             />
                           </div>
@@ -287,7 +416,7 @@ export class AddNewContact extends Component {
                               placeholder='City'
                               value={value.city}
                               onChange={e => {
-                                this.onChageRowValue(parentKey, e.target.name, e.target.value, key);
+                                this.onChangeRowValue(parentKey, e.target.name, e.target.value, key);
                               }}
                             />
                           </div>
@@ -297,17 +426,17 @@ export class AddNewContact extends Component {
                               placeholder='State'
                               value={value.state}
                               onChange={e => {
-                                this.onChageRowValue(parentKey, e.target.name, e.target.value, key);
+                                this.onChangeRowValue(parentKey, e.target.name, e.target.value, key);
                               }}
                             />
                           </div>
                           <div className='col-lg'>
                             <TextFieldGroup
-                              name='zip_code'
+                              name='zipCode'
                               placeholder='Zip Code'
-                              value={value.zip_code}
+                              value={value.zipCode}
                               onChange={e => {
-                                this.onChageRowValue(parentKey, e.target.name, e.target.value, key);
+                                this.onChangeRowValue(parentKey, e.target.name, e.target.value, key);
                               }}
                             />
                           </div>
@@ -316,7 +445,7 @@ export class AddNewContact extends Component {
                               options={contactTypes}
                               name='country'
                               onChange={e => {
-                                this.onChageRowValue(parentKey, 'country', e.value, key);
+                                this.onChangeRowValue(parentKey, 'country', e.value, key);
                               }}
                             />
                           </div>
@@ -337,11 +466,11 @@ export class AddNewContact extends Component {
                       className='btn btn-sm btn-success'
                       onClick={() => {
                         this.addRow('addresses', {
-                          address_for: '',
+                          addressFor: '',
                           address: '',
                           city: '',
                           state: '',
-                          zip_code: '',
+                          zipCode: '',
                           country: ''
                         });
                       }}
@@ -349,27 +478,27 @@ export class AddNewContact extends Component {
                       Add row
                     </button>
                   </div>
-                  <div className='tab-pane ' id='phone_numbers'>
-                    {this.state.phone_numbers.map((value, key) => {
-                      let parentKey = 'phone_numbers';
+                  <div className='tab-pane ' id='phoneNumbers'>
+                    {form.phoneNumbers.map((value, key) => {
+                      let parentKey = 'phoneNumbers';
                       return (
                         <div className='row'>
                           <div className='col-lg mg-t-20'>
                             <Select
-                              options={contactTypes}
-                              name='phone_number_for'
+                              options={type}
+                              name='phoneNumberFor'
                               onChange={e => {
-                                this.onChageRowValue(parentKey, 'phone_number_for', e.value, key);
+                                this.onChangeRowValue(parentKey, 'phoneNumberFor', e.value, key);
                               }}
                             />
                           </div>
                           <div className='col-lg'>
                             <TextFieldGroup
-                              name='phone_number'
+                              name='phoneNumber'
                               placeholder='Phone number'
-                              value={value.phone_number}
+                              value={value.phoneNumber}
                               onChange={e => {
-                                this.onChageRowValue(parentKey, e.target.name, e.target.value, key);
+                                this.onChangeRowValue(parentKey, e.target.name, e.target.value, key);
                               }}
                             />
                           </div>
@@ -389,9 +518,9 @@ export class AddNewContact extends Component {
                     <button
                       className='btn btn-sm btn-success'
                       onClick={() => {
-                        this.addRow('phone_numbers', {
-                          phone_number_for: '',
-                          phone_number: ''
+                        this.addRow('phoneNumbers', {
+                          phoneNumberFor: '',
+                          phoneNumber: ''
                         });
                       }}
                     >
@@ -412,6 +541,7 @@ export class AddNewContact extends Component {
 }
 
 AddNewContact.propTypes = {
+  addContact: propTypes.func.isRequired,
   auth: propTypes.object.isRequired,
   errors: propTypes.object.isRequired
 };
@@ -421,4 +551,4 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-export default connect(mapStateToProps)(AddNewContact);
+export default connect(mapStateToProps, { addContact })(AddNewContact);
