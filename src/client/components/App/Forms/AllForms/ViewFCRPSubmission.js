@@ -24,6 +24,7 @@ export class ViewFCRPSubmission extends Component {
             });
             i = i+1;
         });
+        return data;
     }
 
     componentDidMount() {
