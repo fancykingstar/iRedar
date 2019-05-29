@@ -17,11 +17,16 @@ const contacts = require('./routes/contacts');
 const groups = require('./routes/group');
 const notifications = require('./routes/notifications');
 const payment = require('./routes/payment');
+const messages = require('./routes/message');
 
 // eslint-disable no-console
 
 // Initial express app
 const app = express();
+// Initial http server
+const server = require('http').Server(app);
+// Initial web socket
+const io = require('socket.io')(server);
 
 // Log requests info
 app.use(morgan('dev'));
@@ -65,6 +70,8 @@ app.use('/api/upload-referral', referralController);
 app.use('/api/contacts', contacts);
 app.use('/api/groups', groups);
 app.use('/api/notifications', notifications);
+// Io init
+io.on('connection', messages.connect);
 
 if (!debugMode) {
   app.use(express.static(path.join(__dirname, relativePath, 'build')));
@@ -84,6 +91,6 @@ app.get('/*', function(req, res) {
 
 const port = process.env.PORT || 5000;
 
-app.listen(port, () => logger.info(`Server running on port ${port}`));
+server.listen(port, () => logger.info(`Server running on port ${port}`));
 
 module.exports = app;
