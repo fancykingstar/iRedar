@@ -17,6 +17,10 @@ import ViewClientSubmission from './client/components/App/Forms/AllForms/ViewCli
 import ViewFCRPSubmission from './client/components/App/Forms/AllForms/ViewFCRPSubmission';
 import ViewIARSubmission from './client/components/App/Forms/AllForms/ViewIARSubmission';
 import ViewRegistrationSubmission from './client/components/App/Forms/AllForms/ViewRegistrationSubmission';
+import ClientAction from './client/components/App/Forms/AllForms/ClientAction';
+import IARAssessment from './client/components/App/Forms/AllForms/IARAssessment';
+import FCRPLoan from './client/components/App/Forms/AllForms/FCRPLoan';
+import Registration from './client/components/App/Forms/AllForms/Registration';
 import ClientActionSubmission from './client/components/App/Forms/Submissions/ClientAction';
 import FCRPLoanSubmission from './client/components/App/Forms/Submissions/FCRPLoan';
 import IARAssessmentSubmission from './client/components/App/Forms/Submissions/IARAssessment';
@@ -29,6 +33,7 @@ import ReferralForm from './client/components/App/Modules/Referrals/ReferralForm
 import ReferralFormDetail from './client/components/App/Modules/Referrals/ReferralFormDetail';
 
 import Submissions from './client/components/App/Modules/Submissions';
+import Referrals from './client/components/App/Modules/Referrals';
 import NotificationsPage from './client/components/App/Notifications';
 import AddNewNotification from './client/components/App/Notifications/AddNewNotification';
 import ViewNotification from './client/components/App/Notifications/ViewNotification';
@@ -96,7 +101,7 @@ class App extends Component {
               <Switch>
                 <PrivateRoute exact path='/contacts/add-new-contact' component={AddNewContact}/>
               </Switch>
-              
+
               <Switch>
                 <PrivateRoute exact path='/notifications' component={NotificationsPage}/>
               </Switch>
@@ -116,7 +121,10 @@ class App extends Component {
               <Switch>
                 <PrivateRoute exact path='/modules/submissions' component={Submissions}/>
               </Switch>
-              
+              <Switch>
+                <PrivateRoute exact path="/modules/referrals" component={Referrals}/>
+              </Switch>
+
               <Switch>
                 <PrivateRoute exact path='/forms' component={FormsPage}/>
               </Switch>
@@ -133,17 +141,29 @@ class App extends Component {
                 <PrivateRoute exact path='/settings/add-new-users' component={AddNewUsers}/>
               </Switch>
               <Switch>
+                <Route exact path="/forms/all-forms/client-action" component={ClientAction}/>
+              </Switch>
+              <Switch>
+                <Route exact path="/forms/all-forms/iar-assessment" component={IARAssessment}/>
+              </Switch>
+              <Switch>
+                <Route exact path="/forms/all-forms/fcrp-loan" component={FCRPLoan}/>
+              </Switch>
+              <Switch>
+                <Route exact path='/forms/all-forms/registration' component={Registration} />
+              </Switch>
+              <Switch>
                 <PrivateRoute exact path='/forms/all-forms/view-client-submission' component={ViewClientSubmission}/>
               </Switch>
-              
+
               <Switch>
                 <PrivateRoute exact path='/forms/all-forms/view-iar-submission' component={ViewIARSubmission}/>
               </Switch>
-              
+
               <Switch>
                 <PrivateRoute exact path='/forms/all-forms/view-fcrp-submission' component={ViewFCRPSubmission}/>
               </Switch>
-              
+
               <Switch>
                 <PrivateRoute
                   exact
