@@ -20,6 +20,7 @@ import ViewRegistrationSubmission from './client/components/App/Forms/AllForms/V
 import ClientAction from './client/components/App/Forms/AllForms/ClientAction';
 import IARAssessment from './client/components/App/Forms/AllForms/IARAssessment';
 import FCRPLoan from './client/components/App/Forms/AllForms/FCRPLoan';
+import Registration from './client/components/App/Forms/AllForms/Registration';
 import ClientActionSubmission from './client/components/App/Forms/Submissions/ClientAction';
 import FCRPLoanSubmission from './client/components/App/Forms/Submissions/FCRPLoan';
 import IARAssessmentSubmission from './client/components/App/Forms/Submissions/IARAssessment';
@@ -147,6 +148,9 @@ class App extends Component {
               </Switch>
               <Switch>
                 <Route exact path="/forms/all-forms/fcrp-loan" component={FCRPLoan}/>
+              </Switch>
+              <Switch>
+                <Route exact path='/forms/all-forms/registration' component={Registration} />
               </Switch>
               <Switch>
                 <PrivateRoute exact path='/forms/all-forms/view-client-submission' component={ViewClientSubmission}/>
