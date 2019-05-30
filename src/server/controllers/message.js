@@ -1,47 +1,67 @@
 const Inbox = require('../models/Inbox');
 const Message = require('../models/Message');
 
-const sockets = {};
 
-sockets.index = async ({userId}, socket) => {
-  const response = await Inbox.find({from: userId});
+/**
+ * @description Store new message
+ * @returns {res}
+ */
+exports.postMessage = async (req, res) => {
+  const {inboxId, message, to, from, sentBy} = req.body;
   
-  socket.emit(`inbox/${userId}`, response);
-};
+  if (!inboxId) { 
+    let inbox = new Inbox({from: from, to: to, messages: []});    
+    inbox.save(function (err){
+      if(err) console.log(err)
 
-sockets.create = async (data, socket) => {
-  const response = await Inbox.create(data);
-  
-  socket.emit(`inbox/${response._id}`, response);
-};
+      let messageObject = new Message({
+        inboxId: inbox._id,
+        message: message,
+        sentBy: sentBy
+      });
 
-sockets.send = async (data, socket) => {
-  const {message, inboxId, userId} = data;
-  
-  await Message.create({
-    message,
-    inboxId
-  });
-  
-  sockets.show({
-    _id: inboxId,
-    userId
-  });
-};
+      messageObject.save(function(err) { if(err) console.log(err) });
+      inbox.messages.push(messageObject);
+      inbox.save();
 
-sockets.show = async ({_id, userId}, socket) => {
-  const response = await Inbox.findOne({
-    _id,
-    from: userId
-  }).populate('messages');
-  
-  socket.emit(`inbox/${_id}/messages`, response);
-};
+      return res.json({
+        success: true,        
+        data: inbox
+      })
+    })
 
-sockets.delete = async ({_id, userId}, socket) => {
-  await Inbox.remove({_id});
-  
-  sockets.index({userId}, socket);
-};
+  } else {
+    const inbox = await Inbox.findById(inboxId);
+    
+    let messageObject = new Message({
+      inboxId: inboxId,
+      message: message,
+      sentBy: sentBy
+    })
 
-module.exports = sockets;
+    messageObject.save();
+    inbox.messages.push(messageObject);
+    inbox.save();
+  // // include socket to response.then()
+
+    return res.json({
+      success: true,
+      data: inbox
+    })
+  }
+}
+
+/**
+ * @description Get list of messages
+ * @returns {res}
+ */
+exports.getMessages = async (req, res) => {
+  let {inboxId} = req.params
+  
+  const response = await Message.find({inboxId: inboxId});
+
+  return res.json({
+    success: true,
+    data: response
+  })
+}

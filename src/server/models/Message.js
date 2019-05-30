@@ -13,6 +13,10 @@ const messageSchema = new Schema({
   isRead: {
     type: Boolean,
     default: false
+  },
+  sentBy: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Profile'
   }
 }, {
   timestamps: {

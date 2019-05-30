@@ -8,6 +8,8 @@ import referralReducer from './referralReducer';
 import submissionReducer from './submissionReducer';
 import uploadFormReducer from './uploadFormReducer';
 import organizationReducer from './organizationReducer';
+import messageReducer from './messageReducer';
+import inboxReducer from './inboxReducer';
 
 export default combineReducers({
   auth: authReducer,
@@ -18,5 +20,7 @@ export default combineReducers({
   referrals: referralReducer,
   contacts: contactReducer,
   notifications: notificationReducer,
-  organization: organizationReducer
+  organization: organizationReducer,
+  message: messageReducer,
+  inbox: inboxReducer
 });

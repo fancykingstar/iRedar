@@ -17,7 +17,8 @@ const contacts = require('./routes/contacts');
 const groups = require('./routes/group');
 const notifications = require('./routes/notifications');
 const payment = require('./routes/payment');
-const messages = require('./routes/message');
+const message = require('./routes/message');
+const inbox = require('./routes/inbox');
 
 // eslint-disable no-console
 
@@ -70,8 +71,10 @@ app.use('/api/upload-referral', referralController);
 app.use('/api/contacts', contacts);
 app.use('/api/groups', groups);
 app.use('/api/notifications', notifications);
+app.use('/api/message', message)
+app.use('/api/inbox', inbox)
 // Io init
-io.on('connection', messages.connect);
+// io.on('connection', message.connect);
 
 if (!debugMode) {
   app.use(express.static(path.join(__dirname, relativePath, 'build')));
