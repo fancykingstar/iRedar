@@ -1,23 +1,30 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { addMessage, getMessages } from '../../../actions/messageAction';
+import React, {Component} from 'react';
+import Select from 'react-select';
+import {connect} from 'react-redux';
+import {addMessage, getMessages} from '../../../actions/messageAction';
+import { getInbox } from '../../../actions/inboxAction';
 
 class MessageChatBox extends Component {
   state = {
     inbox: null,
     userProfile: null,
-    message: ''
+    message: '',
+    users: null,
+    sendTo: null
   };
   
-  componentDidMount() {
-    console.log('mounted', this.props.inbox);
-  }
-  
   componentWillReceiveProps(nextProps) {
-    const { inbox, profile } = nextProps;
+    const { inbox, profile, users } = nextProps;    
+    
     this.setState({
       inbox: inbox,
-      userProfile: profile
+      userProfile: profile,
+      users: users.map(({firstName, lastName, _id}) => {
+        return {
+          label: `${lastName}, ${firstName}`,
+          value: _id
+        }
+      })
     });
   }
   
@@ -52,24 +59,51 @@ class MessageChatBox extends Component {
   };
   
   handleEnter = ({ key }) => {
+    let sendObject = {
+      inboxId: this.state.inbox._id,
+      message: this.state.message,
+      sentBy: this.state.userProfile._id
+    }
+
+    if(!this.state.inbox._id) {
+      sendObject.to = this.state.sendTo
+      sendObject.from = this.state.userProfile._id
+    }
+
     if (key === 'Enter') {
-      this.props.addMessage({
-        inboxId: this.props.inbox._id,
-        message: this.state.message,
-        sentBy: this.state.userProfile._id
-      });
+      this.props.addMessage(sendObject);
       
+      //clear input box
       this.setState({
-        message: ' '
+        message: ' ',
+        sendTo: null
       });
     }
   };
   
   render() {
-    let messageHeader;
+    const selectCustomStyle = {
+      container: provided => {
+        return {
+          ...provided,
+          marginBottom: '1rem',
+          width: '500'
+        };
+      },
+      menu: provided => {
+        return {
+          ...provided,
+          zIndex: '100000',
+          width: '500'
+        };
+      }
+    };
     
-    if (this.state.inbox) {
-      if (this.state.inbox.to._id === this.props.profile._id) {
+    let messageHeader = null
+
+    if (this.state.inbox && this.state.inbox.to) {
+      console.log(this.state.inbox)
+      if (this.state.inbox.to._id === this.state.userProfile._id) {
         messageHeader = `${this.state.inbox.from.firstName} ${this.state.inbox.from.lastName}`;
       } else {
         messageHeader = `${this.state.inbox.to.firstName} ${this.state.inbox.to.lastName}`;
@@ -84,7 +118,7 @@ class MessageChatBox extends Component {
             <img src="http://via.placeholder.com/500x500" alt=""/>`
             <div className="media-body">
               <h6>
-                {this.state.inbox ? `${messageHeader}` : null}
+                {this.state.inbox ? messageHeader : null}
               </h6>
               <p>Last seen: 2 hours ago</p>
             </div>
@@ -193,11 +227,45 @@ class MessageChatBox extends Component {
         <div className="message-header">
           <a href="" className="message-back"><i className="fa fa-angle-left"/></a>
           <div className="media">
-            {/*<img src="http://via.placeholder.com/500x500" alt=""/>`*/}
-            <div className="media-body">
-              <h6>
-                Create new message or show conversation
-              </h6>
+            <Select               
+              styles={selectCustomStyle}
+              placeholder={'Select Recipient'}
+              options={this.state.users ? this.state.users : []}
+              onChange={({value}) => {                
+                this.setState({
+                  sendTo: value
+                });
+              }}/>        
+          </div>
+            {/*<img src="http://via.placeholder.com/500x500" alt=""/>`*/}        
+        </div>
+
+        <div className="message-body ps ps--theme_default" data-ps-id="3ff62263-ab02-74be-33aa-7ffa0172d9da">
+          {/* empty place holder div */}
+        </div>
+
+        <div className="message-footer">
+          <div className="row row-sm">
+            <div className="col-9 col-sm-8 col-xl-9">
+              <input
+                type="text"
+                className="form-control"
+                onChange={this.handleChange}
+                onKeyUp={this.handleEnter}
+                value={this.state.message}
+                disabled={!(this.state.inbox || this.state.sendTo)}
+                placeholder="Type something here..."/>
+            </div>
+            <div className="col-3 col-sm-4 col-xl-3 tx-right">
+              <div className="d-none d-sm-block">
+                <a href=""><i className="icon ion-happy-outline"/></a>
+                <a href=""><i className="icon ion-ios-game-controller-b-outline"/></a>
+                <a href=""><i className="icon ion-ios-camera-outline"/></a>
+                <a href=""><i className="icon ion-ios-mic-outline"/></a>
+              </div>
+              <div className="d-sm-none">
+                <a href=""><i className="icon ion-more"/></a>
+              </div>
             </div>
           </div>
         </div>
@@ -209,7 +277,8 @@ const mapStateToProps = state => ({
   errors: state.errors,
   profile: state.auth.profile,
   messages: state.message.allMessages,
-  inbox: state.inbox.inbox
+  inbox: state.inbox.inbox,
+  users: state.users.allUsers
 });
 
-export default connect(mapStateToProps, { getMessages, addMessage })(MessageChatBox);
+export default connect(mapStateToProps, { getMessages, addMessage, getInbox })(MessageChatBox);

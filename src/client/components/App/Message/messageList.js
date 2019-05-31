@@ -1,7 +1,7 @@
 import moment from 'moment';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getInbox, getInboxes } from '../../../actions/inboxAction';
+import { getInbox, getInboxes, clearInbox } from '../../../actions/inboxAction';
 
 class MessageList extends Component {
   state = {
@@ -38,7 +38,7 @@ class MessageList extends Component {
       }
       
       return (
-        <a onClick={() => this.handleClick(_id)} className="media">
+        <a onClick={() => this.handleClick(_id)} className="media" key={key}>
           <div className="media-left">
             <img src="http://via.placeholder.com/500x500" alt=""/>
             <span className="square-10 bg-success"/>
@@ -58,7 +58,7 @@ class MessageList extends Component {
   }
   
   handleNewMessage() {
-  
+    this.props.clearInbox();
   }
   
   render() {
@@ -66,7 +66,7 @@ class MessageList extends Component {
       <div className="messages-left">
         <div className="slim-pageheader">
           <h6 className="slim-pagetitle">Messages</h6>
-          <a onClick={() => this.handleNewMessage} className="messages-compose"><i className="icon ion-compose"/></a>
+          <a  onClick={() => this.handleNewMessage()} className="messages-compose"><i  className="icon ion-compose"/></a>
         </div>
         <div className="messages-list ps ps--theme_default ps--active-y"
           data-ps-id="68565780-3c6e-a8ec-0c22-2a40a868e860">
@@ -209,4 +209,4 @@ const mapStateToProps = state => ({
   allInboxes: state.inbox.allInboxes
 });
 
-export default connect(mapStateToProps, { getInbox, getInboxes })(MessageList);
+export default connect(mapStateToProps, { getInbox, getInboxes, clearInbox })(MessageList);

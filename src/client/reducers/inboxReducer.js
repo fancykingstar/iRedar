@@ -1,4 +1,4 @@
-import {GET_ALL_INBOXES, GET_INBOX} from '../actions/types';
+import {GET_ALL_INBOXES, GET_INBOX, CLEAR_INBOX} from '../actions/types';
 
 const initialState = {
   loading: true,
@@ -20,6 +20,12 @@ export default (state = initialState, action) => {
         loading: false,
         inbox: action.payload
       };
+    case CLEAR_INBOX:
+        return {
+          ...state,
+          loading: false,
+          inbox: {}
+        };
     default:
       return state;
   }

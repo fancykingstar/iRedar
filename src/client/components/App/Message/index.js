@@ -2,8 +2,14 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import MessageList from './messageList'
 import MessageChatBox from './messageChatBox';
+import {getUsers} from '../../../actions/userActions';
 
 class MessagePage extends Component {
+  componentDidMount() {
+    const {getUsers} = this.props;
+    getUsers();    
+  }
+
   render() {
     return (
       <div className={'slim-mainpanel'}>
@@ -21,4 +27,4 @@ const mapStateToProps = state => ({
   profile: state.auth.profile
 });
 
-export default connect(mapStateToProps, {})(MessagePage);
+export default connect(mapStateToProps, { getUsers })(MessagePage);
