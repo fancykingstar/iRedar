@@ -49,48 +49,51 @@ const addressSchema = new mongoose.Schema({
   }
 });
 
-const contactSchema = new mongoose.Schema({
-  firstName: {
-    type: String,
-    required: 'First Name field is required'
+const contactSchema = new mongoose.Schema(
+  {
+    firstName: {
+      type: String,
+      required: 'First Name field is required'
+    },
+    lastName: {
+      type: String,
+      required: 'Last Name field is required'
+    },
+    company: {
+      type: String,
+      required: 'Company field is required'
+    },
+    profession: {
+      type: String,
+      required: 'Profession field is required'
+    },
+    type: {
+      type: [ String ],
+      required: 'Type field is required'
+    },
+    language: {
+      type: String,
+      required: 'Language field is required'
+    },
+    notes: {
+      type: String
+    },
+    groups: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Group'
+      }
+    ],
+    phoneNumbers: [ phoneNumberSchema ],
+    emailAddresses: [ emailSchema ],
+    addresses: [ addressSchema ]
   },
-  lastName: {
-    type: String,
-    required: 'Last Name field is required'
-  },
-  company: {
-    type: String,
-    required: 'Company field is required'
-  },
-  profession: {
-    type: String,
-    required: 'Profession field is required'
-  },
-  type: {
-    type: [String],
-    required: 'Type field is required'
-  },
-  language: {
-    type: String,
-    required: 'Language field is required'
-  },
-  notes: {
-    type: String
-  },
-  groups: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: 'Group'
+  {
+    timestamps: {
+      createdAt: 'created_at',
+      updatedAt: 'updated_at'
     }
-  ],
-  phoneNumbers: [phoneNumberSchema],
-  emailAddresses: [emailSchema],
-  addresses: [addressSchema]
-}, {
-  timestamps: {
-    createdAt: 'created_at',
-    updatedAt: 'updated_at'
   }
-});
+);
 
 module.exports = mongoose.model('Contact', contactSchema);

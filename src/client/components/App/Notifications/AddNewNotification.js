@@ -2,7 +2,7 @@ import propTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Select from 'react-select';
-import {getContacts} from '../../../actions/contactAction';
+import {getUsers} from '../../../actions/userActions';
 import {addNotification} from '../../../actions/notificationAction';
 import TextFieldGroup from '../../Elements/TextFieldGroup';
 
@@ -18,8 +18,8 @@ class AddNewNotification extends Component {
   };
   
   componentWillReceiveProps(nextProps, nextContext) {
-    const {contacts} = nextProps;
-    let data = contacts.map(({firstName, lastName, _id}) => {
+    const {users} = nextProps;
+    let data = users.map(({firstName, lastName, _id}) => {
       return {
         label: `${lastName}, ${firstName}`,
         value: _id
@@ -28,9 +28,9 @@ class AddNewNotification extends Component {
     
     this.setState(oldState => ({
       ...oldState,
-      contacts: [
+      users: [
         {
-          label: 'Select contacts',
+          label: 'Select recipient',
           value: '',
           isDisabled: true
         }, ...data]
@@ -38,8 +38,8 @@ class AddNewNotification extends Component {
   }
   
   componentDidMount() {
-    const {getContacts} = this.props;
-    getContacts();
+    const {getUsers} = this.props;
+    getUsers();
   }
   
   onChangeFiles = ({target: {files}}) => {
@@ -119,7 +119,7 @@ class AddNewNotification extends Component {
               <Select styles={selectCustomStyle}
                 isMulti
                 placeholder={'Recipients'}
-                options={this.state.contacts}
+                options={this.state.users}
                 onChange={(e) => {this.onSelectChange('recipients', e.map(({value}) => value));}}/>
               <TextFieldGroup onChange={this.onChange('title')}
                 placeholder={'Subject'}
@@ -158,19 +158,19 @@ class AddNewNotification extends Component {
 }
 
 AddNewNotification.propTypes = {
-  getContacts: propTypes.func.isRequired,
+  getUsers: propTypes.func.isRequired,
   addNotification: propTypes.func.isRequired,
   auth: propTypes.object.isRequired,
   errors: propTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  contacts: state.contacts.allContacts,
+  users: state.users.allUsers,
   auth: state.auth,
   errors: state.errors
 });
 
 export default connect(mapStateToProps, {
   addNotification,
-  getContacts
+  getUsers
 })(AddNewNotification);

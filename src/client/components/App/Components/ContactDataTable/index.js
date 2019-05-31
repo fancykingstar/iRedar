@@ -1,11 +1,11 @@
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import ToolkitProvider, {Search} from 'react-bootstrap-table2-toolkit';
-import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
+import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Select from 'react-select';
-import {editAdminPermissions} from '../../../../actions/accessActions';
+import { editAdminPermissions } from '../../../../actions/accessActions';
 import './index.css';
 
 export class DataTable extends Component {
@@ -54,19 +54,22 @@ export class DataTable extends Component {
         editable: false,
         hidden: !this.state.columns.emailAddresses,
         headerStyle: (colum, colIndex) => {
-          return {width: '25%'};
+          return { width: '25%' };
         },
         formatter: (text, record) => {
-          let {emailAddresses} = record;
-          
+          let { emailAddresses } = record;
+
           switch (true) {
             case !emailAddresses.length:
               return 'N/A';
             case emailAddresses.length > 1:
-              return <Fragment>
-                <span>{emailAddresses[0].emailAddress}</span>{' '}
-                <button className={'btn btn-outline-primary btn-sm'} disabled>{`+${emailAddresses.length - 1}`}</button>
-              </Fragment>;
+              return (
+                <Fragment>
+                  <span>{emailAddresses[0].emailAddress}</span>{' '}
+                  <button className={'btn btn-outline-primary btn-sm'} disabled>{`+${emailAddresses.length -
+                    1}`}</button>
+                </Fragment>
+              );
             default:
               return <span>{emailAddresses[0].emailAddress}</span>;
           }
@@ -79,19 +82,21 @@ export class DataTable extends Component {
         editable: false,
         hidden: !this.state.columns.phoneNumbers,
         headerStyle: (colum, colIndex) => {
-          return {width: '25%'};
+          return { width: '25%' };
         },
         formatter: (text, record) => {
-          const {phoneNumbers} = record;
-          
+          const { phoneNumbers } = record;
+
           switch (true) {
             case !phoneNumbers.length:
               return 'N/A';
             case phoneNumbers.length > 1:
-              return <Fragment>
-                <span>{phoneNumbers[0].phoneNumber}</span>{' '}
-                <button className={'btn btn-outline-primary btn-sm'} disabled>{`+${phoneNumbers.length - 1}`}</button>
-              </Fragment>;
+              return (
+                <Fragment>
+                  <span>{phoneNumbers[0].phoneNumber}</span>{' '}
+                  <button className={'btn btn-outline-primary btn-sm'} disabled>{`+${phoneNumbers.length - 1}`}</button>
+                </Fragment>
+              );
             default:
               return <span>{phoneNumbers[0].phoneNumber}</span>;
           }
@@ -103,15 +108,27 @@ export class DataTable extends Component {
         sort: true,
         editable: false,
         hidden: !this.state.columns.type,
-        formatter: (text) => {
-          return text.map((value) => {
+        formatter: text => {
+          return text.map(value => {
             switch (String(value).toLowerCase()) {
               case 'partner':
-                return <button className={'btn btn-outline-success btn-sm mg-l-10'} disabled>P</button>;
+                return (
+                  <button className={'btn btn-outline-success btn-sm mg-l-10'} disabled>
+                    P
+                  </button>
+                );
               case 'staff':
-                return <button className={'btn btn-outline-danger btn-sm mg-l-10'} disabled>S</button>;
+                return (
+                  <button className={'btn btn-outline-danger btn-sm mg-l-10'} disabled>
+                    S
+                  </button>
+                );
               case 'client':
-                return <button className={'btn btn-outline-primary btn-sm mg-l-10'} disabled>C</button>;
+                return (
+                  <button className={'btn btn-outline-primary btn-sm mg-l-10'} disabled>
+                    C
+                  </button>
+                );
               default:
                 return null;
             }
@@ -141,17 +158,17 @@ export class DataTable extends Component {
       }
     ];
   }
-  
+
   componentDidMount() {
-    window.$('.filter-dropdown-button').click(function () {
+    window.$('.filter-dropdown-button').click(function() {
       if (!window.$('.filter-dropdown-menu').hasClass('show')) {
         window.$('.filter-dropdown-menu').addClass('show');
       } else {
         window.$('.filter-dropdown-menu.show').removeClass('show');
       }
     });
-    
-    window.$('.columns-dropdown-button').click(function () {
+
+    window.$('.columns-dropdown-button').click(function() {
       if (!window.$('.columns-dropdown-menu').hasClass('show')) {
         window.$('.columns-dropdown-menu').addClass('show');
       } else {
@@ -159,11 +176,11 @@ export class DataTable extends Component {
       }
     });
   }
-  
+
   componentDidUpdate(prevProps, prevState, snapshot) {
     console.log(this.state.columns);
   }
-  
+
   showColumns = (key, value) => () => {
     console.log(key, value);
     this.setState(oldState => ({
@@ -172,14 +189,13 @@ export class DataTable extends Component {
         ...this.state.columns,
         [key]: value
       }
-    }))
-    ;
+    }));
   };
-  
+
   render() {
-    const {SearchBar} = Search;
+    const { SearchBar } = Search;
     let deletedItems = [];
-    
+
     const selectRowProp = {
       mode: 'checkbox',
       onSelect: (row, isSelect, rowIndex, e) => {
@@ -194,11 +210,11 @@ export class DataTable extends Component {
       },
       onSelectAll: (isSelect, rows, e) => {
         if (isSelect) {
-          rows.forEach(function (row) {
+          rows.forEach(function(row) {
             deletedItems.push(row._id);
           });
         } else {
-          rows.forEach(function (row) {
+          rows.forEach(function(row) {
             if (deletedItems.find(value => value === row._id)) {
               deletedItems = deletedItems.filter(value => value !== row._id);
             }
@@ -207,8 +223,8 @@ export class DataTable extends Component {
         this.props.onSelected(deletedItems);
       }
     };
-    
-    const sizePerPageOptionRenderer = ({text, page, onSizePerPageChange}) => (
+
+    const sizePerPageOptionRenderer = ({ text, page, onSizePerPageChange }) => (
       <li key={text} role='presentation' className='dropdown-item'>
         <div
           href='#'
@@ -228,18 +244,18 @@ export class DataTable extends Component {
         </div>
       </li>
     );
-    
+
     const options = {
       sizePerPageOptionRenderer
     };
-    
+
     const defaultSorted = [
       {
         dataField: 'role',
         order: 'asc'
       }
     ];
-    
+
     const selectCustomStyle = {
       container: provided => {
         return {
@@ -254,16 +270,16 @@ export class DataTable extends Component {
         };
       }
     };
-    
-    let {data} = this.props;
-    
+
+    let { data } = this.props;
+
     let contactData = data.map(value => {
       return {
         ...value,
         contact: `${value.lastName}, ${value.firstName}`
       };
     });
-    
+
     return (
       <ToolkitProvider keyField='_id' data={contactData} columns={this.columns} search>
         {props => (
@@ -279,7 +295,7 @@ export class DataTable extends Component {
                     aria-expanded='false'
                     onClick={this.handleShowFilterDropdown}
                   >
-                    <i className='fa fa-filter'/> Filters
+                    <i className='fa fa-filter' /> Filters
                   </button>
                   <div
                     className='dropdown-menu filter-dropdown-menu pd-30 pd-sm-20 wd-sm-400'
@@ -295,15 +311,15 @@ export class DataTable extends Component {
                   >
                     <div className='row'>
                       <div className='col-6'>
-                        <Select options={[]} styles={selectCustomStyle} placeholder='Profession' name='role'/>
+                        <Select options={[]} styles={selectCustomStyle} placeholder='Profession' name='role' />
                       </div>
                       <div className='col-6'>
-                        <Select options={[]} styles={selectCustomStyle} placeholder='Type' name='role'/>
+                        <Select options={[]} styles={selectCustomStyle} placeholder='Type' name='role' />
                       </div>
                     </div>
                     <div className='row'>
                       <div className='col-6'>
-                        <Select options={[]} styles={selectCustomStyle} placeholder='Company' name='role'/>
+                        <Select options={[]} styles={selectCustomStyle} placeholder='Company' name='role' />
                       </div>
                     </div>
                     <div className='row'>
@@ -325,7 +341,7 @@ export class DataTable extends Component {
                     aria-haspopup='true'
                     aria-expanded='false'
                   >
-                    <i className='fa fa-bolt'/> Actions
+                    <i className='fa fa-bolt' /> Actions
                   </button>
                   <div
                     className='dropdown-menu'
@@ -339,11 +355,23 @@ export class DataTable extends Component {
                       'will-change': 'transform'
                     }}
                   >
-                    <a className='dropdown-item' href='#' onClick={() => {this.props.archiveContacts();}}>
-                      <i className='fa fa-file'/> Archive contacts
+                    <a
+                      className='dropdown-item'
+                      href='#'
+                      onClick={() => {
+                        this.props.archiveContacts();
+                      }}
+                    >
+                      <i className='fa fa-file' /> Archive contacts
                     </a>
-                    <a className='dropdown-item' href='#' onClick={() => {this.props.deleteContacts();}}>
-                      <i className='fa fa-trash'/> Delete contacts
+                    <a
+                      className='dropdown-item'
+                      href='#'
+                      onClick={() => {
+                        this.props.deleteContacts();
+                      }}
+                    >
+                      <i className='fa fa-trash' /> Delete contacts
                     </a>
                   </div>
                 </div>
@@ -356,7 +384,7 @@ export class DataTable extends Component {
                     aria-expanded='false'
                     onClick={this.handleShowFilterDropdown}
                   >
-                    <i className='fa fa-filter'/> Columns
+                    <i className='fa fa-filter' /> Columns
                   </button>
                   <div
                     className='dropdown-menu columns-dropdown-menu pd-25 pd-sm-20 wd-sm-200'
@@ -370,52 +398,68 @@ export class DataTable extends Component {
                       'will-change': 'transform'
                     }}
                   >
-                    <label className="ckbox">
-                      <input type="checkbox"
+                    <label className='ckbox'>
+                      <input
+                        type='checkbox'
                         checked={this.state.columns.contact}
-                        onChange={this.showColumns('contact', !this.state.columns.contact)}/>
+                        onChange={this.showColumns('contact', !this.state.columns.contact)}
+                      />
                       <span>Contact</span>
                     </label>
-                    <label className="ckbox">
-                      <input type="checkbox"
+                    <label className='ckbox'>
+                      <input
+                        type='checkbox'
                         checked={this.state.columns.company}
-                        onChange={this.showColumns('company', !this.state.columns.company)}/>
+                        onChange={this.showColumns('company', !this.state.columns.company)}
+                      />
                       <span>Company</span>
                     </label>
-                    <label className="ckbox">
-                      <input type="checkbox"
+                    <label className='ckbox'>
+                      <input
+                        type='checkbox'
                         checked={this.state.columns.emailAddresses}
-                        onChange={this.showColumns('emailAddresses', !this.state.columns.emailAddresses)}/>
+                        onChange={this.showColumns('emailAddresses', !this.state.columns.emailAddresses)}
+                      />
                       <span>Email Address</span>
                     </label>
-                    <label className="ckbox">
-                      <input type="checkbox"
+                    <label className='ckbox'>
+                      <input
+                        type='checkbox'
                         checked={this.state.columns.phoneNumbers}
-                        onChange={this.showColumns('phoneNumbers', !this.state.columns.phoneNumbers)}/>
+                        onChange={this.showColumns('phoneNumbers', !this.state.columns.phoneNumbers)}
+                      />
                       <span>Phone Number</span>
                     </label>
-                    <label className="ckbox">
-                      <input type="checkbox"
+                    <label className='ckbox'>
+                      <input
+                        type='checkbox'
                         checked={this.state.columns.type}
-                        onChange={this.showColumns('type', !this.state.columns.type)}/>
+                        onChange={this.showColumns('type', !this.state.columns.type)}
+                      />
                       <span>Type</span>
                     </label>
-                    <label className="ckbox">
-                      <input type="checkbox"
+                    <label className='ckbox'>
+                      <input
+                        type='checkbox'
                         checked={this.state.columns.group}
-                        onChange={this.showColumns('group', !this.state.columns.group)}/>
+                        onChange={this.showColumns('group', !this.state.columns.group)}
+                      />
                       <span>Group</span>
                     </label>
-                    <label className="ckbox">
-                      <input type="checkbox"
+                    <label className='ckbox'>
+                      <input
+                        type='checkbox'
                         checked={this.state.columns.profession}
-                        onChange={this.showColumns('profession', !this.state.columns.profession)}/>
+                        onChange={this.showColumns('profession', !this.state.columns.profession)}
+                      />
                       <span>Profession</span>
                     </label>
-                    <label className="ckbox">
-                      <input type="checkbox"
+                    <label className='ckbox'>
+                      <input
+                        type='checkbox'
                         checked={this.state.columns.language}
-                        onChange={this.showColumns('language', !this.state.columns.language)}/>
+                        onChange={this.showColumns('language', !this.state.columns.language)}
+                      />
                       <span>Language</span>
                     </label>
                   </div>
@@ -425,7 +469,7 @@ export class DataTable extends Component {
                 <SearchBar {...props.searchProps} />
               </div>
             </div>
-            <hr/>
+            <hr />
             <BootstrapTable
               bootstrap4
               hover
@@ -442,4 +486,4 @@ export class DataTable extends Component {
   }
 }
 
-export default connect(null, {editAdminPermissions})(DataTable);
+export default connect(null, { editAdminPermissions })(DataTable);

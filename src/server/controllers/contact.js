@@ -6,7 +6,7 @@ const Contact = require('../models/Contact');
  */
 exports.index = async (req, res) => {
   let contacts = await Contact.find().populate('groups');
-  
+
   return res.json({
     success: true,
     data: contacts
@@ -18,10 +18,10 @@ exports.index = async (req, res) => {
  * @returns {res}
  */
 exports.store = async (req, res) => {
-  let {body} = req;
-  
+  let { body } = req;
+
   const contact = await Contact.create(body);
-  
+
   return res.json({
     success: true,
     data: contact
@@ -33,10 +33,10 @@ exports.store = async (req, res) => {
  * @returns {res}
  */
 exports.edit = async (req, res) => {
-  const {id} = req.params;
-  
-  const contact = await Contact.findOne({_id: id}).populate('groups');
-  
+  const { id } = req.params;
+
+  const contact = await Contact.findOne({ _id: id }).populate('groups');
+
   return res.json({
     success: true,
     data: contact
@@ -48,10 +48,10 @@ exports.edit = async (req, res) => {
  * @returns {res}
  */
 exports.update = async (req, res) => {
-  const {id} = req.params;
-  
+  const { id } = req.params;
+
   const response = await Contact.findByIdAndUpdate(id, req.body);
-  
+
   return res.json({
     success: true,
     data: {
@@ -65,10 +65,10 @@ exports.update = async (req, res) => {
  * @returns {res}
  */
 exports.delete = async (req, res) => {
-  const {ids} = req.query;
-  
-  const contact = await Contact.deleteMany({_id: {$in: ids}});
-  
+  const { ids } = req.query;
+
+  const contact = await Contact.deleteMany({ _id: { $in: ids } });
+
   return res.json({
     success: true,
     data: contact
@@ -80,10 +80,10 @@ exports.delete = async (req, res) => {
  * @returns {res}
  */
 exports.updatePrivateNotes = async (req, res) => {
-  const {id} = req.params;
-  
+  const { id } = req.params;
+
   const response = await Contact.findByIdAndUpdate(id, req.body);
-  
+
   return res.json({
     success: true,
     data: {

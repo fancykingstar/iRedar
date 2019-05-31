@@ -1,10 +1,10 @@
 import axios from 'axios';
 import propTypes from 'prop-types';
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Select from 'react-select';
-import {addContact} from '../../../actions/contactAction';
-import {API_URL} from '../../../actions/types';
+import { addContact } from '../../../actions/contactAction';
+import { API_URL } from '../../../actions/types';
 import TextFieldGroup from '../../Elements/TextFieldGroup';
 
 export class AddNewContact extends Component {
@@ -46,16 +46,16 @@ export class AddNewContact extends Component {
       }
     };
   }
-  
+
   componentDidMount() {
     this.getGroups();
   }
-  
+
   componentWillReceiveProps(nextProps, nextContext) {
-    const {errors} = nextProps;
-    
+    const { errors } = nextProps;
+
     this.state.errors = [];
-    
+
     /*
     * NOT YET CLEAR IF WE DISPLAY ERRORS IN ALERT OR PER INPUT
     * */
@@ -73,10 +73,10 @@ export class AddNewContact extends Component {
     //  }));
     //}
   }
-  
+
   getGroups = async () => {
-    const {data: {data}} = await axios.get(`${API_URL}/api/groups`);
-    
+    const { data: { data } } = await axios.get(`${API_URL}/api/groups`);
+
     this.setState(oldState => ({
       ...oldState,
       groups: [
@@ -84,34 +84,35 @@ export class AddNewContact extends Component {
           label: 'Select group',
           value: '',
           isDisabled: true
-        }, ...data.map(({name, _id}) => ({
+        },
+        ...data.map(({ name, _id }) => ({
           label: name,
           value: _id
-        }))]
+        }))
+      ]
     }));
   };
-  
+
   onSubmit = e => {
     e.preventDefault();
-    const {addContact} = this.props;
-    
+    const { addContact } = this.props;
+
     addContact(this.state.form, this.props.history);
   };
-  
+
   onChange = event => {
     //access event in an asynchronous way
     event.persist();
-    
-    this.setState(
-      previousState => ({
-        ...previousState,
-        form: {
-          ...this.state.form,
-          [event.target.name]: event.target.value
-        }
-      }));
+
+    this.setState(previousState => ({
+      ...previousState,
+      form: {
+        ...this.state.form,
+        [event.target.name]: event.target.value
+      }
+    }));
   };
-  
+
   onSelectChange = (key, value) => {
     // event.persist();
     this.setState(previousState => ({
@@ -122,10 +123,10 @@ export class AddNewContact extends Component {
       }
     }));
   };
-  
+
   onChangeRowValue = (parentKey, childKey, value, index) => {
     this.state.form[parentKey][index][childKey] = value;
-    
+
     this.setState(previousState => ({
       ...previousState,
       form: {
@@ -134,17 +135,17 @@ export class AddNewContact extends Component {
       }
     }));
   };
-  
+
   addRow = (parentKey, object) => {
     this.setState(previousState => ({
       ...previousState,
       form: {
         ...this.state.form,
-        [parentKey]: [...this.state.form[parentKey], object]
+        [parentKey]: [ ...this.state.form[parentKey], object ]
       }
     }));
   };
-  
+
   removeRow = (parentKey, indexKey) => {
     this.setState(previousState => ({
       ...previousState,
@@ -154,10 +155,10 @@ export class AddNewContact extends Component {
       }
     }));
   };
-  
+
   render() {
-    const {errors, form} = this.state;
-    
+    const { errors, form } = this.state;
+
     const contactTypes = [
       {
         label: 'Select type',
@@ -177,7 +178,7 @@ export class AddNewContact extends Component {
         value: 'Staff'
       }
     ];
-    
+
     const languages = [
       {
         label: 'Select language',
@@ -189,7 +190,7 @@ export class AddNewContact extends Component {
         value: 'English'
       }
     ];
-    
+
     let type = [
       {
         label: 'Select for',
@@ -209,7 +210,7 @@ export class AddNewContact extends Component {
         value: 'Other'
       }
     ];
-    
+
     const selectCustomStyle = {
       container: provided => {
         return {
@@ -224,55 +225,39 @@ export class AddNewContact extends Component {
         };
       }
     };
-    
+
     return (
       <div className='slim-mainpanel'>
         <div className='container'>
           <div className='manager-header'>
             <div className='slim-pageheader'>
-              <ol className='breadcrumb slim-breadcrumb'/>
+              <ol className='breadcrumb slim-breadcrumb' />
               <h6 className='slim-pagetitle'>Add new contact</h6>
             </div>
           </div>
-          {errors.length ?
-            <div className="alert alert-danger mg-b-20" role="alert">
+          {errors.length ? (
+            <div className='alert alert-danger mg-b-20' role='alert'>
               <strong>Oh snap!</strong> Change a few things up and try submitting again.
-              <ol className="mg-t-10">
-                {errors.map(value => (
-                  <li>{value}</li>
-                ))}
-              </ol>
-            </div> : null}
+              <ol className='mg-t-10'>{errors.map(value => <li>{value}</li>)}</ol>
+            </div>
+          ) : null}
           <form onSubmit={this.onSubmit}>
             <div className='section-wrapper mg-b-20'>
               <label className='section-title mg-b-20'>Personal Information</label>
               <div className='row'>
                 <div className='col-lg mg-t-10 mg-lg-t-0'>
-                  <TextFieldGroup
-                    name='firstName'
-                    placeholder='First Name'
-                    onChange={this.onChange}
-                  />
+                  <TextFieldGroup name='firstName' placeholder='First Name' onChange={this.onChange} />
                 </div>
                 <div className='col-lg mg-t-10 mg-lg-t-0'>
-                  <TextFieldGroup
-                    name='lastName'
-                    placeholder='Last Name'
-                    onChange={this.onChange}/>
+                  <TextFieldGroup name='lastName' placeholder='Last Name' onChange={this.onChange} />
                 </div>
               </div>
               <div className='row'>
                 <div className='col-lg mg-t-10 mg-lg-t-0'>
-                  <TextFieldGroup
-                    name='company'
-                    placeholder='Company'
-                    onChange={this.onChange}/>
+                  <TextFieldGroup name='company' placeholder='Company' onChange={this.onChange} />
                 </div>
                 <div className='col-lg mg-t-10 mg-lg-t-0'>
-                  <TextFieldGroup
-                    name='profession'
-                    placeholder='Profession'
-                    onChange={this.onChange}/>
+                  <TextFieldGroup name='profession' placeholder='Profession' onChange={this.onChange} />
                 </div>
               </div>
             </div>
@@ -280,8 +265,8 @@ export class AddNewContact extends Component {
               <label className='section-title mg-b-20'>Other Information</label>
               <div className='row'>
                 <div className='col-lg mg-t-10 mg-lg-t-0'>
-                  <div className="form-group">
-                    <label className="cols-sm-2 control-label m-0"/>
+                  <div className='form-group'>
+                    <label className='cols-sm-2 control-label m-0' />
                     <Select
                       styles={selectCustomStyle}
                       options={contactTypes}
@@ -289,14 +274,14 @@ export class AddNewContact extends Component {
                       name='type'
                       placeholder={'Select type'}
                       onChange={e => {
-                        this.onSelectChange('type', e.map(({value}) => value));
+                        this.onSelectChange('type', e.map(({ value }) => value));
                       }}
                     />
                   </div>
                 </div>
                 <div className='col-lg mg-t-10 mg-lg-t-0'>
-                  <div className="form-group">
-                    <label className="cols-sm-2 control-label m-0"/>
+                  <div className='form-group'>
+                    <label className='cols-sm-2 control-label m-0' />
                     <Select
                       styles={selectCustomStyle}
                       options={languages}
@@ -311,8 +296,8 @@ export class AddNewContact extends Component {
               </div>
               <div className='row'>
                 <div className='col-lg-6 mg-t-10 mg-lg-t-0'>
-                  <div className="form-group">
-                    <label className="cols-sm-2 control-label m-0"/>
+                  <div className='form-group'>
+                    <label className='cols-sm-2 control-label m-0' />
                     <Select
                       styles={selectCustomStyle}
                       options={this.state.groups}
@@ -320,7 +305,7 @@ export class AddNewContact extends Component {
                       isMulti
                       placeholder={'Select group'}
                       onChange={e => {
-                        this.onSelectChange('groups', e.map(({value}) => value));
+                        this.onSelectChange('groups', e.map(({ value }) => value));
                       }}
                     />
                   </div>
@@ -331,13 +316,22 @@ export class AddNewContact extends Component {
               <div className='card-header'>
                 <ul className='nav nav-tabs card-header-tabs'>
                   <li className='nav-item'>
-                    <a className='nav-link active show' href='#emailAddresses' data-toggle='tab'> Email Addresses </a>
+                    <a className='nav-link active show' href='#emailAddresses' data-toggle='tab'>
+                      {' '}
+                      Email Addresses{' '}
+                    </a>
                   </li>
                   <li className='nav-item'>
-                    <a className='nav-link' href='#addresses' data-toggle='tab'> Addresses </a>
+                    <a className='nav-link' href='#addresses' data-toggle='tab'>
+                      {' '}
+                      Addresses{' '}
+                    </a>
                   </li>
                   <li className='nav-item'>
-                    <a className='nav-link' href='#phoneNumbers' data-toggle='tab'> Phone Numbers </a>
+                    <a className='nav-link' href='#phoneNumbers' data-toggle='tab'>
+                      {' '}
+                      Phone Numbers{' '}
+                    </a>
                   </li>
                 </ul>
               </div>
@@ -374,7 +368,7 @@ export class AddNewContact extends Component {
                                 this.removeRow(parentKey, key);
                               }}
                             >
-                              <span className='fa fa-times'/>
+                              <span className='fa fa-times' />
                             </button>
                           </div>
                         </div>
@@ -462,7 +456,7 @@ export class AddNewContact extends Component {
                                 this.removeRow(parentKey, key);
                               }}
                             >
-                              <span className='fa fa-times'/>
+                              <span className='fa fa-times' />
                             </button>
                           </div>
                         </div>
@@ -515,7 +509,7 @@ export class AddNewContact extends Component {
                                 this.removeRow(parentKey, key);
                               }}
                             >
-                              <span className='fa fa-times'/>
+                              <span className='fa fa-times' />
                             </button>
                           </div>
                         </div>
@@ -543,7 +537,6 @@ export class AddNewContact extends Component {
         </div>
       </div>
     );
-    
   }
 }
 
@@ -558,4 +551,4 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-export default connect(mapStateToProps, {addContact})(AddNewContact);
+export default connect(mapStateToProps, { addContact })(AddNewContact);

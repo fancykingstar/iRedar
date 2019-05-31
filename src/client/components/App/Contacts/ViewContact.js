@@ -1,9 +1,9 @@
 import moment from 'moment';
 import propTypes from 'prop-types';
 import React from 'react';
-import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
-import {getContact, updateContactPrivateNotes} from '../../../actions/contactAction';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { getContact, updateContactPrivateNotes } from '../../../actions/contactAction';
 
 class EditContact extends React.Component {
   state = {
@@ -23,59 +23,76 @@ class EditContact extends React.Component {
     addresses: [],
     emailAddresses: []
   };
-  
+
   componentDidMount() {
     this.textarea = false;
-    const {getContact, match: {params: {contactId}}} = this.props;
-    
+    const { getContact, match: { params: { contactId } } } = this.props;
+
     getContact(contactId);
   }
-  
+
   componentWillReceiveProps(nextProps, nextContext) {
     this.setState({
       ...nextProps.contact,
       loading: nextProps.loading
     });
   }
-  
-  updatePrivateNotes = (notes) => {
-    const {updateContactPrivateNotes} = this.props;
+
+  updatePrivateNotes = notes => {
+    const { updateContactPrivateNotes } = this.props;
     updateContactPrivateNotes({
       _id: this.state._id,
       notes
     });
   };
-  
+
   showTextarea = () => {
-    const {getContact} = this.props;
+    const { getContact } = this.props;
     this.textarea = !this.textarea;
-    
+
     if (!this.textarea) {
       this.updatePrivateNotes(this.state.notes);
       getContact(this.state._id);
     }
   };
-  
-  onChange = (event) => {
+
+  onChange = event => {
     event.persist();
-    
+
     this.setState(oldState => ({
       ...oldState,
       notes: event.target.value
     }));
   };
-  
+
   textareaComponent = () => (
-    <textarea rows="3"
+    <textarea
+      rows='3'
       value={this.state.notes}
-      className="form-control"
-      placeholder="Textarea"
-      onChange={this.onChange}/>
+      className='form-control'
+      placeholder='Textarea'
+      onChange={this.onChange}
+    />
   );
-  
+
   render() {
-    let {_id, firstName, lastName, type, profession, company, groups, language, created_at, updated_at, emailAddresses, phoneNumbers, addresses, loading} = this.state;
-    
+    let {
+      _id,
+      firstName,
+      lastName,
+      type,
+      profession,
+      company,
+      groups,
+      language,
+      created_at,
+      updated_at,
+      emailAddresses,
+      phoneNumbers,
+      addresses,
+      loading
+    } = this.state;
+
     return (
       <div className='slim-mainpanel'>
         <div className='container'>
@@ -83,34 +100,37 @@ class EditContact extends React.Component {
             <div className='slim-pageheader'>
               <div className='breadcrumb slim-breadcrumb'>
                 <Link to={`/contacts/edit/${_id}`} className={'btn btn-primary btn-sm'}>
-                  <i className={'fa fa-pencil'}/> Edit
+                  <i className={'fa fa-pencil'} /> Edit
                 </Link>
               </div>
               <h6 className='slim-pagetitle'>View Contact</h6>
             </div>
           </div>
-          {loading ?
-            <div className="sk-three-bounce">
-              <div className="sk-child sk-bounce1 bg-gray-800"/>
-              <div className="sk-child sk-bounce2 bg-gray-800"/>
-              <div className="sk-child sk-bounce3 bg-gray-800"/>
-            </div> :
+          {loading ? (
+            <div className='sk-three-bounce'>
+              <div className='sk-child sk-bounce1 bg-gray-800' />
+              <div className='sk-child sk-bounce2 bg-gray-800' />
+              <div className='sk-child sk-bounce3 bg-gray-800' />
+            </div>
+          ) : (
             <div className='row'>
               <div className='col-8'>
                 <div className='card card-profile'>
                   <div className='card-body'>
                     <div className='media'>
-                      <img src='http://via.placeholder.com/500x500' alt=''/>
+                      <img src='http://via.placeholder.com/500x500' alt='' />
                       <div className='media-body'>
                         <h3 className='card-profile-name'>{`${firstName} ${lastName}`}</h3>
                         <p className='card-profile-position'>
                           {profession} at <a href=''>{company}</a>
                         </p>
                         <p className='mg-b-0'>
-                          {groups.map(({name}) => {
-                            return <button className='btn btn-outline-success btn-sm mg-r-5' disabled>
-                              {name}
-                            </button>;
+                          {groups.map(({ name }) => {
+                            return (
+                              <button className='btn btn-outline-success btn-sm mg-r-5' disabled>
+                                {name}
+                              </button>
+                            );
                           })}
                           <button className='btn btn-outline-primary btn-sm' disabled>
                             {language}
@@ -122,9 +142,9 @@ class EditContact extends React.Component {
                       <div className='col-4'>
                         <div className='media mg-t-25'>
                           <div>
-                            <i className='fa fa-plus tx-24 tx-success lh-0'/>
+                            <i className='fa fa-plus tx-24 tx-success lh-0' />
                           </div>
-                          <div className='media-body mg-t-4' style={{marginLeft: '15px'}}>
+                          <div className='media-body mg-t-4' style={{ marginLeft: '15px' }}>
                             <h6 className='tx-14 tx-gray-700'>Created At</h6>
                             <span className='d-block'>{moment(created_at).format('LLL')}</span>
                           </div>
@@ -133,9 +153,9 @@ class EditContact extends React.Component {
                       <div className='col-4'>
                         <div className='media mg-t-25'>
                           <div>
-                            <i className='fa fa-pencil tx-24 tx-primary lh-0'/>
+                            <i className='fa fa-pencil tx-24 tx-primary lh-0' />
                           </div>
-                          <div className='media-body mg-t-4' style={{marginLeft: '15px'}}>
+                          <div className='media-body mg-t-4' style={{ marginLeft: '15px' }}>
                             <h6 className='tx-14 tx-gray-700'>Modified At</h6>
                             <span className='d-block'>{moment(updated_at).format('LLL')}</span>
                           </div>
@@ -144,9 +164,9 @@ class EditContact extends React.Component {
                       <div className='col-4'>
                         <div className='media mg-t-25'>
                           <div>
-                            <i className='fa fa-user tx-24 tx-danger lh-0'/>
+                            <i className='fa fa-user tx-24 tx-danger lh-0' />
                           </div>
-                          <div className='media-body mg-t-4' style={{marginLeft: '15px'}}>
+                          <div className='media-body mg-t-4' style={{ marginLeft: '15px' }}>
                             <h6 className='tx-14 tx-gray-700'>Created By</h6>
                             <span className='d-block'>yourname@sample.com</span>
                           </div>
@@ -179,15 +199,18 @@ class EditContact extends React.Component {
                     <div className='tab-content'>
                       <div className='tab-pane show active' id='email_addresses'>
                         <div className='list-group  list-group-user'>
-                          {emailAddresses.length ? emailAddresses.map((value, key) => (
+                          {emailAddresses.length ? (
+                            emailAddresses.map((value, key) => (
                               <div className='list-group-item' key={key}>
                                 <div className='user-name-address'>
                                   <p>{value.emailAddress}</p>
-                                  <span> Client Portal: <b className='tx-success'>Confirmed Access</b> |{' '}
+                                  <span>
+                                    {' '}
+                                    Client Portal: <b className='tx-success'>Confirmed Access</b> |{' '}
                                     <b className='tx-primary'>
-                                  <a href='#'>Revoke Access</a>
-                                </b>
-                              </span>
+                                      <a href='#'>Revoke Access</a>
+                                    </b>
+                                  </span>
                                 </div>
                                 <div className='user-btn-wrapper'>
                                   <button className='btn btn-outline-primary btn-sm' disabled>
@@ -195,21 +218,28 @@ class EditContact extends React.Component {
                                   </button>
                                 </div>
                               </div>
-                            )) :
+                            ))
+                          ) : (
                             <div className='list-group-item'>
                               <div className='user-name-address'>
                                 <p>{'N/A'}</p>
                               </div>
-                            </div>}
+                            </div>
+                          )}
                         </div>
                       </div>
                       <div className='tab-pane' id='addresses'>
                         <div className='list-group  list-group-user'>
-                          {addresses.length ? addresses.map((value, key) => (
+                          {addresses.length ? (
+                            addresses.map((value, key) => (
                               <div className='list-group-item' key={key}>
                                 <div className='user-name-address'>
-                                  <p>{value.country}, {value.zipCode}</p>
-                                  <span>{value.address}, {value.city}, {value.state}</span>
+                                  <p>
+                                    {value.country}, {value.zipCode}
+                                  </p>
+                                  <span>
+                                    {value.address}, {value.city}, {value.state}
+                                  </span>
                                 </div>
                                 <div className='user-btn-wrapper'>
                                   <button className='btn btn-outline-primary btn-sm' disabled>
@@ -217,17 +247,20 @@ class EditContact extends React.Component {
                                   </button>
                                 </div>
                               </div>
-                            )) :
+                            ))
+                          ) : (
                             <div className='list-group-item'>
                               <div className='user-name-address'>
                                 <p>{'N/A'}</p>
                               </div>
-                            </div>}
+                            </div>
+                          )}
                         </div>
                       </div>
                       <div className='tab-pane' id='phone_numbers'>
                         <div className='list-group  list-group-user'>
-                          {phoneNumbers.length ? phoneNumbers.map((value, key) => (
+                          {phoneNumbers.length ? (
+                            phoneNumbers.map((value, key) => (
                               <div className='list-group-item' key={key}>
                                 <div className='user-name-address'>
                                   <p>{value.phoneNumber}</p>
@@ -238,12 +271,14 @@ class EditContact extends React.Component {
                                   </button>
                                 </div>
                               </div>
-                            )) :
+                            ))
+                          ) : (
                             <div className='list-group-item'>
                               <div className='user-name-address'>
                                 <p>{'N/A'}</p>
                               </div>
-                            </div>}
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -310,7 +345,7 @@ class EditContact extends React.Component {
                     </h5>
                     <p>The contact is invite to the client portal</p>
                   </div>
-                  
+
                   <p className='contact-item'>
                     <span>Portal URL:</span>
                     <a href=''>http://thmpxls.me</a>
@@ -324,19 +359,20 @@ class EditContact extends React.Component {
                   <div className='card-body pd-25'>
                     <div className='slim-card-title'>
                       Private notes
-                      <a href='#'
-                        onClick={this.showTextarea}>
-                        <i className={'fa fa-pencil float-right'}/>
+                      <a href='#' onClick={this.showTextarea}>
+                        <i className={'fa fa-pencil float-right'} />
                       </a>
                     </div>
-                    {this.textarea ? this.textareaComponent() :
-                      <p className='tx-13 mg-b-0'>
-                        {this.state.notes || 'N/A'}
-                      </p>}
+                    {this.textarea ? (
+                      this.textareaComponent()
+                    ) : (
+                      <p className='tx-13 mg-b-0'>{this.state.notes || 'N/A'}</p>
+                    )}
                   </div>
                 </div>
               </div>
-            </div>}
+            </div>
+          )}
         </div>
       </div>
     );

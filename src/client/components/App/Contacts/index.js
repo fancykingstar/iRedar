@@ -1,9 +1,9 @@
 import Papa from 'papaparse';
 import propTypes from 'prop-types';
 import React from 'react';
-import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
-import {addContact, deleteContacts, getContacts} from '../../../actions/contactAction';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { addContact, deleteContacts, getContacts } from '../../../actions/contactAction';
 import ContactTable from '../Components/ContactDataTable';
 
 class ContactsPage extends React.Component {
@@ -11,39 +11,39 @@ class ContactsPage extends React.Component {
     super();
     this.importFile = React.createRef();
   }
-  
+
   componentDidMount() {
-    const {getContacts} = this.props;
+    const { getContacts } = this.props;
     getContacts();
   }
-  
-  fileOnchange = (event) => {
-    const {getContacts, addContact, history} = this.props;
-    
+
+  fileOnchange = event => {
+    const { getContacts, addContact, history } = this.props;
+
     Papa.parse(event.target.files[0], {
-      complete: (results) => {
-        let {data} = results;
+      complete: results => {
+        let { data } = results;
         let contact = [];
-        
+
         data.forEach((value, key) => {
           if (data[key + 1]) {
             let type = [];
             let client = data[key + 1][5];
             let staff = data[key + 1][6];
             let partner = data[key + 1][7];
-            
+
             if (String(client).toLowerCase() === 'yes') {
               type.push('Client');
             }
-            
+
             if (String(staff).toLowerCase() === 'yes') {
               type.push('Staff');
             }
-            
+
             if (String(partner).toLowerCase() === 'yes') {
               type.push('Partner');
             }
-            
+
             contact.push({
               firstName: data[key + 1][0],
               lastName: data[key + 1][1],
@@ -99,24 +99,24 @@ class ContactsPage extends React.Component {
       }
     });
   };
-  
-  getData = (data) => {
+
+  getData = data => {
     this.deleteItems = data;
   };
-  
-  removeContacts = (ids) => {
-    const {deleteContacts, getContacts} = this.props;
+
+  removeContacts = ids => {
+    const { deleteContacts, getContacts } = this.props;
     deleteContacts(ids);
     getContacts();
   };
-  
+
   openFileDIR = () => {
     this.importFile.current.click();
   };
-  
+
   render() {
-    const {contacts} = this.props;
-    
+    const { contacts } = this.props;
+
     return (
       <div className='slim-mainpanel'>
         <div className='container'>
@@ -129,7 +129,7 @@ class ContactsPage extends React.Component {
                   }}
                   className='btn btn-success btn-sm  mg-r-5'
                 >
-                  <i className='fa fa-plus'/> Add
+                  <i className='fa fa-plus' /> Add
                 </Link>
                 <div className='dropdown'>
                   <button
@@ -154,12 +154,12 @@ class ContactsPage extends React.Component {
                       'will-change': 'transform'
                     }}
                   >
-                    <input ref={this.importFile} type={'file'} onChange={this.fileOnchange} hidden/>
+                    <input ref={this.importFile} type={'file'} onChange={this.fileOnchange} hidden />
                     <a className='dropdown-item' href='#' onClick={this.openFileDIR}>
-                      <i className='fa fa-file'/> Microsoft Excel or CSV file
+                      <i className='fa fa-file' /> Microsoft Excel or CSV file
                     </a>
                     <a className='dropdown-item' href='#'>
-                      <i className='fa fa-google'/> Google contacts
+                      <i className='fa fa-google' /> Google contacts
                     </a>
                   </div>
                 </div>
@@ -171,8 +171,13 @@ class ContactsPage extends React.Component {
             <ContactTable
               data={contacts}
               onSelected={this.getData}
-              deleteContacts={() => {this.removeContacts(this.deleteItems);}}
-              archiveContacts={() => {this.removeContacts(this.deleteItems);}}/>
+              deleteContacts={() => {
+                this.removeContacts(this.deleteItems);
+              }}
+              archiveContacts={() => {
+                this.removeContacts(this.deleteItems);
+              }}
+            />
           </div>
         </div>
       </div>
