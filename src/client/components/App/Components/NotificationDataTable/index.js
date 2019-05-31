@@ -1,18 +1,20 @@
 import moment from 'moment';
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import ToolkitProvider, {Search} from 'react-bootstrap-table2-toolkit';
-import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
-import {editAdminPermissions} from '../../../../actions/accessActions';
+import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { editAdminPermissions } from '../../../../actions/accessActions';
 import './index.css';
 
 export class DataTable extends Component {
   constructor() {
     super();
     this.state = {
-      showFilterDropdown: false
+      showFilterDropdown: false,
+      received: true,
+      sent: true
     };
     
     this.columns = [
@@ -43,7 +45,7 @@ export class DataTable extends Component {
         sort: true,
         editable: false,
         headerStyle: (colum, colIndex) => {
-          return {width: '25%'};
+          return { width: '25%' };
         },
         formatter: (text, record) => record.sentBy ? `${record.sentBy.lastName}, ${record.sentBy.firstName}` : 'N/A'
       }
@@ -60,8 +62,24 @@ export class DataTable extends Component {
     });
   }
   
+  showRow = (row, rowIndex) => {
+    let displayNone = 'd-none';
+    
+    if (row.sentBy._id === this.props.profile._id && !this.state.sent) {
+      return displayNone;
+    }
+    
+    if (row.sentBy._id !== this.props.profile._id && !this.state.received) {
+      return displayNone;
+    }
+  };
+  
+  showRows = (key, value) => () => {
+    this.setState(oldState => ({ ...oldState, [key]: value }));
+  };
+  
   render() {
-    const {SearchBar} = Search;
+    const { SearchBar } = Search;
     let deletedItems = [];
     
     const selectRowProp = {
@@ -92,7 +110,7 @@ export class DataTable extends Component {
       }
     };
     
-    const sizePerPageOptionRenderer = ({text, page, onSizePerPageChange}) => (
+    const sizePerPageOptionRenderer = ({ text, page, onSizePerPageChange }) => (
       <li key={text} role='presentation' className='dropdown-item'>
         <div
           href='#'
@@ -139,7 +157,7 @@ export class DataTable extends Component {
       }
     };
     
-    let {data} = this.props;
+    let { data } = this.props;
     
     let contactData = data.map(value => {
       return {
@@ -185,6 +203,45 @@ export class DataTable extends Component {
                     </a>
                   </div>
                 </div>
+                <div className='dropdown'>
+                  <button
+                    className='btn btn-primary btn-sm dropdown-toggle mg-l-5'
+                    type='button'
+                    id='dropdownMenuButton2'
+                    data-toggle='dropdown'
+                    aria-haspopup='true'
+                    aria-expanded='false'
+                  >
+                    <i className='fa fa-filter'/> Filter
+                  </button>
+                  <div
+                    className='dropdown-menu'
+                    aria-labelledby='dropdownMenuButton2'
+                    x-placement='bottom-start'
+                    style={{
+                      position: 'absolute',
+                      transform: 'translate3d(0px, 42px, 0px)',
+                      top: '0px',
+                      left: '0px',
+                      'will-change': 'transform'
+                    }}
+                  >
+                    <a className='dropdown-item' href='#' onClick={() => {}}>
+                      <input
+                        type='checkbox'
+                        checked={this.state.received}
+                        onChange={this.showRows('received', !this.state.received)}
+                      /> Received notifications
+                    </a>
+                    <a className='dropdown-item' href='#' onClick={() => {}}>
+                      <input
+                        type='checkbox'
+                        checked={this.state.sent}
+                        onChange={this.showRows('sent', !this.state.sent)}
+                      /> Sent notifications
+                    </a>
+                  </div>
+                </div>
               </div>
               <div className='col-6 '>
                 <SearchBar {...props.searchProps} />
@@ -192,6 +249,7 @@ export class DataTable extends Component {
             </div>
             <hr/>
             <BootstrapTable
+              rowClasses={this.showRow}
               bootstrap4
               hover
               defaultSorted={defaultSorted}
@@ -207,4 +265,8 @@ export class DataTable extends Component {
   }
 }
 
-export default connect(null, {editAdminPermissions})(DataTable);
+const mapStateToProps = state => ({
+  profile: state.auth.profile
+});
+
+export default connect(mapStateToProps, { editAdminPermissions })(DataTable);

@@ -17,11 +17,19 @@ const contacts = require('./routes/contacts');
 const groups = require('./routes/group');
 const notifications = require('./routes/notifications');
 const payment = require('./routes/payment');
+const message = require('./routes/message');
+const inbox = require('./routes/inbox');
+
+const sockets = require('./controllers/sockets');
 
 // eslint-disable no-console
 
 // Initial express app
 const app = express();
+// Initial http server
+const server = require('http').Server(app);
+// Initial web socket
+const io = require('socket.io')(server);
 
 // Log requests info
 app.use(morgan('dev'));
@@ -65,6 +73,10 @@ app.use('/api/upload-referral', referralController);
 app.use('/api/contacts', contacts);
 app.use('/api/groups', groups);
 app.use('/api/notifications', notifications);
+app.use('/api/message', message);
+app.use('/api/inbox', inbox);
+// Io init
+io.on('connection', sockets.init);
 
 if (!debugMode) {
   app.use(express.static(path.join(__dirname, relativePath, 'build')));
@@ -72,7 +84,7 @@ if (!debugMode) {
 
 app.use(require('./helpers/error-handler'));
 
-app.get('/*', function(req, res) {
+app.get('/*', function (req, res) {
   if (req.xhr || req.headers.accept.indexOf('json') > -1) {
     // send your xhr response here
     res.sendStatus(404);
@@ -84,6 +96,6 @@ app.get('/*', function(req, res) {
 
 const port = process.env.PORT || 5000;
 
-app.listen(port, () => logger.info(`Server running on port ${port}`));
+server.listen(port, () => logger.info(`Server running on port ${port}`));
 
 module.exports = app;

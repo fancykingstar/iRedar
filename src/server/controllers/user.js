@@ -97,8 +97,8 @@ exports.postClientRegister = async (req, res) => {
 
     const userPermission = await new Permission({
       profile: profile._id,
-      role: "client",
-      permissionRight: rolesToPermission["client"]
+      role: "admin",
+      permissionRight: rolesToPermission["admin"]
     });
     await userPermission.save();
 
