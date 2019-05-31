@@ -10,6 +10,6 @@ export const getMessages = (payload) => async dispatch => {
 };
 
 export const addMessage = (payload) => async () => {
-  console.log(payload)
+  console.log(payload);
   const {data: {data}} = await axios.post(`${API_URL}/api/message/send`, payload)
 };

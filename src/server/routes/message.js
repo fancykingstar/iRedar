@@ -16,6 +16,6 @@ router.post('/send', middleware(messageController.postMessage));
  * @description Get list of messages
  * @access Private
  */
-router.get('/:inboxId', middleware(messageController.getMessages))
+router.get('/:inboxId', middleware(messageController.getMessages));
 
 module.exports = router;

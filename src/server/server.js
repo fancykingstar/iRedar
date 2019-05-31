@@ -20,6 +20,8 @@ const payment = require('./routes/payment');
 const message = require('./routes/message');
 const inbox = require('./routes/inbox');
 
+const sockets = require('./controllers/sockets');
+
 // eslint-disable no-console
 
 // Initial express app
@@ -71,10 +73,10 @@ app.use('/api/upload-referral', referralController);
 app.use('/api/contacts', contacts);
 app.use('/api/groups', groups);
 app.use('/api/notifications', notifications);
-app.use('/api/message', message)
-app.use('/api/inbox', inbox)
+app.use('/api/message', message);
+app.use('/api/inbox', inbox);
 // Io init
-// io.on('connection', message.connect);
+io.on('connection', sockets.init);
 
 if (!debugMode) {
   app.use(express.static(path.join(__dirname, relativePath, 'build')));
@@ -82,7 +84,7 @@ if (!debugMode) {
 
 app.use(require('./helpers/error-handler'));
 
-app.get('/*', function(req, res) {
+app.get('/*', function (req, res) {
   if (req.xhr || req.headers.accept.indexOf('json') > -1) {
     // send your xhr response here
     res.sendStatus(404);

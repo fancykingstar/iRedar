@@ -7,36 +7,36 @@ class MessageList extends Component {
   state = {
     allInboxes: []
   };
-  
-  componentWillMount() {
+
+  componentWillMount () {
     const { profile: { _id }, getInboxes } = this.props;
-    
+
     getInboxes(_id);
   }
-  
-  componentWillReceiveProps(nextProps, nextContext) {
+
+  componentWillReceiveProps (nextProps, nextContext) {
     const { inbox, allInboxes } = nextProps;
-    
+
     this.setState({
       allInboxes: allInboxes
     });
   }
-  
+
   handleClick = (id) => {
     this.props.getInbox(id);
   };
-  
-  listInboxes(allInboxes) {
+
+  listInboxes (allInboxes) {
     return allInboxes.map((value, key) => {
       let { to, from, updated_at, _id } = value;
       let messageHeader;
-      
+
       if (from._id === this.props.profile._id) {
         messageHeader = `${to.firstName} ${to.lastName}`;
       } else {
         messageHeader = `${from.firstName} ${from.lastName}`;
       }
-      
+
       return (
         <a onClick={() => this.handleClick(_id)} className="media" key={key}>
           <div className="media-left">
@@ -56,20 +56,20 @@ class MessageList extends Component {
       );
     });
   }
-  
-  handleNewMessage() {
+
+  handleNewMessage () {
     this.props.clearInbox();
   }
-  
-  render() {
+
+  render () {
     return (
       <div className="messages-left">
         <div className="slim-pageheader">
           <h6 className="slim-pagetitle">Messages</h6>
-          <a  onClick={() => this.handleNewMessage()} className="messages-compose"><i  className="icon ion-compose"/></a>
+          <a onClick={() => this.handleNewMessage()} className="messages-compose"><i className="icon ion-compose"/></a>
         </div>
         <div className="messages-list ps ps--theme_default ps--active-y"
-          data-ps-id="68565780-3c6e-a8ec-0c22-2a40a868e860">
+             data-ps-id="68565780-3c6e-a8ec-0c22-2a40a868e860">
           {this.listInboxes(this.state.allInboxes)}
           {/* <a href="" className="media">
            <div className="media-left">

@@ -1,43 +1,54 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Select from 'react-select';
-import {connect} from 'react-redux';
-import {addMessage, getMessages} from '../../../actions/messageAction';
+import { connect } from 'react-redux';
+import { addMessage, getMessages } from '../../../actions/messageAction';
 import { getInbox } from '../../../actions/inboxAction';
+import io from 'socket.io-client';
+import { API_URL } from '../../../actions/types';
 
 class MessageChatBox extends Component {
-  state = {
-    inbox: null,
-    userProfile: null,
-    message: '',
-    users: null,
-    sendTo: null
-  };
-  
-  componentWillReceiveProps(nextProps) {
-    const { inbox, profile, users } = nextProps;    
-    
+  constructor () {
+    super();
+    this.socket = io.connect(API_URL);
+    this.state = {
+      inbox: null,
+      userProfile: null,
+      message: '',
+      users: null,
+      sendTo: null
+    };
+
+  }
+
+  componentWillReceiveProps (nextProps) {
+    const { inbox, profile, users, } = nextProps;
+
+    this.socket.on(`has-new-message/${inbox._id}`, () => {
+      this.props.getInbox(inbox._id);
+    });
+
     this.setState({
       inbox: inbox,
       userProfile: profile,
-      users: users.map(({firstName, lastName, _id}) => {
+      users: users.map(({ firstName, lastName, _id }) => {
         return {
           label: `${lastName}, ${firstName}`,
           value: _id
-        }
+        };
       })
     });
   }
-  
-  listMessages(inbox, profile) {
+
+  listMessages (inbox, profile) {
     if (!inbox) {
       return;
     }
-    
+
     const { messages } = inbox;
-    
+
     return messages.map((message, key) => {
       let messageType = message.sentBy === profile._id ? 'media-body reverse' : 'media-body';
-      
+
       return (
         <div className="media" key={key}>
           {message.sentBy !== profile._id ? <img src="http://via.placeholder.com/500x500" alt=""/> : null}
@@ -51,28 +62,28 @@ class MessageChatBox extends Component {
       );
     });
   }
-  
+
   handleChange = ({ target }) => {
     this.setState({
       message: target.value
     });
   };
-  
+
   handleEnter = ({ key }) => {
     let sendObject = {
       inboxId: this.state.inbox._id,
       message: this.state.message,
       sentBy: this.state.userProfile._id
-    }
+    };
 
-    if(!this.state.inbox._id) {
-      sendObject.to = this.state.sendTo
-      sendObject.from = this.state.userProfile._id
+    if (!this.state.inbox._id) {
+      sendObject.to = this.state.sendTo;
+      sendObject.from = this.state.userProfile._id;
     }
 
     if (key === 'Enter') {
       this.props.addMessage(sendObject);
-      
+      // this.props.inbox.messages.push(sendObject);
       //clear input box
       this.setState({
         message: ' ',
@@ -80,8 +91,8 @@ class MessageChatBox extends Component {
       });
     }
   };
-  
-  render() {
+
+  render () {
     const selectCustomStyle = {
       container: provided => {
         return {
@@ -98,18 +109,17 @@ class MessageChatBox extends Component {
         };
       }
     };
-    
-    let messageHeader = null
+
+    let messageHeader = null;
 
     if (this.state.inbox && this.state.inbox.to) {
-      console.log(this.state.inbox)
       if (this.state.inbox.to._id === this.state.userProfile._id) {
         messageHeader = `${this.state.inbox.from.firstName} ${this.state.inbox.from.lastName}`;
       } else {
         messageHeader = `${this.state.inbox.to.firstName} ${this.state.inbox.to.lastName}`;
       }
     }
-    
+
     return messageHeader ?
       <div className="messages-right">
         <div className="message-header">
@@ -135,7 +145,7 @@ class MessageChatBox extends Component {
             </div>
           </div>
         </div>
-        
+
         <div className="message-body ps ps--theme_default" data-ps-id="3ff62263-ab02-74be-33aa-7ffa0172d9da">
           <div className="media-list">
             {this.listMessages(this.state.inbox, this.state.userProfile)}
@@ -197,7 +207,7 @@ class MessageChatBox extends Component {
              </div> */}
           </div>
         </div>
-        
+
         <div className="message-footer">
           <div className="row row-sm">
             <div className="col-9 col-sm-8 col-xl-9">
@@ -227,17 +237,17 @@ class MessageChatBox extends Component {
         <div className="message-header">
           <a href="" className="message-back"><i className="fa fa-angle-left"/></a>
           <div className="media">
-            <Select               
+            <Select
               styles={selectCustomStyle}
               placeholder={'Select Recipient'}
               options={this.state.users ? this.state.users : []}
-              onChange={({value}) => {                
+              onChange={({ value }) => {
                 this.setState({
                   sendTo: value
                 });
-              }}/>        
+              }}/>
           </div>
-            {/*<img src="http://via.placeholder.com/500x500" alt=""/>`*/}        
+          {/*<img src="http://via.placeholder.com/500x500" alt=""/>`*/}
         </div>
 
         <div className="message-body ps ps--theme_default" data-ps-id="3ff62263-ab02-74be-33aa-7ffa0172d9da">
