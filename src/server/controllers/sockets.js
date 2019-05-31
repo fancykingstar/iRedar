@@ -5,7 +5,6 @@ exports.init = (socket) => {
   console.log('a user connected');
 };
 
-exports.socket = (event, data) => {
-  console.log(data);
-  initSocket.emit(`${event}/${data}`, { result: true });
+exports.socket = (event, id, data) => {
+  initSocket.emit(`${event}/${id}`, { data });
 };

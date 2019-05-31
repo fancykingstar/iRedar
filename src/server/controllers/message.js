@@ -24,8 +24,8 @@ exports.postMessage = async (req, res) => {
       inbox.messages.push(messageObject);
       inbox.save();
 
-      Socket.socket('has-new-conversation', messageObject.inboxId);
-
+      Socket.socket('has-new-conversation', sentBy, { hasNewMessage: true });
+      console.log(`has-new-conversation/${sentBy}`);
       return res.json({
         success: true,
         data: inbox
@@ -45,7 +45,11 @@ exports.postMessage = async (req, res) => {
     inbox.messages.push(messageObject);
     inbox.save();
 
-    Socket.socket('has-new-message', inboxId);
+    Socket.socket('has-new-message', inboxId, {
+      inboxId: inboxId,
+      message: message,
+      sentBy: sentBy
+    });
     // // include socket to response.then()
 
     return res.json({

@@ -15,18 +15,36 @@ class MessageChatBox extends Component {
       userProfile: null,
       message: '',
       users: null,
-      sendTo: null
+      sendTo: null,
+      forceRender: false
     };
+  }
 
+  componentWillUnmount () {
+    if (this.currentInbox) {
+      this.socket.off(`has-new-message/${this.currentInbox}`);
+    }
   }
 
   componentWillReceiveProps (nextProps) {
-    const { inbox, profile, users, } = nextProps;
+    let { inbox, profile, users, } = nextProps;
 
-    this.socket.on(`has-new-message/${inbox._id}`, () => {
-      this.props.getInbox(inbox._id);
+    if (this.currentInbox) {
+      this.socket.off(`has-new-message/${this.currentInbox}`);
+    }
+
+    this.currentInbox = inbox._id;
+
+    this.socket.on(`has-new-message/${this.currentInbox}`, ({ data }) => {
+      console.log(data);
+      this.setState(oldState => ({
+        ...oldState,
+        inbox: {
+          ...this.state.inbox,
+          messages: [...this.state.inbox.messages, data]
+        }
+      }));
     });
-
     this.setState({
       inbox: inbox,
       userProfile: profile,
@@ -44,8 +62,8 @@ class MessageChatBox extends Component {
       return;
     }
 
-    const { messages } = inbox;
-
+    let { messages } = inbox;
+    console.log(messages);
     return messages.map((message, key) => {
       let messageType = message.sentBy === profile._id ? 'media-body reverse' : 'media-body';
 

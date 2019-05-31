@@ -2,11 +2,34 @@ import moment from 'moment';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getInbox, getInboxes, clearInbox } from '../../../actions/inboxAction';
+import io from 'socket.io-client';
+import { API_URL } from '../../../actions/types';
 
 class MessageList extends Component {
-  state = {
-    allInboxes: []
-  };
+  constructor () {
+    super();
+    this.socket = io.connect(API_URL);
+
+    this.state = {
+      allInboxes: [],
+      forceRender: false
+    };
+  }
+
+  componentDidMount () {
+    console.log(`has-new-conversation/${this.props.profile._id}`);
+    this.socket.on(`has-new-conversation/${this.props.profile._id}`, ({ hasNewMessage }) => {
+      console.log(hasNewMessage);
+      // this.setState(oldState => ({
+      //   ...oldState,
+      //   forceRender: !this.state.forceRender
+      // }));
+    });
+  }
+
+  componentWillUnmount () {
+    this.socket.off(`has-new-conversation/${this.props.profile._id}`);
+  }
 
   componentWillMount () {
     const { profile: { _id }, getInboxes } = this.props;
@@ -16,7 +39,7 @@ class MessageList extends Component {
 
   componentWillReceiveProps (nextProps, nextContext) {
     const { inbox, allInboxes } = nextProps;
-
+    console.log(allInboxes);
     this.setState({
       allInboxes: allInboxes
     });
@@ -32,9 +55,9 @@ class MessageList extends Component {
       let messageHeader;
 
       if (from._id === this.props.profile._id) {
-        messageHeader = `${to.firstName} ${to.lastName}`;
+        messageHeader = `${to ? to.firstName : 'N/A'} ${to ? to.lastName : 'N/A'}`;
       } else {
-        messageHeader = `${from.firstName} ${from.lastName}`;
+        messageHeader = `${from ? from.firstName : 'N/A'} ${from ? from.lastName : 'N/A'}`;
       }
 
       return (
