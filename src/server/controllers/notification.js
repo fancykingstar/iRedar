@@ -6,7 +6,7 @@ const Notification = require('../models/Notification');
  */
 exports.index = async (req, res) => {
   let {id} = req.query;
-  let response = await Notification.find({sentBy: id}).populate('sentBy');
+  let response = await Notification.find({ $or:[ {sentBy: id}, {recipients: {$all: [id]}}] }).populate('sentBy');  
   
   return res.json({
     success: true,

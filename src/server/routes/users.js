@@ -49,4 +49,9 @@ router.get(
   userController.getProfile,
 );
 
+// @route GET api/users
+// @desc Return all users
+// @access Private
+router.get('/', userController.getUsers);
+
 module.exports = router;

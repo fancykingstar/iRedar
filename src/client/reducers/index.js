@@ -10,6 +10,7 @@ import uploadFormReducer from './uploadFormReducer';
 import organizationReducer from './organizationReducer';
 import messageReducer from './messageReducer';
 import inboxReducer from './inboxReducer';
+import userReducer from './userReducer';
 
 export default combineReducers({
   auth: authReducer,
@@ -22,5 +23,6 @@ export default combineReducers({
   notifications: notificationReducer,
   organization: organizationReducer,
   message: messageReducer,
-  inbox: inboxReducer
+  inbox: inboxReducer,
+  users: userReducer
 });

@@ -46,3 +46,5 @@ export const SHOW_NOTIFICATION = 'SHOW_NOTIFICATION';
 export const GET_ALL_MESSAGES = 'GET_ALL_MESSAGES';
 export const GET_ALL_INBOXES = 'GET_ALL_INBOXES';
 export const GET_INBOX = 'GET_INBOX';
+
+export const GET_USERS = 'GET_USERS';
