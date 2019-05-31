@@ -17,14 +17,7 @@ class MessageList extends Component {
   }
 
   componentDidMount () {
-    console.log(`has-new-conversation/${this.props.profile._id}`);
-    this.socket.on(`has-new-conversation/${this.props.profile._id}`, ({ hasNewMessage }) => {
-      console.log(hasNewMessage);
-      // this.setState(oldState => ({
-      //   ...oldState,
-      //   forceRender: !this.state.forceRender
-      // }));
-    });
+    
   }
 
   componentWillUnmount () {
@@ -42,6 +35,15 @@ class MessageList extends Component {
     console.log(allInboxes);
     this.setState({
       allInboxes: allInboxes
+    });
+
+    console.log(`has-new-conversation/${this.props.profile._id}`);
+    this.socket.on(`has-new-conversation/${this.props.profile._id}`, ({ hasNewMessage }) => {
+      console.log(hasNewMessage);
+      this.setState(oldState => ({
+        ...oldState,
+        forceRender: !this.state.forceRender
+      }));
     });
   }
 
@@ -77,7 +79,7 @@ class MessageList extends Component {
           </div>
         </a>
       );
-    });
+    }).reverse();
   }
 
   handleNewMessage () {

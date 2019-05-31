@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Select from 'react-select';
 import { connect } from 'react-redux';
 import { addMessage, getMessages } from '../../../actions/messageAction';
-import { getInbox } from '../../../actions/inboxAction';
+import { getInbox, getInboxes } from '../../../actions/inboxAction';
 import io from 'socket.io-client';
 import { API_URL } from '../../../actions/types';
 
@@ -15,36 +15,18 @@ class MessageChatBox extends Component {
       userProfile: null,
       message: '',
       users: null,
-      sendTo: null,
-      forceRender: false
+      sendTo: null
     };
-  }
 
-  componentWillUnmount () {
-    if (this.currentInbox) {
-      this.socket.off(`has-new-message/${this.currentInbox}`);
-    }
   }
 
   componentWillReceiveProps (nextProps) {
-    let { inbox, profile, users, } = nextProps;
+    const { inbox, profile, users, } = nextProps;
 
-    if (this.currentInbox) {
-      this.socket.off(`has-new-message/${this.currentInbox}`);
-    }
-
-    this.currentInbox = inbox._id;
-
-    this.socket.on(`has-new-message/${this.currentInbox}`, ({ data }) => {
-      console.log(data);
-      this.setState(oldState => ({
-        ...oldState,
-        inbox: {
-          ...this.state.inbox,
-          messages: [...this.state.inbox.messages, data]
-        }
-      }));
+    this.socket.on(`has-new-message/${inbox._id}`, () => {
+      this.props.getInbox(inbox._id);
     });
+
     this.setState({
       inbox: inbox,
       userProfile: profile,
@@ -62,8 +44,8 @@ class MessageChatBox extends Component {
       return;
     }
 
-    let { messages } = inbox;
-    console.log(messages);
+    const { messages } = inbox;
+
     return messages.map((message, key) => {
       let messageType = message.sentBy === profile._id ? 'media-body reverse' : 'media-body';
 
@@ -101,6 +83,7 @@ class MessageChatBox extends Component {
 
     if (key === 'Enter') {
       this.props.addMessage(sendObject);
+      this.props.getInboxes(this.state.userProfile._id);
       // this.props.inbox.messages.push(sendObject);
       //clear input box
       this.setState({
@@ -309,4 +292,4 @@ const mapStateToProps = state => ({
   users: state.users.allUsers
 });
 
-export default connect(mapStateToProps, { getMessages, addMessage, getInbox })(MessageChatBox);
+export default connect(mapStateToProps, { getMessages, addMessage, getInbox, getInboxes })(MessageChatBox);
