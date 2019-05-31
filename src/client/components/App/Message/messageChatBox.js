@@ -84,8 +84,7 @@ class MessageChatBox extends Component {
     if (key === 'Enter') {
       this.props.addMessage(sendObject);
       this.props.getInboxes(this.state.userProfile._id);
-      // this.props.inbox.messages.push(sendObject);
-      //clear input box
+
       this.setState({
         message: ' ',
         sendTo: null
@@ -150,62 +149,6 @@ class MessageChatBox extends Component {
         <div className="message-body ps ps--theme_default" data-ps-id="3ff62263-ab02-74be-33aa-7ffa0172d9da">
           <div className="media-list">
             {this.listMessages(this.state.inbox, this.state.userProfile)}
-            {/* <div className="media">
-             <img src="http://via.placeholder.com/500x500" alt=""/>
-             <div className="media-body">
-             <div className="msg">
-             <p>Hi, there?</p>
-             </div>
-             <div className="msg">
-             <p>Are you ready for our party tonight?</p>
-             </div>
-             </div>
-             </div>
-             
-             <div className="media">
-             <div className="media-body reverse">
-             <div className="msg">
-             <p>So this is where you plan to do it?</p>
-             </div>
-             </div>
-             
-             <img src="http://via.placeholder.com/500x500" className="wd-50 rounded-circle" alt=""/>
-             </div>
-             
-             <div className="media">
-             <img src="http://via.placeholder.com/500x500" alt=""/>
-             <div className="media-body">
-             <div className="msg">
-             <p>As good a place as any.</p>
-             </div>
-             </div>
-             </div>
-             
-             <div className="media">
-             <div className="media-body reverse">
-             <div className="msg">
-             <p>At least have the balls to call this what it is: murder. You really believe if you walk back
-             onto
-             that farm alone, no me, no Randall... </p>
-             </div>
-             <div className="msg">
-             <p>You really believe they're gonna buy whatever bullshit story you cook up?</p>
-             </div>
-             </div>
-             
-             <img src="http://via.placeholder.com/500x500" className="wd-50 rounded-circle" alt=""/>
-             </div>
-             
-             <div className="media">
-             <img src="http://via.placeholder.com/500x500" alt=""/>
-             <div className="media-body">
-             <div className="msg">
-             <p>That's just it, it ain't no story. I saw that prisoner shoot you down. I ran after him, I
-             snapped his neck. It ain't gonna be easy, but Lori and Carl, they'll get over you. They done it
-             before. They just gonna have to.</p>
-             </div>
-             </div>
-             </div> */}
           </div>
         </div>
 
@@ -248,7 +191,6 @@ class MessageChatBox extends Component {
                 });
               }}/>
           </div>
-          {/*<img src="http://via.placeholder.com/500x500" alt=""/>`*/}
         </div>
 
         <div className="message-body ps ps--theme_default" data-ps-id="3ff62263-ab02-74be-33aa-7ffa0172d9da">

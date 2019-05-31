@@ -16,10 +16,6 @@ class MessageList extends Component {
     };
   }
 
-  componentDidMount () {
-    
-  }
-
   componentWillUnmount () {
     this.socket.off(`has-new-conversation/${this.props.profile._id}`);
   }
@@ -32,14 +28,12 @@ class MessageList extends Component {
 
   componentWillReceiveProps (nextProps, nextContext) {
     const { inbox, allInboxes } = nextProps;
-    console.log(allInboxes);
+
     this.setState({
       allInboxes: allInboxes
     });
 
-    console.log(`has-new-conversation/${this.props.profile._id}`);
     this.socket.on(`has-new-conversation/${this.props.profile._id}`, ({ hasNewMessage }) => {
-      console.log(hasNewMessage);
       this.setState(oldState => ({
         ...oldState,
         forceRender: !this.state.forceRender
@@ -96,128 +90,6 @@ class MessageList extends Component {
         <div className="messages-list ps ps--theme_default ps--active-y"
              data-ps-id="68565780-3c6e-a8ec-0c22-2a40a868e860">
           {this.listInboxes(this.state.allInboxes)}
-          {/* <a href="" className="media">
-           <div className="media-left">
-           <img src="http://via.placeholder.com/500x500" alt=""/>
-           <span className="square-10 bg-success"/>
-           </div>
-           <div className="media-body">
-           <div>
-           <h6>Socrates Itumay</h6>
-           <p>The new common language will be more simple and regular...</p>
-           </div>
-           <div>
-           <span>Dec 14</span>
-           </div>
-           </div>
-           </a>
-           <a href="" className="media unread">
-           <div className="media-left">
-           <img src="http://via.placeholder.com/500x500" alt=""/>
-           <span className="square-10 bg-success"/>
-           </div>
-           <div className="media-body">
-           <div>
-           <h6>Joyce Chua</h6>
-           <p>To an English person, it will seem like simplified english...</p>
-           </div>
-           <div>
-           <span>Dec 14</span>
-           <span>1</span>
-           </div>
-           </div>
-           </a>
-           <a href="" className="media">
-           <div className="media-left">
-           <img src="http://via.placeholder.com/500x500" alt=""/>
-           <span className="square-10 bg-success"/>
-           </div>
-           <div className="media-body">
-           <div>
-           <h6>Isidore Dilao</h6>
-           <p>The new common language will be more simple and regular...</p>
-           </div>
-           <div>
-           <span>Dec 12</span>
-           </div>
-           </div>
-           </a>
-           <a href="" className="media">
-           <div className="media-left">
-           <img src="http://via.placeholder.com/500x500" alt=""/>
-           <span className="square-10 bg-gray-600"/>
-           </div>
-           <div className="media-body">
-           <div>
-           <h6>Dyanne Aceron</h6>
-           <p>To an English person, it will seem like simplified english...</p>
-           </div>
-           <div>
-           <span>Dec 10</span>
-           </div>
-           </div>
-           </a>
-           <a href="" className="media">
-           <div className="media-left">
-           <img src="http://via.placeholder.com/500x500" alt=""/>
-           <span className="square-10 bg-gray-600"/>
-           </div>
-           <div className="media-body">
-           <div>
-           <h6>Roven Galeon</h6>
-           <p>To an English person, it will seem like simplified english...</p>
-           </div>
-           <div>
-           <span>Dec 08</span>
-           </div>
-           </div>
-           </a>
-           <a href="" className="media">
-           <div className="media-left">
-           <img src="http://via.placeholder.com/500x500" alt=""/>
-           <span className="square-10 bg-success"/>
-           </div>
-           
-           <div className="media-body">
-           <div>
-           <h6>Helder Bongcaras</h6>
-           <p>The new common language will be more simple and regular...</p>
-           </div>
-           <div>
-           <span>Dec 07</span>
-           </div>
-           </div>
-           </a>
-           <a href="" className="media">
-           <div className="media-left">
-           <img src="http://via.placeholder.com/500x500" alt=""/>
-           <span className="square-10 bg-success"/>
-           </div>
-           <div className="media-body">
-           <div>
-           <h6>Maricel Villalon</h6>
-           <p>The new common language will be more simple and regular...</p>
-           </div>
-           <div>
-           <span>Dec 07</span>
-           </div>
-           </div>
-           </a>
-           <a href="" className="media">
-           <div className="media-left">
-           <img src="http://via.placeholder.com/500x500" alt=""/>
-           <span className="square-10 bg-success"/>
-           </div>
-           <div className="media-body">
-           <div>
-           <h6>Maritte Rejas</h6>
-           <p>To an English person, it will seem like simplified english...</p>
-           </div>
-           <div>
-           <span>Dec 05</span>
-           </div>
-           </div>
-           </a> */}
         </div>
         <div className="messages-left-footer">
           <button className="btn btn-slim btn-uppercase-sm btn-block">Load Older Messages</button>
