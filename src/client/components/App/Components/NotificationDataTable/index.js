@@ -13,8 +13,8 @@ export class DataTable extends Component {
     super();
     this.state = {
       showFilterDropdown: false,
-      received: false,
-      sent: false
+      received: true,
+      sent: true
     };
     
     this.columns = [
@@ -61,6 +61,18 @@ export class DataTable extends Component {
       }
     });
   }
+  
+  showRow = (row, rowIndex) => {
+    let displayNone = 'd-none';
+    
+    if (row.sentBy._id === this.props.profile._id && !this.state.sent) {
+      return displayNone;
+    }
+    
+    if (row.sentBy._id !== this.props.profile._id && !this.state.received) {
+      return displayNone;
+    }
+  };
   
   showRows = (key, value) => () => {
     this.setState(oldState => ({ ...oldState, [key]: value }));
@@ -237,6 +249,7 @@ export class DataTable extends Component {
             </div>
             <hr/>
             <BootstrapTable
+              rowClasses={this.showRow}
               bootstrap4
               hover
               defaultSorted={defaultSorted}
@@ -252,4 +265,8 @@ export class DataTable extends Component {
   }
 }
 
-export default connect(null, { editAdminPermissions })(DataTable);
+const mapStateToProps = state => ({
+  profile: state.auth.profile
+});
+
+export default connect(mapStateToProps, { editAdminPermissions })(DataTable);
