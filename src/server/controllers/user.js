@@ -510,7 +510,7 @@ exports.deleteUser = async (req, res) => {
         console.log("Cannot delete admin user " + profile.email);
       }
     });
-      await stripeLibrary.doUpdateSubscription(adminProfileId);
+    await stripeLibrary.doUpdateSubscription(adminProfileId);
 
     return res.json({
       success: true,
