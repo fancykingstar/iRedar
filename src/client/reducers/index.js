@@ -1,11 +1,16 @@
-import { combineReducers } from 'redux'
-import authReducer from './authReducer'
-import errorReducer from './errorReducer'
-import accessReducer from './accessReducer'
-import submissionReducer from './submissionReducer'
-import uploadFormReducer from './uploadFormReducer'
-import referralReducer from './referralReducer'
-import organizationReducer from './organizationReducer'
+import { combineReducers } from 'redux';
+import accessReducer from './accessReducer';
+import authReducer from './authReducer';
+import contactReducer from './contactReducer';
+import errorReducer from './errorReducer';
+import notificationReducer from './notificationReducer';
+import referralReducer from './referralReducer';
+import submissionReducer from './submissionReducer';
+import uploadFormReducer from './uploadFormReducer';
+import organizationReducer from './organizationReducer';
+import messageReducer from './messageReducer';
+import inboxReducer from './inboxReducer';
+import userReducer from './userReducer';
 
 export default combineReducers({
   auth: authReducer,
@@ -14,5 +19,10 @@ export default combineReducers({
   submissions: submissionReducer,
   uploadForms: uploadFormReducer,
   referrals: referralReducer,
-  organization: organizationReducer
+  contacts: contactReducer,
+  notifications: notificationReducer,
+  organization: organizationReducer,
+  message: messageReducer,
+  inbox: inboxReducer,
+  users: userReducer
 });

@@ -97,8 +97,8 @@ exports.postClientRegister = async (req, res) => {
 
     const userPermission = await new Permission({
       profile: profile._id,
-      role: "client",
-      permissionRight: rolesToPermission["client"]
+      role: "admin",
+      permissionRight: rolesToPermission["admin"]
     });
     await userPermission.save();
 
@@ -715,6 +715,28 @@ exports.putResetPassword = async (req, res) => {
       });
     }
   } catch (error) {
+    logger.error(error);
+    return res.status(422).json({
+      alert: {
+        title: 'Error!',
+        detail: 'Server occurred an error,  please try again',
+      },
+    });
+  }
+};
+
+// @route   GET api/users/
+// @desc    Get all users
+// @access  Private
+exports.getUsers = async (req, res) => {
+  try {
+    let users = await Profile.find().populate('user');
+
+    return res.json({
+      success: true,
+      data: users
+    });
+  } catch (error){
     logger.error(error);
     return res.status(422).json({
       alert: {

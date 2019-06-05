@@ -24,6 +24,7 @@ export class ViewIARSubmission extends Component {
             });
             i = i+1;
         });
+        return data;
     }
 
     componentDidMount() {
