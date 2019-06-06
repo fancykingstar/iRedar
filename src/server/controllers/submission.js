@@ -3,7 +3,7 @@ const logger = require('../configs/logger');
 const Submission = require('../models/Submission');
 const Organization = require('../models/Organization');
 const Permission = require('../models/Permission');
-const Profile = require('../models/Profile')
+const Profile = require('../models/Profile');
 
 // @route POST api/submissions
 // @desc Submit form
