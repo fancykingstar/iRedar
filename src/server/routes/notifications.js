@@ -37,6 +37,6 @@ router.patch('/:id', middleware(notificationController.update));
  * @description Delete the notification resource
  * @access Private
  **/
-router.delete('/', middleware(notificationController.delete));
+router.post('/delete/:id', middleware(notificationController.delete));
 
 module.exports = router;

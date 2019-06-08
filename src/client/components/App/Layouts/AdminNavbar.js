@@ -95,7 +95,7 @@ class AdminNavbar extends Component {
             <li
               className={classnames('nav-item with-sub', {
                 active: this.props.location.pathname === '/modules'
-              })}
+              })} style={{borderRight: "1px solid #dee2e6"}}
             >
               <Link className="nav-link" to="/modules">
                 <i className="icon ion-ios-filing-outline"/>
@@ -116,7 +116,7 @@ class AdminNavbar extends Component {
             <li
               className={classnames('nav-item with-sub', {
                 active: this.props.location.pathname === '/reports'
-              })}
+              })} style={{display: "none"}}
             >
               <Link className="nav-link" to="/reports">
                 <i className="icon ion-ios-analytics-outline"/>

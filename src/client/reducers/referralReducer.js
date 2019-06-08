@@ -1,4 +1,5 @@
 import { SET_ALL_REFERRALS } from '../actions/referralActions'
+import { DELETE_REFERRALS } from '../actions/types'
 
 const initialState = {
     loading: true,
@@ -12,6 +13,13 @@ export default (state = initialState, action) => {
                 ...state,
                 referralForms: action.payload.referrals,
                 loading: false
+            }
+        case DELETE_REFERRALS:
+            return {
+                ...state,
+                referralForms: state.referralForms.filter(referral => {
+                    return referral._id != action.payload;
+                })
             }
         default:
             return state

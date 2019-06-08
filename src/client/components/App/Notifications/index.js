@@ -59,8 +59,8 @@ class Notifications extends Component {
         <div className='section-wrapper'>
           <NotificationTable
             data={this.state.notifications}
-            onSelected={this.getData}
-            deleteNotifications={() => {this.removeNotifications(this.deleteItems);}}
+            
+            delete={this.removeNotifications}
           />
         </div>
       </div>

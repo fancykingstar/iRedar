@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
+import Logs from './Logs';
 
-export default function TasksPage() {
-  return <div>Nice Tasks</div>;
+export default class TasksPage extends Component {
+  render() {
+    return <Logs />;
+  }
 }

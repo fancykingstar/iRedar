@@ -18,5 +18,7 @@ router.get('/:id', middleware(inboxController.index));
  **/
 router.get('/show/:inboxId', middleware(inboxController.getInbox));
 
+router.post('/delete/:inboxId', middleware(inboxController.deleteInbox));
+
 
 module.exports = router;

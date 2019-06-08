@@ -70,6 +70,15 @@ exports.getReferral = async (req, res) => {
     }
 }
 
+exports.deleteReferral = async (req, res) => {
+  let { referralId } = req.params;
+  let referral = await Referral.findOne({_id: referralId}).remove();
+  return res.json({
+    success: true,
+    referrals: [referral]
+  });
+};
+
 exports.postReferral = async (req, res) => {
     try {
         let userId = req.user._id
@@ -97,12 +106,8 @@ exports.postReferral = async (req, res) => {
             submissionId
         } = req.body
 
-        let receiverArray = receivers.split(',')
-        const profiles = await Profile.find({
-            firstName: {
-                $in: receiverArray.map(receiver => receiver.trim())
-            }
-        })
+        const profiles = await Profile.find({ _id: { $in: receivers } })
+        console.log(profiles);
         if (!profiles) {
             return res.json({
                 referral: {}

@@ -1,0 +1,14 @@
+.dropdown-toggle::after {
+	display: none;
+}
+
+.message-container div.dropdown-menu.show {
+	transform: translate3d(520px, 50px, 0px) !important;
+}
+
+.message-header .message-option a.dropdown-item {
+	font-size: 12px;
+	margin-left: 0;
+	padding-left: 20px;
+	padding-right: 20px;
+}

@@ -306,7 +306,7 @@ export class DataTable extends Component {
                       transform: 'translate3d(0px, 42px, 0px)',
                       top: '0px',
                       left: '0px',
-                      'will-change': 'transform'
+                      'willChange': 'transform'
                     }}
                   >
                     <div className='row'>
@@ -352,7 +352,7 @@ export class DataTable extends Component {
                       transform: 'translate3d(0px, 42px, 0px)',
                       top: '0px',
                       left: '0px',
-                      'will-change': 'transform'
+                      'willChange': 'transform'
                     }}
                   >
                     <a
@@ -395,7 +395,7 @@ export class DataTable extends Component {
                       transform: 'translate3d(0px, 42px, 0px)',
                       top: '0px',
                       left: '0px',
-                      'will-change': 'transform'
+                      'willChange': 'transform'
                     }}
                   >
                     <label className='ckbox'>

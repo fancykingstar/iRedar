@@ -26,6 +26,13 @@ export default function PartnerNavbar() {
             </Link>
           </li>
 
+          <li className="nav-item">
+            <Link className="nav-link" to="/notifications">
+              <i className="icon ion-ios-gear-outline" />
+              <span>Notification</span>
+            </Link>
+          </li>
+
           <li className="nav-item with-sub">
             <Link className="nav-link" to="#">
               <i className="icon ion-ios-filing-outline" />

@@ -1,4 +1,4 @@
-import {GET_ALL_INBOXES, GET_INBOX, CLEAR_INBOX} from '../actions/types';
+import {GET_ALL_INBOXES, GET_INBOX, CLEAR_INBOX, DELETE_INBOX} from '../actions/types';
 
 const initialState = {
   loading: true,
@@ -26,6 +26,14 @@ export default (state = initialState, action) => {
           loading: false,
           inbox: {}
         };
+    case DELETE_INBOX:
+        return {
+          ...state,
+          inbox: {},
+          allInboxes: state.allInboxes.filter(inbox => {
+            return inbox._id != action.payload;
+          })
+        }
     default:
       return state;
   }

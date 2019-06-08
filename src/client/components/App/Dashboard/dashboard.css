@@ -1,0 +1,21 @@
+.container-dashboard {
+	padding-top: 50px;
+}
+
+.container-dashboard h1 {
+	text-align: center;
+	background-color: #1bb2ca;
+	margin: 0;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	color: white;
+}
+
+.container-dashboard .signin-left img {
+	width: 100%;
+	height: 100%;
+}
+
+.container-dashboard .signin-left {
+	padding: 0;
+}

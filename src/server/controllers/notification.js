@@ -66,9 +66,12 @@ exports.update = async (req, res) => {
  * @returns {res}
  */
 exports.delete = async (req, res) => {
-  const {ids} = req.query;
+  console.log("etetet: ", req.params);
+  const {id} = req.params;
+  console.log("deleted", id);
   
-  const response = await Notification.deleteMany({_id: {$in: ids}});
+  // const response = await Notification.deleteOne({_id: ids});
+  let response = await Notification.findOne({_id: id}).remove();
   
   return res.json({
     success: true,

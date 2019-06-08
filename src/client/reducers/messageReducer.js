@@ -1,4 +1,4 @@
-import {GET_ALL_MESSAGES} from '../actions/types';
+import {GET_ALL_MESSAGES, DELETE_ONE_MESSAGE} from '../actions/types';
 
 const initialState = {
   loading: true,

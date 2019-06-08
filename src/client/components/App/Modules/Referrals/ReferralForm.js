@@ -1,14 +1,22 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Prompt } from 'react-router-dom'
+import { Typeahead } from 'react-bootstrap-typeahead'
+
 import { uploadReferralToServer } from '../../../../actions/referralActions'
+import { getAdminPermissions } from '../../../../actions/accessActions'
 import './ReferralForm.css'
+import 'react-bootstrap-typeahead/css/Typeahead.css'
 
 class ReferralForm extends Component {
 
     constructor(props) {
         super(props)
-        this.state = { isBlocking: true }
+
+        this.state = { 
+            isBlocking: true,
+            receivers: [] 
+        }
     }
 
     disableBlocking() {
@@ -16,10 +24,12 @@ class ReferralForm extends Component {
     }
 
     componentDidMount() {
+        const { adminPermissions, permissions } = this.props;
+        this.props.dispatch(getAdminPermissions(permissions[0].organization, permissions[0].profile))
         window.$('#partnerList').tagsinput({
             allowDuplicates: false,
             confirmKeys: [13, 44]
-        })
+        })                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
     }
 
     toString = partners => {
@@ -43,14 +53,24 @@ class ReferralForm extends Component {
             note: this.note.value || "",
             dateSubmitted: Date(),
             sender: this.props.referralForm.sender,
-            receivers: this.partnerList.value || ""
+            receivers: this.state.receivers.map(receiver => receiver.value)
         }
+
         this.props.dispatch(uploadReferralToServer(referral))
         this.props.history.push('/modules/referrals');
     }
 
     render() {
-        let { isBlocking } = this.state
+        let { isBlocking, receivers } = this.state
+        const { adminPermissions, permissions } = this.props;
+
+        const options = adminPermissions.filter(permission => permission.role.toUpperCase() === "PARTNER")
+        .map(permission => {
+            return {
+                label: `${permission.profile.firstName} ${permission.profile.lastName}`,
+                value: permission.profile._id
+            }
+        });
 
         return (
             <div className="container" id="referral">
@@ -103,9 +123,14 @@ class ReferralForm extends Component {
                             <textarea className="form-control" id="note" ref={input => this.note = input} defaultValue={this.props.referralForm.note || ''} placeholder="Note" />
                         </div>
                         <div className="form-group col-md-5">
-                            <input type="text" className="form-control" id="partnerList" data-role="tagsinput"
-                                ref={input => this.partnerList = input}
-                                defaultValue={this.toString(this.props.referralForm.receivers || []) || ''} />
+                            
+                            <Typeahead
+                                multiple={true}
+                                options={options}
+                                placeholder="Choose a state..."
+                                onChange={(value) => this.setState({ receivers: value })}
+                                value={receivers}
+                            />
                         </div>
                         <div className="form-group col-md-1">
                             <button type="SubmitButton" className="btn btn-primary">Refer</button>
@@ -125,6 +150,8 @@ const mapStateToProps = (state, ownProps) => {
     let fromForm = submission.content.fromForm || ''
     let email = fromForm === 'registration' ? (submission.content.email || '') : (submission.content.emailAddress || '')
     return {
+        permissions: state.access.permissions,
+        adminPermissions: state.access.admin,
         submissionId: submissionId,
         referralForm: {
             firstName: submission.content.firstName || '',

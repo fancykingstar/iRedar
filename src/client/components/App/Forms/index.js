@@ -63,8 +63,9 @@ class FormsPage extends Component {
     const { permissions } = this.props;
     const userRole = permissions[0].role;
     const isAllowedToEdit = (userRole === "admin");
-    const isAllowedToView = (userRole === "admin" || userRole === "staff");
-    const isAllowedToShare = (userRole === "admin" || userRole === "staff");
+    const isAllowedToView = (userRole === "admin" || userRole === "staff" || userRole === "partner");
+    const isAllowedToShare = (userRole === "admin" || userRole === "staff" || userRole === "partner");
+    const isAllowedToSubmission = (userRole === "partner");
 
     return (
       <div className="slim-mainpanel">
@@ -112,7 +113,7 @@ class FormsPage extends Component {
                       <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToShare} onClick={this.shareForm} form_name='client-action' >Share</button>
                     </td>
                     <td className="tx-right">
-                      <button type="button" className="btn btn-primary btn-sm" onClick={this.viewSubmission} form_name='client-action'>Submissions</button>
+                      <button type="button" className="btn btn-primary btn-sm" disabled={isAllowedToSubmission} onClick={this.viewSubmission} form_name='client-action'>Submissions</button>
                     </td>
                   </tr>
                   <tr>
@@ -134,7 +135,7 @@ class FormsPage extends Component {
                       <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToShare} onClick={this.shareForm} form_name='iar-assessment' >Share</button>
                     </td>
                     <td className="tx-right">
-                      <button type="button" className="btn btn-primary btn-sm" onClick={this.viewSubmission} form_name='iar-assessment' >Submissions</button>
+                      <button type="button" className="btn btn-primary btn-sm" disabled={isAllowedToSubmission} onClick={this.viewSubmission} form_name='iar-assessment' >Submissions</button>
                     </td>
                   </tr>
                   <tr>
@@ -156,7 +157,7 @@ class FormsPage extends Component {
                       <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToShare} onClick={this.shareForm} form_name='fcrp-loan' >Share</button>
                     </td>
                     <td className="tx-right">
-                      <button type="button" className="btn btn-primary btn-sm" onClick={this.viewSubmission} form_name='fcrp-loan'>Submissions</button>
+                      <button type="button" className="btn btn-primary btn-sm" disabled={isAllowedToSubmission} onClick={this.viewSubmission} form_name='fcrp-loan'>Submissions</button>
                     </td>
                   </tr>
                   <tr>
@@ -178,7 +179,7 @@ class FormsPage extends Component {
                       <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToShare} onClick={this.shareForm} form_name='registration' >Share</button>
                     </td>
                     <td className="tx-right">
-                      <button type="button" className="btn btn-primary btn-sm" onClick={this.viewSubmission} form_name='registration'>Submissions</button>
+                      <button type="button" className="btn btn-primary btn-sm" disabled={isAllowedToSubmission} onClick={this.viewSubmission} form_name='registration'>Submissions</button>
                     </td>
                   </tr>
                   {/* <tr>

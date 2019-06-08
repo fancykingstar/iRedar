@@ -151,7 +151,7 @@ class ContactsPage extends React.Component {
                       transform: 'translate3d(0px, 42px, 0px)',
                       top: '0px',
                       left: '0px',
-                      'will-change': 'transform'
+                      'willChange': 'transform'
                     }}
                   >
                     <input ref={this.importFile} type={'file'} onChange={this.fileOnchange} hidden />
