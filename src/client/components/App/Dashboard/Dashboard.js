@@ -47,7 +47,7 @@ export class Dashboard extends Component {
     if (loading === false && permissions.length > 0)
       content = (
         <div className="container container-dashboard">
-          <h1>Welcome to iAuto {this.props.user.username}</h1>
+          <h1>Welcome to Link2Settle {this.props.user.username}</h1>
 
           <div className="d-md-flex flex-row-reverse">
 
@@ -59,10 +59,10 @@ export class Dashboard extends Component {
               <div className="signin-box">
                 <h3>This is your personal dashboard.</h3>
                 <p>We are pleased to offer you the best platform that helps coordinate services in the market. We hope to be your trusted companion from arrival in Canada to when you feel comfortably settled. Whether you need a job, want to learn English, or connect with your community, find all the information and services you need to get started in your new community. </p>
-                <p>h, and we also offer our services in English, French, and Arabic to cater for people from all walks of life and so that you feel most comfortable and . </p>
+                <p>Oh, and we also offer our services in English, French, and Arabic to cater for people from all walks of life and so that you feel most comfortable. </p>
                 <p>Find service providers near you that can help you through your settlement journey. Whether in Employment, Health Care, Money & Banking, Housing, Education, Legal & Immigration </p>
                 <p>It’s available, in your language, and personalized for you.</p>
-                <p>Radar Canada (C) 2019. All rights reserved</p>
+                <p>iRadar Canada (C) 2019. All rights reserved</p>
               </div>
             </div>
 

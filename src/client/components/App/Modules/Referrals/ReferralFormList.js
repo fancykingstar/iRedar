@@ -57,8 +57,7 @@ class ReferralFormList extends Component {
         ) : (
                 <div className="table-responsive mg-t-0">
                     <div className="section-wrapper">
-                        <h3 className="referral-title">REFERRAL</h3>
-                        <div className="row" style={{marginBottom: "20px", paddingRight:"10px", paddingLeft:"10px"}}>
+                        <div className="row" style={{marginTop: "10px", marginBottom: "20px", paddingRight:"10px", paddingLeft:"10px"}}>
                             <div className='dropdown'>
                                 <button className='btn btn-primary btn-sm dropdown-toggle mg-l-5' type='button' id='dropdownMenuButton12' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
                                     <i className='fa fa-filter'/> Filter

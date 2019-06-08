@@ -81,7 +81,7 @@ class Login extends Component {
                 />
               )}
               
-              <h2 className="signin-title-primary">Welcome to iAuto!</h2>
+              <h2 className="signin-title-primary">Welcome to Link2Settle!</h2>
               <h3 className="signin-title-secondary">Sign in to continue.</h3>
               <TextFieldGroup
                 inputStyle={inputStyleBackground}

@@ -24,7 +24,7 @@ export class Logs extends Component {
             <div className="signin-right" style={{minHeight: "0px"}}>
               <div className="signin-box">
                 
-                <h3>TWelcome to the Logs Module</h3>
+                <h3>Welcome to the Logs Module</h3>
                 <p>From here you can see what activities you’ve been up to. Keep a credible account of anytime you login in to the platform, update your personal information or interact with other users of the platform.</p>
 
                 <p>You can keep track of your activities like your form submissions, the notifications you receive and so much more.</p>
@@ -33,7 +33,7 @@ export class Logs extends Component {
 
                 <p>Please note that your logs will be completely removed after 90 days.</p>
 
-                <p>Check out some of our other features on the application and see how best iAuto works for you.</p>
+                <p>Check out some of our other features on the application and see how best Link2Settle works for you.</p>
               </div>
             </div>
 
