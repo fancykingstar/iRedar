@@ -64,7 +64,7 @@ class AdminSubmissionList extends Component {
     const isAllowedToEdit = (userRole === "admin" || userRole === "staff");
     const isAllowedToDelete = (userRole === "admin");
     const isAllowedToShare = (userRole === "admin" || userRole === "staff");
-    const isAllowedDetail = (userRole === "admin" || userRole === "staff");
+    const isAllowedDetail = (userRole === "admin" || userRole === "staff" || userRole === "client");
 
     let submissionList = this.props.submissionList;
     let loading = this.props.loading;
@@ -129,16 +129,25 @@ class AdminSubmissionList extends Component {
                               )}
                             </td>
                             <td className="tx-right">
-                              <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToEdit} onClick={this.edit} form_name={content.fromForm} submission_id={submission._id} >Edit</button>
+                              {
+                                isAllowedToEdit && 
+                                  <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToEdit} onClick={this.edit} form_name={content.fromForm} submission_id={submission._id} >Edit</button>
+                              }
                             </td>
                             <td className="tx-right">
-                              <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToDelete} onClick={this.delete} form_name={content.fromForm} submission_id={submission._id} >Delete</button>
+                              {
+                                isAllowedToDelete && 
+                                  <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToDelete} onClick={this.delete} form_name={content.fromForm} submission_id={submission._id} >Delete</button>
+                              }
                             </td>
                             <td className="tx-right">
                               <button type="button" className="btn btn-primary btn-sm" disabled={!isAllowedDetail} onClick={this.detail} form_name={content.fromForm} submission_id={submission._id} >Detail</button>
                             </td>
                             <td className="tx-right">
-                              <button type="button" className="btn btn-primary btn-sm" disabled={!isAllowedToShare} onClick={this.share} form_name={content.fromForm} submission_id={submission._id} >Share</button>
+                              {
+                                isAllowedToShare &&
+                                  <button type="button" className="btn btn-primary btn-sm" disabled={!isAllowedToShare} onClick={this.share} form_name={content.fromForm} submission_id={submission._id} >Share</button>
+                              }
                             </td>
                           </tr>
                         </React.Fragment>

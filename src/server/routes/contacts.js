@@ -46,4 +46,34 @@ router.delete('/', middleware(contactController.delete));
  **/
 router.patch('/:id/private-notes', middleware(contactController.updatePrivateNotes));
 
+/**
+ * @route /api/contacts/upload-profile-photo
+ * @description Upload the Profile Photo
+ * @access Private
+ **/
+router.patch('/:id/upload-profile-photo', middleware(contactController.uploadProfilePhoto));
+
+/**
+ * @route /api/contacts/filter
+ * @description Get the list of contacts by filter
+ * @access Private
+ **/
+router.get('/:profession/:company/:type', middleware(contactController.filter));
+
+/**
+ * @route /api/contacts/invite
+ * @description Invite to the client portal
+ * @access Private
+ **/
+router.post('/:id/invite', middleware(contactController.inviteClientPortal));
+
+/**
+ * @route /api/contacts/changeaccess
+ * @description changeInviteAccess
+ * @access Private
+ **/
+router.patch('/:id/changeaccess', middleware(contactController.changeInviteAccess));
+
+router.patch('/:id/updateinviteaccess', middleware(contactController.updateInviteAccess));
+
 module.exports = router;

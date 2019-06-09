@@ -6,6 +6,7 @@ import Select from 'react-select';
 import { addContact } from '../../../actions/contactAction';
 import { API_URL } from '../../../actions/types';
 import TextFieldGroup from '../../Elements/TextFieldGroup';
+import { Link } from 'react-router-dom';
 
 export class AddNewContact extends Component {
   constructor() {
@@ -232,7 +233,13 @@ export class AddNewContact extends Component {
           <div className='manager-header'>
             <div className='slim-pageheader'>
               <ol className='breadcrumb slim-breadcrumb' />
-              <h6 className='slim-pagetitle'>Add new contact</h6>
+              <h6 className='slim-pagetitle'>
+                <Link to={'/contacts'}>
+                  <span>CONTACTS</span>
+                </Link>
+                &nbsp;/&nbsp;
+                Add new contact
+              </h6>
             </div>
           </div>
           {errors.length ? (

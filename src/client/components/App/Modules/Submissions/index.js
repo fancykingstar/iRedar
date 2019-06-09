@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import AdminSubmission from './AdminSubmission';
 import PartnerSubmissions from './PartnerSubmission';
+import ClientSubmission from './ClientSubmission';
 
 class SubmissionsPage extends Component {
 
@@ -20,6 +21,7 @@ class SubmissionsPage extends Component {
           {role === 'admin' && <AdminSubmission />}
           {role === 'staff' && <AdminSubmission />}
           {role === 'partner' && <PartnerSubmissions />}
+          {role === 'client' && <ClientSubmission />}
         </div>
       </div>
     );

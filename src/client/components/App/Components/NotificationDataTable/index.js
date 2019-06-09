@@ -64,13 +64,23 @@ export class DataTable extends Component {
   
   showRow = (row, rowIndex) => {
     let displayNone = 'd-none';
-    
-    if (row.sentBy._id === this.props.profile._id && !this.state.sent) {
-      return displayNone;
-    }
-    
-    if (row.sentBy._id !== this.props.profile._id && !this.state.received) {
-      return displayNone;
+    const { isClient } = this.props;
+    if (!isClient) {
+      if (row.sentBy._id === this.props.profile._id && !this.state.sent) {
+        return displayNone;
+      }
+      
+      if (row.sentBy._id !== this.props.profile._id && !this.state.received) {
+        return displayNone;
+      }
+    } else {
+      if (row.sentBy._id === this.props.profile._id && isClient) {
+        return displayNone;
+      }
+      
+      if (row.sentBy._id !== this.props.profile._id && !this.state.received) {
+        return displayNone;
+      }
     }
   };
   
@@ -157,8 +167,7 @@ export class DataTable extends Component {
       }
     };
     
-    let { data } = this.props;
-    
+    let { data, isClient } = this.props;
     let contactData = data.map(value => {
       return {
         ...value,
@@ -203,45 +212,48 @@ export class DataTable extends Component {
                     </a>
                   </div>
                 </div>
-                <div className='dropdown'>
-                  <button
-                    className='btn btn-primary btn-sm dropdown-toggle mg-l-5'
-                    type='button'
-                    id='dropdownMenuButton2'
-                    data-toggle='dropdown'
-                    aria-haspopup='true'
-                    aria-expanded='false'
-                  >
-                    <i className='fa fa-filter'/> Filter
-                  </button>
-                  <div
-                    className='dropdown-menu'
-                    aria-labelledby='dropdownMenuButton2'
-                    x-placement='bottom-start'
-                    style={{
-                      position: 'absolute',
-                      transform: 'translate3d(0px, 42px, 0px)',
-                      top: '0px',
-                      left: '0px',
-                      'will-change': 'transform'
-                    }}
-                  >
-                    <a className='dropdown-item' href='#' onClick={() => {}}>
-                      <input
-                        type='checkbox'
-                        checked={this.state.received}
-                        onChange={this.showRows('received', !this.state.received)}
-                      /> Received notifications
-                    </a>
-                    <a className='dropdown-item' href='#' onClick={() => {}}>
-                      <input
-                        type='checkbox'
-                        checked={this.state.sent}
-                        onChange={this.showRows('sent', !this.state.sent)}
-                      /> Sent notifications
-                    </a>
+                {
+                  !isClient &&
+                  <div className='dropdown'>
+                    <button
+                      className='btn btn-primary btn-sm dropdown-toggle mg-l-5'
+                      type='button'
+                      id='dropdownMenuButton2'
+                      data-toggle='dropdown'
+                      aria-haspopup='true'
+                      aria-expanded='false'
+                    >
+                      <i className='fa fa-filter'/> Filter
+                    </button>
+                    <div
+                      className='dropdown-menu'
+                      aria-labelledby='dropdownMenuButton2'
+                      x-placement='bottom-start'
+                      style={{
+                        position: 'absolute',
+                        transform: 'translate3d(0px, 42px, 0px)',
+                        top: '0px',
+                        left: '0px',
+                        'will-change': 'transform'
+                      }}
+                    >
+                      <a className='dropdown-item' href='#' onClick={() => {}}>
+                        <input
+                          type='checkbox'
+                          checked={this.state.received}
+                          onChange={this.showRows('received', !this.state.received)}
+                        /> Received notifications
+                      </a>
+                      <a className='dropdown-item' href='#' onClick={() => {}}>
+                        <input
+                          type='checkbox'
+                          checked={this.state.sent}
+                          onChange={this.showRows('sent', !this.state.sent)}
+                        /> Sent notifications
+                      </a>
+                    </div>
                   </div>
-                </div>
+                }
               </div>
               <div className='col-6 '>
                 <SearchBar {...props.searchProps} />

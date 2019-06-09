@@ -17,7 +17,8 @@ export const addContact = (payload, history) => async () => {
 };
 
 export const getContact = (payload) => async dispatch => {
-  const {data: {data}} = await axios.get(`${API_URL}/api/contacts/${payload}`);
+  const {data: {data}} = await axios.patch(`${API_URL}/api/contacts/${payload}/updateinviteaccess`);
+  // const {data: {data}} = await axios.get(`${API_URL}/api/contacts/${payload}`);
   dispatch({
     type: EDIT_CONTACT,
     payload: data
@@ -42,3 +43,39 @@ export const deleteContacts = (ids) => async () => {
 export const updateContactPrivateNotes = (payload) => async () => {
   await axios.patch(`${API_URL}/api/contacts/${payload._id}/private-notes`, {notes: payload.notes});
 };
+
+export const uploadProfileImage = (id, forms) => async dispatch => {
+  await axios.patch(
+    `${API_URL}/api/contacts/${id}/upload-profile-photo`,
+    forms
+  );
+  dispatch(getContact(id))
+}
+
+export const getContactsByFilter = (profession, company, type) => async dispatch => {
+  const {data: {data}} = await axios.get(
+    `${API_URL}/api/contacts/${profession}/${company}/${type}`
+  );
+  dispatch({
+    type: GET_ALL_CONTACTS,
+    payload: data
+  });
+}
+
+export const inviteToAccessClientPortal = (id, payload) => 
+async dispatch => {
+  await axios.post(
+    `${API_URL}/api/contacts/${id}/invite`,
+    payload
+  );
+
+  dispatch(changeInviteAccess(id, payload))
+}
+
+export const changeInviteAccess = (id, payload) => async dispatch => {
+  await axios.patch(
+    `${API_URL}/api/contacts/${id}/changeaccess`,
+    payload
+  )
+  dispatch(getContact(id))
+}

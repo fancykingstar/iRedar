@@ -118,6 +118,8 @@ export const loginUser = userData => async dispatch => {
     dispatch(getCurrentUserPermissions(decoded.profileId));
     // Set current user
     dispatch(setCurrentUser(decoded));
+      // update last login date
+    dispatch(updateLastLogin(userData));
   } catch (error) {
     console.log(error);
     return dispatch({
@@ -220,6 +222,10 @@ export const clearCurrentProfile = () => {
   };
 };
 
+// Update user last login date
+export const updateLastLogin = (userData) => async () => {
+  await axios.patch(`${API_URL}/api/users/updatelastlogin`, userData);
+}
 // //Edit Profile
 // export const editProfile = profileData => async dispatch => {
 //   const profileForm = new FormData();

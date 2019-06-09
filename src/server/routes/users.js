@@ -54,4 +54,9 @@ router.get(
 // @access Private
 router.get('/', userController.getUsers);
 
+// @route Patch api/users/updatelastlogin
+// @desc Update User last login date
+// @access Private
+router.patch('/updatelastlogin', userController.updateLastLogin);
+
 module.exports = router;

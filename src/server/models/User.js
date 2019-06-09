@@ -16,18 +16,22 @@ const UserSchema = new mongoose.Schema({
     required: 'Password is required',
   },
   confirmToken: String,
-    firstLogin: {
-        type: Boolean,
-        default: true
+  firstLogin: {
+    type: Boolean,
+    default: true
+  },
+  lastLogin_at: {
+    type: Date,
+    default: null
+  },
+  stripe: {
+    stripeCustomerId: {
+      type: String
     },
-    stripe: {
-        stripeCustomerId: {
-            type: String
-        },
-        stripeSubscriptionId: {
-            type: String
-        }
+    stripeSubscriptionId: {
+      type: String
     }
+  }
 });
 
 UserSchema.methods.hasSamePassword = function (requestedPassword) {
