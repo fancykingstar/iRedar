@@ -189,7 +189,6 @@ class ViewContact extends React.Component {
   }
 
   render() {
-    console.log(this.state)
     let {
       _id,
       firstName,
@@ -207,9 +206,11 @@ class ViewContact extends React.Component {
       avatar,
       loading,
       invite,
-      lastLogin_at
+      lastLogin_at,
+      created_by
     } = this.state;
 
+    const { auth } = this.props;
     const contactTypes = [
       {
         label: 'Select type',
@@ -336,9 +337,9 @@ class ViewContact extends React.Component {
                           </div>
                           <div className='media-body mg-t-4' style={{ marginLeft: '15px' }}>
                             <h6 className='tx-14 tx-gray-700'>
-                              Created By <strong>{`${firstName} ${lastName}`}</strong>
+                              Created By <strong>{`${auth.profile.firstName} ${auth.profile.lastName}`}</strong>
                             </h6>
-                            <span className='d-block'>yourname@sample.com</span>
+                            <span className='d-block'>{auth.profile.email}</span>
                           </div>
                         </div>
                       </div>

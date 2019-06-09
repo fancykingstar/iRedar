@@ -94,6 +94,10 @@ const contactSchema = new mongoose.Schema(
     phoneNumbers: [ phoneNumberSchema ],
     emailAddresses: [ emailSchema ],
     addresses: [ addressSchema ],
+    created_by: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    },
     created_at: {
       type: Date,
       default: Date.now

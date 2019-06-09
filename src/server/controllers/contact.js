@@ -276,7 +276,7 @@ exports.updateInviteAccess = async (req, res) => {
   contact.emailAddresses.map(item => {
     if (item.inviteStatus === 'pending') {
       const user = User.findOne({email: item.emailAddress});
-      if (user.lastLogin_at !== null) {
+      if (user.lastLogin_at != null) {
         item.inviteStatus = 'confirmed';
       }
     }

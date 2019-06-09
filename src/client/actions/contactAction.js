@@ -1,4 +1,5 @@
 import axios from 'axios';
+import jwt_decode from 'jwt-decode';
 import {API_URL, EDIT_CONTACT, GET_ALL_CONTACTS} from './types';
 
 export const getContacts = () => async dispatch => {
@@ -10,7 +11,16 @@ export const getContacts = () => async dispatch => {
 };
 
 export const addContact = (payload, history) => async () => {
-  const {data: {data}} = await axios.post(`${API_URL}/api/contacts/`, payload);
+  // getter
+  const token = localStorage.getItem('jwtToken');
+  // Decode token to get user data
+  const decoded = jwt_decode(token);
+  const postData = {
+    ...payload,
+    created_by: decoded.userId
+  }
+
+  const {data: {data}} = await axios.post(`${API_URL}/api/contacts/`, postData);
   history.push({
     pathname: `/contacts`
   });
