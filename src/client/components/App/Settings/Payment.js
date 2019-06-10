@@ -45,7 +45,7 @@ export class Payment extends Component {
                                     <div className="container">
                                         <div className="row row-xs mg-b-10">
                                             <div className="col-sm">
-                                                <StripeProvider apiKey="pk_test_7H1zrBLZ6IP5FtXsTRCDww53">
+                                                <StripeProvider apiKey="pk_test_4fDaBtOFHufm0tSbCvsqsfjR00kRisY7Sg">
                                                     <Elements>
                                                         <CheckoutForm fontSize={"18px"}/>
                                                     </Elements>

@@ -5,8 +5,10 @@ import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
+import TextFieldGroup from '../../../Elements/TextFieldGroup';
 import { editAdminPermissions } from '../../../../actions/accessActions';
 import './index.css';
+import { unescape } from 'querystring';
 
 export class DataTable extends Component {
   constructor() {
@@ -22,6 +24,11 @@ export class DataTable extends Component {
         group: false,
         profession: false,
         language: false
+      },
+      filter: {
+        profession: '',
+        company: '',
+        type: ''
       }
     };
     this.columns = [
@@ -192,8 +199,113 @@ export class DataTable extends Component {
     }));
   };
 
+  onFilterInputChange = event => {
+    //access event in an asynchronous way
+    event.persist()
+    this.setState(previousState => ({
+      ...previousState,
+      filter: {
+        ...this.state.filter,
+        [event.target.name]: event.target.value
+      }
+    }));
+  }
+
+  onSelectChange = e => {
+    // event.persist();
+    this.setState(previousState => ({
+      ...previousState,
+      filter: {
+        ...this.state.filter,
+        type: e
+      }
+    }));
+  };
+
+  onFilterTable = event => {
+    event.preventDefault()
+
+    const { onFilterSubmit } = this.props
+    let filterData = {
+      profession: this.state.filter.profession === '' ? 'init' : this.state.filter.profession,
+      company: this.state.filter.company === '' ? 'init' : this.state.filter.company,
+      type: this.state.filter.type.value === undefined ? 'init' : this.state.filter.type.value
+    }
+    onFilterSubmit(filterData)
+  }
+
+  onClearFilter = event => {
+    event.preventDefault()
+    this.setState(previousState => ({
+      ...previousState,
+      filter: {
+        ...this.state.filter,
+        profession: '',
+        company: '',
+        type: ''
+      }
+    }));
+  }
+
   render() {
+    const contactTypes = [
+      {
+        label: 'Select type',
+        value: '',
+        isDisabled: true
+      },
+      {
+        label: 'Client',
+        value: 'Client'
+      },
+      {
+        label: 'Partner',
+        value: 'Partner'
+      },
+      {
+        label: 'Staff',
+        value: 'Staff'
+      }
+    ];
     const { SearchBar } = Search;
+    const CustomToggleList = ({
+      columns,
+      onColumnToggle,
+      toggles
+    }) => (
+      <div
+        className='dropdown-menu columns-dropdown-menu pd-25 pd-sm-20 wd-sm-200'
+        aria-labelledby='dropdownMenuButton2'
+        x-placement='bottom-start'
+        style={{
+          position: 'absolute',
+          transform: 'translate3d(0px, 42px, 0px)',
+          top: '0px',
+          left: '0px',
+          'will-change': 'transform'
+        }}
+      >
+        {
+          columns
+            .map(column => ({
+              ...column,
+              toggle: toggles[column.dataField]
+            }))
+            .map(column => (
+              <label className='ckbox'>
+                <input
+                  key={ column.dataField }
+                  type='checkbox'
+                  checked={column.toggle ? true : false }
+                  aria-pressed={ column.toggle ? 'true' : 'false' }
+                  onClick={ () => onColumnToggle(column.dataField) }
+                />
+                <span>{ column.text }</span>
+              </label>
+            ))
+        }
+      </div>
+    );
     let deletedItems = [];
 
     const selectRowProp = {
@@ -281,7 +393,7 @@ export class DataTable extends Component {
     });
 
     return (
-      <ToolkitProvider keyField='_id' data={contactData} columns={this.columns} search>
+      <ToolkitProvider keyField='_id' data={contactData} columns={this.columns} search columnToggle>
         {props => (
           <div>
             <div className='row'>
@@ -311,23 +423,52 @@ export class DataTable extends Component {
                   >
                     <div className='row'>
                       <div className='col-6'>
-                        <Select options={[]} styles={selectCustomStyle} placeholder='Profession' name='role' />
+                        <TextFieldGroup
+                          name='profession'
+                          placeholder='Profession'
+                          value={this.state.filter.profession}
+                          onChange={this.onFilterInputChange}
+                        />
                       </div>
                       <div className='col-6'>
-                        <Select options={[]} styles={selectCustomStyle} placeholder='Type' name='role' />
+                        <TextFieldGroup
+                          name='company'
+                          placeholder='Company'
+                          value={this.state.filter.company}
+                          onChange={this.onFilterInputChange}
+                        />
                       </div>
                     </div>
                     <div className='row'>
                       <div className='col-6'>
-                        <Select options={[]} styles={selectCustomStyle} placeholder='Company' name='role' />
+                        {console.log('filterType:', this.state.filter.type)}
+                        <Select
+                          options={contactTypes}
+                          styles={selectCustomStyle}
+                          placeholder='Type'
+                          name='type'
+                          value={this.state.filter.type}
+                          // defaultValue={this.state.filter.type}
+                          onChange={this.onSelectChange}
+                        />
                       </div>
                     </div>
                     <div className='row'>
                       <div className='col-6'>
-                        <button className='btn btn-info btn-sm'>Apply</button>
+                        <button
+                          className='btn btn-info btn-sm'
+                          onClick={this.onFilterTable}
+                        >
+                          Apply
+                        </button>
                       </div>
                       <div className='col-6 text-right'>
-                        <a href='#'>Clear filters</a>
+                        <a
+                          href='#'
+                          onClick={this.onClearFilter}
+                        >
+                          Clear filters
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -386,83 +527,7 @@ export class DataTable extends Component {
                   >
                     <i className='fa fa-filter' /> Columns
                   </button>
-                  <div
-                    className='dropdown-menu columns-dropdown-menu pd-25 pd-sm-20 wd-sm-200'
-                    aria-labelledby='dropdownMenuButton2'
-                    x-placement='bottom-start'
-                    style={{
-                      position: 'absolute',
-                      transform: 'translate3d(0px, 42px, 0px)',
-                      top: '0px',
-                      left: '0px',
-                      'willChange': 'transform'
-                    }}
-                  >
-                    <label className='ckbox'>
-                      <input
-                        type='checkbox'
-                        checked={this.state.columns.contact}
-                        onChange={this.showColumns('contact', !this.state.columns.contact)}
-                      />
-                      <span>Contact</span>
-                    </label>
-                    <label className='ckbox'>
-                      <input
-                        type='checkbox'
-                        checked={this.state.columns.company}
-                        onChange={this.showColumns('company', !this.state.columns.company)}
-                      />
-                      <span>Company</span>
-                    </label>
-                    <label className='ckbox'>
-                      <input
-                        type='checkbox'
-                        checked={this.state.columns.emailAddresses}
-                        onChange={this.showColumns('emailAddresses', !this.state.columns.emailAddresses)}
-                      />
-                      <span>Email Address</span>
-                    </label>
-                    <label className='ckbox'>
-                      <input
-                        type='checkbox'
-                        checked={this.state.columns.phoneNumbers}
-                        onChange={this.showColumns('phoneNumbers', !this.state.columns.phoneNumbers)}
-                      />
-                      <span>Phone Number</span>
-                    </label>
-                    <label className='ckbox'>
-                      <input
-                        type='checkbox'
-                        checked={this.state.columns.type}
-                        onChange={this.showColumns('type', !this.state.columns.type)}
-                      />
-                      <span>Type</span>
-                    </label>
-                    <label className='ckbox'>
-                      <input
-                        type='checkbox'
-                        checked={this.state.columns.group}
-                        onChange={this.showColumns('group', !this.state.columns.group)}
-                      />
-                      <span>Group</span>
-                    </label>
-                    <label className='ckbox'>
-                      <input
-                        type='checkbox'
-                        checked={this.state.columns.profession}
-                        onChange={this.showColumns('profession', !this.state.columns.profession)}
-                      />
-                      <span>Profession</span>
-                    </label>
-                    <label className='ckbox'>
-                      <input
-                        type='checkbox'
-                        checked={this.state.columns.language}
-                        onChange={this.showColumns('language', !this.state.columns.language)}
-                      />
-                      <span>Language</span>
-                    </label>
-                  </div>
+                  <CustomToggleList { ...props.columnToggleProps } />
                 </div>
               </div>
               <div className='col-6 '>

@@ -8,6 +8,10 @@ const emailSchema = new mongoose.Schema({
   emailAddress: {
     type: String,
     required: 'Email address field is required'
+  },
+  inviteStatus: {
+    type: String,
+    default: 'noaccess'
   }
 });
 
@@ -51,6 +55,9 @@ const addressSchema = new mongoose.Schema({
 
 const contactSchema = new mongoose.Schema(
   {
+    avatar: {
+      type: String
+    },
     firstName: {
       type: String,
       required: 'First Name field is required'
@@ -67,7 +74,7 @@ const contactSchema = new mongoose.Schema(
       type: String,
       required: 'Profession field is required'
     },
-    type: {
+    type: { 
       type: [ String ],
       required: 'Type field is required'
     },
@@ -86,12 +93,18 @@ const contactSchema = new mongoose.Schema(
     ],
     phoneNumbers: [ phoneNumberSchema ],
     emailAddresses: [ emailSchema ],
-    addresses: [ addressSchema ]
-  },
-  {
-    timestamps: {
-      createdAt: 'created_at',
-      updatedAt: 'updated_at'
+    addresses: [ addressSchema ],
+    created_by: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    created_at: {
+      type: Date,
+      default: Date.now
+    },
+    updated_at: {
+      type: Date,
+      default: Date.now
     }
   }
 );

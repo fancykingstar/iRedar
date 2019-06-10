@@ -50,6 +50,7 @@ class AddNewNotification extends Component {
         files: [...this.state.form.files, files[0]]
       }
     }));
+    console.log(this.state.form);
   };
   
   onSelectChange = (key, value) => {
@@ -76,13 +77,34 @@ class AddNewNotification extends Component {
     e.preventDefault();
     const {addNotification, history, auth} = this.props;
     const {title, message, recipients} = this.state.form;
-    console.log(this.state.form);
-    addNotification({
-      title,
-      message,
-      recipients,
-      sentBy: auth.profile._id
-    }, history);
+    let promises = []
+    for (let file of this.state.form.files) {
+      let promise = new Promise(resolve => {
+        let reader = new FileReader()
+        reader.onload = _ => {
+          let form = {
+            content: reader.result,
+            fileName: file.name,
+            type: file.name.substr(file.name.lastIndexOf('.') + 1),
+            dateUpdated: Date(),
+            size: file.size,
+          }
+          resolve(form)
+        }
+        reader.readAsDataURL(file)
+      })
+      promises.push(promise)
+    }
+    Promise.all(promises).then(contents => {
+      console.log(contents);
+      addNotification({
+        title,
+        message,
+        recipients,
+        sentBy: auth.profile._id,
+        files: contents
+      }, history);
+    })
   };
   
   componentDidUpdate(prevProps, prevState, snapshot) {

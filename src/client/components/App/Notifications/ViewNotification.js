@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import { Link } from 'react-router-dom';
 import {getNotification} from '../../../actions/notificationAction';
 
 class ViewNotification extends Component {
@@ -34,34 +35,46 @@ class ViewNotification extends Component {
   };
   
   render() {
+    const { notification, loading } = this.state;
+
     return (
       <div className='slim-mainpanel'>
         <div className='container'>
           <div className='manager-header'>
             <div className='slim-pageheader'>
               <ol className='breadcrumb slim-breadcrumb'/>
-              <h6 className='slim-pagetitle'>View Notifications</h6>
+              <h6 className='slim-pagetitle'>
+                <Link to={'/notifications'}>
+                  <span>Notifications</span>
+                </Link>
+                &nbsp;/&nbsp;
+                View Notifications
+              </h6>
             </div>
           </div>
-          {this.state.loading ?
+          {loading ?
             <div className="sk-three-bounce">
               <div className="sk-child sk-bounce1 bg-gray-800"/>
               <div className="sk-child sk-bounce2 bg-gray-800"/>
               <div className="sk-child sk-bounce3 bg-gray-800"/>
             </div> :
             <div className='section-wrapper'>
-              <h3 className="card-title">{this.state.notification.title}</h3>
+              <h3 className="card-title">{notification.title}</h3>
               <p className="card-subtitle">{this.showSubtitle()}</p>
               <div className={'row mg-t-20'}>
                 <div className={'col-8 tx-dark'}>
-                  {this.state.notification.message}
+                  {notification.message}
                 </div>
                 <div className={'col-4'}>
                   <p className={'tx-dark tx-bold'}>Attachments:</p>
                   <ul>
-                    <li><a href={'#'}>file1</a></li>
-                    <li><a href={'#'}>file1</a></li>
-                    <li><a href={'#'}>file1</a></li>
+                    {
+                      notification.files.map(file => {
+                        return (
+                          <li><a href={file.content} download={file.fileName}>{file.fileName}</a></li>
+                        );
+                      })
+                    }
                   </ul>
                 </div>
               </div>

@@ -39,28 +39,36 @@ class Notifications extends Component {
   };
   
   render() {
+    const { permissions } = this.props;
+    let isClient = false;
+    const userType = permissions[0].role;
+    if (permissions.length === 1 && userType === 'client') isClient = true;
     return <div className='slim-mainpanel'>
       <div className='container'>
         <div className='manager-header'>
           <div className='slim-pageheader'>
-            <ol className='breadcrumb slim-breadcrumb'>
-              <Link
-                to={{
-                  pathname: '/notifications/add-new-notification'
-                }}
-                className='btn btn-success btn-sm  mg-r-5'
-              >
-                <i className='fa fa-plus'/> Add
-              </Link>
-            </ol>
+            {
+              !isClient &&
+              <ol className='breadcrumb slim-breadcrumb'>
+                <Link
+                  to={{
+                    pathname: '/notifications/add-new-notification'
+                  }}
+                  className='btn btn-success btn-sm  mg-r-5'
+                >
+                  <i className='fa fa-plus'/> Add
+                </Link>
+              </ol>
+            }
             <h6 className='slim-pagetitle'>Notifications - Received/Sent</h6>
           </div>
         </div>
         <div className='section-wrapper'>
           <NotificationTable
             data={this.state.notifications}
-            
-            delete={this.removeNotifications}
+            isClient={isClient}
+            onSelected={this.getData}
+            deleteNotifications={() => {this.removeNotifications(this.deleteItems);}}
           />
         </div>
       </div>
@@ -69,6 +77,7 @@ class Notifications extends Component {
 }
 
 const mapStateToProps = state => ({
+  permissions: state.access.permissions,
   notifications: state.notifications.allNotifications,
   errors: state.errors,
   profile: state.auth.profile

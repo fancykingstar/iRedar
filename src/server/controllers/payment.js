@@ -44,17 +44,7 @@ exports.postPayment = async (req, res) => {
         if (tokenUserRole === "admin") {
             const permission = await Permission.findOne({profile: tokenProfileId});
             let organization = await Organization.findOne({_id: permission.organization});
-
-            organization.billing.cardHolderName = cardHolderName;
-            organization.billing.email = email;
-            organization.billing.phone = phone;
-            organization.billing.address.street1 = street1;
-            organization.billing.address.street2 = street2;
-            organization.billing.address.city = city;
-            organization.billing.address.state = state;
-            organization.billing.address.country = country;
-            organization.billing.address.zipcode = zipcode;
-            organization.billing.stripeSource = source;
+            organization.stripe.stripeAdminCustomerToken = source;
             await organization.save();
             await stripeLibrary.doUpdatePayment(tokenProfileId, source);
         } else {
@@ -115,17 +105,7 @@ exports.changePlan = async (req, res) => {
 
             const permission = await Permission.findOne({profile: tokenProfileId});
             let organization = await Organization.findOne({_id: permission.organization});
-
-            organization.billing.cardHolderName = paymentData.cardHolderName;
-            organization.billing.email = paymentData.email;
-            organization.billing.phone = paymentData.phone;
-            organization.billing.address.street1 = paymentData.street1;
-            organization.billing.address.street2 = paymentData.street2;
-            organization.billing.address.city = paymentData.city;
-            organization.billing.address.state = paymentData.state;
-            organization.billing.address.country = paymentData.country;
-            organization.billing.address.zipcode = paymentData.zipcode;
-            organization.billing.stripeSource = paymentData.source;
+            organization.stripe.stripeAdminCustomerToken = paymentData.source;
             await organization.save();
             await stripeLibrary.doChangePlan(tokenProfileId, plan, "month", paymentData.source);
         } else {

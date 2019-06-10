@@ -3,7 +3,7 @@ const logger = require('../configs/logger');
 const Submission = require('../models/Submission');
 const Organization = require('../models/Organization');
 const Permission = require('../models/Permission');
-const Profile = require('../models/Profile')
+const Profile = require('../models/Profile');
 
 // @route POST api/submissions
 // @desc Submit form
@@ -41,19 +41,28 @@ exports.getAllSubmissions = async (req, res) => {
       profile: profileId,
       organization: organizationId,
     });
+    const profile = await Profile.findById(profileId);
 
-    if (!(permissions.role === 'admin' || permissions.role === "staff")) {
-      return res.status(422).json({
-        alert: {
-          title: 'Access denied!',
-          detail: 'You do not have permissions',
-        },
+    // if (!(permissions.role === 'admin' || permissions.role === "staff")) {
+    //   return res.status(422).json({
+    //     alert: {
+    //       title: 'Access denied!',
+    //       detail: 'You do not have permissions',
+    //     },
+    //   });
+    // }
+
+    let allSubmissions = [];
+    if (permissions.role === 'client') {
+      allSubmissions = await Submission.find({userId: profile.user}).sort({
+        dateSubmitted: 'desc',
+      });
+    } else {
+      let users = organization.users;
+      allSubmissions = await Submission.find({userId: {$in: users}}).sort({
+        dateSubmitted: 'desc',
       });
     }
-    let users = organization.users;
-    const allSubmissions = await Submission.find({userId: {$in: users}}).sort({
-      dateSubmitted: 'desc',
-    });
     return res.json({
       success: true,
       allSubmissions,
@@ -81,7 +90,7 @@ exports.getSubmission = async (req, res) => {
       // organization: organizationId,
     });
 
-    if (permissions.role === 'admin' || permissions.role === 'staff') {
+    if (permissions.role === 'admin' || permissions.role === 'staff' || permissions.role === 'client') {
       const submission = await Submission.findOne({
         _id: submissionId,
       });
