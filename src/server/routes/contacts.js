@@ -9,7 +9,7 @@ const contactController = require('../controllers/contact');
  * @description Get the list of contacts
  * @access Private
  **/
-router.get('/', middleware(contactController.index));
+router.get('/:userId', middleware(contactController.index));
 
 /**
  * @route /api/contacts/

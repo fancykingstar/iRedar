@@ -25,7 +25,8 @@ const domain_regex = new RegExp("(?<=@)[^.]+.*$");
  * @returns {res}
  */
 exports.index = async (req, res) => {
-  let contacts = await Contact.find().populate('groups');
+  const { userId } = req.params;
+  let contacts = await Contact.find({created_by: userId}).populate('groups');
 
   return res.json({
     success: true,
