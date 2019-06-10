@@ -90,7 +90,9 @@ exports.getSubmission = async (req, res) => {
       // organization: organizationId,
     });
 
-    if (permissions.role === 'admin' || permissions.role === 'staff' || permissions.role === 'client') {
+    console.log(permissions.role);
+
+    if (permissions.role === 'admin' || permissions.role === 'staff' || permissions.role === 'client' || permissions.role === 'partner') {
       const submission = await Submission.findOne({
         _id: submissionId,
       });
