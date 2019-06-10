@@ -21,6 +21,21 @@ const yearlyPlanToPrice = {
     Enterprise: 269988
 };
 
+async function createInactivePlans(organization, plan, interval, amount) {
+    let planName = organization.domain.replace(/\s+/g, "-").replace(".", "-").toLowerCase() + "-" + plan.toLowerCase() + "-" + interval.toLowerCase();
+    const stripePlan = await stripe.plans.create({
+        product: productPlan,
+        active: true,
+        id: planName + "-plan",
+        nickname: organization.name + " " + interval + "ly " + plan + " plan",
+        currency: "usd",
+        amount: amount,
+        interval: interval,
+        usage_type: "licensed",
+        billing_scheme: "per_unit"
+    });
+};
+
 // CREATE CUSTOMER and SUBSCRIPTION
 exports.doCreateAdminUserWithPlanAndSubscribe = async (profileId, plan = "Smart", interval = "month") => {
     let profile = await Profile.findOne({_id: profileId});
@@ -35,9 +50,10 @@ exports.doCreateAdminUserWithPlanAndSubscribe = async (profileId, plan = "Smart"
         amount = yearlyPlanToPrice[plan];
     }
 
-    let planName = organization.domain.replace(/\s+/g, "-").replace(".", "-").toLowerCase() + "-" + plan.toLowerCase();
+    let planName = organization.domain.replace(/\s+/g, "-").replace(".", "-").toLowerCase() + "-" + plan.toLowerCase() + "-" + interval.toLowerCase();
     const stripePlan = await stripe.plans.create({
         product: productPlan,
+        active: true,
         id: planName + "-plan",
         nickname: organization.name + " " + interval + "ly " + plan + " plan",
         currency: "usd",
@@ -47,6 +63,24 @@ exports.doCreateAdminUserWithPlanAndSubscribe = async (profileId, plan = "Smart"
         billing_scheme: "per_unit",
         trial_period_days: 30
     });
+
+    for (let key in monthlyPlanToPrice) {
+        if (monthlyPlanToPrice.hasOwnProperty(key)) {
+            if (amount !== monthlyPlanToPrice[key]) {
+                console.log(key + " -> " + monthlyPlanToPrice[key]);
+                await createInactivePlans(organization, key, "month", monthlyPlanToPrice[key]);
+            }
+        }
+    }
+
+    for (let key in yearlyPlanToPrice) {
+        if (yearlyPlanToPrice.hasOwnProperty(key)) {
+            if (amount !== yearlyPlanToPrice[key]) {
+                console.log(key + " -> " + yearlyPlanToPrice[key]);
+                await createInactivePlans(organization, key, "year", yearlyPlanToPrice[key]);
+            }
+        }
+    }
 
     console.log(stripePlan);
     const stripeCustomer = await stripe.customers.create({
@@ -71,12 +105,11 @@ exports.doCreateAdminUserWithPlanAndSubscribe = async (profileId, plan = "Smart"
     user.stripe.stripeSubscriptionId = stripeSubscription.id;
     await user.save();
     organization.stripe.stripeAdminCustomerId = stripeCustomer.id;
-    organization.stripe.stripeSubscriptionPlanId = stripeSubscription.items.data[0].id;
+    organization.stripe.stripeSubscriptionId = stripeSubscription.id;
     organization.stripe.stripePlanId = stripePlan.id;
     organization.stripe.stripeAdminCustomerToken = "tok_visa";
     organization.stripe.plan = plan;
     organization.stripe.interval = interval;
-    organization.stripe.isTrial = true; // TODO turn to false when webhook subscription is expired in trial phase
     await organization.save();
 };
 
@@ -87,10 +120,11 @@ exports.doUpdateSubscription = async (profileId) => {
     let organization = await Organization.findOne({_id: permission.organization});
     let user = await User.findOne({_id: profile.user});
 
+    const stripeSubscription = await stripe.subscriptions.retrieve(organization.stripe.stripeSubscriptionId);
     logger.debug("Business Found for Customer is: ", organization);
     let post_message = {
         "items": [{
-            id: organization.stripe.stripeSubscriptionPlanId,
+            id: stripeSubscription.items.data[0].id,
             quantity: organization.users.length
         }]
     };
@@ -125,80 +159,26 @@ exports.doUpdatePayment = async (profileId, source) => {
 
 // Change plan for the account
 exports.doChangePlan = async (profileId, plan = "Smart", interval = "month", source = "tok_visa") => {
-    let profile = await Profile.findOne({_id: profileId});
     let permission = await Permission.findOne({profile: profileId});
-    let user = await User.findOne({_id: profile.user});
     let organization = await Organization.findOne({_id: permission.organization});
-    let trialDays = 0;
-    if (organization.stripe.isTrial) {
-        // TODO: understand how the trial works and ensure trial is transferred or take necessary actions
-        // TODO: After trial transition is create new plan and move subscribed users to next plans
-        // TODO: calculate remaining days instead of resetting it to 30
-        trialDays = 30;
-    }
-    let amount = 7500;
-    if (interval === "month") {
-        amount = monthlyPlanToPrice[plan];
-    } else {
-        amount = yearlyPlanToPrice[plan];
-    }
-
-    let planName = organization.domain.replace(/\s+/g, "-").replace(".", "-").toLowerCase() + "-" + plan.toLowerCase();
-    const stripePlan = await stripe.plans.create({
-        product: productPlan,
-        id: planName + "-plan",
-        nickname: organization.name + " " + interval + "ly " + plan + " plan",
-        currency: "usd",
-        amount: amount,
-        interval: interval,
-        usage_type: "licensed",
-        billing_scheme: "per_unit",
-        trial_period_days: trialDays
-    });
-
-    const stripeSubscription = await stripe.subscriptions.create({
-        customer: organization.stripe.stripeAdminCustomerId,
-        items: [
-            {
-                plan: stripePlan.id,
-                quantity: organization.users.length
-            }
-        ]
-    });
-    console.log(stripeSubscription);
-
-    // remove old subscription before update
-    await stripe.subscriptions.del(user.stripe.stripeSubscriptionId);
-    await stripe.plans.del(organization.stripe.stripePlanId);
-
-    // update subscription with new payment information
-    await stripe.customers.update(
-        organization.stripe.stripeAdminCustomerId,
-        {
-            source: source
-        });
+    let planId = organization.domain.replace(/\s+/g, "-").replace(".", "-").toLowerCase() + "-" + plan.toLowerCase() + "-" + interval.toLowerCase() + "-plan";
 
     // update new subscription and plans
-    user.stripe.stripeSubscriptionId = stripeSubscription.id;
-    await user.save();
-    organization.stripe.stripeSubscriptionPlanId = stripeSubscription.items.data[0].id;
-    organization.stripe.stripePlanId = stripePlan.id;
+    const stripeSubscription = await stripe.subscriptions.retrieve(organization.stripe.stripeSubscriptionId);
+    const updatedStripeSubscription = await stripe.subscriptions.update(organization.stripe.stripeSubscriptionId, {
+        cancel_at_period_end: false,
+        items: [{
+            id: stripeSubscription.items.data[0].id,
+            plan: planId,
+            quantity: organization.users.length
+        }]
+    });
+    console.log(updatedStripeSubscription);
+
+    organization.stripe.stripePlanId = planId;
     organization.stripe.stripeAdminCustomerToken = source;
     organization.stripe.plan = plan;
     organization.stripe.interval = interval;
-    organization.stripe.isTrial = (trialDays > 2);
-    await organization.save();
-};
-
-// Returning users for subscription
-exports.doSubscribe = async (profileId, plan = "Smart", interval = "month") => {
-    await doChangePlan(profileId, plan, interval);
-
-    // TODO: returning users after unsubscription
-    let permission = await Permission.findOne({profile: profileId});
-    let organization = await Organization.findOne({_id: permission.organization});
-
-    organization.stripe.stripeAdminCustomerToken = "tok_visa";
     await organization.save();
 };
 
@@ -214,7 +194,6 @@ exports.doUnsubscribe = async profileId => {
 
     user.stripe.stripeSubscriptionId = undefined;
     await user.save();
-    organization.stripe.stripeSubscriptionPlanId = undefined;
     organization.stripe.stripePlanId = undefined;
     organization.stripe.stripeAdminCustomerToken = undefined;
     organization.stripe.plan = undefined;

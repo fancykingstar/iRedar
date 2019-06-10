@@ -16,89 +16,48 @@ import {
 } from './accessActions';
 
 export const registerClientUser = (userData, history) => async dispatch => {
-  try {
     await axios.post(`${API_URL}/api/users/register/client`, userData);
     history.push({
       pathname: '/',
       isRegistered: true,
       detail: 'Your user have been created. Sign in now'
     });
-  } catch (error) {
-    dispatch({
-      type: GET_ERRORS,
-      payload: error.response.data
-    });
-  }
 };
 
 //Add new user through ADMIN Role
 export const registerUser = (userData, history) => async dispatch => {
-  try {
-    // getter
-    const token = localStorage.getItem('jwtToken');
-
-    // Set token to Auth header
-    setAuthToken(token);
-
-    await axios.post(`${API_URL}/api/users/register/user`, userData);
-    history.push({
-      pathname: '/settings/admin-settings',
-      isRegistered: true,
-      detail: 'New user created!'
-    });
-  } catch (error) {
-    dispatch({
-      type: GET_ERRORS,
-      payload: error.response.data
-    });
-  }
+  // getter
+  const token = localStorage.getItem('jwtToken');
+  // Set token to Auth header
+  setAuthToken(token);
+  await axios.post(`${API_URL}/api/users/register/user`, userData);
+  history.push({
+    pathname: '/settings/admin-settings',
+    isRegistered: true,
+    detail: 'New user created!'
+  });
 };
 
 //Update user
-export const updateUser = (
-    userData
-) => async dispatch => {
-  try {
-    const token = localStorage.getItem('jwtToken');
-
-    // Set token to Auth header
-    setAuthToken(token);
-
-    await axios.put(`${API_URL}/api/users/updateuser`, userData);
-  } catch (error) {
-    console.error(error);
-    dispatch({
-      type: GET_ERRORS,
-      payload: error.response.data
-    });
-  }
+export const updateUser = (userData) => async dispatch => {
+  const token = localStorage.getItem('jwtToken');
+  // Set token to Auth header
+  setAuthToken(token);
+  await axios.put(`${API_URL}/api/users/updateuser`, userData);
 };
 
 export const deleteUsers = (permissionIds, history) => async dispatch => {
-  try {
-    // getter
-    const token = localStorage.getItem('jwtToken');
-    const payload = {
-      permissionIds: Array.from(permissionIds)
-    };
-    // Set token to Auth header
-    setAuthToken(token);
-    await axios.post(
-        `${API_URL}/api/users/deleteUser`,
-        payload
-    );
-    history.push({
-      pathname: '/settings/admin-settings',
-      isRegistered: true,
-      detail: 'User deleted!'
-    });
-  } catch (error) {
-    console.log(error);
-    dispatch({
-      type: GET_ERRORS,
-      payload: error.response.data
-    });
-  }
+  // getter
+  const token = localStorage.getItem('jwtToken');
+  const payload = {permissionIds: Array.from(permissionIds)};
+  // Set token to Auth header
+  setAuthToken(token);
+  await axios.post(`${API_URL}/api/users/deleteUser`, payload);
+  history.push({
+    pathname: '/settings/admin-settings',
+    isRegistered: true,
+    detail: 'User deleted!'
+  });
 };
 
 // Login - Get User Token
@@ -171,39 +130,24 @@ export const getCurrentUserProfile = userId => async dispatch => {
 
 // Request Reset Password
 export const resetPassword = (email, history) => async dispatch => {
-  try {
-    await axios.post(`${API_URL}/api/users/reset-password`, email);
-    history.push({
-      pathname: '/reset-password',
-      isRequested: true
-    });
-  } catch (error) {
-    dispatch({
-      type: GET_ERRORS,
-      payload: error.response.data
-    });
-  }
+  await axios.post(`${API_URL}/api/users/reset-password`, email);
+  history.push({
+    pathname: '/reset-password',
+    isRequested: true
+  });
 };
 
 // Update Password
 export const updatePassword = (userData, history) => async dispatch => {
-  try {
-    const token = localStorage.getItem('jwtToken');
-    // Set token to Auth header
-    setAuthToken(token);
-
-    await axios.put(`${API_URL}/api/users/reset-password`, userData);
-    history.push({
-      pathname: '/',
-      isReset: true,
-      detail: 'Your password have been updated. Sign in now'
-    });
-  } catch (error) {
-    dispatch({
-      type: GET_ERRORS,
-      payload: error.response.data
-    });
-  }
+  const token = localStorage.getItem('jwtToken');
+  // Set token to Auth header
+  setAuthToken(token);
+  await axios.put(`${API_URL}/api/users/reset-password`, userData);
+  history.push({
+    pathname: '/',
+    isReset: true,
+    detail: 'Your password have been updated. Sign in now'
+  });
 };
 
 // Clear errors
