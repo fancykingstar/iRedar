@@ -6,6 +6,7 @@ import Select from 'react-select';
 import {getContact, updateContact} from '../../../actions/contactAction';
 import {API_URL} from '../../../actions/types';
 import TextFieldGroup from '../../Elements/TextFieldGroup';
+import { Link } from 'react-router-dom';
 
 export class EditContact extends Component {
   constructor() {
@@ -44,7 +45,8 @@ export class EditContact extends Component {
             phoneNumberFor: '',
             phoneNumber: ''
           }
-        ]
+        ],
+        updated_at: Date.now()
       }
     };
   }
@@ -242,7 +244,13 @@ export class EditContact extends Component {
           <div className='manager-header'>
             <div className='slim-pageheader'>
               <ol className='breadcrumb slim-breadcrumb'/>
-              <h6 className='slim-pagetitle'>Edit contact</h6>
+              <h6 className='slim-pagetitle'>
+                <Link to={'/contacts'}>
+                  <span>CONTACTS</span>
+                </Link>
+                &nbsp;/&nbsp;
+                Edit contact
+              </h6>
             </div>
           </div>
           {loading ?

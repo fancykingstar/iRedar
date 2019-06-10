@@ -160,8 +160,11 @@ exports.postLogin = async (req, res) => {
 
     const profile = await Profile.findOne({ user });
     const permission = await Permission.findOne({profile});
-    if (user.firstLogin) await user.updateOne({firstLogin: false});
-
+    if (user.firstLogin) {
+      await User.findByIdAndUpdate(user.id, {firstLogin: false, lastLogin_at: new Date()});
+    } else {
+      await user.updateOne({lastLogin_at: new Date()});
+    }
     const token = jwt.sign(
       {
         userId: user.id,
@@ -746,3 +749,11 @@ exports.getUsers = async (req, res) => {
     });
   }
 };
+
+exports.updateLastLogin = async(req, res) => {
+  const { email } = req.body;
+  await User.findOneAndUpdate(
+    {email},
+    {$set: {lastLogin_at: new Date()}}
+  );
+}

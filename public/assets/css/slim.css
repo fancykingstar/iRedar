@@ -12791,6 +12791,47 @@ textarea.parsley-success:focus {
   border-left-width: 0; }
 
 /* ------------------------------------------ */
+/* ############### Invite Modal ############### */
+/* ------------------------------------------ */
+
+.slim-invite-modaldesc .header {
+  background: #1caf9a;
+  color: white;
+  padding: 5px 10px;
+}
+.slim-invite-modaldesc .footer {
+  color: black;
+  padding: 5px 10px;
+}
+.slim-invite-modaltitle {
+  margin-top: 15px;
+  margin-bottom: 10px;
+  color: #343a40;
+  padding-left: 10px;
+  border-left: 4px solid #4662D4;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: .5px;
+}
+@media (min-width: 576px) {
+  .slim-invite-modaltitle {
+    margin-top: 0;
+    margin-bottom: 0; 
+  }
+}
+
+@media (min-width: 576px) {
+  .slim-invite-modaldesc {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row-reverse; 
+  } 
+}
+
+/* ------------------------------------------ */
 /* ############### MAIN PANEL ############### */
 /* ------------------------------------------ */
 .slim-mainpanel {
@@ -12839,6 +12880,9 @@ textarea.parsley-success:focus {
       font-size: 14px; } }
   .slim-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
     color: #ced4da; }
+.slim-modal-footer {
+  background-color: white!important;
+}
 
 /*********************************/
 /********** RTL SUPPORT **********/

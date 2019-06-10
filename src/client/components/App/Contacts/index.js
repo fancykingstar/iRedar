@@ -3,19 +3,62 @@ import propTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { addContact, deleteContacts, getContacts } from '../../../actions/contactAction';
+import { Modal } from 'react-bootstrap';
+import { addContact, deleteContacts, getContacts, getContactsByFilter } from '../../../actions/contactAction';
+import { addGroup } from '../../../actions/groupAction';
 import ContactTable from '../Components/ContactDataTable';
+import TextFieldGroup from '../../Elements/TextFieldGroup';
 
 class ContactsPage extends React.Component {
   constructor() {
     super();
     this.importFile = React.createRef();
+    this.state={
+      showAddGroupDialog: false,
+      groupName: ''
+    }
   }
 
   componentDidMount() {
     const { getContacts } = this.props;
     getContacts();
   }
+
+  onAddGroupDialogShow = () => {
+    this.setState({
+      showAddGroupDialog: true
+    });
+  }
+
+  onAddGroupDialogHide = () => {
+    this.setState({
+      showAddGroupDialog: false
+    });
+  }
+
+  onGroupSubmit = e => {
+    e.preventDefault();
+
+    const { groupName } =this.state;
+    const { addGroup } = this.props;
+    addGroup({name: groupName});
+    this.onAddGroupDialogHide();
+  };
+
+  onFilterSubmit = filterData => {
+    const { getContactsByFilter } = this.props;
+    const { profession, company, type } = filterData;
+    getContactsByFilter(profession, company, type);
+  }
+
+  onChange = event => {
+    //access event in an asynchronous way
+    event.persist();
+
+    this.setState({
+      groupName: event.target.value
+    });
+  };
 
   fileOnchange = event => {
     const { getContacts, addContact, history } = this.props;
@@ -116,13 +159,67 @@ class ContactsPage extends React.Component {
 
   render() {
     const { contacts } = this.props;
-
+    const groupInputStyle = { minWidth:'25vw' };
+    console.log(contacts);
     return (
       <div className='slim-mainpanel'>
         <div className='container'>
           <div className='manager-header'>
             <div className='slim-pageheader'>
               <ol className='breadcrumb slim-breadcrumb'>
+                <Modal
+                  show={this.state.showAddGroupDialog}
+                  onHide={this.onAddGroupDialogHide}
+                >
+                  <Modal.Body>
+                    <div className='container'>
+                      <div className='slim-pageheader'>
+                        <ol className='breadcrumb slim-breadcrumb' />
+                        <h6 className='slim-pagetitle'>Add Group</h6>
+                      </div>
+                      <form onSubmit={this.onGroupSubmit}>
+                        <div className='section-wrapper mg-b-20'>
+                          <label className='section-title mg-b-20'>Group Name</label>
+                          <div className='row'>
+                            <div className='col-lg mg-t-10 mg-lg-t-0'>
+                              <TextFieldGroup
+                                name='groupname'
+                                placeholder='Group Name'
+                                onChange={this.onChange}
+                                inputStyle={groupInputStyle}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </Modal.Body>
+                  <Modal.Footer
+                    className='slim-modal-footer'
+                  >
+                    <div className='container'>
+                      <button
+                        className='btn btn-danger float-right mt-3 mb-3 ml-3'
+                        onClick={this.onAddGroupDialogHide}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        className='btn btn-success float-right mt-3 mb-3'
+                        type='submit'
+                        onClick={this.onGroupSubmit}
+                      >
+                        Save
+                      </button>
+                    </div>
+                  </Modal.Footer>
+                </Modal>
+                <button
+                  className='btn btn-info btn-sm  mg-r-5'
+                  onClick={this.onAddGroupDialogShow}
+                >
+                  <i className='fa fa-plus' /> Groups
+                </button>
                 <Link
                   to={{
                     pathname: '/contacts/add-new-contact'
@@ -177,6 +274,7 @@ class ContactsPage extends React.Component {
               archiveContacts={() => {
                 this.removeContacts(this.deleteItems);
               }}
+              onFilterSubmit={this.onFilterSubmit}
             />
           </div>
         </div>
@@ -187,8 +285,10 @@ class ContactsPage extends React.Component {
 
 ContactsPage.propTypes = {
   addContact: propTypes.func.isRequired,
+  addGroup: propTypes.func.isRequired,
   deleteContacts: propTypes.func.isRequired,
   getContacts: propTypes.func.isRequired,
+  getContactsByFilter: propTypes.func.isRequired,
   auth: propTypes.object.isRequired,
   errors: propTypes.object.isRequired
 };
@@ -203,5 +303,7 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   getContacts,
   deleteContacts,
-  addContact
+  addContact,
+  addGroup,
+  getContactsByFilter
 })(ContactsPage);

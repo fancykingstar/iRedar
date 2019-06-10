@@ -2,10 +2,20 @@ import moment from 'moment';
 import propTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { getContact, updateContactPrivateNotes } from '../../../actions/contactAction';
+import { Link, withRouter } from 'react-router-dom';
+import { Modal, ModalBody } from 'react-bootstrap';
+import Select from 'react-select';
+import TextFieldGroup from '../../Elements/TextFieldGroup';
+import getRouteBaseUrl from '../../../utils/getRouteBaseUrl';
+import {
+  getContact,
+  updateContactPrivateNotes,
+  uploadProfileImage,
+  inviteToAccessClientPortal
+} from '../../../actions/contactAction';
+import { resolve } from 'q';
 
-class EditContact extends React.Component {
+class ViewContact extends React.Component {
   state = {
     _id: '',
     loading: true,
@@ -21,7 +31,15 @@ class EditContact extends React.Component {
     updated_at: '',
     phoneNumbers: [],
     addresses: [],
-    emailAddresses: []
+    emailAddresses: [],
+    avatar: '',
+    showInviteDialog: false,
+    invite: {
+      email: '',
+      password: '',
+      type: ''
+    },
+    lastLogin_at: ''
   };
 
   componentDidMount() {
@@ -35,6 +53,23 @@ class EditContact extends React.Component {
     this.setState({
       ...nextProps.contact,
       loading: nextProps.loading
+    });
+  }
+
+  onInviteDialogShow = (emailAddress) => {
+    this.setState(oldState => ({
+      ...oldState,
+      invite: {
+        ...this.state.invite,
+        email: emailAddress
+      },
+      showInviteDialog: true
+    }));
+  }
+
+  onInviteDialogHide = () => {
+    this.setState({
+      showInviteDialog: false
     });
   }
 
@@ -65,6 +100,52 @@ class EditContact extends React.Component {
     }));
   };
 
+  onInviteInputChange = event => {
+    event.persist();
+
+    this.setState(oldState => ({
+      ...oldState,
+      invite: {
+        ...this.state.invite,
+        [event.target.name]: event.target.value
+      }
+    }));
+  };
+
+  onSelectChange = (key, value) => {
+    // event.persist();
+    this.setState(previousState => ({
+      ...previousState,
+      invite: {
+        ...this.state.invite,
+        [key]: value
+      }
+    }));
+  };
+
+  onInviteSubmit = e => {
+    e.preventDefault();
+    const { invite, firstName, lastName } = this.state;
+    const { inviteToAccessClientPortal } = this.props;
+    const inviteData = {
+      ...this.state.invite,
+      username: this.state.firstName + ' ' + this.state.lastName
+    };
+    const profileData = {
+      email: invite.email,
+      firstName,
+      lastName
+    };
+
+    const payload = {
+      inviteData,
+      profileData,
+      baseUrl: getRouteBaseUrl()
+    };
+    inviteToAccessClientPortal(this.state._id, payload);
+    this.onInviteDialogHide();
+  }
+
   textareaComponent = () => (
     <textarea
       rows='3'
@@ -74,6 +155,39 @@ class EditContact extends React.Component {
       onChange={this.onChange}
     />
   );
+
+  handleProfilePhotoUpload = _ => {
+    var files = this.uploadInput.files
+    if (!files) return
+    this.uploadMultipleFiles(files)
+  }
+
+  uploadMultipleFiles = files => {
+    const { uploadProfileImage } = this.props
+    if (files.length === 1) {
+      let file = files[0];
+      let promise = new Promise(resolve => {
+        let reader = new FileReader()
+        reader.onload = _ => {
+          let form = {
+            content: reader.result,
+            fileName: file.name,
+            type: file.name.substr(file.name.lastIndexOf('.') + 1),
+            dateUpdated: Date(),
+            size: file.size,
+          }
+          resolve(form)
+        }
+        reader.readAsDataURL(file)
+      })
+      Promise.all([promise]).then(content => {
+        let data = {
+          avatar: content[0].content
+        }
+        uploadProfileImage(this.state._id, data)
+      })
+    }
+  }
 
   render() {
     let {
@@ -90,8 +204,48 @@ class EditContact extends React.Component {
       emailAddresses,
       phoneNumbers,
       addresses,
-      loading
+      avatar,
+      loading,
+      invite,
+      lastLogin_at,
+      created_by
     } = this.state;
+
+    const { auth } = this.props;
+    const contactTypes = [
+      {
+        label: 'Select type',
+        value: '',
+        isDisabled: true
+      },
+      {
+        label: 'Client',
+        value: 'client'
+      },
+      {
+        label: 'Partner',
+        value: 'partner'
+      },
+      {
+        label: 'Staff',
+        value: 'staff'
+      }
+    ];
+
+    const selectCustomStyle = {
+      container: provided => {
+        return {
+          ...provided,
+          marginBottom: '1rem'
+        };
+      },
+      menu: provided => {
+        return {
+          ...provided,
+          zIndex: '100000'
+        };
+      }
+    };
 
     return (
       <div className='slim-mainpanel'>
@@ -103,7 +257,13 @@ class EditContact extends React.Component {
                   <i className={'fa fa-pencil'} /> Edit
                 </Link>
               </div>
-              <h6 className='slim-pagetitle'>View Contact</h6>
+              <h6 className='slim-pagetitle'>
+                <Link to={'/contacts'}>
+                  <span>CONTACTS</span>
+                </Link>
+                &nbsp;/&nbsp;
+                <span>{`${firstName} ${lastName}`}</span>
+              </h6>
             </div>
           </div>
           {loading ? (
@@ -118,7 +278,17 @@ class EditContact extends React.Component {
                 <div className='card card-profile'>
                   <div className='card-body'>
                     <div className='media'>
-                      <img src='http://via.placeholder.com/500x500' alt='' />
+                      <label htmlFor="uploadProfilePhoto">
+                        <img src={avatar === '' ? 'http://via.placeholder.com/500x500' : avatar} alt='' />
+                      </label>
+                      <input
+                        type="file"
+                        id="uploadProfilePhoto"
+                        name="uploadProfilePhoto"
+                        style={{ opacity: 0 }}
+                        ref={(ref) => { this.uploadInput = ref }}
+                        onChange={this.handleProfilePhotoUpload}
+                      />
                       <div className='media-body'>
                         <h3 className='card-profile-name'>{`${firstName} ${lastName}`}</h3>
                         <p className='card-profile-position'>
@@ -167,8 +337,10 @@ class EditContact extends React.Component {
                             <i className='fa fa-user tx-24 tx-danger lh-0' />
                           </div>
                           <div className='media-body mg-t-4' style={{ marginLeft: '15px' }}>
-                            <h6 className='tx-14 tx-gray-700'>Created By</h6>
-                            <span className='d-block'>yourname@sample.com</span>
+                            <h6 className='tx-14 tx-gray-700'>
+                              Created By <strong>{`${auth.profile.firstName} ${auth.profile.lastName}`}</strong>
+                            </h6>
+                            <span className='d-block'>{auth.profile.email}</span>
                           </div>
                         </div>
                       </div>
@@ -204,13 +376,41 @@ class EditContact extends React.Component {
                               <div className='list-group-item' key={key}>
                                 <div className='user-name-address'>
                                   <p>{value.emailAddress}</p>
-                                  <span>
-                                    {' '}
-                                    Client Portal: <b className='tx-success'>Confirmed Access</b> |{' '}
-                                    <b className='tx-primary'>
-                                      <a href='#'>Revoke Access</a>
-                                    </b>
-                                  </span>
+                                  { 
+                                    value.inviteStatus === 'noaccess' && 
+                                      <span>
+                                        {' '}
+                                        Client Portal: <b className='tx-black'>No access</b> |{' '}
+                                        <b className='tx-primary'>
+                                          <a href='#' onClick={() => this.onInviteDialogShow(value.emailAddress)}>Invite</a>
+                                        </b>
+                                      </span>
+                                  }
+                                  { 
+                                    value.inviteStatus === 'pending' && 
+                                      <span>
+                                        {' '}
+                                        Client Portal:
+                                        <b className='tx-black'>pending</b> |{' '}
+                                        <b className='tx-primary'>
+                                          <a href='#' onClick={() => this.onInviteDialogShow(value.emailAddress)}>Reinvite</a>
+                                        </b> |{' '}
+                                        <b className='tx-primary'>
+                                          <a href='#'>Revoke access</a>
+                                        </b>
+                                      </span>
+                                  }
+                                  { 
+                                    value.inviteStatus === 'confirmed' && 
+                                      <span>
+                                        {' '}
+                                        Client Portal:
+                                        <b className='tx-success'>Confirmed Access</b> |{' '}
+                                        <b className='tx-primary'>
+                                          <a href='#'>Revoke access</a>
+                                        </b>
+                                      </span>
+                                  }
                                 </div>
                                 <div className='user-btn-wrapper'>
                                   <button className='btn btn-outline-primary btn-sm' disabled>
@@ -352,7 +552,7 @@ class EditContact extends React.Component {
                   </p>
                   <p className='contact-item'>
                     <span>Last client login:</span>
-                    <a href=''>May 15 2019 10:53:36</a>
+                    <a href=''>{lastLogin_at}</a>
                   </p>
                 </div>
                 <div className='card card-recommendation'>
@@ -374,14 +574,99 @@ class EditContact extends React.Component {
             </div>
           )}
         </div>
+        <Modal
+          show={this.state.showInviteDialog}
+          onHide={this.onInviteDialogHide}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>
+              <div className='slim-pageheader'>
+                <h6 className='slim-invite-modaltitle'>
+                  Invite to the client portal
+                </h6>
+              </div>
+            </Modal.Title>
+          </Modal.Header>
+
+          <ModalBody>
+            <div className='slim-invite-modaldesc'>
+              <p className='header'>If you proceed, an Invitation with Instructions will be sent to the client's email address.</p>
+            </div>
+            <form onSubmit={this.onInviteSubmit}>
+              <div className='section-wrapper mg-b-20'>
+                <div className='row'>
+                  <div className='col-lg mg-t-10 mg-lg-t-0'>
+                    <label className='section-title'>Email</label>
+                    <TextFieldGroup
+                      name='email'
+                      placeholder='Email'
+                      value={invite.email}
+                      onChange={this.onInviteInputChange}
+                      disabled
+                    />
+                  </div>
+                </div>
+                <div className='row'>
+                  <div className='col-lg mg-t-10 mg-lg-t-0'>
+                    <label className='section-title'>Password</label>
+                    <TextFieldGroup
+                      name='password'
+                      placeholder='Original password'
+                      value={invite.password}
+                      onChange={this.onInviteInputChange}
+                    />
+                  </div>
+                </div>
+                <div className='row'>
+                  <div className='col-lg mg-t-10 mg-lg-t-0'>
+                    <label className='section-title'>Contact Types</label>
+                    <Select
+                      styles={selectCustomStyle}
+                      options={contactTypes}
+                      name='type'
+                      placeholder={'Select type'}
+                      onChange={e => {
+                        this.onSelectChange('type', e.value);
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </form>
+            <div className='slim-invite-modaldesc'>
+              <p className='footer'>Once the client visits, he will be able to access invoices and estimates, make online payments and review his full transaction history</p>
+            </div>
+          </ModalBody>
+          <Modal.Footer
+            className='slim-modal-footer'
+          >
+            <div className='container'>
+              <button
+                className='btn btn-info float-right mt-3 mb-3 ml-3'
+                type='submit'
+                onClick={this.onInviteSubmit}
+              >
+                Invite
+              </button>
+              <button
+                className='btn btn-danger float-right mt-3 mb-3'
+                onClick={this.onInviteDialogHide}
+              >
+                Cancel
+              </button>
+            </div>
+          </Modal.Footer>
+        </Modal>
       </div>
     );
   }
 }
 
-EditContact.propTypes = {
+ViewContact.propTypes = {
   updateContactPrivateNotes: propTypes.func.isRequired,
   getContact: propTypes.func.isRequired,
+  uploadProfileImage: propTypes.func.isRequired,
+  inviteToAccessClientPortal: propTypes.func.isRequired,
   auth: propTypes.object.isRequired,
   errors: propTypes.object.isRequired
 };
@@ -393,7 +678,14 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-export default connect(mapStateToProps, {
-  getContact,
-  updateContactPrivateNotes
-})(EditContact);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    {
+      getContact,
+      updateContactPrivateNotes,
+      uploadProfileImage,
+      inviteToAccessClientPortal
+    }
+  )(ViewContact)
+);

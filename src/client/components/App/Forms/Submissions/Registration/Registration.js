@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
+import { Link } from 'react-router-dom';
 import Spinner from '../../../../Elements/Spinner';
 import {editSubmission} from "../../../../../actions/submissionActions";
 import $ from "jquery";
@@ -145,7 +146,13 @@ class RegistrationSubmission extends Component {
                     <div id="google_translate_element"/>
 
                     <div className="section-wrapper mg-t-20">
-                        <label className="section-title">Registration Form</label>
+                        <label className="section-title">
+                          <Link to={'/modules/submissions'}>
+                            <span>Submissions</span>
+                          </Link>
+                          &nbsp;/&nbsp;
+                          Registration Form
+                        </label>
                         <p className="mg-b-20 mg-sm-b-40">Please fill out the following information. </p>
 
                         <form id="immigrationForm" method="post" action="/forms">
