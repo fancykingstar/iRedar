@@ -18,7 +18,7 @@ export class Logs extends Component {
           <div className="d-md-flex flex-row-reverse">
 
             <div className="signin-left" style={{minHeight: "491px"}}>
-              <img src="http://localhost:3000/assets/img/Logs_Image.png" />
+              <img src="/assets/img/Logs_Image.png" />
             </div>
 
             <div className="signin-right" style={{minHeight: "0px"}}>
