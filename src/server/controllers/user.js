@@ -170,7 +170,8 @@ exports.postLogin = async (req, res) => {
         userId: user.id,
         profileId: profile.id,
         role: permission.role,
-        permission: permission.permissionRight
+        permission: permission.permissionRight,
+        username: profile.firstName + " " + profile.lastName
       },
       keys.secretOrKey,
       { expiresIn: '30d' },

@@ -5,6 +5,8 @@ import { addMessage, getMessages } from '../../../actions/messageAction';
 import { getInbox, getInboxes } from '../../../actions/inboxAction';
 import io from 'socket.io-client';
 import { API_URL } from '../../../actions/types';
+import './message.css';
+import { deleteInbox } from '../../../actions/inboxAction';
 
 class MessageChatBox extends Component {
   constructor () {
@@ -37,6 +39,15 @@ class MessageChatBox extends Component {
         };
       })
     });
+  }
+
+   delete = event => {
+    if (window.confirm('Do you want to delete the message ?')) {
+      const { deleteInbox } = this.props;
+
+      deleteInbox(this.state.inbox);
+      
+    }
   }
 
   listMessages (inbox, profile) {
@@ -120,6 +131,8 @@ class MessageChatBox extends Component {
       }
     }
 
+    console.log("messages: ", this.props.profile);
+
     return messageHeader ?
       <div className="messages-right">
         <div className="message-header">
@@ -137,7 +150,15 @@ class MessageChatBox extends Component {
             <div className="d-none d-sm-flex">
               <a href=""><i className="icon ion-ios-telephone-outline"/></a>
               <a href=""><i className="icon ion-ios-videocam-outline"/></a>
-              <a href=""><i className="icon ion-ios-gear-outline"/></a>
+              <a href="" className="dropdown-toggle" id="dropdownMenuButton11" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="icon ion-ios-trash-outline"/></a>
+              <div
+                className='dropdown-menu'
+                aria-labelledby='dropdownMenuButton11'
+              >
+                <a className='dropdown-item' href='#' onClick={this.delete}>
+                  <i className='fa fa-trash'/> Delete Message
+                </a>
+              </div>
               <a href=""><i className="icon ion-ios-information-outline"/></a>
             </div>
             <div className="d-sm-none">
@@ -234,4 +255,4 @@ const mapStateToProps = state => ({
   users: state.users.allUsers
 });
 
-export default connect(mapStateToProps, { getMessages, addMessage, getInbox, getInboxes })(MessageChatBox);
+export default connect(mapStateToProps, { getMessages, addMessage, getInbox, getInboxes, deleteInbox })(MessageChatBox);

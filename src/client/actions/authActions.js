@@ -71,6 +71,7 @@ export const loginUser = userData => async dispatch => {
     setAuthToken(token);
     // Decode token to get user data
     const decoded = jwt_decode(token);
+    console.log(decoded);
     // Get current user profile
     dispatch(getCurrentUserProfile(decoded.userId));
     //Get current user permissons
@@ -116,7 +117,7 @@ export const logoutUser = () => dispatch => {
 export const getCurrentUserProfile = userId => async dispatch => {
   try {
     const res = await axios.get(`${API_URL}/api/users/${userId}`);
-
+    // console.log(res);
     dispatch({
       type: GET_CURRENT_USER_PROFILE,
       payload: res.data

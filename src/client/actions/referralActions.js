@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { API_URL } from './types';
+import { API_URL, DELETE_REFERRALS} from './types';
 
 export const SET_ALL_REFERRALS = 'referral/referralForm/SET_ALL_REFERRALS'
 
@@ -31,3 +31,11 @@ export const setAllReferrals = payload => (
         payload
     }
 )
+
+export const deleteReferral = (payload) => async dispatch => {
+  const res = await axios.post(`${API_URL}/api/upload-referral/delete/${payload}`);
+  dispatch({
+    type:  DELETE_REFERRALS,
+    payload: payload
+  })
+};

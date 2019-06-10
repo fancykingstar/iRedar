@@ -20,7 +20,7 @@ class Header extends Component {
           <div className="slim-header-left">
             <h2 className="slim-logo">
               <Link to="/">
-                iAuto<span>.</span>
+                Link2Settle<span>.</span>
               </Link>
             </h2>
 

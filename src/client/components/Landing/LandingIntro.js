@@ -7,14 +7,14 @@ export default function LandingIntro() {
       <div className="signin-box">
         <h2 className="slim-logo">
           <Link to="/">
-            iAuto<span>.</span>
+            Link2Settle<span>.</span>
           </Link>
         </h2>
 
         <p>
-          We are excited to launch our new product iAuto immigration. After
+          We are excited to launch our new product Link2Settle immigration. After
           working closely with different non-for-profit agencies helping
-          immigrants, we know that iAuto solves a major problem. We hope to
+          immigrants, we know that Link2Settle solves a major problem. We hope to
           simplify and automate NFP core processes so that they can spend more
           time with their clients.
         </p>

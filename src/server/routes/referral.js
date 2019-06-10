@@ -22,4 +22,10 @@ router.post(
     referralController.postReferral
 )
 
+router.post(
+    '/delete/:referralId',
+    passport.authenticate('jwt', { session: false }),
+    referralController.deleteReferral
+)
+
 module.exports = router

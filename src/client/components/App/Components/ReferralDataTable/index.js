@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { editAdminPermissions } from '../../../../actions/accessActions';
 import './index.css';
-// import { deleteNotifications } from '../../../../actions/notificationActions';
 
 export class DataTable extends Component {
   constructor() {
@@ -25,8 +24,8 @@ export class DataTable extends Component {
         hidden: true
       },
       {
-        dataField: 'title',
-        text: 'Title',
+        dataField: 'lastName',
+        text: 'Last Name',
         sort: true,
         editable: false,
         formatter: (text, record) => {
@@ -34,15 +33,24 @@ export class DataTable extends Component {
         }
       },
       {
-        dataField: 'created_at',
-        text: 'Date sent',
+        dataField: 'firstName',
+        text: 'First Name',
+        sort: true,
+        editable: false,
+        formatter: (text, record) => {
+          return <Link to={`/notifications/view/${record._id}`}>{text}</Link>;
+        }
+      },
+      {
+        dataField: 'formName',
+        text: 'Form Name',
         sort: true,
         editable: false,
         formatter: (text, record) => text ? moment(text).format('LLL') : 'N/A'
       },
       {
-        dataField: 'sentBy',
-        text: 'Sent by',
+        dataField: 'senderName',
+        text: 'Sender Name',
         sort: true,
         editable: false,
         headerStyle: (colum, colIndex) => {
@@ -51,46 +59,12 @@ export class DataTable extends Component {
         formatter: (text, record) => record.sentBy ? `${record.sentBy.lastName}, ${record.sentBy.firstName}` : 'N/A'
       },
       {
-        dataField: 'actions',
-        text: 'Actions',
+        dataField: 'datesubmitted',
+        text: 'Date Submitted',
         sort: true,
         editable: false,
-        formatter: (text, record) => {
-          return (
-             <div className='dropdown'>
-                  <button
-                    className='btn btn-primary btn-sm dropdown-toggle mg-l-5'
-                    type='button'
-                    id='dropdownMenuButton2'
-                    data-toggle='dropdown'
-                    aria-haspopup='true'
-                    aria-expanded='false'
-                  >
-                    <i className='fa fa-bolt'/> Actions
-                  </button>
-                  <div
-                    className='dropdown-menu'
-                    aria-labelledby='dropdownMenuButton2'
-                    x-placement='bottom-start'
-                    style={{
-                      position: 'absolute',
-                      transform: 'translate3d(0px, 42px, 0px)',
-                      top: '0px',
-                      left: '0px',
-                      'willChange': 'transform'
-                    }}
-                  >
-                    <a className='dropdown-item' href='#' onClick={() => {}}>
-                      <i className='fa fa-file'/> Archive notifications
-                    </a>
-                    <a className='dropdown-item' href='#' onClick={() => {this.props.delete(record._id);}}>
-                      <i className='fa fa-trash'/> Delete notifications
-                    </a>
-                  </div>
-                </div>
-          )
-        }
       },
+
     ];
   }
   
@@ -106,23 +80,13 @@ export class DataTable extends Component {
   
   showRow = (row, rowIndex) => {
     let displayNone = 'd-none';
-    const { isClient } = this.props;
-    if (!isClient) {
-      if (row.sentBy._id === this.props.profile._id && !this.state.sent) {
-        return displayNone;
-      }
-      
-      if (row.sentBy._id !== this.props.profile._id && !this.state.received) {
-        return displayNone;
-      }
-    } else {
-      if (row.sentBy._id === this.props.profile._id && isClient) {
-        return displayNone;
-      }
-      
-      if (row.sentBy._id !== this.props.profile._id && !this.state.received) {
-        return displayNone;
-      }
+    
+    if (row.sentBy._id === this.props.profile._id && !this.state.sent) {
+      return displayNone;
+    }
+    
+    if (row.sentBy._id !== this.props.profile._id && !this.state.received) {
+      return displayNone;
     }
   };
   
@@ -141,6 +105,7 @@ export class DataTable extends Component {
           deletedItems.push(row._id);
         } else {
           if (deletedItems.find(value => value === row._id)) {
+            deletedItems = deletedItems.filter(value => value !== row._id);
           }
         }
         this.props.onSelected(deletedItems);
@@ -208,7 +173,8 @@ export class DataTable extends Component {
       }
     };
     
-    let { data, isClient } = this.props;
+    let { data } = this.props;
+    
     let contactData = data.map(value => {
       return {
         ...value,
@@ -242,7 +208,7 @@ export class DataTable extends Component {
                       transform: 'translate3d(0px, 42px, 0px)',
                       top: '0px',
                       left: '0px',
-                      'will-change': 'transform'
+                      'willChange': 'transform'
                     }}
                   >
                     <a className='dropdown-item' href='#' onClick={() => {}}>
@@ -253,48 +219,45 @@ export class DataTable extends Component {
                     </a>
                   </div>
                 </div>
-                {
-                  !isClient &&
-                  <div className='dropdown'>
-                    <button
-                      className='btn btn-primary btn-sm dropdown-toggle mg-l-5'
-                      type='button'
-                      id='dropdownMenuButton2'
-                      data-toggle='dropdown'
-                      aria-haspopup='true'
-                      aria-expanded='false'
-                    >
-                      <i className='fa fa-filter'/> Filter
-                    </button>
-                    <div
-                      className='dropdown-menu'
-                      aria-labelledby='dropdownMenuButton2'
-                      x-placement='bottom-start'
-                      style={{
-                        position: 'absolute',
-                        transform: 'translate3d(0px, 42px, 0px)',
-                        top: '0px',
-                        left: '0px',
-                        'will-change': 'transform'
-                      }}
-                    >
-                      <a className='dropdown-item' href='#' onClick={() => {}}>
-                        <input
-                          type='checkbox'
-                          checked={this.state.received}
-                          onChange={this.showRows('received', !this.state.received)}
-                        /> Received notifications
-                      </a>
-                      <a className='dropdown-item' href='#' onClick={() => {}}>
-                        <input
-                          type='checkbox'
-                          checked={this.state.sent}
-                          onChange={this.showRows('sent', !this.state.sent)}
-                        /> Sent notifications
-                      </a>
-                    </div>
+                <div className='dropdown'>
+                  <button
+                    className='btn btn-primary btn-sm dropdown-toggle mg-l-5'
+                    type='button'
+                    id='dropdownMenuButton2'
+                    data-toggle='dropdown'
+                    aria-haspopup='true'
+                    aria-expanded='false'
+                  >
+                    <i className='fa fa-filter'/> Filter
+                  </button>
+                  <div
+                    className='dropdown-menu'
+                    aria-labelledby='dropdownMenuButton2'
+                    x-placement='bottom-start'
+                    style={{
+                      position: 'absolute',
+                      transform: 'translate3d(0px, 42px, 0px)',
+                      top: '0px',
+                      left: '0px',
+                      'willChange': 'transform'
+                    }}
+                  >
+                    <a className='dropdown-item' href='#' onClick={() => {}}>
+                      <input
+                        type='checkbox'
+                        checked={this.state.received}
+                        onChange={this.showRows('received', !this.state.received)}
+                      /> Received notifications
+                    </a>
+                    <a className='dropdown-item' href='#' onClick={() => {}}>
+                      <input
+                        type='checkbox'
+                        checked={this.state.sent}
+                        onChange={this.showRows('sent', !this.state.sent)}
+                      /> Sent notifications
+                    </a>
                   </div>
-                }
+                </div>
               </div>
               <div className='col-6 '>
                 <SearchBar {...props.searchProps} />
@@ -307,6 +270,7 @@ export class DataTable extends Component {
               hover
               defaultSorted={defaultSorted}
               bordered={false}
+              selectRow={selectRowProp}
               {...props.baseProps}
               pagination={paginationFactory(options)}
             />

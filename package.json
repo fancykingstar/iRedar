@@ -47,6 +47,7 @@
     "react-bootstrap-table2-editor": "^1.2.2",
     "react-bootstrap-table2-paginator": "^2.0.1",
     "react-bootstrap-table2-toolkit": "^1.2.0",
+    "react-bootstrap-typeahead": "^3.4.5",
     "react-dom": "^16.7.0",
     "react-phone-number-input": "^2.3.11",
     "react-redux": "^6.0.0",
@@ -66,7 +67,7 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^5.2.0",
-    "nodemon": "^1.18.10",
+    "nodemon": "^1.19.1",
     "supertest": "^3.4.2"
   },
   "eslintConfig": {

@@ -11,7 +11,7 @@ class AddNewNotification extends Component {
     contacts: [],
     form: {
       recipients: [],
-      title: null,
+      title: "",
       message: null,
       files: []
     }

@@ -1,4 +1,4 @@
-import {GET_ALL_NOTIFICATIONS, GET_ERRORS, SHOW_NOTIFICATION} from '../actions/types';
+import {GET_ALL_NOTIFICATIONS, GET_ERRORS, SHOW_NOTIFICATION, DELETE_NOTIFICATION} from '../actions/types';
 
 const initialState = {
   loading: true,
@@ -25,6 +25,14 @@ export default (state = initialState, action) => {
         ...state,
         loading: false
       };
+    case DELETE_NOTIFICATION:
+      return {
+        ...state,
+        loading: false,
+        allNotifications: state.allNotifications.filter(notification => {
+          return notification._id != action.payload;
+        })
+      }
     default:
       return state;
   }

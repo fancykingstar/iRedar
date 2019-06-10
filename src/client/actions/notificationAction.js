@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {API_URL, GET_ALL_NOTIFICATIONS, SHOW_NOTIFICATION} from './types';
+import {API_URL, GET_ALL_NOTIFICATIONS, SHOW_NOTIFICATION, DELETE_NOTIFICATION} from './types';
 
 export const getNotifications = (id) => async dispatch => {
   const {data: {data}} = await axios.get(`${API_URL}/api/notifications`, {params: {id}});
@@ -24,11 +24,11 @@ export const getNotification = (payload) => async dispatch => {
   });
 };
 
-export const deleteNotifications = (ids) => async () => {
-  await axios.delete(`${API_URL}/api/notifications/`, {
-    params: {
-      ids
-    }
-  });
+export const deleteNotifications = (ids) => async dispatch => {
+  const res = await axios.post(`${API_URL}/api/notifications/delete/${ids}`);
+  dispatch({
+    type: DELETE_NOTIFICATION,
+    payload: ids
+  })
 };
 

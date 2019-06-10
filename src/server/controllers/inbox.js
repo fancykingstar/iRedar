@@ -29,3 +29,17 @@ exports.getInbox = async (req, res) => {
     data: inbox
   });
 };
+
+/**
+ * @description Delete inbox
+ * @returns {res}
+ */
+exports.deleteInbox = async (req, res) => {
+  let { inboxId } = req.params;
+  let inboxes = await Inbox.findOne({_id: inboxId}).remove();
+  console.log(inboxes);
+  return res.json({
+    success: true,
+    data: inboxes
+  });
+};
