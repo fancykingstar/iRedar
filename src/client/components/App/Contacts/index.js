@@ -159,7 +159,7 @@ class ContactsPage extends React.Component {
 
   render() {
     const { contacts } = this.props;
-    const groupInputStyle = { minWidth:'25vw' };
+    const groupInputStyle = { minWidth:'20vw' };
     console.log(contacts);
     return (
       <div className='slim-mainpanel'>
