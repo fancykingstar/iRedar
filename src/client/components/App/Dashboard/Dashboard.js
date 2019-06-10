@@ -52,7 +52,7 @@ export class Dashboard extends Component {
           <div className="d-md-flex flex-row-reverse">
 
             <div className="signin-left" style={{ minHeight: "491px"}}>
-              <img src="http://localhost:3000/assets/img/dashboard_img2.png" />
+              <img src="/assets/img/dashboard_img2.png" />
             </div>
 
             <div className="signin-right" style={{minHeight: "0px"}}>
