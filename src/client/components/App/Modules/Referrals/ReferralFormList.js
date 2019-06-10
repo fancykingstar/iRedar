@@ -49,6 +49,13 @@ class ReferralFormList extends Component {
             deleteReferral(referralId);
         }
     }
+    
+    detail = referral => {
+        this.props.history.push({
+          pathname: `/forms/${referral.formName}/${referral.submission}`,
+          state: { edit: 'false' }
+        });
+    }
 
     render() {
         console.log(this.props.referralForms);
@@ -81,6 +88,7 @@ class ReferralFormList extends Component {
                                     <th className="wd-20p">Date Submitted</th>
                                     <th className="tx-right"> </th>
                                     <th className="tx-right"> </th>
+                                    <th className="tx-right"> </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -98,6 +106,9 @@ class ReferralFormList extends Component {
                                                             <td className="tx-12">{moment(referral.dateSubmitted).format('MMM Do YYYY, h:mm a')} </td>
                                                             <td className="tx-right">
                                                                 <button type="button" className="btn btn-primary btn-sm" onClick={this.viewDetail} referral_id={referral._id} >Detail</button>
+                                                            </td>
+                                                            <td>
+                                                                <button type="button" className="btn btn-primary btn-sm" onClick={()=>this.detail(referral)}>Form</button>
                                                             </td>
                                                             <td>
                                                                 <div className='dropdown'>
@@ -138,6 +149,9 @@ class ReferralFormList extends Component {
                                                                 <button type="button" className="btn btn-primary btn-sm" onClick={this.viewDetail} referral_id={referral._id} >Detail</button>
                                                             </td>
                                                             <td>
+                                                                <button type="button" className="btn btn-primary btn-sm" onClick={()=>this.detail(referral)}>Form</button>
+                                                            </td>
+                                                            <td>
                                                                 <div className='dropdown'>
                                                                     <button className='btn btn-primary btn-sm dropdown-toggle mg-l-5' type='button' id='dropdownMenuButton12' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
                                                                         <i className='fa fa-bolt'/> Action
@@ -170,6 +184,9 @@ class ReferralFormList extends Component {
                                                             <td className="tx-12">{moment(referral.dateSubmitted).format('MMM Do YYYY, h:mm a')} </td>
                                                             <td className="tx-right">
                                                                 <button type="button" className="btn btn-primary btn-sm" onClick={this.viewDetail} referral_id={referral._id} >Detail</button>
+                                                            </td>
+                                                            <td>
+                                                                <button type="button" className="btn btn-primary btn-sm" onClick={()=>this.detail(referral)}>Form</button>
                                                             </td>
                                                             <td>
                                                                 <div className='dropdown'>
