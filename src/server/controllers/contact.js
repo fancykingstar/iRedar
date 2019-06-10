@@ -156,42 +156,44 @@ exports.filter = async (req, res) => {
 exports.inviteClientPortal = async (req, res) => {
   const { inviteData, profileData } = req.body;
   const { email, password} = inviteData;
-
   const user = await User.findOne({ email });
   
   if (user) {
-    return res.status(422).json({ email: 'User already exists' });
-  }
-
-  const newUser = await new User({
-    email,
-    password,
-  });
-  await newUser.save();
-
-  const r = email.match(domain_regex);
-  let userDomain = email;
-  if (r) {
-    userDomain = r[0];
-  }
-  let newProfile = {
-    ...profileData,
-    user: newUser._id,
-    domain: userDomain
-  }
-  let profile = await new Profile(newProfile).save();
-  let userPermission = await new Permission({
-    profile: profile._id,
-    role: inviteData.type,
-    permissionRight: rolesToPermission[inviteData.type]
-  });
-  await userPermission.save().then(() => {
     return res.json({
-      success: true
+      success: true,
+      alert: "user already exist"
     });
-  }).catch(error => {
-    console.log(error);
-  });  
+  } else {
+    const newUser = await new User({
+      email,
+      password,
+    });
+    await newUser.save();
+  
+    const r = email.match(domain_regex);
+    let userDomain = email;
+    if (r) {
+      userDomain = r[0];
+    }
+    let newProfile = {
+      ...profileData,
+      user: newUser._id,
+      domain: userDomain
+    }
+    let profile = await new Profile(newProfile).save();
+    let userPermission = await new Permission({
+      profile: profile._id,
+      role: inviteData.type,
+      permissionRight: rolesToPermission[inviteData.type]
+    });
+    await userPermission.save().then(() => {
+      return res.json({
+        success: true
+      });
+    }).catch(error => {
+      console.log(error);
+    });  
+  }
 }
 
 /**
@@ -200,7 +202,7 @@ exports.inviteClientPortal = async (req, res) => {
  */
 exports.changeInviteAccess = async (req, res) => {
   const { id } = req.params;
-  const { inviteData } = req.body;
+  const { inviteData, baseUrl } = req.body;
   const { email,username } = inviteData;
 
   const user = await User.findOne({ email });
@@ -234,7 +236,7 @@ exports.changeInviteAccess = async (req, res) => {
     from: keys.infoEmail,
     to: email, // list of receivers
     subject: 'Invite to the Client Access', // Subject line
-    html: inviteClientPortalMail('localhost:5100', username, keys.infoEmail, token), // html body
+    html: inviteClientPortalMail(baseUrl, username, keys.infoEmail, token), // html body
   };
 
   contact.save().then(() => {
@@ -272,20 +274,26 @@ exports.updateInviteAccess = async (req, res) => {
   const { id } = req.params;
 
   let contact = await Contact.findOne({ _id: id }).populate('groups');
-
-  contact.emailAddresses.map(item => {
-    if (item.inviteStatus === 'pending') {
-      const user = User.findOne({email: item.emailAddress});
-      if (user.lastLogin_at != null) {
-        item.inviteStatus = 'confirmed';
+  try{
+    Promise.all(contact.emailAddresses.map(async item => {
+      if (item.inviteStatus === 'pending') {
+        const user = await User.findOne({email: item.emailAddress});
+        console.log(user.lastLogin_at)
+        if (user.lastLogin_at != null) {
+          item.inviteStatus = 'confirmed';
+          console.log(item)
+        }
       }
-    }
-    return item;
-  });
-  await contact.save();
-
-  return res.json({
-    success: true,
-    data: contact
-  });
+      return item;
+    })).then(res => {
+      contact.emailAddress = res;
+      return contact.save();
+    }).then(() => res.json({
+      success: true,
+      data: contact
+    }));
+    
+  } catch(err){
+    console.log(err)
+  }
 }

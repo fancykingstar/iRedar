@@ -2,10 +2,11 @@ import moment from 'moment';
 import propTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { Modal, ModalBody } from 'react-bootstrap';
 import Select from 'react-select';
 import TextFieldGroup from '../../Elements/TextFieldGroup';
+import getRouteBaseUrl from '../../../utils/getRouteBaseUrl';
 import {
   getContact,
   updateContactPrivateNotes,
@@ -138,9 +139,9 @@ class ViewContact extends React.Component {
 
     const payload = {
       inviteData,
-      profileData
+      profileData,
+      baseUrl: getRouteBaseUrl()
     };
-
     inviteToAccessClientPortal(this.state._id, payload);
     this.onInviteDialogHide();
   }
@@ -677,9 +678,14 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-export default connect(mapStateToProps, {
-  getContact,
-  updateContactPrivateNotes,
-  uploadProfileImage,
-  inviteToAccessClientPortal
-})(ViewContact);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    {
+      getContact,
+      updateContactPrivateNotes,
+      uploadProfileImage,
+      inviteToAccessClientPortal
+    }
+  )(ViewContact)
+);

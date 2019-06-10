@@ -135,7 +135,7 @@ exports.inviteClientPortalMail = (appHost, username, infoEmail, token) => `
                 >
                   Hello ${username}
                 </h1>
-                <p style="color: white">You have been invitied to access the client portal of Test Business. Using the client portal you may download your invoices and estimates, see your complete transaction history with the company and make secure online payments.
+                <p style="color: white">You have been invited to access the client portal of Link2Settle. Using the client portal you may access your submissions and notifications to immigration services.
               </td>
             </tr>
           </table>
@@ -243,8 +243,8 @@ exports.inviteClientPortalMail = (appHost, username, infoEmail, token) => `
                 style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; border-bottom: 3px solid #d4dadf"
               >
                 <p style="margin: 0;">
-                  Cheers,<br />
-                  iAuto
+                  Thanks,<br />
+                  Link2Settle
                 </p>
               </td>
             </tr>
