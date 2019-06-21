@@ -138,7 +138,18 @@ class ClientAction1 extends Component {
                         pathname: '/forms/'
                     });
                 }
-            }
+            },
+            onStepChanging: function (event, currentIndex, newIndex) {
+                let content = {
+                    firstName: window.$('#firstName').val(),
+                    lastName: window.$('#firstName').val(),                    
+
+                }
+                if (content.firstName.length > 0 && content.lastName.length > 0)
+                    return true
+
+                else return false
+            },
         });
     }
 
@@ -193,6 +204,7 @@ class ClientAction1 extends Component {
                                                 disabled={!isEditable}
                                                 onChange={(e) => {
                                                 }}
+                                                required
                                             />
                                         </div>
                                         <div className="form-group col-md-6">

@@ -66,6 +66,7 @@ class FormsPage extends Component {
     const isAllowedToView = (userRole === "admin" || userRole === "staff" || userRole === "partner");
     const isAllowedToShare = (userRole === "admin" || userRole === "staff" || userRole === "partner");
     const isAllowedToSubmission = (userRole === "partner");
+    const isAllowedToForm = (userRole === "partner");
 
     return (
       <div className="slim-mainpanel">
@@ -95,28 +96,31 @@ class FormsPage extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+
+                  { !isAllowedToForm && <tr>
                     <td>1</td>
-                    <td> Client Action Plan</td>
-                    {/* <td className="tx-12">{`${HOST_URL}/forms/all-forms/1`}</td> */}
+                    <td>Registration</td>
                     <td>Jan 09, 2018 12:00 AM</td>
                     <td>Jan 09, 2018 12:00 AM</td>
+                    {/* <td className="tx-12">{`${HOST_URL}/forms/all-forms/4`}</td> */}
+                    {/* <td className="tx-center"> </td> */}
                     <td className="tx-right">
-                      <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToView} onClick={this.viewForm} form_name='client-action' >View</button>
+                      <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToView} onClick={this.viewForm} form_name='registration' >View</button>
                     </td>
                     <td className="tx-right">
                         <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToEdit}
-                                onClick={this.editForm} form_name='client-action'>Edit
+                                onClick={this.editForm} form_name='registration'>Edit
                         </button>
                     </td>
                     <td className="tx-right">
-                      <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToShare} onClick={this.shareForm} form_name='client-action' >Share</button>
+                      <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToShare} onClick={this.shareForm} form_name='registration' >Share</button>
                     </td>
                     <td className="tx-right">
-                      <button type="button" className="btn btn-primary btn-sm" disabled={isAllowedToSubmission} onClick={this.viewSubmission} form_name='client-action'>Submissions</button>
+                      <button type="button" className="btn btn-primary btn-sm" disabled={isAllowedToSubmission} onClick={this.viewSubmission} form_name='registration'>Submissions</button>
                     </td>
                   </tr>
-                  <tr>
+                }
+                  {!isAllowedToForm && <tr>
                     <td>2</td>
                     <td> IAR Assessment</td>
                     <td>Jan 09, 2018 12:00 AM</td>
@@ -137,9 +141,30 @@ class FormsPage extends Component {
                     <td className="tx-right">
                       <button type="button" className="btn btn-primary btn-sm" disabled={isAllowedToSubmission} onClick={this.viewSubmission} form_name='iar-assessment' >Submissions</button>
                     </td>
-                  </tr>
-                  <tr>
+                  </tr>}
+                  {!isAllowedToForm && <tr>
                     <td>3</td>
+                    <td> Client Action Plan</td>
+                    {/* <td className="tx-12">{`${HOST_URL}/forms/all-forms/1`}</td> */}
+                    <td>Jan 09, 2018 12:00 AM</td>
+                    <td>Jan 09, 2018 12:00 AM</td>
+                    <td className="tx-right">
+                      <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToView} onClick={this.viewForm} form_name='client-action' >View</button>
+                    </td>
+                    <td className="tx-right">
+                        <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToEdit}
+                                onClick={this.editForm} form_name='client-action'>Edit
+                        </button>
+                    </td>
+                    <td className="tx-right">
+                      <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToShare} onClick={this.shareForm} form_name='client-action' >Share</button>
+                    </td>
+                    <td className="tx-right">
+                      <button type="button" className="btn btn-primary btn-sm" disabled={isAllowedToSubmission} onClick={this.viewSubmission} form_name='client-action'>Submissions</button>
+                    </td>
+                  </tr>}
+                  <tr>
+                    {isAllowedToForm ? <td>1</td> : <td>4</td>}
                     <td> FCRP Loan</td>
                     <td>Jan 09, 2018 12:00 AM</td>
                     <td>Jan 09, 2018 12:00 AM</td>
@@ -149,7 +174,7 @@ class FormsPage extends Component {
                       <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToView} onClick={this.viewForm} form_name='fcrp-loan' >View</button>
                     </td>
                     <td className="tx-right">
-                        <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToEdit}
+                        <button type="button" className="btn btn-secondary btn-sm"
                                 onClick={this.editForm} form_name='fcrp-loan'>Edit
                         </button>
                     </td>
@@ -158,28 +183,6 @@ class FormsPage extends Component {
                     </td>
                     <td className="tx-right">
                       <button type="button" className="btn btn-primary btn-sm" disabled={isAllowedToSubmission} onClick={this.viewSubmission} form_name='fcrp-loan'>Submissions</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>4</td>
-                    <td>Registration</td>
-                    <td>Jan 09, 2018 12:00 AM</td>
-                    <td>Jan 09, 2018 12:00 AM</td>
-                    {/* <td className="tx-12">{`${HOST_URL}/forms/all-forms/4`}</td> */}
-                    {/* <td className="tx-center"> </td> */}
-                    <td className="tx-right">
-                      <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToView} onClick={this.viewForm} form_name='registration' >View</button>
-                    </td>
-                    <td className="tx-right">
-                        <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToEdit}
-                                onClick={this.editForm} form_name='registration'>Edit
-                        </button>
-                    </td>
-                    <td className="tx-right">
-                      <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToShare} onClick={this.shareForm} form_name='registration' >Share</button>
-                    </td>
-                    <td className="tx-right">
-                      <button type="button" className="btn btn-primary btn-sm" disabled={isAllowedToSubmission} onClick={this.viewSubmission} form_name='registration'>Submissions</button>
                     </td>
                   </tr>
                   {/* <tr>

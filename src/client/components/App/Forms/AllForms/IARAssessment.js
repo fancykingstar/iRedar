@@ -29,7 +29,7 @@ class IARAssessment extends Component {
                     await self.disableBlocking()
 
                     let content = {
-                        firstName: window.$('#firstName').val(),
+                        firstName: window.$('#lastName').val(),
                         lastName: window.$('#lastName').val(),
                         fromForm: 'iar-assessment',
                         serviceRequested: window.$('#serviceRequested').val(),
@@ -151,7 +151,18 @@ class IARAssessment extends Component {
 
                     });
                 }
-            }
+            },
+            onStepChanging: function (event, currentIndex, newIndex) {
+                let content = {
+                    firstName: window.$('#firstName').val(),
+                    lastName: window.$('#firstName').val(),                    
+
+                }
+                if (content.firstName.length > 0 && content.lastName.length > 0)
+                    return true
+
+                else return false
+            },
         })
     }
 

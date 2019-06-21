@@ -16,7 +16,15 @@ class ClientActionSubmission extends Component {
             titleTemplate: '<span class="number">#index#</span> <span class="title">#title#</span>',
             cssClass: 'wizard wizard-style-2',
             onStepChanging: function (event, currentIndex, newIndex) {
-                return true
+                let content = {
+                    firstName: $("[name=firstName]").val(),
+                    lastName: $("[name=lastName]").val(),                    
+
+                }
+                if (content.firstName.length > 0 && content.lastName.length > 0)
+                    return true
+
+                else return false
             },
             onFinishing: function (event, currentIndex) {
                 return true

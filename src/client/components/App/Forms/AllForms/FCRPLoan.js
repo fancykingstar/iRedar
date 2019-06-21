@@ -8,14 +8,25 @@ class FCRPLoan extends Component {
 
     constructor(props) {
         super(props)
-        this.state = {isBlocking: true}
+        this.state = {
+            isBlocking: true,
+            isCLB: false
+        }
     }
 
     disableBlocking() {
         this.setState({isBlocking: false})
     }
 
+    handleChange() {
+        this.setState({
+            isCLB: true
+        })
+    }
+
+
     componentDidMount() {
+        console.log("handleChange");
         const self = this;
         const isEditable = (this.props.location.state.edit && this.props.location.state.edit === "true");
         window.download2 = this.download
@@ -26,7 +37,23 @@ class FCRPLoan extends Component {
             titleTemplate: '<span class="number">#index#</span> <span class="title">#title#</span>',
             cssClass: 'wizard wizard-style-2',
             onStepChanging: function (event, currentIndex, newIndex) {
-                return true
+                // let content = {
+                //     firstName: window.$('#firstName').val(),
+                //     lastName: window.$('#lastName').val(),
+                //     emailAddress: window.$('#emailAddress').val(),
+                //     countryOfOrigin: window.$('#countryOfOrigin').val(),
+                //     primaryPhoneNumber: window.$('#primaryPhoneNumber').val(),
+                //     secondaryPhoneNumber: window.$('#secondaryPhoneNumber').val(),
+                //     streetAddress: window.$('#streetAddress').val(),
+                //     birthDate: window.$('#birthDate').val(),
+                //     confirmEmailAddress: window.$('#confirmEmailAddress').val(),
+
+                // }
+                // if (content.firstName.length > 0 && content.lastName.length > 0 && content.emailAddress.length > 0 && content.countryOfOrigin.length > 0 && content.primaryPhoneNumber.length > 0 && content.secondaryPhoneNumber.length > 0 && content.streetAddress.length > 0 && content.birthDate.length > 0 && content.emailAddress == content.confirmEmailAddress)
+                //     return true
+
+                // else return false
+                return true;
             },
             onFinishing: function (event, currentIndex) {
                 return true
@@ -139,6 +166,12 @@ class FCRPLoan extends Component {
             isEditable = true;
         }
 
+        const {permissions} = this.props;
+        const userRole = permissions[0].role;
+        const isAllowed = (userRole === "admin");
+
+        console.log(this.state.isCLB);
+
         return (
             <div className="slim-mainpanel">
                 <div className="container">
@@ -163,7 +196,7 @@ class FCRPLoan extends Component {
                                             <label htmlFor="salutation">Salutation</label>
                                             <select className="form-control" id="salutation" name="salutation"
                                                     readOnly={!isEditable}
-                                                    disabled={!isEditable}
+                                                    disabled={!isEditable || !isAllowed}
                                                     onChange={(e) => {
                                                     }}>
                                                 <option value="">--</option>
@@ -178,7 +211,7 @@ class FCRPLoan extends Component {
                                             <label htmlFor="firstName">First Name</label>
                                             <input type="text" className="form-control" id="firstName" name="firstName"
                                                    placeholder="First Name" readOnly={!isEditable}
-                                                   disabled={!isEditable}
+                                                   disabled={!isEditable || !isAllowed}
                                                    onChange={(e) => {
                                                    }}/>
                                         </div>
@@ -188,7 +221,7 @@ class FCRPLoan extends Component {
                                             <label htmlFor="lastName">Last Name</label>
                                             <input type="text" className="form-control" id="lastName" name="lastName"
                                                    placeholder="Last Name" readOnly={!isEditable}
-                                                   disabled={!isEditable}
+                                                   disabled={!isEditable || !isAllowed}
                                                    onChange={(e) => {
                                                    }}/>
                                         </div>
@@ -329,7 +362,7 @@ class FCRPLoan extends Component {
                                             </div>
                                             <input name="birthDate" id="birthDate" type="text" className="form-control"
                                                    placeholder="MM/DD/YYYY" readOnly={!isEditable}
-                                                   disabled={!isEditable}
+                                                   disabled={!isEditable || !isAllowed}
                                                    onChange={(e) => {
                                                    }}/>
                                         </div>
@@ -340,7 +373,7 @@ class FCRPLoan extends Component {
                                             <label htmlFor="gender">Gender</label>
                                             <select id="gender" className="form-control" name="gender"
                                                     readOnly={!isEditable}
-                                                    disabled={!isEditable}
+                                                    disabled={!isEditable || !isAllowed}
                                                     onChange={(e) => {
                                                     }}>
                                                 <option value="">--</option>
@@ -353,7 +386,7 @@ class FCRPLoan extends Component {
                                             <label htmlFor="countryOfOrigin">Country of Origin</label>
                                             <select id="countryOfOrigin" className="form-control" name="countryOfOrigin"
                                                     readOnly={!isEditable}
-                                                    disabled={!isEditable}
+                                                    disabled={!isEditable || !isAllowed}
                                                     onChange={(e) => {
                                                     }}>
                                                 <option value="">--</option>
@@ -561,7 +594,7 @@ class FCRPLoan extends Component {
                                             <label htmlFor="nationality">Nationality</label>
                                             <select id="nationality" className="form-control" name="nationality"
                                                     readOnly={!isEditable}
-                                                    disabled={!isEditable}
+                                                    disabled={!isEditable || !isAllowed}
                                                     onChange={(e) => {
                                                     }}>
                                                 <option value="">--</option>
@@ -769,7 +802,7 @@ class FCRPLoan extends Component {
                                             <label htmlFor="nativeLanguage">Native Language</label>
                                             <input type="text" id="nativeLanguage" className="form-control"
                                                    name="nativeLanguage" readOnly={!isEditable}
-                                                   disabled={!isEditable}
+                                                   disabled={!isEditable || !isAllowed}
                                                    onChange={(e) => {
                                                    }}/>
                                         </div>
@@ -808,7 +841,7 @@ class FCRPLoan extends Component {
                                             <label htmlFor="foreignBornCanadian">Foreign born Canadian?</label>
                                             <select className="form-control" id="foreignBornCanadian"
                                                     name="foreignBornCanadian" readOnly={!isEditable}
-                                                    disabled={!isEditable}
+                                                    disabled={!isEditable || !isAllowed}
                                                     onChange={(e) => {
                                                     }}>
                                                 <option value="">--</option>
@@ -827,7 +860,7 @@ class FCRPLoan extends Component {
                                                 <input name="landingDate" id="landingDate" type="text"
                                                        className="form-control" placeholder="MM/DD/YYYY"
                                                        readOnly={!isEditable}
-                                                       disabled={!isEditable}
+                                                       disabled={!isEditable || !isAllowed}
                                                        onChange={(e) => {
                                                        }}/>
                                             </div>
@@ -1181,8 +1214,8 @@ class FCRPLoan extends Component {
                                                                name="englishLanguageAssessed" type="radio"
                                                                className="custom-control-input" readOnly={!isEditable}
                                                                disabled={!isEditable}
-                                                               onChange={(e) => {
-                                                               }}
+                                                               onClick={this.handleChange}
+                                                               onChange={this.handleChange}
                                                         />
                                                         <span className="custom-control-label">Yes</span>
                                                     </label>
@@ -1191,8 +1224,9 @@ class FCRPLoan extends Component {
                                                                name="englishLanguageAssessed" type="radio"
                                                                className="custom-control-input" readOnly={!isEditable}
                                                                disabled={!isEditable}
-                                                               onChange={(e) => {
-                                                               }}/>
+                                                               onClick={this.handleChange}
+                                                               onChange={this.handleChange}
+                                                               />
                                                         <span className="custom-control-label">No</span>
                                                     </label>
                                                 </div>
@@ -1208,7 +1242,7 @@ class FCRPLoan extends Component {
                                             <label htmlFor="englishLanguageAssessment_listening">Listening</label>
                                             <select className="form-control" id="englishLanguageAssessment_listening"
                                                     name="englishLanguageAssessment_listening" readOnly={!isEditable}
-                                                    disabled={!isEditable}
+                                                    disabled={!isEditable || !this.state.isCLB}
                                                     onChange={(e) => {
                                                     }}>
                                                 <option value="">--</option>
@@ -1230,7 +1264,7 @@ class FCRPLoan extends Component {
                                             <label htmlFor="englishLanguageAssessment_speaking">Speaking</label>
                                             <select className="form-control" id="englishLanguageAssessment_speaking"
                                                     name="englishLanguageAssessment_speaking" readOnly={!isEditable}
-                                                    disabled={!isEditable}
+                                                    disabled={!isEditable || !this.state.isCLB}
                                                     onChange={(e) => {
                                                     }}>
                                                 <option value="">--</option>
@@ -1252,7 +1286,7 @@ class FCRPLoan extends Component {
                                             <label htmlFor="englishLanguageAssessment_reading">Reading</label>
                                             <select className="form-control" id="englishLanguageAssessment_reading"
                                                     name="englishLanguageAssessment_reading" readOnly={!isEditable}
-                                                    disabled={!isEditable}
+                                                    disabled={!isEditable || !this.state.isCLB}
                                                     onChange={(e) => {
                                                     }}>
                                                 <option value="">--</option>
@@ -1274,7 +1308,7 @@ class FCRPLoan extends Component {
                                             <label htmlFor="englishLanguageAssessment_writing">Writing</label>
                                             <select className="form-control" id="englishLanguageAssessment_writing"
                                                     name="englishLanguageAssessment_writing" readOnly={!isEditable}
-                                                    disabled={!isEditable}
+                                                    disabled={!isEditable || !this.state.isCLB}
                                                     onChange={(e) => {
                                                     }}>
                                                 <option value="">--</option>
@@ -1314,6 +1348,33 @@ class FCRPLoan extends Component {
                                         </div>
                                     </div>
                                 </section>
+
+                                <h3>Action Plan/Referrals</h3>
+                                <section>
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    LASSA
+                                                </td>
+                                                <td>
+                                                    <div className="form-row">
+                                                        <div className="form-group col-md-3">
+                                                            <label className="custom-control custom-radio">
+                                                                <input id="Credential"
+                                                                       name="Credential" type="checkbox"
+                                                                       className="custom-control-input" readOnly={!isEditable}
+                                                                       disabled={!isEditable}
+                                                                />
+                                                                <span className="custom-control-label">Yes</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </section>
                             </div>
                         </form>
 
@@ -1327,4 +1388,8 @@ class FCRPLoan extends Component {
 
 }
 
-export default connect()(FCRPLoan)
+const mapStateToProps = state => ({
+    permissions: state.access.permissions
+})
+
+export default connect(mapStateToProps, {})(FCRPLoan)
