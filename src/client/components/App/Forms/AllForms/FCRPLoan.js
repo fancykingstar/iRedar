@@ -37,23 +37,23 @@ class FCRPLoan extends Component {
             titleTemplate: '<span class="number">#index#</span> <span class="title">#title#</span>',
             cssClass: 'wizard wizard-style-2',
             onStepChanging: function (event, currentIndex, newIndex) {
-                // let content = {
-                //     firstName: window.$('#firstName').val(),
-                //     lastName: window.$('#lastName').val(),
-                //     emailAddress: window.$('#emailAddress').val(),
-                //     countryOfOrigin: window.$('#countryOfOrigin').val(),
-                //     primaryPhoneNumber: window.$('#primaryPhoneNumber').val(),
-                //     secondaryPhoneNumber: window.$('#secondaryPhoneNumber').val(),
-                //     streetAddress: window.$('#streetAddress').val(),
-                //     birthDate: window.$('#birthDate').val(),
-                //     confirmEmailAddress: window.$('#confirmEmailAddress').val(),
-
-                // }
-                // if (content.firstName.length > 0 && content.lastName.length > 0 && content.emailAddress.length > 0 && content.countryOfOrigin.length > 0 && content.primaryPhoneNumber.length > 0 && content.secondaryPhoneNumber.length > 0 && content.streetAddress.length > 0 && content.birthDate.length > 0 && content.emailAddress == content.confirmEmailAddress)
-                //     return true
-
-                // else return false
-                return true;
+                let content = {
+                    firstName: window.$('#firstName').val(),
+                    lastName: window.$('#lastName').val(),
+                    emailAddress: window.$('#emailAddress').val(),
+                    countryOfOrigin: window.$('#countryOfOrigin').val(),
+                    primaryPhoneNumber: window.$('#primaryPhoneNumber').val(),
+                    secondaryPhoneNumber: window.$('#secondaryPhoneNumber').val(),
+                    streetAddress: window.$('#streetAddress').val(),
+                    birthDate: window.$('#birthDate').val(),
+                    confirmEmailAddress: window.$('#confirmEmailAddress').val()
+                }
+                if (content.firstName.length > 0 && content.lastName.length > 0 && content.emailAddress.length > 0 && content.countryOfOrigin.length > 0 && content.primaryPhoneNumber.length > 0 && content.secondaryPhoneNumber.length > 0 && content.streetAddress.length > 0 && content.birthDate.length > 0 && content.emailAddress == content.confirmEmailAddress) {
+                    return true
+                }
+                else {
+                    return false
+                }
             },
             onFinishing: function (event, currentIndex) {
                 return true

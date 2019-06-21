@@ -21,10 +21,12 @@ class IARAssessmentSubmission extends Component {
                     lastName: $("[name=lastName]").val(),                    
 
                 }
-                if (content.firstName.length > 0 && content.lastName.length > 0)
+                if (content.firstName.length > 0 && content.lastName.length > 0) {
                     return true
-
-                else return false
+                }
+                else {
+                    return false
+                }
             },
             onFinishing: function (event, currentIndex) {
                 return true

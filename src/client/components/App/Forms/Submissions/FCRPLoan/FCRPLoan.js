@@ -28,10 +28,12 @@ class FCRPLoanSubmission extends Component {
                     confirmEmailAddress: window.$('#confirmEmailAddress').val(),
 
                 }
-                if (content.firstName.length > 0 && content.lastName.length > 0 && content.emailAddress.length > 0 && content.countryOfOrigin.length > 0 && content.primaryPhoneNumber.length > 0 && content.secondaryPhoneNumber.length > 0 && content.streetAddress.length > 0 && content.birthDate.length > 0 && content.emailAddress == content.confirmEmailAddress)
+                if (content.firstName.length > 0 && content.lastName.length > 0 && content.emailAddress.length > 0 && content.countryOfOrigin.length > 0 && content.primaryPhoneNumber.length > 0 && content.secondaryPhoneNumber.length > 0 && content.streetAddress.length > 0 && content.birthDate.length > 0 && content.emailAddress == content.confirmEmailAddress) {
                     return true
-
-                else return false
+                }
+                else {
+                    return false
+                }
             },
             onFinishing: function (event, currentIndex) {
                 return true

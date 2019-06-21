@@ -142,13 +142,14 @@ class ClientAction1 extends Component {
             onStepChanging: function (event, currentIndex, newIndex) {
                 let content = {
                     firstName: window.$('#firstName').val(),
-                    lastName: window.$('#firstName').val(),                    
-
+                    lastName: window.$('#firstName').val()
                 }
-                if (content.firstName.length > 0 && content.lastName.length > 0)
+                if (content.firstName.length > 0 && content.lastName.length > 0) {
                     return true
-
-                else return false
+                }
+                else {
+                    return false
+                }
             },
         });
     }
