@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+import Breadcrumb from 'react-bootstrap/Breadcrumb'
 
 class FormsPage extends Component {
   copyToClipboard = str => {
@@ -71,8 +72,13 @@ class FormsPage extends Component {
     return (
       <div className="slim-mainpanel">
         <div className="container">
-          <div className="slim-pageheader">
-            <ol className="breadcrumb slim-breadcrumb" />
+          <div className='slim-pageheader' style={{paddingBottom: 0}}>
+            <Breadcrumb>
+              <Breadcrumb.Item href="dashboard">Home</Breadcrumb.Item>
+              <Breadcrumb.Item active>Forms</Breadcrumb.Item>
+            </Breadcrumb>
+          </div>
+          <div className="slim-pageheader" style={{ paddingTop: 0, display: "block" }}>
             <h6 className="slim-pagetitle">All Forms</h6>
           </div>
 

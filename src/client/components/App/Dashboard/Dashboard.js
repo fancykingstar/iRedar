@@ -8,6 +8,7 @@ import Spinner from '../../Elements/Spinner';
 
 import { joinOrganization } from '../../../actions/accessActions';
 import './dashboard.css';
+import Breadcrumb from 'react-bootstrap/Breadcrumb'
 
 export class Dashboard extends Component {
   state = {
@@ -46,7 +47,7 @@ export class Dashboard extends Component {
 
     if (loading === false && permissions.length > 0)
       content = (
-        <div className="container container-dashboard">
+        <div className="container container-dashboard" style={{paddingTop: 0}}>
           <h1>Welcome to Link2Settle {this.props.user.username}</h1>
 
           <div className="d-md-flex flex-row-reverse">

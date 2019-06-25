@@ -30,6 +30,8 @@ const app = express();
 const server = require('http').Server(app);
 // Initial web socket
 const io = require('socket.io')(server);
+// SetInterval
+const getApiAndEmit = "TODO"
 
 // Log requests info
 app.use(morgan('dev'));

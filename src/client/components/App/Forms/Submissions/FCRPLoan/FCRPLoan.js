@@ -23,12 +23,27 @@ class FCRPLoanSubmission extends Component {
                     countryOfOrigin: window.$('#countryOfOrigin').val(),
                     primaryPhoneNumber: window.$('#primaryPhoneNumber').val(),
                     secondaryPhoneNumber: window.$('#secondaryPhoneNumber').val(),
-                    streetAddress: window.$('#streetAddress').val(),
                     birthDate: window.$('#birthDate').val(),
-                    confirmEmailAddress: window.$('#confirmEmailAddress').val(),
-
+                    confirmEmailAddress: window.$('#confirmEmailAddress').val()
                 }
-                if (content.firstName.length > 0 && content.lastName.length > 0 && content.emailAddress.length > 0 && content.countryOfOrigin.length > 0 && content.primaryPhoneNumber.length > 0 && content.secondaryPhoneNumber.length > 0 && content.streetAddress.length > 0 && content.birthDate.length > 0 && content.emailAddress == content.confirmEmailAddress) {
+                if (content.firstName.length == 0) window.$('#firstName').addClass("has-error");
+                else window.$('#firstName').removeClass("has-error");
+                if (content.lastName.length == 0) window.$('#lastName').addClass("has-error");
+                else window.$('#lastName').removeClass("has-error");
+                if (content.emailAddress.length == 0) window.$('#emailAddress').addClass("has-error");
+                else window.$('#emailAddress').removeClass("has-error");
+                if (content.countryOfOrigin.length == 0) window.$('#countryOfOrigin').addClass("has-error");
+                else window.$('#countryOfOrigin').removeClass("has-error");
+                if (content.primaryPhoneNumber.length == 0) window.$('#primaryPhoneNumber').addClass("has-error");
+                else window.$('#primaryPhoneNumber').removeClass("has-error");
+                if (content.secondaryPhoneNumber.length == 0) window.$('#secondaryPhoneNumber').addClass("has-error");
+                else window.$('#secondaryPhoneNumber').removeClass("has-error");
+                if (content.birthDate.length == 0) window.$('#birthDate').addClass("has-error");
+                else window.$('#birthDate').removeClass("has-error");
+                if (content.confirmEmailAddress.length == 0) window.$('#confirmEmailAddress').addClass("has-error");
+                else if (content.confirmEmailAddress != content.emailAddress) window.$('#confirmEmailAddress').addClass("has-error");
+                else window.$('#confirmEmailAddress').removeClass("has-error");
+                if (content.firstName.length > 0 && content.lastName.length > 0 && content.emailAddress.length > 0 && content.countryOfOrigin.length > 0 && content.primaryPhoneNumber.length > 0 && content.secondaryPhoneNumber.length > 0 && content.birthDate.length > 0 && content.emailAddress == content.confirmEmailAddress) {
                     return true
                 }
                 else {
@@ -96,9 +111,34 @@ class FCRPLoanSubmission extends Component {
                         englishLanguageAssessment_speaking: $("[name=englishLanguageAssessment_speaking]").find(":selected").text(),
                         englishLanguageAssessment_reading: $("[name=englishLanguageAssessment_reading]").find(":selected").text(),
                         englishLanguageAssessment_writing: $("[name=englishLanguageAssessment_writing]").find(":selected").text(),
-                        englishLanguageAssessment_assessmentDate: $("[name=englishLanguageAssessment_assessmentDate]").val()
+                        englishLanguageAssessment_assessmentDate: $("[name=englishLanguageAssessment_assessmentDate]").val(),
+                        firstWorldSkills: window.$('#firstWorldSkills').props("checked"),
+                        firstLASSA: window.$('#firstLASSA').props("checked"),
+                        firstOCISO: window.$('#firstOCISO').props("checked"),
+                        firstOCLF: window.$('#firstOCLF').props("checked"),
+                        firstLASSA: window.$('#firstLASSA').props("checked"),
+                        licensingToActionTab: window.$('#licensingToActionTab').props("checked"),
+                        otherToActionTab: window.$('#otherToActionTab').props("checked"),
+                        otherToActionTabInputLASSA: window.$('#otherToActionTabInputLASSA').val(),
+                        sectorSpeicalist: window.$('#sectorSpeicalist').props("checked"),
+                        employmentSupport: window.$('#employmentSupport').props("checked"),
+                        intakeAssessment: window.$('#intakeAssessment').props("checked"),
+                        otherToActionTabWorld: window.$('#otherToActionTabWorld').props("checked"),
+                        otherToActionTabInputWorld: window.$('#otherToActionTabInputWorld').val(),
+                        mentorShip: window.$('#mentorShip').props("checked"),
+                        otherToActionTabOCISO: window.$('#otherToActionTabOCISO').props("checked"),
+                        otherToActionTabInputOCISO: window.$('#otherToActionTabInputOCISO').val(),
+                        financialEmpowermentTraining: window.$('#financialEmpowermentTraining').props("checked"),
+                        otherToActionTabOCISO: window.$('#otherToActionTabOCISO').props("checked"),
+                        otherToActionTabInputOCISO: window.$('#otherToActionTabInputOCISO').val(),
+                        remark: window.$('#remark').val(),
+                        signature: window.$('#signature').val(),
+                        signDate: window.$('#signDate').val(),
+                        consentYes: window.$('#consentYes').val(),
+                        consentNo: window.$('#consentNo').val(),
+                        otherSignature: window.$('#otherSignature').val(),
+                        othersignDate: window.$('#othersignDate').val()
                     };
-                    console.log(content);
                     let permission = self.props.permissions[0];
                     if (permission.role === "admin" || permission.role === "staff") {
                         try {
@@ -180,6 +220,126 @@ class FCRPLoanSubmission extends Component {
                             <div id="wizard6">
                                 <h3>Client Information</h3>
                                 <section>
+                                    <table className="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    Intake Agency:
+                                                </td>
+                                                <td>
+                                                    <div className="form-row">
+                                                        <div className="form-group col-md-4">
+                                                            <label className="custom-control custom-checkbox">
+                                                                <input id="firstWorldSkills"
+                                                                       name="FirstWorldSkills" type="checkbox"
+                                                                       className="custom-control-input" readOnly={!isEditable}
+                                                                       disabled={!isEditable}
+                                                                />
+                                                                <span className="custom-control-label">World Skills</span>
+                                                            </label>
+                                                        </div>
+                                                        <div className="form-group col-md-3">
+                                                            <label className="custom-control custom-checkbox">
+                                                                <input id="firstLASSA"
+                                                                       name="FirstLASSA" type="checkbox"
+                                                                       className="custom-control-input" readOnly={!isEditable}
+                                                                       disabled={!isEditable}
+                                                                />
+                                                                <span className="custom-control-label">LASSA</span>
+                                                            </label>
+                                                        </div>
+                                                        <div className="form-group col-md-3">
+                                                            <label className="custom-control custom-checkbox">
+                                                                <input id="firstOCISO"
+                                                                       name="FirstOCISO" type="checkbox"
+                                                                       className="custom-control-input" readOnly={!isEditable}
+                                                                       disabled={!isEditable}
+                                                                />
+                                                                <span className="custom-control-label">OCISO</span>
+                                                            </label>
+                                                        </div>
+                                                        <div className="form-group col-md-3">
+                                                            <label className="custom-control custom-checkbox">
+                                                                <input id="firstOCLFDate"
+                                                                       name="FirstOCLFDate" type="checkbox"
+                                                                       className="custom-control-input" readOnly={!isEditable}
+                                                                       disabled={!isEditable}
+                                                                />
+                                                                <span className="custom-control-label">OCLF Date</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>of assessment</td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Assessor</td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Referred By
+                                                </td>
+                                                <td>
+                                                    <div className="form-row">
+                                                        <div className="form-group col-md-4">
+                                                            <label className="custom-control custom-checkbox">
+                                                                <input id="firstWorldSkillsReferred"
+                                                                       name="FirstWorldSkillsReferred" type="checkbox"
+                                                                       className="custom-control-input" readOnly={!isEditable}
+                                                                       disabled={!isEditable}
+                                                                />
+                                                                <span className="custom-control-label">World Skills</span>
+                                                            </label>
+                                                        </div>
+                                                        <div className="form-group col-md-3">
+                                                            <label className="custom-control custom-checkbox">
+                                                                <input id="firstLASSAReferred"
+                                                                       name="FirstLASSAReferred" type="checkbox"
+                                                                       className="custom-control-input" readOnly={!isEditable}
+                                                                       disabled={!isEditable}
+                                                                />
+                                                                <span className="custom-control-label">LASSA</span>
+                                                            </label>
+                                                        </div>
+                                                        <div className="form-group col-md-3">
+                                                            <label className="custom-control custom-checkbox">
+                                                                <input id="firstOCISOReferred"
+                                                                       name="FirstOCISOReferred" type="checkbox"
+                                                                       className="custom-control-input" readOnly={!isEditable}
+                                                                       disabled={!isEditable}
+                                                                />
+                                                                <span className="custom-control-label">OCISO</span>
+                                                            </label>
+                                                        </div>
+                                                        <div className="form-group col-md-3">
+                                                            <label className="custom-control custom-checkbox">
+                                                                <input id="firstOCLFReferred"
+                                                                       name="FirstOCLFReferred" type="checkbox"
+                                                                       className="custom-control-input" readOnly={!isEditable}
+                                                                       disabled={!isEditable}
+                                                                />
+                                                                <span className="custom-control-label">OCLF</span>
+                                                            </label>
+                                                        </div>
+                                                        <div className="form-group col-md-3">
+                                                            <label className="custom-control custom-checkbox">
+                                                                <input id="firstOtherReferred"
+                                                                       name="FirstOtherReferred" type="checkbox"
+                                                                       className="custom-control-input" readOnly={!isEditable}
+                                                                       disabled={!isEditable}
+                                                                />
+                                                                <span className="custom-control-label">Other</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                     <div className="form-row">
                                         <div className="form-group col-md-1">
                                             <label htmlFor="salutation">Salutation</label>
@@ -1189,8 +1349,8 @@ class FCRPLoanSubmission extends Component {
                                                                 }}
                                                             />
                                                             <span className="custom-control-label">
-                                Unknown
-                              </span>
+                                                                Unknown
+                                                              </span>
                                                         </label>
                                                     </div>
                                                 </div>
@@ -1249,8 +1409,8 @@ class FCRPLoanSubmission extends Component {
                                                         }}
                                                     />
                                                     <span className="custom-control-label">
-                            Licensing in Progress
-                          </span>
+                                                        Licensing in Progress
+                                                      </span>
                                                 </label>
                                                 <label className="custom-control custom-radio">
                                                     <input
@@ -1647,6 +1807,342 @@ class FCRPLoanSubmission extends Component {
                                                     onChange={(e) => {
                                                     }}
                                                 />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                                <h3>Action Plan/Referrals</h3>
+                                <section>
+                                    <table className="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    LASSA
+                                                </td>
+                                                <td>
+                                                    <div className="form-row">
+                                                        <div className="form-group col-md-4">
+                                                            <label className="custom-control custom-checkbox">
+                                                                <input id="Credential"
+                                                                       name="Credential" type="checkbox"
+                                                                       className="custom-control-input" readOnly={!isEditable}
+                                                                       disabled={!isEditable}
+                                                                />
+                                                                <span className="custom-control-label">Credential Assessment</span>
+                                                            </label>
+                                                        </div>
+                                                        <div className="form-group col-md-3">
+                                                            <label className="custom-control custom-checkbox">
+                                                                <input id="licensingToActionTab"
+                                                                       name="LicensingToActionTab" type="checkbox"
+                                                                       className="custom-control-input" readOnly={!isEditable}
+                                                                       disabled={!isEditable}
+                                                                />
+                                                                <span className="custom-control-label">Licensing</span>
+                                                            </label>
+                                                        </div>
+                                                        <div className="form-group col-md-5">
+                                                            <div className="input-group">
+                                                                <div className="input-group-prepend">
+                                                                    <div 
+                                                                        className="input-group-text" 
+                                                                        style={{ border:"none", marginTop: -10, paddingLeft: 0 }}>
+                                                                        <label className="custom-control custom-checkbox">
+                                                                            <input id="otherToActionTab"
+                                                                                   name="OtherToActionTab" type="checkbox"
+                                                                                   className="custom-control-input" readOnly={!isEditable}
+                                                                                   disabled={!isEditable}
+                                                                            />
+                                                                            <span className="custom-control-label">Other</span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <input type="text" className="form-control" id="otherToActionTabInputLASSA"
+                                                                       name="OtherToActionTabInputLASSA" readOnly={!isEditable}
+                                                                       disabled={!isEditable}
+                                                                       onChange={(e) => {
+                                                                       }} style={{ marginTop: -10 }} />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    World Skills
+                                                </td>
+                                                <td>
+                                                    <div className="form-row">
+                                                        <div className="form-group col-md-3">
+                                                            <label className="custom-control custom-checkbox">
+                                                                <input id="sectorSpeicalist"
+                                                                       name="SectorSpeicalist" type="checkbox"
+                                                                       className="custom-control-input" readOnly={!isEditable}
+                                                                       disabled={!isEditable}
+                                                                />
+                                                                <span className="custom-control-label">Sector Speicalist</span>
+                                                            </label>
+                                                        </div>
+                                                        <div className="form-group col-md-3">
+                                                            <label className="custom-control custom-checkbox">
+                                                                <input id="employmentSupport"
+                                                                       name="EmploymentSupport" type="checkbox"
+                                                                       className="custom-control-input" readOnly={!isEditable}
+                                                                       disabled={!isEditable}
+                                                                />
+                                                                <span className="custom-control-label">Employment Support</span>
+                                                            </label>
+                                                        </div>
+                                                        <div className="form-group col-md-3">
+                                                            <label className="custom-control custom-checkbox">
+                                                                <input id="intakeAssessment"
+                                                                       name="IntakeAssessment" type="checkbox"
+                                                                       className="custom-control-input" readOnly={!isEditable}
+                                                                       disabled={!isEditable}
+                                                                />
+                                                                <span className="custom-control-label">Intake Assessment</span>
+                                                            </label>
+                                                        </div>
+                                                        <div className="form-group col-md-3">
+                                                            <div className="input-group">
+                                                                <div className="input-group-prepend">
+                                                                    <div 
+                                                                        className="input-group-text" 
+                                                                        style={{ border:"none", marginTop: -10, paddingLeft: 0 }}>
+                                                                        <label className="custom-control custom-checkbox">
+                                                                            <input id="otherToActionTabWorld"
+                                                                                   name="OtherToActionTabWorld" type="checkbox"
+                                                                                   className="custom-control-input" readOnly={!isEditable}
+                                                                                   disabled={!isEditable}
+                                                                            />
+                                                                            <span className="custom-control-label">Other</span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <input type="text" className="form-control" id="otherToActionTabInputWorld"
+                                                                       name="OtherToActionTabInputWorld" readOnly={!isEditable}
+                                                                       disabled={!isEditable}
+                                                                       onChange={(e) => {
+                                                                       }} style={{ marginTop: -10 }} />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    OCISO
+                                                </td>
+                                                <td>
+                                                    <div className="form-row">
+                                                        <div className="form-group col-md-3">
+                                                            <label className="custom-control custom-checkbox">
+                                                                <input id="mentorShip"
+                                                                       name="MentorShip" type="checkbox"
+                                                                       className="custom-control-input" readOnly={!isEditable}
+                                                                       disabled={!isEditable}
+                                                                />
+                                                                <span className="custom-control-label">MentorShip</span>
+                                                            </label>
+                                                        </div>
+                                                        <div className="form-group col-md-3">
+                                                            <div className="input-group">
+                                                                <div className="input-group-prepend">
+                                                                    <div 
+                                                                        className="input-group-text" 
+                                                                        style={{ border:"none", marginTop: -10, paddingLeft: 0 }}>
+                                                                        <label className="custom-control custom-checkbox">
+                                                                            <input id="otherToActionTabOCISO"
+                                                                                   name="OtherToActionTabOCISO" type="checkbox"
+                                                                                   className="custom-control-input" readOnly={!isEditable}
+                                                                                   disabled={!isEditable}
+                                                                            />
+                                                                            <span className="custom-control-label">Other</span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <input type="text" className="form-control" id="otherToActionTabInputOCISO"
+                                                                       name="OtherToActionTabInputOCISO" readOnly={!isEditable}
+                                                                       disabled={!isEditable}
+                                                                       onChange={(e) => {
+                                                                       }} style={{ marginTop: -10 }} />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-6"></div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    OCLF
+                                                </td>
+                                                <td>
+                                                    <div className="form-row">
+                                                        <div className="form-group col-md-5">
+                                                            <label className="custom-control custom-checkbox">
+                                                                <input id="financialEmpowermentTraining"
+                                                                       name="FinancialEmpowermentTraining" type="checkbox"
+                                                                       className="custom-control-input" readOnly={!isEditable}
+                                                                       disabled={!isEditable}
+                                                                />
+                                                                <span className="custom-control-label">Financial Empowerment Training</span>
+                                                            </label>
+                                                        </div>
+                                                        <div className="form-group col-md-3">
+                                                            <div className="input-group">
+                                                                <div className="input-group-prepend">
+                                                                    <div 
+                                                                        className="input-group-text" 
+                                                                        style={{ border:"none", marginTop: -10, paddingLeft: 0 }}>
+                                                                        <label className="custom-control custom-checkbox">
+                                                                            <input id="otherToActionTabOCISO"
+                                                                                   name="OtherToActionTabOCISO" type="checkbox"
+                                                                                   className="custom-control-input" readOnly={!isEditable}
+                                                                                   disabled={!isEditable}
+                                                                            />
+                                                                            <span className="custom-control-label">Other</span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <input type="text" className="form-control" id="otherToActionTabInputOCISO"
+                                                                       name="OtherToActionTabInputOCISO" readOnly={!isEditable}
+                                                                       disabled={!isEditable}
+                                                                       onChange={(e) => {
+                                                                       }} style={{ marginTop: -10 }} />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-4"></div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div className="form-row">
+                                        <div className="form-group col-md-12">
+                                            <label htmlFor="longTermGoals">Remark</label>
+                                            <textarea className="form-control" id="remark"
+                                                   name="Remark" readOnly={!isEditable}
+                                                   disabled={!isEditable}
+                                                   onChange={(e) => {
+                                                   }}></textarea>
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <h3>Consent</h3>
+                                <section>
+                                    <div className="form-row">
+                                        <h4>Confidential Consent for the Release of Information</h4>
+                                        <div>
+                                            I hereby give World Skills Employment Centre / Ottawa Job Match Network (OJMN) and its partner organization staff, my consent to share the information and documents I have provided with:
+                                        </div>
+                                        <div style={{width: "100%"}}>
+                                            <ul>
+                                                <li>Prospective employers</li>
+                                                <li>World Skills Employment Centre Programs</li>
+                                                <li>Other partner agencies</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            For the purpose of job preparation (including referrals) and job matching, and for use by World Skills Employmen Centre and partner organizations for the promotion of services and job candidates. (N.B. You will be notified prior to any publication of your testimonial and/or personal information)
+                                                I also consent to employers to provide information to World Skills Employment Centre / OJMN about my hiring and performance.  I may revoke my consent at any time by notifying World Skills Employment Centre in writing and by mail to:
+                                        </div>
+                                        <div style={{width: "100%"}}>
+                                            <ul>
+                                                <li>World Skills Employment</li>
+                                                <li>Centre Suite 300-219 Argyle</li>
+                                                <li>Avenue Ottawa, ON K2P 2H4</li>
+                                                <li>Attn: Client Services</li>
+                                            </ul>
+                                        </div>
+                                        <div style={{width: "100%"}}>
+                                            The above revocation is effective 3 days after receipt by
+                                            <br/>
+                                            World Skills.
+                                        </div>
+                                        <h4>Confidential Statement:</h4>
+                                        <div>
+                                            <i>
+                                            I certify that all the information I have provided is true, complete and correct. I understand that all information on this form is voluntarily supplied and may be used and disclosed in a professional manner and in good faith for the specific purpose of job match and job preparation. I understand that it is the policy of World Skills Employment Centre to regard all information pertaining to staff, volunteers and client as confidential. This includes both written and verbal information. I understand that participating in the World Skills Employment Centre programs / Ottawa Job Match Network (OJMN) does not guarantee employment; that securing employment is my responsibility; and that participating actively in job searching and job readiness increases my chances of finding employment through World Skills Employment Centre / OJMN and independently.
+                                            <br/>
+                                            I authorize you and your organization to investigate all statements contained on this application.  I understand that any misrepresentation or omission of facts called for is cause for immediate disqualification.
+                                            </i>
+                                        </div>
+                                        <div className="form-row" style={{ width: "100%" }}>
+                                            <div className="form-group col-md-6">
+                                                <div className="input-group">
+                                                    <div className="input-group-prepend">
+                                                        <div className="input-group-text" style={{border: "none", paddingLeft: 0}}>
+                                                            <label className="custom-control custom-checkbox">Participant Name:</label>
+                                                        </div>
+                                                    </div>
+                                                    <input type="text" className="form-control" id="participantName" name="ParticipantName" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="form-row" style={{ width: "100%" }}>
+                                            <div className="form-group col-md-4">
+                                                <input type="text" className="form-control" id="signature" name="Signature" />
+                                                <label htmlFor="Signature">Signature</label>
+                                            </div>
+                                            <div className="form-group col-md-4">
+                                                <input type="date" date-date="" className="form-control" id="signDate" name="SignDate" />
+                                                <label htmlFor="Date">Date</label>
+                                            </div>
+                                            <div className="col-md-4"></div>
+                                        </div>
+                                        <div style={{ fontSize: 18 }}>
+                                            <strong>
+                                            Please note that by registering as a client with World Skills Employment Centre you consent to receive 
+                                                follow up messages/calls to inquire on the progress of your job search as per our funders’ requirements. 
+                                                We appreciate your collaboration.</strong>
+                                        </div>
+                                        <br />
+                                        <h4>Message from Immigration, Refugees, and Citizenship Canada (IRCC):</h4>
+                                        <div>
+                                            Immigration, Refugees, and Citizenship Canada (IRCC) may want to contact you in the future. They will ask only about IRCC services, including services you received from our organization, and if these services were useful to you and helped you settle in Canada. IRCC will use your answers, and answers from other immigrants to improve services for all immigrants. This is voluntary: you are not obligated to answer IRCC’s questions. IRCC will not use your information to make any decisions about you personally. 
+                                            <br />
+                                            May IRCC or an independent research company acting for IRCC contact you in future?
+                                            <label className="custom-control custom-checkbox">
+                                                <input id="consentYes"
+                                                       name="ConsentYes" type="checkbox"
+                                                       className="custom-control-input" readOnly={!isEditable}
+                                                       disabled={!isEditable}
+                                                />
+                                                <span className="custom-control-label">Yes</span>
+                                            </label>
+                                            <label className="custom-control custom-checkbox">
+                                                <input id="consentNo"
+                                                       name="ConsentNo" type="checkbox"
+                                                       className="custom-control-input" readOnly={!isEditable}
+                                                       disabled={!isEditable}
+                                                />
+                                                <span className="custom-control-label">No</span>
+                                            </label>
+                                        </div>
+                                        <div className="form-row" style={{ width: "100%" }}>
+                                            <div className="form-group col-md-4">
+                                                <input type="text" className="form-control" id="otherSignature" name="OtherSignature" />
+                                                <label htmlFor="Signature">Signature</label>
+                                            </div>
+                                            <div className="form-group col-md-4">
+                                                <input type="date" date-date="" className="form-control" id="othersignDate" name="OthersignDate" />
+                                                <label htmlFor="Date">Date</label>
+                                            </div>
+                                            <div className="col-md-4"></div>
+                                        </div>
+                                        <div className="form-row" style={{ width: "100%", border: "1px solid black" }}>
+                                            <div className="form-group col-md-6">
+                                                <i>Staff member: </i>
+                                            </div>
+                                            <div className="form-group col-md-6">
+                                                <i>Site/Service/Program: </i>
+                                            </div>
+                                            <div className="form-group col-md-6">
+                                                <i>Signature: </i>
+                                            </div>
+                                            <div className="form-group col-md-6">
+                                                <i>Date: </i>
                                             </div>
                                         </div>
                                     </div>

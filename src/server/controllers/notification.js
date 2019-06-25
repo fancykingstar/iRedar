@@ -1,5 +1,6 @@
 const Notification = require('../models/Notification');
-
+const Profile = require('../models/Profile');
+const Socket = require('./sockets');
 /**
  * @description Get the list of notifications
  * @returns {res}
@@ -22,6 +23,13 @@ exports.store = async (req, res) => {
   let {body} = req;
   
   const response = await Notification.create(body);
+
+  let nofi = Profile.find({_id: body.sentBy}).then((nofi) => {
+    let name = nofi[0].firstName + " " + nofi[0].lastName;
+    Socket.socket('has-new-conversation', '', { to: body.recipients, sentBy: name, content: body.message, title: body.title, type: "Notification", hasNewMessage: true });
+  });
+
+  
   
   return res.json({
     success: true,

@@ -6,5 +6,5 @@ exports.init = (socket) => {
 };
 
 exports.socket = (event, id, data) => {
-  initSocket.emit(`${event}/${id}`, { data });
+  initSocket.emit(`${event}/${id}`, data);
 };

@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {deleteNotifications, getNotifications} from '../../../actions/notificationAction';
 import NotificationTable from '../Components/NotificationDataTable';
+import Breadcrumb from 'react-bootstrap/Breadcrumb'
 
 class Notifications extends Component {
   state = {
@@ -33,6 +34,7 @@ class Notifications extends Component {
   };
   
   removeNotifications = (ids) => {
+    console.log(ids);
     const {deleteNotifications, getNotifications} = this.props;
     deleteNotifications(ids);
     getNotifications();
@@ -46,7 +48,13 @@ class Notifications extends Component {
     return <div className='slim-mainpanel'>
       <div className='container'>
         <div className='manager-header'>
-          <div className='slim-pageheader'>
+          <div className='slim-pageheader' style={{paddingBottom: 0}}>
+            <Breadcrumb>
+              <Breadcrumb.Item href="dashboard">Home</Breadcrumb.Item>
+              <Breadcrumb.Item active>Notifications</Breadcrumb.Item>
+            </Breadcrumb>
+          </div>
+          <div className='slim-pageheader' style={{ paddingTop: 0}} >
             {
               !isClient &&
               <ol className='breadcrumb slim-breadcrumb'>
@@ -68,7 +76,7 @@ class Notifications extends Component {
             data={this.state.notifications}
             isClient={isClient}
             onSelected={this.getData}
-            deleteNotifications={() => {this.removeNotifications(this.deleteItems);}}
+            deleteNotifications={(ids) => {this.removeNotifications(ids);}}
           />
         </div>
       </div>

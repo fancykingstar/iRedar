@@ -54,6 +54,7 @@ import ScrollToTop from './client/utils/ScrollToTop';
 
 import AppLoading from './client/components/Elements/Loading';
 import store from './client/utils/store';
+import Socket from './client/components/App/socket';
 
 axios.interceptors.response.use(
   response => {
@@ -86,6 +87,7 @@ class App extends Component {
       // Handle auth error
     }
   }
+
   render() {
     const { loading } = this.state;
 
@@ -150,6 +152,7 @@ class App extends Component {
             </div>
           </ScrollToTop>
         </Router>
+        <Socket />
       </Provider>
     );
   }

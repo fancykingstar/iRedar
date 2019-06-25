@@ -3,15 +3,12 @@ import Select from 'react-select';
 import { connect } from 'react-redux';
 import { addMessage, getMessages } from '../../../actions/messageAction';
 import { getInbox, getInboxes } from '../../../actions/inboxAction';
-import io from 'socket.io-client';
-import { API_URL } from '../../../actions/types';
 import './message.css';
 import { deleteInbox } from '../../../actions/inboxAction';
 
 class MessageChatBox extends Component {
   constructor () {
     super();
-    this.socket = io.connect(API_URL);
     this.state = {
       inbox: null,
       userProfile: null,
@@ -19,15 +16,11 @@ class MessageChatBox extends Component {
       users: null,
       sendTo: null
     };
-
   }
 
   componentWillReceiveProps (nextProps) {
+    console.log(nextProps)
     const { inbox, profile, users, } = nextProps;
-
-    this.socket.on(`has-new-message/${inbox._id}`, () => {
-      this.props.getInbox(inbox._id);
-    });
 
     this.setState({
       inbox: inbox,
@@ -80,6 +73,8 @@ class MessageChatBox extends Component {
     });
   };
 
+
+
   handleEnter = ({ key }) => {
     let sendObject = {
       inboxId: this.state.inbox._id,
@@ -130,8 +125,6 @@ class MessageChatBox extends Component {
         messageHeader = `${this.state.inbox.to.firstName} ${this.state.inbox.to.lastName}`;
       }
     }
-
-    console.log("messages: ", this.props.profile);
 
     return messageHeader ?
       <div className="messages-right">

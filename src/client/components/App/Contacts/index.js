@@ -8,6 +8,7 @@ import { addContact, deleteContacts, getContacts, getContactsByFilter } from '..
 import { addGroup } from '../../../actions/groupAction';
 import ContactTable from '../Components/ContactDataTable';
 import TextFieldGroup from '../../Elements/TextFieldGroup';
+import Breadcrumb from 'react-bootstrap/Breadcrumb'
 
 class ContactsPage extends React.Component {
   constructor() {
@@ -165,7 +166,13 @@ class ContactsPage extends React.Component {
       <div className='slim-mainpanel'>
         <div className='container'>
           <div className='manager-header'>
-            <div className='slim-pageheader'>
+            <div className='slim-pageheader' style={{paddingBottom: 0}}>
+              <Breadcrumb>
+                <Breadcrumb.Item href="dashboard">Home</Breadcrumb.Item>
+                <Breadcrumb.Item active>Contacts</Breadcrumb.Item>
+              </Breadcrumb>
+            </div>
+            <div className='slim-pageheader' style={{paddingTop: 0}}>
               <ol className='breadcrumb slim-breadcrumb'>
                 <Modal
                   show={this.state.showAddGroupDialog}

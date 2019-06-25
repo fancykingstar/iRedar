@@ -2,22 +2,15 @@ import moment from 'moment';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getInbox, getInboxes, clearInbox } from '../../../actions/inboxAction';
-import io from 'socket.io-client';
-import { API_URL } from '../../../actions/types';
 
 class MessageList extends Component {
   constructor () {
     super();
-    this.socket = io.connect(API_URL);
-
     this.state = {
       allInboxes: [],
       forceRender: false
     };
-  }
 
-  componentWillUnmount () {
-    this.socket.off(`has-new-conversation/${this.props.profile._id}`);
   }
 
   componentWillMount () {
@@ -27,18 +20,10 @@ class MessageList extends Component {
   }
 
   componentWillReceiveProps (nextProps, nextContext) {
-    const { inbox, allInboxes } = nextProps;
-
+    const {inbox, allInboxes} = nextProps;
     this.setState({
       allInboxes: allInboxes
-    });
-
-    this.socket.on(`has-new-conversation/${this.props.profile._id}`, ({ hasNewMessage }) => {
-      this.setState(oldState => ({
-        ...oldState,
-        forceRender: !this.state.forceRender
-      }));
-    });
+    })
   }
 
   handleClick = (id) => {
@@ -83,7 +68,7 @@ class MessageList extends Component {
   render () {
     return (
       <div className="messages-left">
-        <div className="slim-pageheader">
+        <div className="slim-pageheader" stylel={{ paddingTop: 0 }}>
           <h6 className="slim-pagetitle">Messages</h6>
           <a onClick={() => this.handleNewMessage()} className="messages-compose"><i className="icon ion-compose"/></a>
         </div>

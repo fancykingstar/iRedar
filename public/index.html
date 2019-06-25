@@ -61,6 +61,49 @@
     tr.shown td.details-control {
       background: url('../resources/details_close.png') no-repeat center center;
     }
+
+    input[type='date'] {
+        height: 40px;
+    }
+
+
+    input[type='date']:before {
+/*        position: absolute;
+        top: 3px; left: 3px;
+        content: attr(data-date);
+        display: inline-block;
+        color: black;*/
+        content: attr(data-date);
+    }
+
+    input::-webkit-datetime-edit, input[type='date']::-webkit-inner-spin-button, input[type='date']::-webkit-clear-button {
+        display: none;
+    }
+
+    input::-webkit-calendar-picker-indicator {
+        position: absolute;
+        top: 3px;
+        right: 0;
+        color: black;
+        opacity: 1;
+    }
+
+    .report a {
+        position: absolute;
+        margin: 1;
+        padding: 5px;
+        background: #1b84e7;
+        color: white;
+        top: 310px;
+      }
+    .wizard > .content > .body input.has-error {
+      border: 1px solid red;
+    }
+
+    select.form-control:not([size]):not([multiple]).has-error {
+      border: 1px solid red;
+    }
+
   </style>
 </head>
 
@@ -86,43 +129,15 @@
   <script src="/assets/lib/datatables-responsive/js/dataTables.responsive.js"></script>
   <script src="/assets/lib/select2/js/select2.min.js"></script>
   <script src="/assets/lib/bootstrap-tagsinput/js/bootstrap-tagsinput.js"></script>
+  <script src="/assets/lib/moment/js/moment.js"></script>
 
   <script src="/assets/js/slim.js"></script>
   <script src="/assets/js/ResizeSensor.js"></script>
-  <!-- <script type="text/javascript">
-      var $zoho = $zoho || {};
-      $zoho.salesiq = $zoho.salesiq || {
-        widgetcode:
-          '11e227c0d1426da2d093d7cd3eb6d5027dd896229cb25aaaba98d2dde0ad88c16e5f93d6453259ced09a7ab59dbcb438',
-        values: {},
-        ready: function() {}
-      };
-      var d = document;
-      s = d.createElement('script');
-      s.type = 'text/javascript';
-      s.id = 'zsiqscript';
-      s.defer = true;
-      s.src = 'https://salesiq.zoho.com/widget';
-      t = d.getElementsByTagName('script')[0];
-      t.parentNode.insertBefore(s, t);
-      d.write("<div id='zsiqwidget'></div>");
-    </script> -->
+  
   <script>
-      // $(document).ready(function(){
-      //   'use strict';
-
-        // $('#wizard6').steps({
-        //   headerTag: 'h3',
-        //   bodyTag: 'section',
-        //   autoFocus: true,
-        //   titleTemplate: '<span class="number">#index#</span> <span class="title">#title#</span>',
-        //   cssClass: 'wizard wizard-style-2',
-        //   onFinished: function (event, currentIndex) {
-        //     $("#immigrationForm").submit()
-        //   }
-        // });
-
-      // });
+      $(document).ready(()=>{
+          $("#birthDate").val(moment().format('YYYY-MM-DD'))   
+      })
   </script>
 </body>
 

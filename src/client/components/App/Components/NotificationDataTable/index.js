@@ -83,7 +83,7 @@ export class DataTable extends Component {
                     <a className='dropdown-item' href='#' onClick={() => {}}>
                       <i className='fa fa-file'/> Archive notifications
                     </a>
-                    <a className='dropdown-item' href='#' onClick={() => {this.props.delete(record._id);}}>
+                    <a className='dropdown-item' href='#' onClick={() => {this.props.deleteNotifications(record._id);}}>
                       <i className='fa fa-trash'/> Delete notifications
                     </a>
                   </div>
@@ -222,37 +222,6 @@ export class DataTable extends Component {
           <div>
             <div className='row'>
               <div className='col-6 d-sm-flex'>
-                <div className='dropdown'>
-                  <button
-                    className='btn btn-primary btn-sm dropdown-toggle mg-l-5'
-                    type='button'
-                    id='dropdownMenuButton2'
-                    data-toggle='dropdown'
-                    aria-haspopup='true'
-                    aria-expanded='false'
-                  >
-                    <i className='fa fa-bolt'/> Actions
-                  </button>
-                  <div
-                    className='dropdown-menu'
-                    aria-labelledby='dropdownMenuButton2'
-                    x-placement='bottom-start'
-                    style={{
-                      position: 'absolute',
-                      transform: 'translate3d(0px, 42px, 0px)',
-                      top: '0px',
-                      left: '0px',
-                      'will-change': 'transform'
-                    }}
-                  >
-                    <a className='dropdown-item' href='#' onClick={() => {}}>
-                      <i className='fa fa-file'/> Archive notifications
-                    </a>
-                    <a className='dropdown-item' href='#' onClick={() => {this.props.deleteNotifications();}}>
-                      <i className='fa fa-trash'/> Delete notifications
-                    </a>
-                  </div>
-                </div>
                 {
                   !isClient &&
                   <div className='dropdown'>
@@ -275,7 +244,7 @@ export class DataTable extends Component {
                         transform: 'translate3d(0px, 42px, 0px)',
                         top: '0px',
                         left: '0px',
-                        'will-change': 'transform'
+                        'willChange': 'transform'
                       }}
                     >
                       <a className='dropdown-item' href='#' onClick={() => {}}>

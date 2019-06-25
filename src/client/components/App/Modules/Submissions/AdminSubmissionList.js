@@ -112,6 +112,7 @@ class AdminSubmissionList extends Component {
                   {
                     submissionList.map((submission, index) => {
                       const content = submission.content;
+
                       return (
                         <React.Fragment key={submission._id}>
                           <tr>

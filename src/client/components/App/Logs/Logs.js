@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Breadcrumb from 'react-bootstrap/Breadcrumb'
 
 export class Logs extends Component {
 
@@ -12,8 +13,17 @@ export class Logs extends Component {
       <p>See how your staff interact with your clients on a day to day basis and view a detailed log of all submission activities and referrals made and received from your partners.</p></div> : <div></div>
 
     return (
-      <div style={{ display: 'flex', justifyContent: 'center'}}>
-        <div className="container container-dashboard">
+      <div style={{}}>
+        <div className="container">
+          <div className="slim-pageheader">
+              <Breadcrumb>
+                <Breadcrumb.Item href="dashboard">Home</Breadcrumb.Item>
+                <Breadcrumb.Item active>Log</Breadcrumb.Item>
+              </Breadcrumb>
+              <h6 className="slim-pagetitle">Logs</h6>
+          </div>
+        </div>
+        <div className="container container-dashboard" style={{paddingTop: 0}}>
           <h1>Coming Soon</h1>
           <div className="d-md-flex flex-row-reverse">
 

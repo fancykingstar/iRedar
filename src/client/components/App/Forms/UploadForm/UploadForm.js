@@ -5,6 +5,7 @@ import Spinner from '../../../Elements/Spinner'
 import { NavLink } from 'react-router-dom'
 import { uploadFormToServer, getAllUploadForms } from '../../../../actions/uploadFormActions'
 import UploadFormTable from './UploadFormTable'
+import Breadcrumb from 'react-bootstrap/Breadcrumb'
 
 const isPdf = type => {
   return type === 'pdf'
@@ -104,7 +105,14 @@ class UploadForm extends Component {
       <div className="slim-mainpanel">
         <div className="container">
           <div className="manager-header">
-            <div className="slim-pageheader">
+            <div className='slim-pageheader' style={{paddingBottom: 0}}>
+              <Breadcrumb>
+                <Breadcrumb.Item href="../../dashboard">Home</Breadcrumb.Item>
+                <Breadcrumb.Item href="../">Forms</Breadcrumb.Item>
+                <Breadcrumb.Item active>Upload Forms</Breadcrumb.Item>
+              </Breadcrumb>
+            </div>
+            <div className="slim-pageheader" style={{ paddingTop: 0 }}>
               <ol className="breadcrumb slim-breadcrumb" />
               <h6 className="slim-pagetitle">FORM</h6>
             </div>

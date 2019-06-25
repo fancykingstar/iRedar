@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom'
 import AdminSubmission from './AdminSubmission';
 import PartnerSubmissions from './PartnerSubmission';
 import ClientSubmission from './ClientSubmission';
+import Breadcrumb from 'react-bootstrap/Breadcrumb'
 
 class SubmissionsPage extends Component {
 
@@ -15,7 +16,10 @@ class SubmissionsPage extends Component {
       <div className="slim-mainpanel">
         <div className="container">
           <div className="slim-pageheader">
-            <ol className="breadcrumb slim-breadcrumb" />
+            <Breadcrumb>
+              <Breadcrumb.Item href="../dashboard">Home</Breadcrumb.Item>
+              <Breadcrumb.Item active>Submissions</Breadcrumb.Item>
+            </Breadcrumb>
             <h6 className="slim-pagetitle">Submissions</h6>
           </div>
           {role === 'admin' && <AdminSubmission />}

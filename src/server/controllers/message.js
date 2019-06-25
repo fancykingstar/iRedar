@@ -1,5 +1,6 @@
 const Inbox = require('../models/Inbox');
 const Message = require('../models/Message');
+const Profile = require('../models/Profile');
 const Socket = require('./sockets');
 
 /**
@@ -23,9 +24,11 @@ exports.postMessage = async (req, res) => {
       messageObject.save(function (err) { if (err) console.log(err); });
       inbox.messages.push(messageObject);
       inbox.save();
+      let pro = Profile.find({_id: sentBy}).then((profile) => {
+        let name = profile[0].firstName + profile[0].lastName;
+        Socket.socket('has-new-conversation', '', { to: to, id:inbox._id, sentBy: name, content: message, title: "", type: "Message", hasNewMessage: true });
+      });     
 
-      Socket.socket('has-new-conversation', sentBy, { hasNewMessage: true });
-      console.log(`has-new-conversation/${sentBy}`);
       return res.json({
         success: true,
         data: inbox
@@ -50,7 +53,6 @@ exports.postMessage = async (req, res) => {
       message: message,
       sentBy: sentBy
     });
-    // // include socket to response.then()
 
     return res.json({
       success: true,

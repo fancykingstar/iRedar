@@ -5,6 +5,7 @@ import Select from 'react-select';
 import {getUsers} from '../../../actions/userActions';
 import {addNotification} from '../../../actions/notificationAction';
 import TextFieldGroup from '../../Elements/TextFieldGroup';
+import Breadcrumb from 'react-bootstrap/Breadcrumb'
 
 class AddNewNotification extends Component {
   state = {
@@ -131,8 +132,14 @@ class AddNewNotification extends Component {
       <div className='slim-mainpanel'>
         <div className='container'>
           <div className='manager-header'>
+            <div className='slim-pageheader' style={{paddingBottom: 0}}>
+              <Breadcrumb>
+                <Breadcrumb.Item href="../dashboard">Home</Breadcrumb.Item>
+                <Breadcrumb.Item href="../notifications">Notifications</Breadcrumb.Item>
+                <Breadcrumb.Item active>Add New Notifications</Breadcrumb.Item>
+              </Breadcrumb>
+            </div>
             <div className='slim-pageheader'>
-              <ol className='breadcrumb slim-breadcrumb'/>
               <h6 className='slim-pagetitle'>Add New Notifications</h6>
             </div>
           </div>
