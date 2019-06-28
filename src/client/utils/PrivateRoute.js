@@ -57,7 +57,8 @@ class PrivateRoute extends Component {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  permissions: state.access.permissions
+  permissions: state.access.permissions,
+  notifications: state.notifications.allNotifications
 });
 
 PrivateRoute.propTypes = {

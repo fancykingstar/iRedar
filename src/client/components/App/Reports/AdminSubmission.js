@@ -8,28 +8,9 @@ class AdminSubmission extends Component {
     submissionList: []
   };
 
-  componentDidMount() {
-    const { getAllSubmissions, permissions } = this.props;
-    const userData = {
-      profileId: permissions[0].profile,
-      organizationId: permissions[0].organization
-    };
-    getAllSubmissions(userData);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (
-      nextProps.submissions.allSubmissions.length !==
-      this.state.submissionList.length
-    ) {
-      this.setState({ submissionList: nextProps.submissions.allSubmissions });
-    }
-  }
-
   render() {
     return (
       <AdminSubmissionList
-        submissionList={this.state.submissionList}
         loading={this.props.loading}
       />
     );

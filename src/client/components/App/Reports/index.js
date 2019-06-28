@@ -20,7 +20,7 @@ class SubmissionsPage extends Component {
               <Breadcrumb.Item href="../dashboard">Home</Breadcrumb.Item>
               <Breadcrumb.Item active>Reports</Breadcrumb.Item>
             </Breadcrumb>
-            <h6 className="slim-pagetitle">Submissions</h6>
+            <h6 className="slim-pagetitle">Reports</h6>
           </div>
           {role === 'admin' && <AdminSubmission />}
           {role === 'staff' && <AdminSubmission />}

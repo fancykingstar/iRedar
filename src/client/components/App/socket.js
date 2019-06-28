@@ -16,7 +16,7 @@ export class Socket extends Component {
     		sentBy: "",
     		content: "",
     		title: ""
-    	}
+    }
 	}
 
 	componentDidMount() {

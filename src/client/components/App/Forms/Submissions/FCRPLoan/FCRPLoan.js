@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import Spinner from "../../../../Elements/Spinner";
 import {editSubmission} from "../../../../../actions/submissionActions";
 import $ from "jquery";
+import moment from 'moment';
 
 class FCRPLoanSubmission extends Component {
 
@@ -112,32 +113,39 @@ class FCRPLoanSubmission extends Component {
                         englishLanguageAssessment_reading: $("[name=englishLanguageAssessment_reading]").find(":selected").text(),
                         englishLanguageAssessment_writing: $("[name=englishLanguageAssessment_writing]").find(":selected").text(),
                         englishLanguageAssessment_assessmentDate: $("[name=englishLanguageAssessment_assessmentDate]").val(),
-                        firstWorldSkills: window.$('#firstWorldSkills').props("checked"),
-                        firstLASSA: window.$('#firstLASSA').props("checked"),
-                        firstOCISO: window.$('#firstOCISO').props("checked"),
-                        firstOCLF: window.$('#firstOCLF').props("checked"),
-                        firstLASSA: window.$('#firstLASSA').props("checked"),
-                        licensingToActionTab: window.$('#licensingToActionTab').props("checked"),
-                        otherToActionTab: window.$('#otherToActionTab').props("checked"),
-                        otherToActionTabInputLASSA: window.$('#otherToActionTabInputLASSA').val(),
-                        sectorSpeicalist: window.$('#sectorSpeicalist').props("checked"),
-                        employmentSupport: window.$('#employmentSupport').props("checked"),
-                        intakeAssessment: window.$('#intakeAssessment').props("checked"),
-                        otherToActionTabWorld: window.$('#otherToActionTabWorld').props("checked"),
-                        otherToActionTabInputWorld: window.$('#otherToActionTabInputWorld').val(),
-                        mentorShip: window.$('#mentorShip').props("checked"),
-                        otherToActionTabOCISO: window.$('#otherToActionTabOCISO').props("checked"),
-                        otherToActionTabInputOCISO: window.$('#otherToActionTabInputOCISO').val(),
-                        financialEmpowermentTraining: window.$('#financialEmpowermentTraining').props("checked"),
-                        otherToActionTabOCISO: window.$('#otherToActionTabOCISO').props("checked"),
-                        otherToActionTabInputOCISO: window.$('#otherToActionTabInputOCISO').val(),
-                        remark: window.$('#remark').val(),
-                        signature: window.$('#signature').val(),
-                        signDate: window.$('#signDate').val(),
-                        consentYes: window.$('#consentYes').val(),
-                        consentNo: window.$('#consentNo').val(),
-                        otherSignature: window.$('#otherSignature').val(),
-                        othersignDate: window.$('#othersignDate').val()
+                        firstWorldSkills: $("#firstWorldSkills").is(":checked"),
+                        other: $('#other').is(":checked"),
+                        tranning: $('#tranning').is(":checked"),
+                        practiceMentorship: $('#practiceMentorship').is(":checked"),
+                        licesing: $('#licesing').is(":checked"),
+                        loanAssistance: $('#loanAssistance').is(":checked"),
+                        credentialAssessment: $('#credentialAssessment').is(":checked"),
+                        credential: $('#credential').is(":checked"),
+                        firstLASSA: $('#firstLASSA').is(":checked"),
+                        firstOCISO: $('#firstOCISO').is(":checked"),
+                        firstOCLF: $('#firstOCLF').is(":checked"),
+                        firstLASSA: $('#firstLASSA').is(":checked"),
+                        licensingToActionTab: $('#licensingToActionTab').is(":checked"),
+                        otherToActionTab: $('#otherToActionTab').is(":checked"),
+                        otherToActionTabInputLASSA: $('[name=OtherToActionTabInputLASSA]').val(),
+                        sectorSpeicalist: $('#sectorSpeicalist').is(":checked"),
+                        employmentSupport: $('#employmentSupport').is(":checked"),
+                        intakeAssessment: $('#intakeAssessment').is(":checked"),
+                        otherToActionTabWorld: $('#otherToActionTabWorld').is(":checked"),
+                        otherToActionTabInputWorld: $('[name=OtherToActionTabInputWorld]').val(),
+                        mentorShip: $('#mentorShip').is(":checked"),
+                        otherToActionTabOCISO: $('#otherToActionTabOCISO').is(":checked"),
+                        otherToActionTabInputOCISO: $('name=OtherToActionTabInputOCISO]').val(),
+                        financialEmpowermentTraining: $('#financialEmpowermentTraining').is(":checked"),
+                        otherToActionTabOCISO: $('#otherToActionTabOCISO').is(":checked"),
+                        otherToActionTabInputOCISO: $('[name=OtherToActionTabInputOCISO]').val(),
+                        remark: $('[name=Remark').val(),
+                        signature: $('[name=Signature]').val(),
+                        signDate: $('[name=RignDate]').val(),
+                        consentYes: $('[name=ConsentYes]').val(),
+                        consentNo: $('[name=ConsentNo]').val(),
+                        otherSignature: $('[name=OtherSignature]').val(),
+                        othersignDate: $('[name=OthersignDate]').val()
                     };
                     let permission = self.props.permissions[0];
                     if (permission.role === "admin" || permission.role === "staff") {
@@ -179,6 +187,23 @@ class FCRPLoanSubmission extends Component {
             element.click();
             document.body.removeChild(element);
         });
+
+        window.$('input[type="date"]').change(function() {
+            this.setAttribute(
+                "data-date",
+                moment(this.value, "YYYY/MM/DD")
+                .format('YYYY/MM/DD')
+            )
+        })
+
+        Date.prototype.toDateInputValue = (function() {
+            var local = new Date(this);
+            local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+            return local.toJSON().slice(0,10);
+        });
+
+        window.$('input[type="date"]').val(new Date().toDateInputValue());
+        window.$('input[type="date"]').trigger('change');
     }
 
     render() {
@@ -234,6 +259,10 @@ class FCRPLoanSubmission extends Component {
                                                                        name="FirstWorldSkills" type="checkbox"
                                                                        className="custom-control-input" readOnly={!isEditable}
                                                                        disabled={!isEditable}
+                                                                       checked={
+                                                                            submission.content
+                                                                                .firstWorldSkills
+                                                                       }
                                                                 />
                                                                 <span className="custom-control-label">World Skills</span>
                                                             </label>
@@ -244,6 +273,10 @@ class FCRPLoanSubmission extends Component {
                                                                        name="FirstLASSA" type="checkbox"
                                                                        className="custom-control-input" readOnly={!isEditable}
                                                                        disabled={!isEditable}
+                                                                       checked={
+                                                                            submission.content
+                                                                                .firstLASSA
+                                                                       }
                                                                 />
                                                                 <span className="custom-control-label">LASSA</span>
                                                             </label>
@@ -254,6 +287,10 @@ class FCRPLoanSubmission extends Component {
                                                                        name="FirstOCISO" type="checkbox"
                                                                        className="custom-control-input" readOnly={!isEditable}
                                                                        disabled={!isEditable}
+                                                                       checked={
+                                                                            submission.content
+                                                                                .firstOCISO
+                                                                       }
                                                                 />
                                                                 <span className="custom-control-label">OCISO</span>
                                                             </label>
@@ -264,7 +301,12 @@ class FCRPLoanSubmission extends Component {
                                                                        name="FirstOCLFDate" type="checkbox"
                                                                        className="custom-control-input" readOnly={!isEditable}
                                                                        disabled={!isEditable}
+                                                                       checked={
+                                                                            submission.content
+                                                                                .firstOCLFDate
+                                                                       }
                                                                 />
+
                                                                 <span className="custom-control-label">OCLF Date</span>
                                                             </label>
                                                         </div>
@@ -291,6 +333,10 @@ class FCRPLoanSubmission extends Component {
                                                                        name="FirstWorldSkillsReferred" type="checkbox"
                                                                        className="custom-control-input" readOnly={!isEditable}
                                                                        disabled={!isEditable}
+                                                                       checked={
+                                                                            submission.content
+                                                                                .firstWorldSkillsReferred
+                                                                       }
                                                                 />
                                                                 <span className="custom-control-label">World Skills</span>
                                                             </label>
@@ -301,6 +347,10 @@ class FCRPLoanSubmission extends Component {
                                                                        name="FirstLASSAReferred" type="checkbox"
                                                                        className="custom-control-input" readOnly={!isEditable}
                                                                        disabled={!isEditable}
+                                                                       checked={
+                                                                            submission.content
+                                                                                .firstLASSAReferred
+                                                                       }
                                                                 />
                                                                 <span className="custom-control-label">LASSA</span>
                                                             </label>
@@ -311,6 +361,10 @@ class FCRPLoanSubmission extends Component {
                                                                        name="FirstOCISOReferred" type="checkbox"
                                                                        className="custom-control-input" readOnly={!isEditable}
                                                                        disabled={!isEditable}
+                                                                       checked={
+                                                                            submission.content
+                                                                                .firstOCISOReferred
+                                                                       }
                                                                 />
                                                                 <span className="custom-control-label">OCISO</span>
                                                             </label>
@@ -321,6 +375,10 @@ class FCRPLoanSubmission extends Component {
                                                                        name="FirstOCLFReferred" type="checkbox"
                                                                        className="custom-control-input" readOnly={!isEditable}
                                                                        disabled={!isEditable}
+                                                                       checked={
+                                                                            submission.content
+                                                                                .firstOCLFReferred
+                                                                       }
                                                                 />
                                                                 <span className="custom-control-label">OCLF</span>
                                                             </label>
@@ -331,6 +389,10 @@ class FCRPLoanSubmission extends Component {
                                                                        name="FirstOtherReferred" type="checkbox"
                                                                        className="custom-control-input" readOnly={!isEditable}
                                                                        disabled={!isEditable}
+                                                                       checked={
+                                                                            submission.content
+                                                                                .firstOtherReferred
+                                                                       }
                                                                 />
                                                                 <span className="custom-control-label">Other</span>
                                                             </label>
@@ -586,16 +648,13 @@ class FCRPLoanSubmission extends Component {
                                                     <i className="fa fa-calendar tx-16 lh-0 op-6"/>
                                                 </div>
                                             </div>
-                                            <input
-                                                name="birthDate"
-                                                id="birthDate"
-                                                type="text"
+                                            <input name="birthDate" 
+                                                id="birthDate" type="date"
                                                 className="form-control"
-                                                placeholder="MM/DD/YYYY"
+                                                date-date=""
                                                 readOnly={!isEditable}
+                                                disabled={!isEditable}
                                                 defaultValue={submission.content.birthDate}
-                                                onChange={(e) => {
-                                                }}
                                             />
                                         </div>
                                     </div>
@@ -1122,16 +1181,13 @@ class FCRPLoanSubmission extends Component {
                                                         <i className="fa fa-calendar tx-16 lh-0 op-6"/>
                                                     </div>
                                                 </div>
-                                                <input
-                                                    name="landingDate"
-                                                    id="landingDate"
-                                                    type="text"
+                                                <input name="landingDate" 
+                                                    id="landingDate" type="date"
                                                     className="form-control"
-                                                    placeholder="MM/DD/YYYY"
+                                                    date-date=""
                                                     readOnly={!isEditable}
+                                                    disabled={!isEditable}
                                                     defaultValue={submission.content.landingDate}
-                                                    onChange={(e) => {
-                                                    }}
                                                 />
                                             </div>
                                         </div>
@@ -1451,23 +1507,80 @@ class FCRPLoanSubmission extends Component {
                                             <label htmlFor="helpRequestedDomain">
                                                 Which of the following do you need help with?
                                             </label>
-                                            <select
-                                                className="form-control"
-                                                id="helpRequestedDomain"
-                                                name="helpRequestedDomain"
-                                                readOnly={!isEditable}
-                                                defaultValue={submission.content.helpRequestedDomain}
-                                                onChange={(e) => {
-                                                }}
-                                            >
-                                                <option value="">--</option>
-                                                <option>Credential Assessment</option>
-                                                <option>Loan Assistance</option>
-                                                <option>Licensing</option>
-                                                <option>Mentorship</option>
-                                                <option>Training</option>
-                                                <option>Other</option>
-                                            </select>
+                                            <div className="form-group">
+                                                <div className="custom-controls-stacked">
+                                                    <label className="custom-control custom-radio">
+                                                        <input id="credentialAssessment"
+                                                               name="practiceCanada" type="radio"
+                                                               className="custom-control-input"
+                                                               checked={
+                                                                    submission.content.credentialAssessment
+                                                               }
+                                                        />
+                                                        <span className="custom-control-label">Credential Assessment</span>
+                                                    </label>
+                                                </div>
+                                                <div className="custom-controls-stacked">
+                                                    <label className="custom-control custom-radio">
+                                                        <input id="loanAssistance"
+                                                               name="practiceCanada" type="radio"
+                                                               className="custom-control-input"
+                                                               checked={
+                                                                    submission.content.loanAssistance
+                                                               }
+                                                        />
+                                                        <span className="custom-control-label">Loan Assistance</span> 
+                                                    </label>  
+                                                </div>
+                                                <div className="custom-controls-stacked">
+                                                    <label className="custom-control custom-radio">
+                                                        <input id="licesing"
+                                                               name="practiceCanada" type="radio"
+                                                               className="custom-control-input"
+                                                               checked={
+                                                                    submission.content.licesing
+                                                               }
+                                                        />
+                                                        <span className="custom-control-label">Licensing</span>
+                                                    </label>
+                                                </div>
+                                                <div className="custom-controls-stacked">
+                                                    <label className="custom-control custom-radio">
+                                                        <input id="practiceMentorship"
+                                                               name="practiceCanada" type="radio"
+                                                               className="custom-control-input"
+                                                               checked={
+                                                                    submission.content.practiceMentorship
+                                                               }
+                                                        />
+                                                        <span className="custom-control-label">Mentorship</span>
+                                                    </label>
+                                                </div>
+                                                <div className="custom-controls-stacked">
+                                                    <label className="custom-control custom-radio">
+                                                        <input id="tranning"
+                                                               name="practiceCanada" type="radio"
+                                                               className="custom-control-input"
+                                                               checked={
+                                                                    submission.content.tranning
+                                                               }
+                                                        />
+                                                        <span className="custom-control-label">Training</span>
+                                                    </label>
+                                                </div>
+                                                <div className="custom-controls-stacked">
+                                                    <label className="custom-control custom-radio">
+                                                        <input id="other"
+                                                               name="practiceCanada" type="radio"
+                                                               className="custom-control-input"
+                                                               checked={
+                                                                    submission.content.other
+                                                               }
+                                                        />
+                                                        <span className="custom-control-label">Other</span>
+                                                    </label>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div className="form-group col-md-6">
                                             <label htmlFor="helpRequestedDomain_other">
@@ -1823,10 +1936,14 @@ class FCRPLoanSubmission extends Component {
                                                     <div className="form-row">
                                                         <div className="form-group col-md-4">
                                                             <label className="custom-control custom-checkbox">
-                                                                <input id="Credential"
+                                                                <input id="credential"
                                                                        name="Credential" type="checkbox"
                                                                        className="custom-control-input" readOnly={!isEditable}
                                                                        disabled={!isEditable}
+                                                                       checked={
+                                                                            submission.content
+                                                                                .credential
+                                                                       }
                                                                 />
                                                                 <span className="custom-control-label">Credential Assessment</span>
                                                             </label>
@@ -1837,6 +1954,10 @@ class FCRPLoanSubmission extends Component {
                                                                        name="LicensingToActionTab" type="checkbox"
                                                                        className="custom-control-input" readOnly={!isEditable}
                                                                        disabled={!isEditable}
+                                                                       checked={
+                                                                            submission.content
+                                                                                .licensingToActionTab
+                                                                       }
                                                                 />
                                                                 <span className="custom-control-label">Licensing</span>
                                                             </label>
@@ -1852,6 +1973,10 @@ class FCRPLoanSubmission extends Component {
                                                                                    name="OtherToActionTab" type="checkbox"
                                                                                    className="custom-control-input" readOnly={!isEditable}
                                                                                    disabled={!isEditable}
+                                                                                   checked={
+                                                                                        submission.content
+                                                                                            .otherToActionTab
+                                                                                   }
                                                                             />
                                                                             <span className="custom-control-label">Other</span>
                                                                         </label>
@@ -1861,7 +1986,12 @@ class FCRPLoanSubmission extends Component {
                                                                        name="OtherToActionTabInputLASSA" readOnly={!isEditable}
                                                                        disabled={!isEditable}
                                                                        onChange={(e) => {
-                                                                       }} style={{ marginTop: -10 }} />
+                                                                       }} style={{ marginTop: -10 }}
+                                                                       defaultValue={
+                                                                            submission.content
+                                                                                .otherToActionTabInputLASSA
+                                                                       }
+                                                                 />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1879,6 +2009,10 @@ class FCRPLoanSubmission extends Component {
                                                                        name="SectorSpeicalist" type="checkbox"
                                                                        className="custom-control-input" readOnly={!isEditable}
                                                                        disabled={!isEditable}
+                                                                       checked={
+                                                                            submission.content
+                                                                                .sectorSpeicalist
+                                                                       }
                                                                 />
                                                                 <span className="custom-control-label">Sector Speicalist</span>
                                                             </label>
@@ -1889,6 +2023,10 @@ class FCRPLoanSubmission extends Component {
                                                                        name="EmploymentSupport" type="checkbox"
                                                                        className="custom-control-input" readOnly={!isEditable}
                                                                        disabled={!isEditable}
+                                                                       checked={
+                                                                            submission.content
+                                                                                .employmentSupport
+                                                                       }
                                                                 />
                                                                 <span className="custom-control-label">Employment Support</span>
                                                             </label>
@@ -1899,6 +2037,10 @@ class FCRPLoanSubmission extends Component {
                                                                        name="IntakeAssessment" type="checkbox"
                                                                        className="custom-control-input" readOnly={!isEditable}
                                                                        disabled={!isEditable}
+                                                                       checked={
+                                                                            submission.content
+                                                                                .intakeAssessment
+                                                                       }
                                                                 />
                                                                 <span className="custom-control-label">Intake Assessment</span>
                                                             </label>
@@ -1914,6 +2056,10 @@ class FCRPLoanSubmission extends Component {
                                                                                    name="OtherToActionTabWorld" type="checkbox"
                                                                                    className="custom-control-input" readOnly={!isEditable}
                                                                                    disabled={!isEditable}
+                                                                                   checked={
+                                                                                        submission.content
+                                                                                            .otherToActionTabWorld
+                                                                                   }
                                                                             />
                                                                             <span className="custom-control-label">Other</span>
                                                                         </label>
@@ -1923,7 +2069,12 @@ class FCRPLoanSubmission extends Component {
                                                                        name="OtherToActionTabInputWorld" readOnly={!isEditable}
                                                                        disabled={!isEditable}
                                                                        onChange={(e) => {
-                                                                       }} style={{ marginTop: -10 }} />
+                                                                       }} style={{ marginTop: -10 }}
+                                                                       defaultValue={
+                                                                            submission.content
+                                                                                .otherToActionTabInputWorld
+                                                                       }
+                                                                />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1941,6 +2092,10 @@ class FCRPLoanSubmission extends Component {
                                                                        name="MentorShip" type="checkbox"
                                                                        className="custom-control-input" readOnly={!isEditable}
                                                                        disabled={!isEditable}
+                                                                       checked={
+                                                                            submission.content
+                                                                                .mentorShip
+                                                                       }
                                                                 />
                                                                 <span className="custom-control-label">MentorShip</span>
                                                             </label>
@@ -1956,6 +2111,10 @@ class FCRPLoanSubmission extends Component {
                                                                                    name="OtherToActionTabOCISO" type="checkbox"
                                                                                    className="custom-control-input" readOnly={!isEditable}
                                                                                    disabled={!isEditable}
+                                                                                   checked={
+                                                                                        submission.content
+                                                                                            .otherToActionTabOCISO
+                                                                                   }
                                                                             />
                                                                             <span className="custom-control-label">Other</span>
                                                                         </label>
@@ -1965,7 +2124,11 @@ class FCRPLoanSubmission extends Component {
                                                                        name="OtherToActionTabInputOCISO" readOnly={!isEditable}
                                                                        disabled={!isEditable}
                                                                        onChange={(e) => {
-                                                                       }} style={{ marginTop: -10 }} />
+                                                                       }} style={{ marginTop: -10 }}
+                                                                       defaultValue={
+                                                                            submission.content
+                                                                                .otherToActionTabInputOCISO
+                                                                       }     />
                                                             </div>
                                                         </div>
                                                         <div className="col-md-6"></div>
@@ -1984,6 +2147,10 @@ class FCRPLoanSubmission extends Component {
                                                                        name="FinancialEmpowermentTraining" type="checkbox"
                                                                        className="custom-control-input" readOnly={!isEditable}
                                                                        disabled={!isEditable}
+                                                                       checked={
+                                                                            submission.content
+                                                                                .financialEmpowermentTraining
+                                                                       }
                                                                 />
                                                                 <span className="custom-control-label">Financial Empowerment Training</span>
                                                             </label>
@@ -1999,6 +2166,10 @@ class FCRPLoanSubmission extends Component {
                                                                                    name="OtherToActionTabOCISO" type="checkbox"
                                                                                    className="custom-control-input" readOnly={!isEditable}
                                                                                    disabled={!isEditable}
+                                                                                   checked={
+                                                                                        submission.content
+                                                                                            .otherToActionTabOCISO
+                                                                                   }
                                                                             />
                                                                             <span className="custom-control-label">Other</span>
                                                                         </label>
@@ -2008,7 +2179,11 @@ class FCRPLoanSubmission extends Component {
                                                                        name="OtherToActionTabInputOCISO" readOnly={!isEditable}
                                                                        disabled={!isEditable}
                                                                        onChange={(e) => {
-                                                                       }} style={{ marginTop: -10 }} />
+                                                                       }} style={{ marginTop: -10 }}
+                                                                       defaultValue={
+                                                                            submission.content
+                                                                                .otherToActionTabInputOCISO
+                                                                       } />
                                                             </div>
                                                         </div>
                                                         <div className="col-md-4"></div>
@@ -2024,7 +2199,11 @@ class FCRPLoanSubmission extends Component {
                                                    name="Remark" readOnly={!isEditable}
                                                    disabled={!isEditable}
                                                    onChange={(e) => {
-                                                   }}></textarea>
+                                                   }}
+                                                   defaultValue={
+                                                        submission.content
+                                                            .remark
+                                                   }></textarea>
                                         </div>
                                     </div>
                                 </section>
@@ -2076,17 +2255,24 @@ class FCRPLoanSubmission extends Component {
                                                             <label className="custom-control custom-checkbox">Participant Name:</label>
                                                         </div>
                                                     </div>
-                                                    <input type="text" className="form-control" id="participantName" name="ParticipantName" />
+                                                    <input type="text" className="form-control" id="participantName" name="ParticipantName" defaultValue={
+                                                        submission.content
+                                                            .participantName
+                                                   }/>
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="form-row" style={{ width: "100%" }}>
                                             <div className="form-group col-md-4">
-                                                <input type="text" className="form-control" id="signature" name="Signature" />
+                                                <input type="text" className="form-control" id="signature" name="Signature" defaultValue={
+                                                        submission.content
+                                                            .signature}/>
                                                 <label htmlFor="Signature">Signature</label>
                                             </div>
                                             <div className="form-group col-md-4">
-                                                <input type="date" date-date="" className="form-control" id="signDate" name="SignDate" />
+                                                <input type="date" date-date="" className="form-control" id="signDate" name="SignDate" defaultValue={
+                                                        submission.content
+                                                            .signDate} date-date=""/>
                                                 <label htmlFor="Date">Date</label>
                                             </div>
                                             <div className="col-md-4"></div>
@@ -2108,6 +2294,9 @@ class FCRPLoanSubmission extends Component {
                                                        name="ConsentYes" type="checkbox"
                                                        className="custom-control-input" readOnly={!isEditable}
                                                        disabled={!isEditable}
+                                                       checked={
+                                                        submission.content
+                                                            .consentYes}
                                                 />
                                                 <span className="custom-control-label">Yes</span>
                                             </label>
@@ -2116,17 +2305,24 @@ class FCRPLoanSubmission extends Component {
                                                        name="ConsentNo" type="checkbox"
                                                        className="custom-control-input" readOnly={!isEditable}
                                                        disabled={!isEditable}
+                                                       checked={
+                                                        submission.content
+                                                            .consentNo}
                                                 />
                                                 <span className="custom-control-label">No</span>
                                             </label>
                                         </div>
                                         <div className="form-row" style={{ width: "100%" }}>
                                             <div className="form-group col-md-4">
-                                                <input type="text" className="form-control" id="otherSignature" name="OtherSignature" />
+                                                <input type="text" className="form-control" id="otherSignature" name="OtherSignature" defaultValue={
+                                                        submission.content
+                                                            .otherSignature}/>
                                                 <label htmlFor="Signature">Signature</label>
                                             </div>
                                             <div className="form-group col-md-4">
-                                                <input type="date" date-date="" className="form-control" id="othersignDate" name="OthersignDate" />
+                                                <input type="date" date-date="" className="form-control" id="othersignDate" name="OthersignDate" defaultValue={
+                                                        submission.content
+                                                            .othersignDate} date-date=""/>
                                                 <label htmlFor="Date">Date</label>
                                             </div>
                                             <div className="col-md-4"></div>

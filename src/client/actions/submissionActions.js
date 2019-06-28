@@ -9,6 +9,7 @@ import {
 // Get all submissions
 export const getAllSubmissions = userData => async dispatch => {
     const res = await axios.post(`${API_URL}/api/submissions/all`, userData);
+    console.log(res.data);
     dispatch({
         type: GET_ALL_SUBMISSIONS,
         payload: res.data
@@ -54,3 +55,10 @@ export const getSubmissionView = (formType) => async dispatch => {
         payload: res.data
     });
 };
+
+export const searchByDate = (payload) => async dispatch => {
+    dispatch({
+        type: GET_ALL_SUBMISSIONS,
+        payload: payload
+    });
+}

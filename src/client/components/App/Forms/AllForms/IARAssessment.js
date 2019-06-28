@@ -155,9 +155,13 @@ class IARAssessment extends Component {
             onStepChanging: function (event, currentIndex, newIndex) {
                 let content = {
                     firstName: window.$('#firstName').val(),
-                    lastName: window.$('#firstName').val(),                    
-
+                    lastName: window.$('#lastName').val()
                 }
+
+                if (content.firstName.length == 0) window.$('#firstName').addClass("has-error");
+                else window.$('#firstName').removeClass("has-error");
+                if (content.lastName.length == 0) window.$('#lastName').addClass("has-error");
+                else window.$('#lastName').removeClass("has-error");                
                 if (content.firstName.length > 0 && content.lastName.length > 0) {
                     return true
                 }

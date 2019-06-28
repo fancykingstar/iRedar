@@ -20,15 +20,31 @@ class RegistrationSubmission extends Component {
                 let content = {
                     firstName: window.$('#firstName').val(),
                     lastName: window.$('#lastName').val(),
-                    emailAddress: window.$('#emailAddress').val(),
+                    email: window.$('#email').val(),
                     countryOfOrigin: window.$('#countryOfOrigin').val(),
                     primaryPhoneNumber: window.$('#primaryPhoneNumber').val(),
                     secondaryPhoneNumber: window.$('#secondaryPhoneNumber').val(),
-                    streetAddress: window.$('#streetAddress').val(),
                     birthDate: window.$('#birthDate').val(),
-                    confirmEmailAddress: window.$('#confirmEmailAddress').val()
+                    confirmEmail: window.$('#confirmEmail').val()
                 }
-                if (content.firstName.length > 0 && content.lastName.length > 0 && content.emailAddress.length > 0 && content.countryOfOrigin.length > 0 && content.primaryPhoneNumber.length > 0 && content.secondaryPhoneNumber.length > 0 && content.streetAddress.length > 0 && content.birthDate.length > 0 && content.emailAddress == content.confirmEmailAddress) {
+                if (content.firstName.length == 0) window.$('#firstName').addClass("has-error");
+                else window.$('#firstName').removeClass("has-error");
+                if (content.lastName.length == 0) window.$('#lastName').addClass("has-error");
+                else window.$('#lastName').removeClass("has-error");
+                if (content.email.length == 0) window.$('#email').addClass("has-error");
+                else window.$('#email').removeClass("has-error");
+                if (content.countryOfOrigin.length == 0) window.$('#countryOfOrigin').addClass("has-error");
+                else window.$('#countryOfOrigin').removeClass("has-error");
+                if (content.primaryPhoneNumber.length == 0) window.$('#primaryPhoneNumber').addClass("has-error");
+                else window.$('#primaryPhoneNumber').removeClass("has-error");
+                if (content.secondaryPhoneNumber.length == 0) window.$('#secondaryPhoneNumber').addClass("has-error");
+                else window.$('#secondaryPhoneNumber').removeClass("has-error");
+                if (content.birthDate.length == 0) window.$('#birthDate').addClass("has-error");
+                else window.$('#birthDate').removeClass("has-error");
+                if (content.confirmEmail.length == 0) window.$('#confirmEmail').addClass("has-error");
+                else if (content.confirmEmail != content.email) window.$('#confirmEmail').addClass("has-error");
+                else window.$('#confirmEmail').removeClass("has-error");
+                if (content.firstName.length > 0 && content.lastName.length > 0 && content.email.length > 0 && content.countryOfOrigin.length > 0 && content.primaryPhoneNumber.length > 0 && content.secondaryPhoneNumber.length > 0 && content.birthDate.length > 0 && content.email == content.confirmEmail) {
                     return true
                 }
                 else {

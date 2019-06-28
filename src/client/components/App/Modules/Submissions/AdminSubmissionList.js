@@ -45,9 +45,6 @@ class AdminSubmissionList extends Component {
               organizationId: permissions[0].organization
           };
           deleteSubmission(userData, submissionId);
-          this.props.history.push({
-              pathname: '/dashboard'
-          });
       }
   };
 
@@ -82,6 +79,7 @@ class AdminSubmissionList extends Component {
         }
       }
     }
+    console.log(submissionList);
 
     let table =
       loading === true ? (
@@ -112,7 +110,7 @@ class AdminSubmissionList extends Component {
                   {
                     submissionList.map((submission, index) => {
                       const content = submission.content;
-
+                      console.log(index);
                       return (
                         <React.Fragment key={submission._id}>
                           <tr>

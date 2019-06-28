@@ -4,6 +4,9 @@ import {Prompt} from 'react-router-dom'
 import axios from 'axios';
 import {API_URL} from '../../../../actions/types';
 import moment from 'moment';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 
 class FCRPLoan extends Component {
 
@@ -11,8 +14,9 @@ class FCRPLoan extends Component {
         super(props)
         this.state = {
             isBlocking: true,
+            startDate: new Date()
         }
-
+        this.handleChange = this.handleChange.bind(this);
         window.$('#englishLanguageAssessment_speaking').attr({"disabled": "true"});
     }
 
@@ -20,10 +24,10 @@ class FCRPLoan extends Component {
         this.setState({isBlocking: false})
     }
 
-    handleChange = (e) => {
-        console.log(e);
-        console.log("click radio");
-        // this.setState({isCLB: true})
+    handleChange(date) {
+        this.setState({
+            startDate: date
+        });
     }
 
     componentDidMount() {
@@ -39,6 +43,7 @@ class FCRPLoan extends Component {
             cssClass: 'wizard wizard-style-2',
             onStepChanging: function (event, currentIndex, newIndex) {
                 let content = {
+                    salutation: window.$('#salutation').val(),
                     firstName: window.$('#firstName').val(),
                     lastName: window.$('#lastName').val(),
                     emailAddress: window.$('#emailAddress').val(),
@@ -48,6 +53,8 @@ class FCRPLoan extends Component {
                     birthDate: window.$('#birthDate').val(),
                     confirmEmailAddress: window.$('#confirmEmailAddress').val()
                 }
+                if (content.salutation.length == 0) window.$('#salutation').addClass("has-error");
+                else window.$('#salutation').removeClass("has-error");
                 if (content.firstName.length == 0) window.$('#firstName').addClass("has-error");
                 else window.$('#firstName').removeClass("has-error");
                 if (content.lastName.length == 0) window.$('#lastName').addClass("has-error");
@@ -75,7 +82,6 @@ class FCRPLoan extends Component {
             onFinishing: function (event, currentIndex) {
                 return true
             },
-
             onFinished: async function (event, currentIndex) {
                 if (isEditable) {
                     await self.disableBlocking()
@@ -103,7 +109,6 @@ class FCRPLoan extends Component {
                         nativeLanguage: window.$('#nativeLanguage').val(),
                         maritalStatus: window.$('#maritalStatus').val(),
                         maritalStatus_other: window.$('#maritalStatus_other').val(),
-
                         foreignBornCanadian: window.$('#foreignBornCanadian').val(),
                         landingDate: window.$('#landingDate').val(),
                         yearOfCitizenship: window.$('#yearOfCitizenship').val(),
@@ -112,7 +117,6 @@ class FCRPLoan extends Component {
                         howDidYouHearAboutUs: window.$('#howDidYouHearAboutUs').val(),
                         landingDocumentString: window.$('#landingDocumentString').val(),
                         landingDocumentName: window.$('#landingDocumentName').val(),
-
                         occupation: window.$('#occupation').val(),
                         primaryOccupation: window.$('#primaryOccupation').val(),
                         regulatedProfession_yes: window.$('#regulatedProfession_yes').prop("checked"),
@@ -139,37 +143,45 @@ class FCRPLoan extends Component {
                         englishLanguageAssessment_reading: window.$('#englishLanguageAssessment_reading').val(),
                         englishLanguageAssessment_writing: window.$('#englishLanguageAssessment_writing').val(),
                         englishLanguageAssessment_assessmentDate: window.$('#englishLanguageAssessment_assessmentDate').val(),
-                        firstWorldSkills: window.$('#firstWorldSkills').props("checked"),
-                        firstLASSA: window.$('#FirstLASSA').props("checked"),
-                        firstOCISO: window.$('#FirstOCISO').props("checked"),
-                        firstOCLFDate: window.$('#FirstOCLFDate').props("checked"),
-                        firstWorldSkillsReferred: window.$('#FirstWorldSkillsReferred').props("checked"),
-                        firstLASSAReferred: window.$('#FirstLASSAReferred').props("checked"),
-                        firstOCISOReferred: window.$('#FirstOCISOReferred').props("checked"),
-                        firstOCLFReferred: window.$('#FirstOCLFReferred').props("checked"),
-                        firstOtherReferred: window.$('#FirstOtherReferred').props("checked"),
-                        licensingToActionTab: window.$('#LicensingToActionTab').props("checked"),
-                        otherToActionTab: window.$('#OtherToActionTab').props("checked"),
+                        firstWorldSkills: window.$('#firstWorldSkills').prop("checked"),
+                        firstLASSA: window.$('#firstLASSA').prop("checked"),
+                        firstOCISO: window.$('#firstOCISO').prop("checked"),
+                        firstOCLFDate: window.$('#firstOCLFDate').prop("checked"),
+                        firstWorldSkillsReferred: window.$('#firstWorldSkillsReferred').prop("checked"),
+                        firstLASSAReferred: window.$('#firstLASSAReferred').prop("checked"),
+                        firstOCISOReferred: window.$('#firstOCISOReferred').prop("checked"),
+                        firstOCLFReferred: window.$('#firstOCLFReferred').prop("checked"),
+                        firstOtherReferred: window.$('#firstOtherReferred').prop("checked"),
+                        licensingToActionTab: window.$('#licensingToActionTab').prop("checked"),
+                        otherToActionTab: window.$('#otherToActionTab').prop("checked"),
                         otherToActionTabInputLASSA: window.$('#OtherToActionTabInputLASSA').val(),
-                        sectorSpeicalist: window.$('#SectorSpeicalist').props("checked"),
-                        employmentSupport: window.$('#EmploymentSupport').props("checked"),
-                        intakeAssessment: window.$('#IntakeAssessment').props("checked"),
-                        otherToActionTabWorld: window.$('#OtherToActionTabWorld').props("checked"),
-                        otherToActionTabInputWorld: window.$('#OtherToActionTabInputWorld').val(),
-                        mentorShip: window.$('#MentorShip').props("checked"),
-                        otherToActionTabOCISO: window.$('#OtherToActionTabOCISO').props("checked"),
-                        otherToActionTabInputOCISO: window.$('#OtherToActionTabInputOCISO').val(),
-                        financialEmpowermentTraining: window.$('#FinancialEmpowermentTraining').props("checked"),
-                        otherToActionTabOCISO: window.$('#OtherToActionTabOCISO').props("checked"),
-                        otherToActionTabInputOCISO: window.$('#OtherToActionTabInputOCISO').val(),
-                        remark: window.$('#Remark').val(),
-                        signature: window.$('#Signature').val(),
-                        signDate: window.$('#SignDate').val(),
-                        consentYes: window.$('#ConsentYes').val(),
-                        consentNo: window.$('#ConsentNo').val(),
-                        otherSignature: window.$('#OtherSignature').val(),
-                        othersignDate: window.$('#OthersignDate').val()
+                        sectorSpeicalist: window.$('#sectorSpeicalist').prop("checked"),
+                        employmentSupport: window.$('#employmentSupport').prop("checked"),
+                        intakeAssessment: window.$('#intakeAssessment').prop("checked"),
+                        otherToActionTabWorld: window.$('#otherToActionTabWorld').prop("checked"),
+                        otherToActionTabInputWorld: window.$('#otherToActionTabInputWorld').val(),
+                        mentorShip: window.$('#mentorShip').prop("checked"),
+                        otherToActionTabOCISO: window.$('#otherToActionTabOCISO').prop("checked"),
+                        otherToActionTabInputOCISO: window.$('#otherToActionTabInputOCISO').val(),
+                        financialEmpowermentTraining: window.$('#financialEmpowermentTraining').prop("checked"),
+                        otherToActionTabOCISO: window.$('#otherToActionTabOCISO').prop("checked"),
+                        otherToActionTabInputOCISO: window.$('#otherToActionTabInputOCISO').val(),
+                        remark: window.$('#remark').val(),
+                        signature: window.$('#signature').val(),
+                        signDate: window.$('#signDate').val(),
+                        consentYes: window.$('#consentYes').val(),
+                        consentNo: window.$('#consentNo').val(),
+                        otherSignature: window.$('#otherSignature').val(),
+                        othersignDate: window.$('#othersignDate').val(),
+                        other: window.$('#other').prop("checked"),
+                        tranning: window.$('#tranning').prop("checked"),
+                        practiceMentorship: window.$('#practiceMentorship').prop("checked"),
+                        licesing: window.$('#licesing').prop("checked"),
+                        loanAssistance: window.$('#loanAssistance').prop("checked"),
+                        credentialAssessment: window.$('#credentialAssessment').prop("checked"),
+                        credential: window.$('#credential').prop("checked")
                     }
+                    console.log(content);
                     try {
                         await axios.post(API_URL + '/api/submissions', content);
                         self.props.history.push({
@@ -188,9 +200,7 @@ class FCRPLoan extends Component {
                     });
                 }
             }
-        })
-
-        
+        })        
 
         window.$('#landingDocument').change(function (event) {
             var file = window.$('#landingDocument').prop('files')[0];
@@ -243,8 +253,7 @@ class FCRPLoan extends Component {
     }
 
     render() {
-        let { isBlocking } = this.state;
-        
+        let { isBlocking } = this.state;        
         let isEditable = true;
 
         const {permissions} = this.props;
@@ -527,7 +536,6 @@ class FCRPLoan extends Component {
                                             </select>
                                         </div>
                                     </div>
-
                                     <div className="form-row">
                                         <div className="form-group col-md-6">
                                             <label htmlFor="emailAddress">Email address</label>
@@ -549,8 +557,6 @@ class FCRPLoan extends Component {
                                                    }}/>
                                         </div>
                                     </div>
-
-
                                     <div className="form-group">
                                         <label htmlFor="birthDate">Date of Birth</label>
                                         <div className="input-group">
@@ -562,13 +568,12 @@ class FCRPLoan extends Component {
                                             <input name="birthDate" 
                                                 id="birthDate" type="date"
                                                 className="form-control"
-                                                defaultValue='2015-08-08'
+                                                date-date=""
                                                 readOnly={!isEditable}
                                                 disabled={!isEditable || !isAllowed}
-                                                />
+                                            />
                                         </div>
                                     </div>
-
                                     <div className="form-row">
                                         <div className="form-group col-md-2">
                                             <label htmlFor="gender">Gender</label>
@@ -1600,7 +1605,7 @@ class FCRPLoan extends Component {
                                                     <div className="form-row">
                                                         <div className="form-group col-md-4">
                                                             <label className="custom-control custom-checkbox">
-                                                                <input id="Credential"
+                                                                <input id="credential"
                                                                        name="Credential" type="checkbox"
                                                                        className="custom-control-input" readOnly={!isEditable}
                                                                        disabled={!isEditable}

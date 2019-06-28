@@ -152,7 +152,6 @@ class App extends Component {
             </div>
           </ScrollToTop>
         </Router>
-        <Socket />
       </Provider>
     );
   }
