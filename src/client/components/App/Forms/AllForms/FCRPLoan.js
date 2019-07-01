@@ -6,7 +6,7 @@ import {API_URL} from '../../../../actions/types';
 import moment from 'moment';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
+let isEditableValidation = false;
 
 class FCRPLoan extends Component {
 
@@ -14,7 +14,8 @@ class FCRPLoan extends Component {
         super(props)
         this.state = {
             isBlocking: true,
-            startDate: new Date()
+            startDate: new Date(),
+            isEditable: false
         }
         this.handleChange = this.handleChange.bind(this);
         window.$('#englishLanguageAssessment_speaking').attr({"disabled": "true"});
@@ -53,31 +54,34 @@ class FCRPLoan extends Component {
                     birthDate: window.$('#birthDate').val(),
                     confirmEmailAddress: window.$('#confirmEmailAddress').val()
                 }
-                if (content.salutation.length == 0) window.$('#salutation').addClass("has-error");
-                else window.$('#salutation').removeClass("has-error");
-                if (content.firstName.length == 0) window.$('#firstName').addClass("has-error");
-                else window.$('#firstName').removeClass("has-error");
-                if (content.lastName.length == 0) window.$('#lastName').addClass("has-error");
-                else window.$('#lastName').removeClass("has-error");
-                if (content.emailAddress.length == 0) window.$('#emailAddress').addClass("has-error");
-                else window.$('#emailAddress').removeClass("has-error");
-                if (content.countryOfOrigin.length == 0) window.$('#countryOfOrigin').addClass("has-error");
-                else window.$('#countryOfOrigin').removeClass("has-error");
-                if (content.primaryPhoneNumber.length == 0) window.$('#primaryPhoneNumber').addClass("has-error");
-                else window.$('#primaryPhoneNumber').removeClass("has-error");
-                if (content.secondaryPhoneNumber.length == 0) window.$('#secondaryPhoneNumber').addClass("has-error");
-                else window.$('#secondaryPhoneNumber').removeClass("has-error");
-                if (content.birthDate.length == 0) window.$('#birthDate').addClass("has-error");
-                else window.$('#birthDate').removeClass("has-error");
-                if (content.confirmEmailAddress.length == 0) window.$('#confirmEmailAddress').addClass("has-error");
-                else if (content.confirmEmailAddress != content.emailAddress) window.$('#confirmEmailAddress').addClass("has-error");
-                else window.$('#confirmEmailAddress').removeClass("has-error");
-                if (content.firstName.length > 0 && content.lastName.length > 0 && content.emailAddress.length > 0 && content.countryOfOrigin.length > 0 && content.primaryPhoneNumber.length > 0 && content.secondaryPhoneNumber.length > 0 && content.birthDate.length > 0 && content.emailAddress == content.confirmEmailAddress) {
-                    return true
+                if (isEditableValidation) {
+                    if (content.salutation.length == 0) window.$('#salutation').addClass("has-error");
+                    else window.$('#salutation').removeClass("has-error");
+                    if (content.firstName.length == 0) window.$('#firstName').addClass("has-error");
+                    else window.$('#firstName').removeClass("has-error");
+                    if (content.lastName.length == 0) window.$('#lastName').addClass("has-error");
+                    else window.$('#lastName').removeClass("has-error");
+                    if (content.emailAddress.length == 0) window.$('#emailAddress').addClass("has-error");
+                    else window.$('#emailAddress').removeClass("has-error");
+                    if (content.countryOfOrigin.length == 0) window.$('#countryOfOrigin').addClass("has-error");
+                    else window.$('#countryOfOrigin').removeClass("has-error");
+                    if (content.primaryPhoneNumber.length == 0) window.$('#primaryPhoneNumber').addClass("has-error");
+                    else window.$('#primaryPhoneNumber').removeClass("has-error");
+                    if (content.secondaryPhoneNumber.length == 0) window.$('#secondaryPhoneNumber').addClass("has-error");
+                    else window.$('#secondaryPhoneNumber').removeClass("has-error");
+                    if (content.birthDate.length == 0) window.$('#birthDate').addClass("has-error");
+                    else window.$('#birthDate').removeClass("has-error");
+                    if (content.confirmEmailAddress.length == 0) window.$('#confirmEmailAddress').addClass("has-error");
+                    else if (content.confirmEmailAddress != content.emailAddress) window.$('#confirmEmailAddress').addClass("has-error");
+                    else window.$('#confirmEmailAddress').removeClass("has-error");
+                    if (content.firstName.length > 0 && content.lastName.length > 0 && content.emailAddress.length > 0 && content.countryOfOrigin.length > 0 && content.primaryPhoneNumber.length > 0 && content.secondaryPhoneNumber.length > 0 && content.birthDate.length > 0 && content.emailAddress == content.confirmEmailAddress) {
+                        return true
+                    }
+                    else {
+                        return false
+                    }
                 }
-                else {
-                    return false
-                }
+                return true
             },
             onFinishing: function (event, currentIndex) {
                 return true
@@ -254,7 +258,11 @@ class FCRPLoan extends Component {
 
     render() {
         let { isBlocking } = this.state;        
-        let isEditable = true;
+        let isEditable = false;
+        if (this.props.location.state.edit && this.props.location.state.edit === "true") {
+            isEditable = true;
+        }
+        isEditableValidation = isEditable;
 
         const {permissions} = this.props;
         const userRole = permissions[0].role;

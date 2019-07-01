@@ -3,6 +3,8 @@ import {connect} from 'react-redux'
 import {Prompt} from 'react-router-dom'
 import axios from 'axios';
 import {API_URL} from '../../../../actions/types';
+import moment from 'moment';
+let isEditableValidation;
 
 class Registration extends Component {
 
@@ -140,31 +142,52 @@ class Registration extends Component {
                     birthDate: window.$('#birthDate').val(),
                     confirmEmail: window.$('#confirmEmail').val()
                 }
-                if (content.firstName.length == 0) window.$('#firstName').addClass("has-error");
-                else window.$('#firstName').removeClass("has-error");
-                if (content.lastName.length == 0) window.$('#lastName').addClass("has-error");
-                else window.$('#lastName').removeClass("has-error");
-                if (content.email.length == 0) window.$('#email').addClass("has-error");
-                else window.$('#email').removeClass("has-error");
-                if (content.countryOfOrigin.length == 0) window.$('#countryOfOrigin').addClass("has-error");
-                else window.$('#countryOfOrigin').removeClass("has-error");
-                if (content.primaryPhoneNumber.length == 0) window.$('#primaryPhoneNumber').addClass("has-error");
-                else window.$('#primaryPhoneNumber').removeClass("has-error");
-                if (content.secondaryPhoneNumber.length == 0) window.$('#secondaryPhoneNumber').addClass("has-error");
-                else window.$('#secondaryPhoneNumber').removeClass("has-error");
-                if (content.birthDate.length == 0) window.$('#birthDate').addClass("has-error");
-                else window.$('#birthDate').removeClass("has-error");
-                if (content.confirmEmail.length == 0) window.$('#confirmEmail').addClass("has-error");
-                else if (content.confirmEmail != content.email) window.$('#confirmEmail').addClass("has-error");
-                else window.$('#confirmEmail').removeClass("has-error");
-                if (content.firstName.length > 0 && content.lastName.length > 0 && content.email.length > 0 && content.countryOfOrigin.length > 0 && content.primaryPhoneNumber.length > 0 && content.secondaryPhoneNumber.length > 0 && content.birthDate.length > 0 && content.email == content.confirmEmail) {
-                    return true
+
+                if (isEditableValidation) {
+                    if (content.firstName.length == 0) window.$('#firstName').addClass("has-error");
+                    else window.$('#firstName').removeClass("has-error");
+                    if (content.lastName.length == 0) window.$('#lastName').addClass("has-error");
+                    else window.$('#lastName').removeClass("has-error");
+                    if (content.email.length == 0) window.$('#email').addClass("has-error");
+                    else window.$('#email').removeClass("has-error");
+                    if (content.countryOfOrigin.length == 0) window.$('#countryOfOrigin').addClass("has-error");
+                    else window.$('#countryOfOrigin').removeClass("has-error");
+                    if (content.primaryPhoneNumber.length == 0) window.$('#primaryPhoneNumber').addClass("has-error");
+                    else window.$('#primaryPhoneNumber').removeClass("has-error");
+                    if (content.secondaryPhoneNumber.length == 0) window.$('#secondaryPhoneNumber').addClass("has-error");
+                    else window.$('#secondaryPhoneNumber').removeClass("has-error");
+                    if (content.birthDate.length == 0) window.$('#birthDate').addClass("has-error");
+                    else window.$('#birthDate').removeClass("has-error");
+                    if (content.confirmEmail.length == 0) window.$('#confirmEmail').addClass("has-error");
+                    else if (content.confirmEmail != content.email) window.$('#confirmEmail').addClass("has-error");
+                    else window.$('#confirmEmail').removeClass("has-error");
+                    if (content.firstName.length > 0 && content.lastName.length > 0 && content.email.length > 0 && content.countryOfOrigin.length > 0 && content.primaryPhoneNumber.length > 0 && content.secondaryPhoneNumber.length > 0 && content.birthDate.length > 0 && content.email == content.confirmEmail) {
+                        return true
+                    }
+                    else {
+                        return false
+                    }
                 }
-                else {
-                    return false
-                }
+                return true;
             },
         })
+
+        window.$('input[type="date"]').change(function() {
+            this.setAttribute(
+                "data-date",
+                moment(this.value, "YYYY/MM/DD")
+                .format('YYYY/MM/DD')
+            )
+        })
+
+        Date.prototype.toDateInputValue = (function() {
+            var local = new Date(this);
+            local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+            return local.toJSON().slice(0,10);
+        });
+
+        window.$('input[type="date"]').val(new Date().toDateInputValue());
+        window.$('input[type="date"]').trigger('change');
     }
 
     render() {
@@ -173,6 +196,7 @@ class Registration extends Component {
         if (this.props.location.state.edit && this.props.location.state.edit === "true") {
             isEditable = true;
         }
+        isEditableValidation = isEditable;
         return (
             <div className="slim-mainpanel">
                 <div className="container">
@@ -360,8 +384,8 @@ class Registration extends Component {
                                                     <i className="fa fa-calendar tx-16 lh-0 op-6"></i>
                                                 </div>
                                             </div>
-                                            <input name="birthDate" id="birthDate" type="text" className="form-control"
-                                                   placeholder="MM/DD/YYYY" readOnly={!isEditable}
+                                            <input name="birthDate" id="birthDate" type="date" className="form-control"
+                                                   date-date="" readOnly={!isEditable}
                                                    disabled={!isEditable}
                                                    onChange={(e) => {
                                                    }}/>
@@ -1164,8 +1188,8 @@ class Registration extends Component {
                                                         <i className="fa fa-calendar tx-16 lh-0 op-6"></i>
                                                     </div>
                                                 </div>
-                                                <input name="landingDate_citizen" id="landingDate_citizen" type="text"
-                                                       className="form-control" placeholder="MM/DD/YYYY"
+                                                <input name="landingDate_citizen" id="landingDate_citizen" type="date"
+                                                       className="form-control" date-date=""
                                                        readOnly={!isEditable}
                                                        disabled={!isEditable}
                                                        onChange={(e) => {
@@ -1208,8 +1232,8 @@ class Registration extends Component {
                                                     </div>
                                                 </div>
                                                 <input name="landingDate_permanentResident"
-                                                       id="landingDate_permanentResident" type="text"
-                                                       className="form-control" placeholder="MM/DD/YYYY"
+                                                       id="landingDate_permanentResident" type="date"
+                                                       className="form-control" date-date=""
                                                        readOnly={!isEditable}
                                                        disabled={!isEditable}
                                                        onChange={(e) => {

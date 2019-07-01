@@ -3,6 +3,9 @@ import {connect} from 'react-redux'
 import {Prompt} from 'react-router-dom'
 import axios from 'axios';
 import {API_URL} from '../../../../actions/types';
+import moment from 'moment';
+
+let isEditableValidation;
 
 class IARAssessment extends Component {
 
@@ -157,19 +160,38 @@ class IARAssessment extends Component {
                     firstName: window.$('#firstName').val(),
                     lastName: window.$('#lastName').val()
                 }
-
-                if (content.firstName.length == 0) window.$('#firstName').addClass("has-error");
-                else window.$('#firstName').removeClass("has-error");
-                if (content.lastName.length == 0) window.$('#lastName').addClass("has-error");
-                else window.$('#lastName').removeClass("has-error");                
-                if (content.firstName.length > 0 && content.lastName.length > 0) {
-                    return true
+                if (isEditableValidation) {
+                    if (content.firstName.length == 0) window.$('#firstName').addClass("has-error");
+                    else window.$('#firstName').removeClass("has-error");
+                    if (content.lastName.length == 0) window.$('#lastName').addClass("has-error");
+                    else window.$('#lastName').removeClass("has-error");                
+                    if (content.firstName.length > 0 && content.lastName.length > 0) {
+                        return true
+                    }
+                    else {
+                        return false
+                    }
                 }
-                else {
-                    return false
-                }
+                return true
             },
         })
+
+        window.$('input[type="date"]').change(function() {
+            this.setAttribute(
+                "data-date",
+                moment(this.value, "YYYY/MM/DD")
+                .format('YYYY/MM/DD')
+            )
+        })
+
+        Date.prototype.toDateInputValue = (function() {
+            var local = new Date(this);
+            local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+            return local.toJSON().slice(0,10);
+        });
+
+        window.$('input[type="date"]').val(new Date().toDateInputValue());
+        window.$('input[type="date"]').trigger('change');
     }
 
     render() {
@@ -178,6 +200,7 @@ class IARAssessment extends Component {
         if (this.props.location.state.edit && this.props.location.state.edit === "true") {
             isEditable = true;
         }
+        isEditableValidation = isEditable;
         return (
             <div className="slim-mainpanel">
                 <div className="container">
@@ -303,12 +326,12 @@ class IARAssessment extends Component {
                                                         <i className="fa fa-calendar tx-16 lh-0 op-6"></i>
                                                     </div>
                                                 </div>
-                                                <input id="emplymentStartDate" type="text" className="form-control"
-                                                       placeholder="MM/DD/YYYY" name="emplymentStartDate"
+                                                <input id="emplymentStartDate" type="date" className="form-control" name="emplymentStartDate"
                                                        readOnly={!isEditable}
                                                        disabled={!isEditable}
                                                        onChange={(e) => {
-                                                       }}/>
+                                                       }} date-date=""
+                                                       />
                                             </div>
                                         </div>
                                     </div>
@@ -484,8 +507,8 @@ class IARAssessment extends Component {
                                                         <i className="fa fa-calendar tx-16 lh-0 op-6"></i>
                                                     </div>
                                                 </div>
-                                                <input name="whenWillBeAvailable" id="whenWillBeAvailable" type="text"
-                                                       className="form-control" placeholder="MM/DD/YYYY"
+                                                <input name="whenWillBeAvailable" id="whenWillBeAvailable" type="date"
+                                                       className="form-control" date-date=""
                                                        readOnly={!isEditable}
                                                        disabled={!isEditable}
                                                        onChange={(e) => {
@@ -682,8 +705,8 @@ class IARAssessment extends Component {
                                                     </div>
                                                 </div>
                                                 <input name="englishLanguageAssessmentScore_assessmentDate"
-                                                       id="englishLanguageAssessmentScore_assessmentDate" type="text"
-                                                       className="form-control" placeholder="MM/DD/YYYY"
+                                                       id="englishLanguageAssessmentScore_assessmentDate" type="date"
+                                                       className="form-control" date-date=""
                                                        readOnly={!isEditable}
                                                        disabled={!isEditable}
                                                        onChange={(e) => {
@@ -817,8 +840,8 @@ class IARAssessment extends Component {
                                                     </div>
                                                 </div>
                                                 <input name="frenchLanguageAssessment_assessmentDate"
-                                                       id="frenchLanguageAssessment_assessmentDate" type="text"
-                                                       className="form-control" placeholder="MM/DD/YYYY"
+                                                       id="frenchLanguageAssessment_assessmentDate" type="date"
+                                                       className="form-control" date-date=""
                                                        readOnly={!isEditable}
                                                        disabled={!isEditable}
                                                        onChange={(e) => {

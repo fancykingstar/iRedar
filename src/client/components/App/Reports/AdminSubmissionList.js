@@ -124,9 +124,9 @@ class AdminSubmissionList extends Component {
     console.log("--------------------", this.state.fromDate);
     let submissionList = this.props.submissions.allSubmissions;
     let from = new Date(this.state.fromDate);
-    let fromdate = from.getFullYear() + '-' + (from.getMonth() + 1) + '-' + (from.getDate() + 1);
+    let fromdate = from.getFullYear() + '-' + (from.getMonth() + 1) + '-' + (from.getDate());
     let to = new Date(this.state.toDate);
-    let todate = to.getFullYear() + '-' + (to.getMonth() + 1) + '-' + (to.getDate() + 1);
+    let todate = to.getFullYear() + '-' + (to.getMonth() + 1) + '-' + (to.getDate());
     let Submitted_List = [];
     let submission_list = submissionList.map((submission, index) => {
       let date = moment(submission.dateSubmitted).format('YYYY/MM/DD');
@@ -158,8 +158,24 @@ class AdminSubmissionList extends Component {
     console.log(submissionList);
     let loading = this.props.loading;
     let csvData = [['FCRP Eligible', 'Intake Person', 'Referred by', 'Client Name', 'Need Assessment Date - Only 1 date',  'Date of Birth', 'Native Language', 'Preferred Offical Language',  'Gender',  'Immigration Status', 'Country of Origin', 'Immigration Document Number', 'Landing Date', 'Intake Agency', 'Length of Time in Canada', 'Name of Primary Profession', 'Intended Occupation', 'Highest Level of Education', 'Obtained a post-secondary outside of Canada', 'Credentials assessed', 'Address', 'City', 'Postal Code', 'Phone', 'Email', 'Short term goals', 'Long term goals', '24 Occupations', 'Consent Signed', 'Registered for an identified occupation specific bridge training program', 'Participated in JSS-Name', 'Referred to 2 or more services WS', 'Date', 'Referred to LASSA (Multiple choices)', 'Date', 'Referred to OCISO', 'Date', 'Referred to OCLF (Multiple choices)', 'Date', 'Referred to Other', 'Date', 'Referrals', 'Participated in Job Search Skills Training - DATE', 'Sector Specialist', 'Sector Specialist Intervention Date', 'Employment counselling intervention (BARB)', 'Employment counselling intervention date', 'Accreditation Plan',  'Completed Licencing', 'Completed CA',  'Mentorship',  'Loan Consultation', 'Loan Application',  'Approved for Loan-OCLF',  'Loan Disbursed-Desjardins', 'Loan Amount', 'Financial Empowerment Training', 'Employed' , 'IF/RF/AC',  'Title' ,'Company', 'Salary Range',  'Employment starting date',  'Notes',   'Provided with FCRP Information',  'Opportunity to Register for a Sector Specific Bridge training' ]]
+    let submissionFCRP = Array();
+    let submissionRegister = Array();
+    let submissionClientAction = Array();
+    for (let submission of submissionList) {
+      if (submission.content.fromForm == "fcrp-loan") {
+        submissionFCRP.push(submission)
+      }
+    }
 
     for (let submission of submissionList) {
+      for (let submission_fcrp of submissionFCRP) {
+        if ((submission.content.firstName == submission_fcrp.content.firstName) && (submission.content.firstName == submission_fcrp.content.firstName) && (submission.content.fromForm != submission_fcrp.content.fromForm)) {
+          submission_fcrp.content = {...submission.content, ...submission_fcrp.content};
+        }
+      }
+    }
+
+    for (let submission of submissionFCRP) {
       let birthDate = submission.content.birthDate;
       if (birthDate == null) {
         submission.content.age = ''
@@ -171,8 +187,17 @@ class AdminSubmissionList extends Component {
           submission.content.age = Math.abs(birthDate2.getUTCFullYear() - new Date().getUTCFullYear());
         }
       }
-      let csvD = ["", "", "", "", submission.content.firstName + " " + submission.content.lastName, submission.content.birthDate, submission.content.nativeLanguage, "", submission.content.gender, submission.content.foreignBornCanadian, submission.content.countryOfOrigin, "", submission.content.landingDate, "", submission.content.yearOfCitizenship, "", submission.content.intendedOccupation, submission.content.highestDegree, "", "", submission.content.streetAddress, submission.content.city, submission.content.postalCode, submission.content.primaryPhoneNumber, submission.content.emailAddress, submission.content.shortTermGoals, submission.content.longTermGoals, "", submission.content.signature, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
-      csvData = [...csvData, csvD];
+      let firstWorldSkillsReferred = submission.content.firstWorldSkillsReferred ? "World Skills" : "";
+      let firstOtherReferred = submission.content.firstOtherReferred ? "Other" : "";
+      let firstOCLFReferred = submission.content.firstOCLFReferred ? "OCLF" : "";
+      let firstOCISOReferred = submission.content.firstOCISOReferred ? "OCISO" : "";
+      let firstLASSAReferred = submission.content.firstLASSAReferred ? "LASSA" : "";
+      let postSecondary = submission.content.postSecondaryOutsideCanada_yesOther ? "Yes(Other)" : (submission.content.postSecondaryOutsideCanada_yesSame ? "Yes(same as above)" : "");
+      console.log("-----------------", submission);
+      let csvD = ["", "", [firstWorldSkillsReferred, firstOtherReferred, firstOCLFReferred,firstOCISOReferred, firstLASSAReferred], submission.content.firstName + " " + submission.content.lastName, "", submission.content.birthDate, submission.content.nativeLanguage, "", submission.content.gender, submission.content.foreignBornCanadian, submission.content.countryOfOrigin, submission.content.immigrationDocumentNumber, submission.content.landingDate, "", submission.content.periodInCanada, submission.content.primaryOccupation, submission.content.intendedOccupation, submission.content.highestDegree, postSecondary, "", submission.content.streetAddress, submission.content.city, submission.content.postalCode, submission.content.primaryPhoneNumber, submission.content.emailAddress, submission.content.shortTermGoals, submission.content.longTermGoals, "", submission.content.signature, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
+      if (submission.content.fromForm == "fcrp-loan") {
+        csvData = [...csvData, csvD];
+      }
     }
 
     let table =
