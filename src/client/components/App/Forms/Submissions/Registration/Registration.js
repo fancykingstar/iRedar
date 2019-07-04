@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Spinner from '../../../../Elements/Spinner';
 import {editSubmission} from "../../../../../actions/submissionActions";
 import $ from "jquery";
+import Breadcrumb from 'react-bootstrap/Breadcrumb'
 
 class RegistrationSubmission extends Component {
 
@@ -70,8 +71,8 @@ class RegistrationSubmission extends Component {
                         primaryPhoneNumber_voicemail: $("[name=primaryPhoneNumber_voiceMail]").find(":selected").text(),
                         secondaryPhoneNumber: $("[name=secondaryPhoneNumber]").val(),
                         secondaryPhoneNumber_voicemail: $("[name=secondaryPhoneNumber_voicemail]").find(":selected").text(),
-                        email: $("[name=emailAddress]").val(),
-                        confirmEmail: $("[name=confirmEmailAddress]").val(),
+                        email: $("[name=email]").val(),
+                        confirmEmail: $("[name=confirmEmail]").val(),
                         birthDate: $("[name=birthDate]").val(),
                         gender: $("[name=gender]").find(":selected").text(),
                         countryOfOrigin: $("[name=countryOfOrigin]").find(":selected").text(),
@@ -153,7 +154,7 @@ class RegistrationSubmission extends Component {
                             console.log(error);
                         }
                     }
-                    self.props.history.push('/dashboard')
+                    self.props.history.push('/modules/submissions')
                 } else {
                     self.props.history.push('/modules/submissions')
                 }
@@ -175,6 +176,13 @@ class RegistrationSubmission extends Component {
         return (
             <div className="slim-mainpanel">
                 <div className="container">
+                    <div className='slim-pageheader' style={{paddingBottom: 0}}>
+                        <Breadcrumb>
+                          <Breadcrumb.Item href="/dashboard">Home</Breadcrumb.Item>
+                          <Breadcrumb.Item href="/modules/submissions">Submission</Breadcrumb.Item>
+                          <Breadcrumb.Item active>RegistrationSubmission-{this.props.submission._id}({this.props.edit==="true"?"Edit":"View"})</Breadcrumb.Item>
+                        </Breadcrumb>
+                    </div>
                     <div id="google_translate_element"/>
 
                     <div className="section-wrapper mg-t-20">

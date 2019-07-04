@@ -203,6 +203,8 @@ exports.postRegister = async (req, res) => {
     role,
     password
   } = req.body;
+  console.log(req.body);
+  console.log(email);
 
   if (!password || !email || !firstName || !lastName) {
     return res.status(422).json({

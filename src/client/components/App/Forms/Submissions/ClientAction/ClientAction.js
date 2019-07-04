@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux'
 import Spinner from '../../../../Elements/Spinner';
 import {editSubmission} from "../../../../../actions/submissionActions";
+import Breadcrumb from 'react-bootstrap/Breadcrumb'
 
 class ClientActionSubmission extends Component {
 
@@ -149,7 +150,7 @@ class ClientActionSubmission extends Component {
                             console.log(error);
                         }
                     }
-                    self.props.history.push('/dashboard')
+                    self.props.history.push('/modules/submissions')
                 } else {
                     self.props.history.push('/modules/submissions')
                 }
@@ -219,6 +220,13 @@ class ClientActionSubmission extends Component {
         return (
             <div className="slim-mainpanel">
                 <div className="container">
+                    <div className='slim-pageheader' style={{paddingBottom: 0}}>
+                        <Breadcrumb>
+                          <Breadcrumb.Item href="/dashboard">Home</Breadcrumb.Item>
+                          <Breadcrumb.Item href="/modules/submissions">Submission</Breadcrumb.Item>
+                          <Breadcrumb.Item active>ClientActionSubmission-{this.props.submission._id}({this.props.edit==="true"?"Edit":"View"})</Breadcrumb.Item>
+                        </Breadcrumb>
+                    </div>
                     <div id="google_translate_element"/>
 
                     <div className="section-wrapper mg-t-20">

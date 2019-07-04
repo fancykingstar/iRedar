@@ -282,7 +282,7 @@ exports.getAdminPermissions = async (req, res) => {
       organization: req.params.organizationId,
     });
 
-    if (permissions.role !== 'admin') {
+    if (permissions.role !== 'admin' && permissions.role !== 'partner') {
       return res.status(422).json({
         alert: {
           title: 'Access denied!',

@@ -148,6 +148,7 @@ exports.postReferral = async (req, res) => {
                 submission: submissionId
             })
         }
+        console.log("referal---------------------", referral);
         let saved = await referral.save()
 
         let apiUrl = (process.env.NODE_ENV === "production") ? 'https://iauto.herokuapp.com' : 'http://localhost:3000'

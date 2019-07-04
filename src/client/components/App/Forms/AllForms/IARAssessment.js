@@ -4,6 +4,7 @@ import {Prompt} from 'react-router-dom'
 import axios from 'axios';
 import {API_URL} from '../../../../actions/types';
 import moment from 'moment';
+import Breadcrumb from 'react-bootstrap/Breadcrumb'
 
 let isEditableValidation;
 
@@ -156,6 +157,11 @@ class IARAssessment extends Component {
                 }
             },
             onStepChanging: function (event, currentIndex, newIndex) {
+                if (currentIndex == 2) {
+                    document.getElementById("iarHeader").innerHTML = "Do not fill, this section is for assessors only";
+                } else {
+                    document.getElementById("iarHeader").innerHTML = "Please fill out the following information.";
+                }
                 let content = {
                     firstName: window.$('#firstName').val(),
                     lastName: window.$('#lastName').val()
@@ -192,6 +198,44 @@ class IARAssessment extends Component {
 
         window.$('input[type="date"]').val(new Date().toDateInputValue());
         window.$('input[type="date"]').trigger('change');
+
+        window.$('#englishLanguageAssessmentScore_listening').attr("disabled", "disabled");
+        window.$('#englishLanguageAssessmentScore_speaking').attr("disabled", "disabled");
+        window.$('#englishLanguageAssessmentScore_reading').attr("disabled", "disabled");
+        window.$('#englishLanguageAssessmentScore_writing').attr("disabled", "disabled");
+
+        window.$('#englishLanguageAssessed_no').click(function (event) {
+            window.$('#englishLanguageAssessmentScore_listening').attr("disabled", "disabled");
+            window.$('#englishLanguageAssessmentScore_speaking').attr("disabled", "disabled");
+            window.$('#englishLanguageAssessmentScore_reading').attr("disabled", "disabled");
+            window.$('#englishLanguageAssessmentScore_writing').attr("disabled", "disabled");
+        });
+
+        window.$('#englishLanguageAssessed_yes').click(function (event) {
+            window.$('#englishLanguageAssessmentScore_listening').removeAttr("disabled");
+            window.$('#englishLanguageAssessmentScore_speaking').removeAttr("disabled");
+            window.$('#englishLanguageAssessmentScore_reading').removeAttr("disabled");
+            window.$('#englishLanguageAssessmentScore_writing').removeAttr("disabled");
+        });
+
+        window.$('#frenchLanguageAssessment_listening').attr("disabled", "disabled");
+        window.$('#frenchLanguageAssessment_speaking').attr("disabled", "disabled");
+        window.$('#frenchLanguageAssessment_reading').attr("disabled", "disabled");
+        window.$('#frenchLanguageAssessment_writing').attr("disabled", "disabled");
+
+        window.$('#frenchLanguageAssessed_no').click(function (event) {
+            window.$('#frenchLanguageAssessment_listening').attr("disabled", "disabled");
+            window.$('#frenchLanguageAssessment_speaking').attr("disabled", "disabled");
+            window.$('#frenchLanguageAssessment_reading').attr("disabled", "disabled");
+            window.$('#frenchLanguageAssessment_writing').attr("disabled", "disabled");
+        });
+
+        window.$('#frenchLanguageAssessed_yes').click(function (event) {
+            window.$('#frenchLanguageAssessment_listening').removeAttr("disabled");
+            window.$('#frenchLanguageAssessment_speaking').removeAttr("disabled");
+            window.$('#frenchLanguageAssessment_reading').removeAttr("disabled");
+            window.$('#frenchLanguageAssessment_writing').removeAttr("disabled");
+        });
     }
 
     render() {
@@ -204,11 +248,19 @@ class IARAssessment extends Component {
         return (
             <div className="slim-mainpanel">
                 <div className="container">
+                    <div className='slim-pageheader' style={{paddingBottom: 0}}>
+                        <Breadcrumb>
+                          <Breadcrumb.Item href="/dashboard">Home</Breadcrumb.Item>
+                          <Breadcrumb.Item href="/forms">Forms</Breadcrumb.Item>
+                          <Breadcrumb.Item active>All Forms</Breadcrumb.Item>
+                          <Breadcrumb.Item active>IAR</Breadcrumb.Item>
+                        </Breadcrumb>
+                    </div>
                     <div id="google_translate_element"/>
 
                     <div className="section-wrapper mg-t-20">
                         <label className="section-title">Assessment (All Clients)</label>
-                        <p className="mg-b-20 mg-sm-b-40">Please fill out the following information. </p>
+                        <p className="mg-b-20 mg-sm-b-40" id="iarHeader">Please fill out the following information. </p>
 
                         <form id="immigrationForm" method="post" action="/forms">
                             <Prompt when={isBlocking}
@@ -594,7 +646,7 @@ class IARAssessment extends Component {
                                                            className="custom-control-input" readOnly={!isEditable}
                                                            disabled={!isEditable}
                                                            onChange={(e) => {
-                                                           }}/>
+                                                           }} defaultChecked/>
                                                     <span className="custom-control-label">No</span>
                                                 </label>
                                             </div>
@@ -733,7 +785,7 @@ class IARAssessment extends Component {
                                                            readOnly={!isEditable}
                                                            disabled={!isEditable}
                                                            onChange={(e) => {
-                                                           }}/>
+                                                           }} defaultChecked/>
                                                     <span className="custom-control-label">No</span>
                                                 </label>
                                             </div>

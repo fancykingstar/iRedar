@@ -4,6 +4,7 @@ import {Prompt} from 'react-router-dom'
 import axios from 'axios';
 import {API_URL} from '../../../../actions/types';
 import moment from 'moment';
+import Breadcrumb from 'react-bootstrap/Breadcrumb'
 let isEditableValidation;
 
 class Registration extends Component {
@@ -200,6 +201,14 @@ class Registration extends Component {
         return (
             <div className="slim-mainpanel">
                 <div className="container">
+                    <div className='slim-pageheader' style={{paddingBottom: 0}}>
+                        <Breadcrumb>
+                          <Breadcrumb.Item href="/dashboard">Home</Breadcrumb.Item>
+                          <Breadcrumb.Item href="/forms">Forms</Breadcrumb.Item>
+                          <Breadcrumb.Item active>All Forms</Breadcrumb.Item>
+                          <Breadcrumb.Item active>Registration</Breadcrumb.Item>
+                        </Breadcrumb>
+                    </div>
                     <div id="google_translate_element"/>
 
                     <div className="section-wrapper mg-t-20">

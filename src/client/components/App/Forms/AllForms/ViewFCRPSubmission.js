@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { getAdminPermissions } from '../../../../actions/accessActions';
 import {SubmissionDataTable} from "../../Components/DataTables/SubmissionDataTable";
 import {getSubmissionView} from "../../../../actions/submissionActions";
-
+import Breadcrumb from 'react-bootstrap/Breadcrumb'
 
 export class ViewFCRPSubmission extends Component {
     getSubmissionData() {
@@ -101,6 +101,14 @@ export class ViewFCRPSubmission extends Component {
         return (
             <div className="slim-mainpanel">
                 <div className="container">
+                    <div className='slim-pageheader' style={{paddingBottom: 0}}>
+                        <Breadcrumb>
+                          <Breadcrumb.Item href="/dashboard">Home</Breadcrumb.Item>
+                          <Breadcrumb.Item href="/forms">Forms</Breadcrumb.Item>
+                          <Breadcrumb.Item active>All Forms</Breadcrumb.Item>
+                          <Breadcrumb.Item active>ViewFCRPSubmissions</Breadcrumb.Item>
+                        </Breadcrumb>
+                    </div>
                     <div className="manager-header">
                         <div className="slim-pageheader">
                             <ol className="breadcrumb slim-breadcrumb" />

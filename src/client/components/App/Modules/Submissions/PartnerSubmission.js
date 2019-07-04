@@ -1,67 +1,49 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { HOST_URL } from '../../../../actions/types';
+import { connect } from 'react-redux';
+import { getAllSubmissions } from '../../../../actions/submissionActions';
+import AdminSubmissionList from './AdminSubmissionList';
 
-class PartnerSubmissions extends Component {
+class PartnerSubmission extends Component {
+  state = {
+    submissionList: []
+  };
+
+  componentDidMount() {
+    const { getAllSubmissions, permissions } = this.props;
+    const userData = {
+      profileId: permissions[0].profile,
+      organizationId: permissions[0].organization
+    };
+    getAllSubmissions(userData);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (
+      nextProps.submissions.allSubmissions.length !==
+      this.state.submissionList.length
+    ) {
+      let submissionList = nextProps.submissions.allSubmissions.filter(submission => submission.content.fromForm == "fcrp-loan")
+      this.setState({ submissionList: submissionList });
+    }
+  }
+
   render() {
     return (
-      <div className="table-responsive mg-t-40">
-        <table className="table table-invoice">
-          <thead>
-            <tr>
-              <th className="wd-20p">Name</th>
-              <th className="wd-40p">Link</th>
-              <th className="tx-center"> </th>
-              <th className="tx-right"> </th>
-              <th className="tx-right"> </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Registration Form</td>
-              <td className="tx-12">{`${HOST_URL}/forms/all-forms/1`}</td>
-              <td className="tx-center"> </td>
-              <td className="tx-right">
-                <Link to="/forms/all-forms/1" className="tx-right">
-                  View
-                </Link>
-              </td>
-            </tr>
-            <tr>
-              <td>IAR Assessment</td>
-              <td className="tx-12">{`${HOST_URL}/forms/all-forms/1`}</td>
-              <td className="tx-center"> </td>
-              <td className="tx-right">
-                <Link to="/forms/all-forms/1" className="tx-right">
-                  View
-                </Link>
-              </td>
-            </tr>
-            <tr>
-              <td> Client Action Plan</td>
-              <td className="tx-12">{`${HOST_URL}/forms/all-forms/1`}</td>
-              <td className="tx-center"> </td>
-              <td className="tx-right">
-                <Link to="/forms/all-forms/1" className="tx-right">
-                  View
-                </Link>
-              </td>
-            </tr>
-            <tr>
-              <td>FCRP Loan Initiative Intake</td>
-              <td className="tx-12">{`${HOST_URL}/forms/all-forms/1`}</td>
-              <td className="tx-center"> </td>
-              <td className="tx-right">
-                <Link to="/forms/all-forms/1" className="tx-right">
-                  View
-                </Link>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <AdminSubmissionList
+        submissionList={this.state.submissionList}
+        loading={this.props.loading}
+      />
     );
   }
 }
 
-export default PartnerSubmissions;
+const mapStateToProps = state => ({
+  permissions: state.access.permissions,
+  loading: state.submissions.loading,
+  submissions: state.submissions
+});
+
+export default connect(
+  mapStateToProps,
+  { getAllSubmissions }
+)(PartnerSubmission);

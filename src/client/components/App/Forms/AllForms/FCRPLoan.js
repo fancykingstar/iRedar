@@ -4,8 +4,7 @@ import {Prompt} from 'react-router-dom'
 import axios from 'axios';
 import {API_URL} from '../../../../actions/types';
 import moment from 'moment';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import Breadcrumb from 'react-bootstrap/Breadcrumb'
 let isEditableValidation = false;
 
 class FCRPLoan extends Component {
@@ -18,7 +17,6 @@ class FCRPLoan extends Component {
             isEditable: false
         }
         this.handleChange = this.handleChange.bind(this);
-        window.$('#englishLanguageAssessment_speaking').attr({"disabled": "true"});
     }
 
     disableBlocking() {
@@ -32,7 +30,6 @@ class FCRPLoan extends Component {
     }
 
     componentDidMount() {
-        console.log("handleChange");
         const self = this;
         const isEditable = true;
         window.download2 = this.download
@@ -43,6 +40,11 @@ class FCRPLoan extends Component {
             titleTemplate: '<span class="number">#index#</span> <span class="title">#title#</span>',
             cssClass: 'wizard wizard-style-2',
             onStepChanging: function (event, currentIndex, newIndex) {
+                if (currentIndex == 2) {
+                    document.getElementById("fcrpHeader").innerHTML = "Do not fill, this section is for assessors only";
+                } else {
+                    document.getElementById("fcrpHeader").innerHTML = "Please fill out the following information.";
+                }
                 let content = {
                     salutation: window.$('#salutation').val(),
                     firstName: window.$('#firstName').val(),
@@ -168,8 +170,8 @@ class FCRPLoan extends Component {
                         otherToActionTabOCISO: window.$('#otherToActionTabOCISO').prop("checked"),
                         otherToActionTabInputOCISO: window.$('#otherToActionTabInputOCISO').val(),
                         financialEmpowermentTraining: window.$('#financialEmpowermentTraining').prop("checked"),
-                        otherToActionTabOCISO: window.$('#otherToActionTabOCISO').prop("checked"),
-                        otherToActionTabInputOCISO: window.$('#otherToActionTabInputOCISO').val(),
+                        otherToActionTabOCLF: window.$('#otherToActionTabOCLF').prop("checked"),
+                        otherToActionTabInputOCLF: window.$('#otherToActionTabInputOCLF').val(),
                         remark: window.$('#remark').val(),
                         signature: window.$('#signature').val(),
                         signDate: window.$('#signDate').val(),
@@ -259,23 +261,36 @@ class FCRPLoan extends Component {
     render() {
         let { isBlocking } = this.state;        
         let isEditable = false;
-        if (this.props.location.state.edit && this.props.location.state.edit === "true") {
+        if (!this.props.location.state) {
+            if (localStorage.getItem('edit') === "true") {
+                isEditable = true;
+            }
+        }
+        else if (this.props.location.state.edit && this.props.location.state.edit === "true") {
             isEditable = true;
         }
         isEditableValidation = isEditable;
 
         const {permissions} = this.props;
         const userRole = permissions[0].role;
-        const isAllowed = (userRole === "admin");
+        // const isAllowed = (userRole === "admin");
 
         return (
             <div className="slim-mainpanel">
                 <div className="container">
+                    <div className='slim-pageheader' style={{paddingBottom: 0}}>
+                        <Breadcrumb>
+                          <Breadcrumb.Item href="/dashboard">Home</Breadcrumb.Item>
+                          <Breadcrumb.Item href="/forms">Forms</Breadcrumb.Item>
+                          <Breadcrumb.Item active>All Forms</Breadcrumb.Item>
+                          <Breadcrumb.Item active>FCRPLoan</Breadcrumb.Item>
+                        </Breadcrumb>
+                    </div>
                     <div id="google_translate_element"/>
 
                     <div className="section-wrapper mg-t-20">
                         <label className="section-title">FCRP Loan Initiative Intake & Assessment Form</label>
-                        <p className="mg-b-20 mg-sm-b-40">Please fill out the following information. </p>
+                        <p className="mg-b-20 mg-sm-b-40" id="fcrpHeader">Please fill out the following information. </p>
 
                         <form id="immigrationForm" method="post" action="/forms">
                             <Prompt when={isBlocking}
@@ -412,7 +427,7 @@ class FCRPLoan extends Component {
                                             <label htmlFor="salutation">Salutation</label>
                                             <select className="form-control" id="salutation" name="salutation"
                                                     readOnly={!isEditable}
-                                                    disabled={!isEditable || !isAllowed}
+                                                    disabled={!isEditable}
                                                     onChange={(e) => {
                                                     }}>
                                                 <option value="">--</option>
@@ -427,7 +442,7 @@ class FCRPLoan extends Component {
                                             <label htmlFor="firstName">First Name</label>
                                             <input type="text" className="form-control" id="firstName" name="firstName"
                                                    placeholder="First Name" readOnly={!isEditable}
-                                                   disabled={!isEditable || !isAllowed}
+                                                   disabled={!isEditable}
                                                    onChange={(e) => {
                                                    }}/>
                                         </div>
@@ -437,7 +452,7 @@ class FCRPLoan extends Component {
                                             <label htmlFor="lastName">Last Name</label>
                                             <input type="text" className="form-control" id="lastName" name="lastName"
                                                    placeholder="Last Name" readOnly={!isEditable}
-                                                   disabled={!isEditable || !isAllowed}
+                                                   disabled={!isEditable}
                                                    onChange={(e) => {
                                                    }}/>
                                         </div>
@@ -578,7 +593,7 @@ class FCRPLoan extends Component {
                                                 className="form-control"
                                                 date-date=""
                                                 readOnly={!isEditable}
-                                                disabled={!isEditable || !isAllowed}
+                                                disabled={!isEditable}
                                             />
                                         </div>
                                     </div>
@@ -587,7 +602,7 @@ class FCRPLoan extends Component {
                                             <label htmlFor="gender">Gender</label>
                                             <select id="gender" className="form-control" name="gender"
                                                     readOnly={!isEditable}
-                                                    disabled={!isEditable || !isAllowed}
+                                                    disabled={!isEditable}
                                                     onChange={(e) => {
                                                     }}>
                                                 <option value="">--</option>
@@ -600,7 +615,7 @@ class FCRPLoan extends Component {
                                             <label htmlFor="countryOfOrigin">Country of Origin</label>
                                             <select id="countryOfOrigin" className="form-control" name="countryOfOrigin"
                                                     readOnly={!isEditable}
-                                                    disabled={!isEditable || !isAllowed}
+                                                    disabled={!isEditable}
                                                     onChange={(e) => {
                                                     }}>
                                                 <option value="">--</option>
@@ -808,7 +823,7 @@ class FCRPLoan extends Component {
                                             <label htmlFor="nationality">Nationality</label>
                                             <select id="nationality" className="form-control" name="nationality"
                                                     readOnly={!isEditable}
-                                                    disabled={!isEditable || !isAllowed}
+                                                    disabled={!isEditable}
                                                     onChange={(e) => {
                                                     }}>
                                                 <option value="">--</option>
@@ -1016,7 +1031,7 @@ class FCRPLoan extends Component {
                                             <label htmlFor="nativeLanguage">Native Language</label>
                                             <input type="text" id="nativeLanguage" className="form-control"
                                                    name="nativeLanguage" readOnly={!isEditable}
-                                                   disabled={!isEditable || !isAllowed}
+                                                   disabled={!isEditable}
                                                    onChange={(e) => {
                                                    }}/>
                                         </div>
@@ -1055,7 +1070,7 @@ class FCRPLoan extends Component {
                                             <label htmlFor="foreignBornCanadian">Foreign born Canadian?</label>
                                             <select className="form-control" id="foreignBornCanadian"
                                                     name="foreignBornCanadian" readOnly={!isEditable}
-                                                    disabled={!isEditable || !isAllowed}
+                                                    disabled={!isEditable}
                                                     onChange={(e) => {
                                                     }}>
                                                 <option value="">--</option>
@@ -1075,7 +1090,7 @@ class FCRPLoan extends Component {
                                                        className="form-control"
                                                        date-date=""
                                                        readOnly={!isEditable}
-                                                       disabled={!isEditable || !isAllowed}
+                                                       disabled={!isEditable}
                                                        onChange={(e) => {
                                                        }}/>
                                             </div>
@@ -1785,8 +1800,8 @@ class FCRPLoan extends Component {
                                                                         className="input-group-text" 
                                                                         style={{ border:"none", marginTop: -10, paddingLeft: 0 }}>
                                                                         <label className="custom-control custom-checkbox">
-                                                                            <input id="otherToActionTabOCISO"
-                                                                                   name="OtherToActionTabOCISO" type="checkbox"
+                                                                            <input id="otherToActionTabOCLF"
+                                                                                   name="OtherToActionTabOCLF" type="checkbox"
                                                                                    className="custom-control-input" readOnly={!isEditable}
                                                                                    disabled={!isEditable}
                                                                             />
@@ -1794,8 +1809,8 @@ class FCRPLoan extends Component {
                                                                         </label>
                                                                     </div>
                                                                 </div>
-                                                                <input type="text" className="form-control" id="otherToActionTabInputOCISO"
-                                                                       name="OtherToActionTabInputOCISO" readOnly={!isEditable}
+                                                                <input type="text" className="form-control" id="otherToActionTabInputOCLF"
+                                                                       name="OtherToActionTabInputOCLF" readOnly={!isEditable}
                                                                        disabled={!isEditable}
                                                                        onChange={(e) => {
                                                                        }} style={{ marginTop: -10 }} />
@@ -1872,7 +1887,7 @@ class FCRPLoan extends Component {
                                         </div>
                                         <div className="form-row" style={{ width: "100%" }}>
                                             <div className="form-group col-md-4">
-                                                <input type="text" className="form-control" id="signature" name="Signature" />
+                                                <input type="text" className="form-control" id="signature" name="Signature" placeholder="Enter Full Name Here."/>
                                                 <label htmlFor="Signature">Signature</label>
                                             </div>
                                             <div className="form-group col-md-4">
@@ -1912,7 +1927,7 @@ class FCRPLoan extends Component {
                                         </div>
                                         <div className="form-row" style={{ width: "100%" }}>
                                             <div className="form-group col-md-4">
-                                                <input type="text" className="form-control" id="otherSignature" name="OtherSignature" />
+                                                <input type="text" className="form-control" id="otherSignature" name="OtherSignature" placeholder="Enter Full Name Here." />
                                                 <label htmlFor="Signature">Signature</label>
                                             </div>
                                             <div className="form-group col-md-4">

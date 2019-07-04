@@ -32,7 +32,6 @@ export class AddNewUsers extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    this.setState({ submitTime: this.state.submitTime + 1 });
     const newUser = {
       firstName: this.state.firstName,
       lastName: this.state.lastName,

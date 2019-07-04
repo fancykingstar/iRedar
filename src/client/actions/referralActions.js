@@ -8,7 +8,7 @@ export const uploadReferralToServer = form => async dispatch => {
         `${API_URL}/api/upload-referral`,
         form
     )
-    dispatch(getAllReferralForms(form.sender))
+    getAllReferralForms(form.sender)
 }
 
 export const getReferralForm = referralId => async dispatch => {
@@ -22,6 +22,7 @@ export const getAllReferralForms = profileId => async dispatch => {
     const res = await axios.get(
         `${API_URL}/api/upload-referral/` + profileId,
     )
+    console.log("dddddddddddddddddddddddddd:", res.data);
     dispatch(setAllReferrals(res.data))
 }
 

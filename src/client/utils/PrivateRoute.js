@@ -33,7 +33,7 @@ class PrivateRoute extends Component {
     if (role === 'user') navbar = <ClientNavbar />;
     if (role === 'staff') navbar = <AdminNavbar location={this.props.location} />;
     if (role === 'admin') navbar = <AdminNavbar location={this.props.location} />;
-    if (role === 'partner') navbar = <PartnerNavbar />;
+    if (role === 'partner') navbar = <PartnerNavbar location={this.props.location}/>;
 
     return (
       <Route

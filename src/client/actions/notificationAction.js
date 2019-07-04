@@ -24,11 +24,11 @@ export const getNotification = (payload) => async dispatch => {
   });
 };
 
-export const deleteNotifications = (ids) => async dispatch => {
+export const deleteNotifications = (ids, id) => async dispatch => {
   const res = await axios.post(`${API_URL}/api/notifications/delete/${ids}`);
-  console.log(res);
+  const {data: {data}} = await axios.get(`${API_URL}/api/notifications`, {params: {id}});
   dispatch({
     type: DELETE_NOTIFICATION,
-    payload: res
+    payload: data
   })
 };

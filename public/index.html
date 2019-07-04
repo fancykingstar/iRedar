@@ -44,7 +44,8 @@
   <link href="/assets/lib/bootstrap-tagsinput/css/bootstrap-tagsinput.css" rel="stylesheet">
   <!-- Slim CSS -->
   <link rel="stylesheet" href="/assets/css/slim.css" />
-    <link href="/assets/css/payment.css" rel="stylesheet"/>
+  <link href="/assets/css/payment.css" rel="stylesheet"/>
+  <link href="/assets/lib/datepicker/datepicker.min.css" rel="stylesheet"/>
   <!-- <link
       rel="stylesheet"
       href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"
@@ -63,17 +64,11 @@
     }
 
     input[type='date'] {
-        height: 40px;
+      height: 40px;
     }
 
-
     input[type='date']:before {
-/*        position: absolute;
-        top: 3px; left: 3px;
-        content: attr(data-date);
-        display: inline-block;
-        color: black;*/
-        content: attr(data-date);
+      content: attr(data-date);
     }
 
     input::-webkit-datetime-edit, input[type='date']::-webkit-inner-spin-button, input[type='date']::-webkit-clear-button {
@@ -93,7 +88,6 @@
         padding: 10px;
         background: #1b84e7;
         color: white;
-        /*top: 310px;*/
     }
     .wizard > .content > .body input.has-error {
       border: 1px solid red;
@@ -102,10 +96,6 @@
     select.form-control:not([size]):not([multiple]).has-error {
       border: 1px solid red;
     }
-
-   /* tr.odd {
-      display: none;
-    }*/
 
     .react-datepicker__input-container, .react-datepicker__input-container input {
       height: 42px;
@@ -116,6 +106,7 @@
 
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
+  <input type="text" name="" class="some-input" />
   <div id="root"></div>
 
   <script src="https://js.stripe.com/v3/"></script>
@@ -136,14 +127,22 @@
   <script src="/assets/lib/datatables-responsive/js/dataTables.responsive.js"></script>
   <script src="/assets/lib/select2/js/select2.min.js"></script>
   <script src="/assets/lib/bootstrap-tagsinput/js/bootstrap-tagsinput.js"></script>
+
   <script src="/assets/lib/moment/js/moment.js"></script>
+  <script src="/assets/lib/datepicker/datepicker.min.js"></script>
 
   <script src="/assets/js/slim.js"></script>
   <script src="/assets/js/ResizeSensor.js"></script>
   
   <script>
       $(document).ready(()=>{
-          $("#birthDate").val(moment().format('YYYY-MM-DD'))   
+          $("#birthDate").val(moment().format('YYYY-MM-DD'))
+          // var picker = datepicker('#birthDate', {
+          //   formatter: (input, date, instance) => {
+          //     const value = date.toLocaleDateString('zh-Hans-CN')
+          //     input.value = value // => '1/1/2099'
+          //   }, 
+          // })
       })
   </script>
 </body>

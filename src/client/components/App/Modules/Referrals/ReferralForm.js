@@ -25,6 +25,7 @@ class ReferralForm extends Component {
 
     componentDidMount() {
         const { adminPermissions, permissions } = this.props;
+        console.log(permissions);
         this.props.dispatch(getAdminPermissions(permissions[0].organization, permissions[0].profile))
         window.$('#partnerList').tagsinput({
             allowDuplicates: false,
@@ -55,7 +56,6 @@ class ReferralForm extends Component {
             sender: this.props.referralForm.sender,
             receivers: this.state.receivers.map(receiver => receiver.value)
         }
-
         this.props.dispatch(uploadReferralToServer(referral))
         this.props.history.push('/modules/referrals');
     }

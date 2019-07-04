@@ -17,7 +17,6 @@ class ReferralFormList extends Component {
     }
 
     componentDidMount() {
-        console.log("profileId:",this.props.profileId);
         const { getAllReferralForms } = this.props;
         getAllReferralForms(this.props.profileId);
         window.$('#referralFormTable').DataTable({
@@ -62,8 +61,17 @@ class ReferralFormList extends Component {
         });
     }
 
+    refer = event => {
+        let referralId = event.target.getAttribute('referral_Id')
+        console.log(referralId);
+        this.props.history.push({
+          pathname: '/referrals/partner/' + referralId
+        });
+    }
+
     render() {
-        console.log(this.props.referralForms);
+        let permission = this.props.permissions[0].role;
+        let isallow = permission === "partner";
         let { sent, received } = this.state;
         let table = this.props.loading === true ? (
             <Spinner />
@@ -100,7 +108,6 @@ class ReferralFormList extends Component {
                             <tbody>
                                 {
                                     this.props.referralForms.map((referral, index) => {
-                                        console.log(received);
                                         if (!received && this.props.profileId == referral.sender._id && sent) { 
                                                 return (
                                                     <React.Fragment key={referral._id}>
@@ -129,6 +136,10 @@ class ReferralFormList extends Component {
                                                                         <a className='dropdown-item' href='#' onClick={this.delete} referral_id={referral._id}>
                                                                           <i className='fa fa-trash'/> Delete Referral
                                                                         </a>
+                                                                        { isallow?
+                                                                        <a className='dropdown-item' onClick={this.refer} referral_id={referral._id}>
+                                                                            <i className='fa fa-file'/> Refer
+                                                                        </a> : ""}
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -171,6 +182,10 @@ class ReferralFormList extends Component {
                                                                         <a className='dropdown-item' href='#' onClick={this.delete} referral_id={referral._id}>
                                                                           <i className='fa fa-trash'/> Delete notifications
                                                                         </a>
+                                                                        { isallow?
+                                                                        <a className='dropdown-item' onClick={this.refer} referral_id={referral._id}>
+                                                                            <i className='fa fa-file'/> Refer
+                                                                        </a> : ""}
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -208,6 +223,10 @@ class ReferralFormList extends Component {
                                                                         <a className='dropdown-item' href='#' onClick={this.delete} referral_id={referral._id}>
                                                                           <i className='fa fa-trash'/> Delete notifications
                                                                         </a>
+                                                                        { isallow?
+                                                                        <a className='dropdown-item' onClick={this.refer} referral_id={referral._id}>
+                                                                            <i className='fa fa-file'/> Refer
+                                                                        </a> : ""}
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -230,6 +249,7 @@ class ReferralFormList extends Component {
 }
 
 const mapStateToProps = state => ({
+    permissions: state.access.permissions,
     profileId: state.auth.user.profileId,
     profile: state.auth.profile,
     loading: state.referrals.loading ? state.referrals.loading : false,

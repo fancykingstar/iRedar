@@ -4,12 +4,14 @@ import { Prompt } from 'react-router-dom'
 import { getReferralForm, uploadReferralToServer } from '../../../../actions/referralActions'
 import './ReferralForm.css'
 import Breadcrumb from 'react-bootstrap/Breadcrumb'
+import { Typeahead } from 'react-bootstrap-typeahead'
+import { getAdminPermissions } from '../../../../actions/accessActions'
 
 class ReferralFormDetail extends Component {
 
     constructor(props) {
         super(props)
-        this.state = { isBlocking: true }
+        this.state = { isBlocking: true, receivers: [] }
     }
 
     disableBlocking() {
@@ -26,6 +28,9 @@ class ReferralFormDetail extends Component {
         if (JSON.stringify(this.props.referralForm) === '{}') {
             this.props.dispatch(getReferralForm(this.props.referralId))
         }
+
+        const { adminPermissions, permissions } = this.props;
+        this.props.dispatch(getAdminPermissions(permissions[0].organization, permissions[0].profile))
     }
 
     toString = partners => {
@@ -50,7 +55,7 @@ class ReferralFormDetail extends Component {
             note: this.note.value || '',
             dateSubmitted: Date(),
             sender: this.props.sender,
-            receivers: this.partnerList.value || ''
+            receivers: this.state.receivers.map(receiver => receiver.value)
         }
         this.props.dispatch(uploadReferralToServer(referral))
         this.props.history.push('/modules/referrals');
@@ -65,7 +70,17 @@ class ReferralFormDetail extends Component {
     }
 
     render() {
-        let { isBlocking } = this.state
+        let { isBlocking, receivers } = this.state
+
+        const { adminPermissions, permissions } = this.props;
+
+        const options = adminPermissions.filter(permission => permission.role.toUpperCase() === "PARTNER")
+        .map(permission => {
+            return {
+                label: `${permission.profile.firstName} ${permission.profile.lastName}`,
+                value: permission.profile._id
+            }
+        });
 
         return (
             <div className="container" id="referral">
@@ -124,9 +139,13 @@ class ReferralFormDetail extends Component {
                             <textarea className="form-control" id="note" ref={input => this.note = input} defaultValue={this.props.referralForm.note || ''} placeholder="Note" />
                         </div>
                         <div className="form-group col-md-5">
-                            <input type="text" className="form-control" id="partnerList" data-role="tagsinput"
-                                ref={input => this.partnerList = input}
-                                defaultValue={this.toString(this.props.referralForm.receivers || []) || ''} />
+                            <Typeahead
+                                multiple={true}
+                                options={options}
+                                placeholder="Choose a state..."
+                                onChange={(value) => this.setState({ receivers: value })}
+                                value={receivers}
+                            />
                         </div>
                         <div className="form-group col-md-1">
                             <button type="SubmitButton" className="btn btn-primary">Refer</button>
@@ -148,6 +167,8 @@ const mapStateToProps = (state, ownProps) => {
         referralId,
         referralForm,
         sender: state.auth.user.profileId,
+        permissions: state.access.permissions,
+        adminPermissions: state.access.admin,
     }
 }
 

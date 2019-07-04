@@ -32,7 +32,8 @@ class AdminSubmissionList extends Component {
         searchPlaceholder: 'Search...',
         sSearch: '',
         lengthMenu: '_MENU_ items/page',
-      }
+      },
+      retrieve: true
     });
   }
 

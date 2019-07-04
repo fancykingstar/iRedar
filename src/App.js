@@ -31,6 +31,7 @@ import LogsPage from './client/components/App/Logs';
 import MessagePage from './client/components/App/Message';
 import ModulesPage from './client/components/App/Modules';
 import ReferralForm from './client/components/App/Modules/Referrals/ReferralForm';
+import ReferralFormPartner from './client/components/App/Modules/Referrals/ReferralFormPartner';
 import ReferralFormDetail from './client/components/App/Modules/Referrals/ReferralFormDetail';
 import Submissions from './client/components/App/Modules/Submissions';
 import Referrals from './client/components/App/Modules/Referrals';
@@ -123,7 +124,7 @@ class App extends Component {
                 <PrivateRoute exact path='/modules/submissions' component={Submissions} />
                 <PrivateRoute exact path='/modules/referrals' component={Referrals} />
                 <PrivateRoute exact path='/forms' component={FormsPage} />
-                <PrivateRoute exact path='/modules' component={ModulesPage} />
+                <PrivateRoute exact path='/modules' component={Submissions} />
                 <PrivateRoute exact path='/reports' component={ReportsPage} />
                 <PrivateRoute exact path='/settings/admin-settings' component={AdminSettings} />
                 <PrivateRoute exact path='/settings/add-new-users' component={AddNewUsers} />
@@ -137,6 +138,7 @@ class App extends Component {
                 />
                 <PrivateRoute exact path='/forms/upload-forms/:filterType' component={UploadFormList} />
                 <PrivateRoute exact path='/referrals/:submissionId' component={ReferralForm} />
+                <PrivateRoute exact path='/referrals/partner/:referralId' component={ReferralFormPartner} />
 
                 <Route exact path='/referrals/detail/:referralId' component={ReferralFormDetail} />
                 <Route exact path='/forms/all-forms/client-action' component={ClientAction} />

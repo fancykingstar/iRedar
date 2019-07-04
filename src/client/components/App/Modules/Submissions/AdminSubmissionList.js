@@ -4,8 +4,17 @@ import { withRouter } from 'react-router-dom'
 import moment from 'moment';
 import Spinner from '../../../Elements/Spinner';
 import {deleteSubmission} from "../../../../actions/submissionActions";
+import { getAllSubmissions } from '../../../../actions/submissionActions';
 
 class AdminSubmissionList extends Component {
+  componentDidMount() {
+    const { getAllSubmissions, permissions } = this.props;
+    const userData = {
+      profileId: permissions[0].profile,
+      organizationId: permissions[0].organization
+    };
+    getAllSubmissions(userData);
+  }
 
   componentDidUpdate() {
     window.$('#datatable1').DataTable({
@@ -14,7 +23,8 @@ class AdminSubmissionList extends Component {
         searchPlaceholder: 'Search...',
         sSearch: '',
         lengthMenu: '_MENU_ items/page',
-      }
+      },
+      retrieve: true
     });
   }
 
@@ -58,11 +68,12 @@ class AdminSubmissionList extends Component {
   render() {
     const { permissions } = this.props;
     const userRole = permissions[0].role;
-    const isAllowedToEdit = (userRole === "admin" || userRole === "staff");
+    const isAllowedToEdit = (userRole === "admin" || userRole === "staff" || userRole === "partner");
     const isAllowedToDelete = (userRole === "admin");
     const isAllowedToShare = (userRole === "admin" || userRole === "staff");
-    const isAllowedDetail = (userRole === "admin" || userRole === "staff" || userRole === "client");
-
+    const isAllowedDetail = (userRole === "admin" || userRole === "staff" || userRole === "client" || userRole === "partner");
+    const isAllowedUser = (userRole === "partner");
+    console.log("delete", this.props.submissions);    
     let submissionList = this.props.submissionList;
     let loading = this.props.loading;
 
@@ -79,7 +90,6 @@ class AdminSubmissionList extends Component {
         }
       }
     }
-    console.log(submissionList);
 
     let table =
       loading === true ? (
@@ -110,7 +120,6 @@ class AdminSubmissionList extends Component {
                   {
                     submissionList.map((submission, index) => {
                       const content = submission.content;
-                      console.log(index);
                       return (
                         <React.Fragment key={submission._id}>
                           <tr>
@@ -170,7 +179,8 @@ const mapStateToProps = state => ({
   loading: state.access.loading,
   access: state.access,
   errors: state.errors,
-  profile: state.auth.profile
+  profile: state.auth.profile,
+  submissions: state.submissions
 });
 
-export default withRouter(connect(mapStateToProps, {deleteSubmission})(AdminSubmissionList));
+export default withRouter(connect(mapStateToProps, {deleteSubmission, getAllSubmissions})(AdminSubmissionList));

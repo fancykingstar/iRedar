@@ -178,6 +178,7 @@ exports.deleteSubmission = async (req, res) => {
       const submission = await Submission.findByIdAndRemove({
         _id: submissionId,
       });
+      console.log(submission);
       return res.json({
         success: true,
         submission,

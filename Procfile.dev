@@ -1,2 +1,59 @@
 api: nodemon src/server/server.js
 web: ./node_modules/react-scripts/bin/react-scripts.js start
+
+
+/*
+* The first fields in FCRP form should be editable ::::::::::::::::::::::::::::::::::::::::::::::::::::fixed
+
+
+* FCRP Form4. - Write, “Do not fill, this section is for assessors only”:            not in scope  ::::fixed
+
+
+* 5. CONSENT - Signature, type enter your name here:                                 not in scope  ::::fixed
+
+
+* Admin User can no longer save submission edit - feature deprivation..when he clicks “edit” he should be able to change information and update submission:::::::::::::::::::::::fixed
+
+
+* DataTables warning: table id=datatable1 - Cannot reinitialise DataTable. For more information about this error, please see http://datatables.net/tn/3 … cannot delete data tables
+
+
+* remove “awesome modules” page: not in scope::::::::::::::::::::::::::::::::::::::::::::::::::::::::::fixed
+
+
+* There are only breadcrumbs on “registration” forms , what about all other forms?  ?????????::::::::::fixed
+
+
+* form all forms after “finish” button on form submission, redirect back to forms page not dashboard   not in scope(already):::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::fixed
+
+
+* After admin user makes 2nd edit of any particular form submission, “email address” field loses email information: """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""fixed
+
+
+* In IAR form, 4. Assessment Write above header, “Do not fill, this section is for assessors only” not in scope
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::fixed
+
+
+* in IAR form CLB logic is not implemented: my fault::::::::::::::::::::::::::::::::::::::::::::::fixed
+
+
+* Partner cannot edit first name/last name etc. at all. they should not be able to edit these features AFTER submission. ??????????????????????
+
+
+* Partner should be able to edit from “intake Agency”:: confirm::::::::::::::::::::::::::::::::::::fixed
+
+
+* Partners form “view” button is the same as “Edit” button - they should be different. “View”button should give “read only” & “edit” should give “write” :: confirm
+
+
+* form “share” links still broken - doesn’t open when in new browser: i have to do:::::::::::::::::fixed
+
+
+* “Dashboard” is the only feature that is constantly highlighted. It should change upon selection::::::::fixed
+
+
+* Notifications > Actions > Delete notifications - deletes single record, then all results in table dissapear
+* Partner submissions table - where did it go?:: confirm
+* Referral “Detail” - when clicked, no breadcrumbs:: confirm
+* “Referral”  Form button is non functional:: confirm
+*/

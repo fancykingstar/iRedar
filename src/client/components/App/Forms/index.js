@@ -20,8 +20,8 @@ class FormsPage extends Component {
     });
   };
 
-    editForm = event => {
-        let formName = event.target.getAttribute('form_name');
+  editForm = event => {
+    let formName = event.target.getAttribute('form_name');
         this.props.history.push({
             pathname: '/forms/all-forms/' + formName,
             state: {edit: 'true'}
@@ -32,6 +32,7 @@ class FormsPage extends Component {
     let formName = event.target.getAttribute('form_name');
     let url = window.location.protocol + "//" + window.location.host + '/forms/all-forms/' + formName;
     this.copyToClipboard(url);
+    localStorage.setItem('edit', 'true');
     alert('Copied the form URL to Clipboard')
   };
 

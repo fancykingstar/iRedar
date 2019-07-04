@@ -34,10 +34,9 @@ class Notifications extends Component {
   };
   
   removeNotifications = (ids) => {
-    console.log(ids);
     const {deleteNotifications, getNotifications} = this.props;
-    deleteNotifications(ids);
-    getNotifications();
+    const {profile} = this.props;
+    deleteNotifications(ids, profile._id);
   };
   
   render() {
