@@ -18,8 +18,16 @@ class Header extends Component {
         sentBy: "",
         content: "",
         title: "",
-        id: ""
+        id: "",
+        once: false
     }
+  }
+
+  componentWillUpdate() {
+    console.log("aaaaaaaaaaaaaaaaa");
+    const profileId = this.props.profile._id;
+    const { getSocketNotification } = this.props;
+      getSocketNotification(profileId);
   }
 
   componentDidMount() {
@@ -87,7 +95,7 @@ class Header extends Component {
                     <strong>{notification.type} from {notification.sentBy}</strong> 
                   </p>
                   <h6>{notification.title}</h6>
-                  <span>{content}</span>
+                  <span>{notification.content}</span>
                 </div>
               </div>
             </a>

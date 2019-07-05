@@ -24,17 +24,17 @@ exports.store = async (req, res) => {
   let {body} = req;
   console.log("notification-------------------", body);
   const response = await Notification.create(body);
-  const socketnotification = {
+  let nofi = Profile.find({_id: body.sentBy}).then((nofi) => {
+    let name = nofi[0].firstName + " " + nofi[0].lastName;
+    const socketnotification = {
       title: body.title,
       content: body.message,
       type: "message",
       recipients: body.recipients,
-      sentBy: body.sentBy,
+      sentBy: name,
       id: response._id
-  };
-  await SocketNotification.create(socketnotification);
-  let nofi = Profile.find({_id: body.sentBy}).then((nofi) => {
-    let name = nofi[0].firstName + " " + nofi[0].lastName;
+    };
+    SocketNotification.create(socketnotification);
     Socket.socket('has-new-conversation', '', { id: response._id, to: body.recipients, sentBy: name, content: body.message, title: body.title, type: "Notification", hasNewMessage: true });
   });
 

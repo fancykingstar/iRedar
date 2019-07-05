@@ -16,8 +16,7 @@ const socketnotificationSchema = Schema({
         default: false
     },
     sentBy: {
-        type: Schema.Types.ObjectId,
-        ref: 'Profile',
+        type: String
     },
     recipients: [{
         type: Schema.Types.ObjectId,
