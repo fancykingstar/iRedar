@@ -111,18 +111,19 @@ class Header extends Component {
                   </div>
                 </div>
                 <div className="dropdown-list">
-                  <a href={url} className="dropdown-link">
-                    <div className="media">
-                      <img src="http://via.placeholder.com/500x500" alt="" />
-                      <div className="media-body">
-                        <p>
-                          <strong>{type} from {sentBy}</strong>
-                        </p>
-                        <h6>{title}</h6>
-                        <span>{content}</span>
+                  {type &&
+                    <a href={url} className="dropdown-link">
+                      <div className="media">
+                        <img src="http://via.placeholder.com/500x500" alt="" />
+                        <div className="media-body">
+                          <p>
+                            <strong>{type} from {sentBy}</strong> 
+                          </p>
+                          <h6>{title}</h6>
+                          <span>{content}</span>
+                        </div>
                       </div>
-                    </div>
-                  </a>
+                    </a>}
                   <div className="dropdown-list-footer">
                     <a href="/notifications">
                       <i className="fa fa-angle-down" /> Show All Notifications

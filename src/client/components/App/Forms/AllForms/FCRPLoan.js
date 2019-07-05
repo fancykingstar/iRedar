@@ -5,6 +5,9 @@ import axios from 'axios';
 import {API_URL} from '../../../../actions/types';
 import moment from 'moment';
 import Breadcrumb from 'react-bootstrap/Breadcrumb'
+
+import Datepicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 let isEditableValidation = false;
 
 class FCRPLoan extends Component {
@@ -14,9 +17,12 @@ class FCRPLoan extends Component {
         this.state = {
             isBlocking: true,
             startDate: new Date(),
-            isEditable: false
+            isEditable: false,
+            fromDate: new Date(),
+            toDate: new Date()
         }
         this.handleChange = this.handleChange.bind(this);
+        this.handleFromChange = this.handleFromChange.bind(this);
     }
 
     disableBlocking() {
@@ -27,6 +33,12 @@ class FCRPLoan extends Component {
         this.setState({
             startDate: date
         });
+    }
+
+    handleFromChange(date) {
+      this.setState({
+          fromDate: date
+      });
     }
 
     componentDidMount() {
@@ -287,7 +299,6 @@ class FCRPLoan extends Component {
                         </Breadcrumb>
                     </div>
                     <div id="google_translate_element"/>
-
                     <div className="section-wrapper mg-t-20">
                         <label className="section-title">FCRP Loan Initiative Intake & Assessment Form</label>
                         <p className="mg-b-20 mg-sm-b-40" id="fcrpHeader">Please fill out the following information. </p>
@@ -581,7 +592,9 @@ class FCRPLoan extends Component {
                                         </div>
                                     </div>
                                     <div className="form-group">
-                                        <label htmlFor="birthDate">Date of Birth</label>
+                                        <label htmlFor="birthDate">
+                                            Date of Birth
+                                        </label>
                                         <div className="input-group">
                                             <div className="input-group-prepend">
                                                 <div className="input-group-text">

@@ -70,7 +70,7 @@ class AdminSubmissionList extends Component {
     const userRole = permissions[0].role;
     const isAllowedToEdit = (userRole === "admin" || userRole === "staff" || userRole === "partner");
     const isAllowedToDelete = (userRole === "admin");
-    const isAllowedToShare = (userRole === "admin" || userRole === "staff");
+    const isAllowedToShare = (userRole === "admin" || userRole === "staff" || userRole === "partner");
     const isAllowedDetail = (userRole === "admin" || userRole === "staff" || userRole === "client" || userRole === "partner");
     const isAllowedUser = (userRole === "partner");
     console.log("delete", this.props.submissions);    
@@ -114,6 +114,7 @@ class AdminSubmissionList extends Component {
                     <th className="tx-right"> </th>
                     <th className="tx-right"> </th>
                     <th className="tx-right"> </th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -122,43 +123,44 @@ class AdminSubmissionList extends Component {
                       const content = submission.content;
                       return (
                         <React.Fragment key={submission._id}>
-                          <tr>
-                            <td>{index + 1}</td>
-                            <td>{content.lastName}</td>
-                            <td className="tx-12">{content.firstName} </td>
-                            <td className="tx-12">{content.age} </td>
-                            <td className="tx-12">{content.city} </td>
-                            <td className="tx-12">{content.nationality} </td>
+                            <tr>
+                              <td>{index + 1}</td>
+                              <td>{content.lastName}</td>
+                              <td className="tx-12">{content.firstName} </td>
+                              <td className="tx-12">{content.age} </td>
+                              <td className="tx-12">{content.city} </td>
+                              <td className="tx-12">{content.nationality} </td>
 
-                            <td className="tx-center">{content.fromForm} </td>
-                            <td className="tx-right">
-                              {moment(submission.dateSubmitted).format(
-                                'MMM Do YYYY, h:mm a'
-                              )}
-                            </td>
-                            <td className="tx-right">
-                              {
-                                isAllowedToEdit && 
-                                  <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToEdit} onClick={this.edit} form_name={content.fromForm} submission_id={submission._id} >Edit</button>
-                              }
-                            </td>
-                            <td className="tx-right">
-                              {
-                                isAllowedToDelete && 
-                                  <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToDelete} onClick={this.delete} form_name={content.fromForm} submission_id={submission._id} >Delete</button>
-                              }
-                            </td>
-                            <td className="tx-right">
-                              <button type="button" className="btn btn-primary btn-sm" disabled={!isAllowedDetail} onClick={this.detail} form_name={content.fromForm} submission_id={submission._id} >Detail</button>
-                            </td>
-                            <td className="tx-right">
-                              {
-                                isAllowedToShare &&
-                                  <button type="button" className="btn btn-primary btn-sm" disabled={!isAllowedToShare} onClick={this.share} form_name={content.fromForm} submission_id={submission._id} >Share</button>
-                              }
-                            </td>
-                          </tr>
-                        </React.Fragment>
+                              <td className="tx-center">{content.fromForm} </td>
+                              <td className="tx-right">
+                                {moment(submission.dateSubmitted).format(
+                                  'MMM Do YYYY, h:mm a'
+                                )}
+                              </td>
+                              <td className="tx-right">
+                                {
+                                  isAllowedToEdit && 
+                                    <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToEdit} onClick={this.edit} form_name={content.fromForm} submission_id={submission._id} >Edit</button>
+                                }
+                              </td>
+                              <td className="tx-right">
+                                {
+                                  isAllowedToDelete && 
+                                    <button type="button" className="btn btn-secondary btn-sm" disabled={!isAllowedToDelete} onClick={this.delete} form_name={content.fromForm} submission_id={submission._id} >Delete</button>
+                                }
+                              </td>
+                              <td className="tx-right">
+                                <button type="button" className="btn btn-primary btn-sm" disabled={!isAllowedDetail} onClick={this.detail} form_name={content.fromForm} submission_id={submission._id} >Detail</button>
+                              </td>
+                              <td className="tx-right">
+                                {
+                                  isAllowedToShare &&
+                                    <button type="button" className="btn btn-primary btn-sm" disabled={!isAllowedToShare} onClick={this.share} form_name={content.fromForm} submission_id={submission._id} >Share</button>
+                                }
+                              </td>
+                              <td></td>
+                            </tr>
+                          </React.Fragment>
                       );
                     })}
                 </tbody>
