@@ -8,8 +8,8 @@ const Socket = require('./sockets');
  */
 exports.index = async (req, res) => {
   let {id} = req.query;
-  let response = await Notification.find({ $or:[ {sentBy: id}, {recipients: {$all: [id]}}] }).populate('sentBy');  
-  
+  let response = await SocketNotification.find({ $or:[ {recipients: {$all: [id]}}] });  
+  console.log("getsocketnotification:", response);
   return res.json({
     success: true,
     data: response
@@ -22,22 +22,12 @@ exports.index = async (req, res) => {
  */
 exports.store = async (req, res) => {
   let {body} = req;
-  console.log("notification-------------------", body);
   const response = await Notification.create(body);
-  const socketnotification = {
-      title: body.title,
-      content: body.message,
-      type: "message",
-      recipients: body.recipients,
-      sentBy: body.sentBy,
-      id: response._id
-  };
-  await SocketNotification.create(socketnotification);
+
   let nofi = Profile.find({_id: body.sentBy}).then((nofi) => {
     let name = nofi[0].firstName + " " + nofi[0].lastName;
     Socket.socket('has-new-conversation', '', { id: response._id, to: body.recipients, sentBy: name, content: body.message, title: body.title, type: "Notification", hasNewMessage: true });
   });
-
   
   return res.json({
     success: true,
@@ -65,14 +55,15 @@ exports.edit = async (req, res) => {
  * @returns {res}
  */
 exports.update = async (req, res) => {
-  const {id} = req.params;
-  
-  const response = await Notification.findByIdAndUpdate(id, req.body);
+  const {_id, id} = req.body;
+  console.log("ssssssssssssssssssssssssssssssSS:", req.body);
+  const remove = await SocketNotification.findOne({_id: req.body._id}).remove();
+  const response = await SocketNotification.find({ $or:[ {recipients: {$all: [id]}}] });
   
   return res.json({
     success: true,
     data: {
-      _id: response._id
+      data: response
     }
   });
 };
@@ -82,9 +73,7 @@ exports.update = async (req, res) => {
  * @returns {res}
  */
 exports.delete = async (req, res) => {
-  console.log("etetet: ", req.params);
   const {id} = req.params;
-  console.log("deleted", id);
   
   // const response = await Notification.deleteOne({_id: ids});
   let response = await Notification.findOne({_id: id}).remove();

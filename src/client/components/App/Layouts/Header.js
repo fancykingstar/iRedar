@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import io from 'socket.io-client';
 import { API_URL } from '../../../actions/types';
 import ReactNotification from "react-notifications-component";
+import { getSocketNotification, editSocketNotification } from '../../../actions/socketNotificationActions';
 
 class Header extends Component {
   constructor(props) {
@@ -23,36 +24,39 @@ class Header extends Component {
 
   componentDidMount() {
     const profileId = this.props.profile._id;
+    console.log("profileId", profileId);
+    const { getSocketNotification } = this.props;
+    getSocketNotification(profileId);
     let self = this;
-      this.socket.on('has-new-conversation/', function(data) {
-        self.setState({
-          type: data.type,
-          sentBy: data.sentBy,
-          content: data.content,
-          title: data.title,
-          id: data.id
-        });
-        console.log(data);
-        if (profileId == data.to) {
-          window.$("#socketNotification").trigger("click");
-        }
-      })
-    }
-
-    addNotification() {
-      const title = this.state.type + " from " + this.state.sentBy;
-      const content = this.state.title === "" ? this.state.content : (this.state.title + ": " + this.state.content);
-      this.notificationDOMRef.current.addNotification({
-      title: title,
-      message: content,
-      type: "success",
-      insert: "top",
-      container: "top-right",
-      animationIn: ["animated", "fadeIn"],
-      animationOut: ["animated", "fadeOut"],
-      dismiss: { duration: 2000 },
-      dismissable: { click: true }
+    this.socket.on('has-new-conversation/', function(data) {
+      self.setState({
+        type: data.type,
+        sentBy: data.sentBy,
+        content: data.content,
+        title: data.title,
+        id: data.id
       });
+      if (profileId == data.to) {
+        window.$("#socketNotification").trigger("click");
+        getSocketNotification(profileId);
+      }
+    })
+  } 
+
+  addNotification() {
+    const title = this.state.type + " from " + this.state.sentBy;
+    const content = this.state.title === "" ? this.state.content : (this.state.title + ": " + this.state.content);
+    this.notificationDOMRef.current.addNotification({
+    title: title,
+    message: content,
+    type: "success",
+    insert: "top",
+    container: "top-right",
+    animationIn: ["animated", "fadeIn"],
+    animationOut: ["animated", "fadeOut"],
+    dismiss: { duration: 2000 },
+    dismissable: { click: true }
+    });
   }
 
   onLogoutClick = e => {
@@ -60,12 +64,36 @@ class Header extends Component {
     this.props.logoutUser();
   };
 
+  setRead = (_id, id) => {
+    this.props.editSocketNotification(_id, id);
+  }
+
   render() {
     const { permissions, auth } = this.props;
     const role = permissions.length > 0 ? permissions[0].role : '';
     const firstName = auth.profile.firstName;
     const { title, content, sentBy, type, id } = this.state;
-    let url = "/notifications/view/" + id;
+    const { socketNotifications } = this.props;
+    console.log(socketNotifications);
+    let notifictions = socketNotifications.map((notification, index) => {
+      let url = "/notifications/view/" + notification.id;
+      return (
+          <React.Fragment key={index}>
+            <a href={url} className="dropdown-link" onClick={() => this.setRead(notification._id, notification.id)}>
+              <div className="media">
+                <img src="http://via.placeholder.com/500x500" alt="" />
+                <div className="media-body">
+                  <p>
+                    <strong>{notification.type} from {notification.sentBy}</strong> 
+                  </p>
+                  <h6>{notification.title}</h6>
+                  <span>{content}</span>
+                </div>
+              </div>
+            </a>
+          </React.Fragment>
+        )
+    })
 
     return (
       <div className="slim-header">
@@ -111,19 +139,7 @@ class Header extends Component {
                   </div>
                 </div>
                 <div className="dropdown-list">
-                  {type &&
-                    <a href={url} className="dropdown-link">
-                      <div className="media">
-                        <img src="http://via.placeholder.com/500x500" alt="" />
-                        <div className="media-body">
-                          <p>
-                            <strong>{type} from {sentBy}</strong> 
-                          </p>
-                          <h6>{title}</h6>
-                          <span>{content}</span>
-                        </div>
-                      </div>
-                    </a>}
+                  {notifictions}
                   <div className="dropdown-list-footer">
                     <a href="/notifications">
                       <i className="fa fa-angle-down" /> Show All Notifications
@@ -174,10 +190,11 @@ class Header extends Component {
 }
 
 const mapStateToProps = state => ({
-  profile: state.auth.profile
+  profile: state.auth.profile,
+  socketNotifications : state.socketNotifications.allsocketNotifications
 });
 
 export default connect(
   mapStateToProps,
-  { logoutUser }
+  { logoutUser, getSocketNotification, editSocketNotification }
 )(Header);

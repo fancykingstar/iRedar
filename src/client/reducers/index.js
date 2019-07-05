@@ -11,6 +11,7 @@ import organizationReducer from './organizationReducer';
 import messageReducer from './messageReducer';
 import inboxReducer from './inboxReducer';
 import userReducer from './userReducer';
+import socketNotificationReducer from './socketNotificationReducer';
 
 export default combineReducers({
   auth: authReducer,
@@ -24,5 +25,6 @@ export default combineReducers({
   organization: organizationReducer,
   message: messageReducer,
   inbox: inboxReducer,
-  users: userReducer
+  users: userReducer,
+  socketNotifications: socketNotificationReducer
 });
