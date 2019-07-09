@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import io from 'socket.io-client';
 import { API_URL } from '../../../actions/types';
 import ReactNotification from "react-notifications-component";
-import { getSocketNotification, editSocketNotification } from '../../../actions/socketNotificationActions';
+import { getSocketNotification, editSocketNotification, deleteAllSocket } from '../../../actions/socketNotificationActions';
 
 class Header extends Component {
   constructor(props) {
@@ -19,16 +19,16 @@ class Header extends Component {
         content: "",
         title: "",
         id: "",
-        once: false
+        once: false,
+        delete: true
     }
   }
 
-  componentWillUpdate() {
-    console.log("aaaaaaaaaaaaaaaaa");
-    const profileId = this.props.profile._id;
-    const { getSocketNotification } = this.props;
-      getSocketNotification(profileId);
-  }
+  // componentWillUpdate() {
+  //   const profileId = this.props.profile._id;
+  //   const { getSocketNotification } = this.props;
+  //     getSocketNotification(profileId);
+  // }
 
   componentDidMount() {
     const profileId = this.props.profile._id;
@@ -37,6 +37,8 @@ class Header extends Component {
     getSocketNotification(profileId);
     let self = this;
     this.socket.on('has-new-conversation/', function(data) {
+      console.log(profileId);
+      console.log(data.to);
       self.setState({
         type: data.type,
         sentBy: data.sentBy,
@@ -76,6 +78,11 @@ class Header extends Component {
     this.props.editSocketNotification(_id, id);
   }
 
+  deleteSocket = () => {
+    this.props.deleteAllSocket();
+    this.setState({delete: true});
+  }
+
   render() {
     const { permissions, auth } = this.props;
     const role = permissions.length > 0 ? permissions[0].role : '';
@@ -85,6 +92,12 @@ class Header extends Component {
     console.log(socketNotifications);
     let notifictions = socketNotifications.map((notification, index) => {
       let url = "/notifications/view/" + notification.id;
+      if (notification.type == "Notification") {
+        url = "/notifications/view/" + notification.id;
+      }
+      else if (notification.type == "Submission") {
+        url = "/modules/referrals/"; 
+      }
       return (
           <React.Fragment key={index}>
             <a href={url} className="dropdown-link" onClick={() => this.setRead(notification._id, notification.id)}>
@@ -136,7 +149,7 @@ class Header extends Component {
                 data-toggle="dropdown"
               >
                 <i className="icon ion-ios-bell-outline" />
-                <span className="indicator" />
+                {this.props.socketNotifications.length == 0 ? "" : <span className="indicator" /> }
               </Link>
               <div className="dropdown-menu">
                 <div className="dropdown-menu-header">
@@ -149,7 +162,7 @@ class Header extends Component {
                 <div className="dropdown-list">
                   {notifictions}
                   <div className="dropdown-list-footer">
-                    <a href="/notifications">
+                    <a href="/notifications" onClick={this.deleteSocket}>
                       <i className="fa fa-angle-down" /> Show All Notifications
                     </a>
                   </div>
@@ -204,5 +217,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { logoutUser, getSocketNotification, editSocketNotification }
+  { logoutUser, getSocketNotification, editSocketNotification, deleteAllSocket }
 )(Header);

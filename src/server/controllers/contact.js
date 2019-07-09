@@ -192,7 +192,6 @@ exports.inviteClientPortal = async (req, res) => {
         success: true
       });
     }).catch(error => {
-      console.log(error);
     });  
   }
 }
@@ -250,8 +249,6 @@ exports.changeInviteAccess = async (req, res) => {
         },
       });
     }).catch((error) => {
-      console.log("ERROR ==> ");
-      console.log(error);
       res.status(422).json({
         success: false,
         alert: {
@@ -279,10 +276,8 @@ exports.updateInviteAccess = async (req, res) => {
     Promise.all(contact.emailAddresses.map(async item => {
       if (item.inviteStatus === 'pending') {
         const user = await User.findOne({email: item.emailAddress});
-        console.log(user.lastLogin_at)
         if (user.lastLogin_at != null) {
           item.inviteStatus = 'confirmed';
-          console.log(item)
         }
       }
       return item;
@@ -295,6 +290,5 @@ exports.updateInviteAccess = async (req, res) => {
     }));
     
   } catch(err){
-    console.log(err)
   }
 }

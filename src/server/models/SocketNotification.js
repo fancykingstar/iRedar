@@ -25,6 +25,9 @@ const socketnotificationSchema = Schema({
     id: {
         type: Schema.Types.ObjectId,
         ref: 'Profile',
+    },
+    formName: {
+        type: String
     }
 })
 

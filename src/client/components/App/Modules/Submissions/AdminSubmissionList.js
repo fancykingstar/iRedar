@@ -73,7 +73,6 @@ class AdminSubmissionList extends Component {
     const isAllowedToShare = (userRole === "admin" || userRole === "staff" || userRole === "partner");
     const isAllowedDetail = (userRole === "admin" || userRole === "staff" || userRole === "client" || userRole === "partner");
     const isAllowedUser = (userRole === "partner");
-    console.log("delete", this.props.submissions);    
     let submissionList = this.props.submissionList;
     let loading = this.props.loading;
 

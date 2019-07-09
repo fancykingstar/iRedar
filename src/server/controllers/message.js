@@ -1,4 +1,5 @@
 const Inbox = require('../models/Inbox');
+const SocketNotification = require('../models/SocketNotification');
 const Message = require('../models/Message');
 const Profile = require('../models/Profile');
 const Socket = require('./sockets');
@@ -13,7 +14,6 @@ exports.postMessage = async (req, res) => {
   if (!inboxId) {
     let inbox = new Inbox({ from: from, to: to, messages: [] });
     inbox.save(function (err) {
-      if (err) console.log(err);
 
       let messageObject = new Message({
         inboxId: inbox._id,
@@ -26,6 +26,17 @@ exports.postMessage = async (req, res) => {
       inbox.save();
       let pro = Profile.find({_id: sentBy}).then((profile) => {
         let name = profile[0].firstName + profile[0].lastName;
+        const socketnotification = {
+          title: "",
+          content: message,
+          type: "Message",
+          recipients: to,
+          sentBy: name,
+          id: from,
+          formName: ""
+        };
+        console.log("message to socketnotification: ", socketnotification);
+        SocketNotification.create(socketnotification);
         Socket.socket('has-new-conversation', '', { to: to, id:inbox._id, sentBy: name, content: message, title: "", type: "Message", hasNewMessage: true });
       });     
 

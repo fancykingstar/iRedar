@@ -80,7 +80,6 @@ exports.changePlan = async (req, res) => {
         paymentData
     } = req.body;
 
-    console.log(paymentData);
 
     const header = req.headers['authorization'];
     let tokenUserId = null;
@@ -101,7 +100,6 @@ exports.changePlan = async (req, res) => {
         });
 
         if (tokenUserRole === "admin") {
-            console.log("Change subscription ...");
 
             const permission = await Permission.findOne({profile: tokenProfileId});
             let organization = await Organization.findOne({_id: permission.organization});
@@ -153,7 +151,6 @@ exports.deletePaymentAndSubscription = async (req, res) => {
         });
 
         if (tokenUserRole === "admin") {
-            console.log("Delete subscription ...")
             // await stripeLibrary.doUnsubscribe(tokenProfileId);
         }
 

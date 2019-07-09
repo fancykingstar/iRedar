@@ -5,9 +5,8 @@ import axios from 'axios';
 import {API_URL} from '../../../../actions/types';
 import moment from 'moment';
 import Breadcrumb from 'react-bootstrap/Breadcrumb'
-
 import Datepicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css";
+
 let isEditableValidation = false;
 
 class FCRPLoan extends Component {
@@ -41,10 +40,15 @@ class FCRPLoan extends Component {
       });
     }
 
+    changeHandler = e => {
+
+    }
+
     componentDidMount() {
         const self = this;
         const isEditable = true;
         window.download2 = this.download
+
         window.$('#wizard6').steps({
             headerTag: 'h3',
             bodyTag: 'section',
@@ -220,6 +224,9 @@ class FCRPLoan extends Component {
             }
         })        
 
+        window.$('.date-date-picker').datepicker({
+            dateFormat: "yy/mm/dd"
+        });
         window.$('#landingDocument').change(function (event) {
             var file = window.$('#landingDocument').prop('files')[0];
             if (file) {
@@ -251,23 +258,6 @@ class FCRPLoan extends Component {
             window.$('#englishLanguageAssessment_reading').removeAttr("disabled");
             window.$('#englishLanguageAssessment_writing').removeAttr("disabled");
         });
-
-        window.$('input[type="date"]').change(function() {
-            this.setAttribute(
-                "data-date",
-                moment(this.value, "YYYY/MM/DD")
-                .format('YYYY/MM/DD')
-            )
-        })
-
-        Date.prototype.toDateInputValue = (function() {
-            var local = new Date(this);
-            local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-            return local.toJSON().slice(0,10);
-        });
-
-        window.$('input[type="date"]').val(new Date().toDateInputValue());
-        window.$('input[type="date"]').trigger('change');
     }
 
     render() {
@@ -602,8 +592,8 @@ class FCRPLoan extends Component {
                                                 </div>
                                             </div>
                                             <input name="birthDate" 
-                                                id="birthDate" type="date"
-                                                className="form-control"
+                                                id="birthDate" type="text"
+                                                className="form-control date-date-picker"
                                                 date-date=""
                                                 readOnly={!isEditable}
                                                 disabled={!isEditable}
@@ -1099,8 +1089,8 @@ class FCRPLoan extends Component {
                                                         <i className="fa fa-calendar tx-16 lh-0 op-6"></i>
                                                     </div>
                                                 </div>
-                                                <input name="landingDate" id="landingDate" type="date"
-                                                       className="form-control"
+                                                <input name="landingDate" id="landingDate" type="text"
+                                                       className="form-control date-date-picker"
                                                        date-date=""
                                                        readOnly={!isEditable}
                                                        disabled={!isEditable}
@@ -1617,8 +1607,8 @@ class FCRPLoan extends Component {
                                                     </div>
                                                 </div>
                                                 <input name="englishLanguageAssessment_assessmentDate"
-                                                       id="englishLanguageAssessment_assessmentDate" type="date"
-                                                       className="form-control"
+                                                       id="englishLanguageAssessment_assessmentDate" type="text"
+                                                       className="form-control date-date-picker"
                                                        date-date=""
                                                        readOnly={!isEditable}
                                                        disabled={!isEditable}
@@ -1904,7 +1894,7 @@ class FCRPLoan extends Component {
                                                 <label htmlFor="Signature">Signature</label>
                                             </div>
                                             <div className="form-group col-md-4">
-                                                <input type="date" date-date="" className="form-control" id="signDate" name="SignDate" />
+                                                <input type="text" date-date="" className="form-control date-date-picker" id="signDate" name="SignDate" />
                                                 <label htmlFor="Date">Date</label>
                                             </div>
                                             <div className="col-md-4"></div>
@@ -1944,7 +1934,7 @@ class FCRPLoan extends Component {
                                                 <label htmlFor="Signature">Signature</label>
                                             </div>
                                             <div className="form-group col-md-4">
-                                                <input type="date" date-date="" className="form-control" id="othersignDate" name="OthersignDate" />
+                                                <input type="text" date-date="" className="form-control date-date-picker" id="othersignDate" name="OthersignDate" />
                                                 <label htmlFor="Date">Date</label>
                                             </div>
                                             <div className="col-md-4"></div>

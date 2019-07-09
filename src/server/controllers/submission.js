@@ -4,6 +4,8 @@ const Submission = require('../models/Submission');
 const Organization = require('../models/Organization');
 const Permission = require('../models/Permission');
 const Profile = require('../models/Profile');
+const SocketNotification = require('../models/SocketNotification');
+const Socket = require('./sockets');
 
 // @route POST api/submissions
 // @desc Submit form
@@ -51,14 +53,16 @@ exports.getAllSubmissions = async (req, res) => {
     //     },
     //   });
     // }
-
+    console.log("permssions.role",permissions.role);
     let allSubmissions = [];
-    if (permissions.role === 'client') {
+    console.log("permssions.role",profile.user);
+    if (permissions.role === 'admin') {
       allSubmissions = await Submission.find({userId: profile.user}).sort({
         dateSubmitted: 'desc',
       });
     } else {
       let users = organization.users;
+      console.log("permissions.role", users);
       allSubmissions = await Submission.find({userId: {$in: users}}).sort({
         dateSubmitted: 'desc',
       });

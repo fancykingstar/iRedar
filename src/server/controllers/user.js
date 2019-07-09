@@ -226,7 +226,6 @@ exports.postRegister = async (req, res) => {
       password: 'Password must be at least 6 characters',
     });
   }
-
   const header = req.headers['authorization'];
   let userId = null;
   let userRole = null;
@@ -262,90 +261,91 @@ exports.postRegister = async (req, res) => {
       }
     });
   }
-try {
-  const adminProfile = await Profile.findById(profileId);
-  const adminDomain = adminProfile.domain;
-  const adminOrganization = await Organization.findOne({domain: adminDomain});
-  if (!adminOrganization) {
-    return res.status(422).json({
+  try {
+    const adminProfile = await Profile.findById(profileId);
+    const adminDomain = adminProfile.domain;
+    const adminOrganization = await Organization.findOne({domain: adminDomain});
+    if (!adminOrganization) {
+      return res.status(422).json({
+        alert: {
+          title: 'Error!',
+          detail: 'Organization not found'
+        }
+      });
+    }
+
+    const existingUser = await User.findOne({email});
+    if (existingUser) {
+      return res.status(422).json({
+        alert: {
+          title: 'Error!',
+          detail: 'User already exists'
+        }
+      });
+    }
+
+    const r = email.match(domain_regex);
+    let userDomain = email;
+    if (r) {
+      userDomain = r[0];
+    }
+
+    if (role === "admin" || role === "staff" || role === "user") {
+        if (userDomain !== adminDomain) {
+          return res.status(403).json({
+            alert: {
+              title: 'Error!',
+              detail: userId + " with role " + userRole + " should have same domain"
+            }
+          });
+        }
+    }
+
+    const user = await new User({
+      email,
+      password,
+    }).save();
+
+    let profile = await new Profile({
+      user: user.id,
+      email,
+      lastName,
+      firstName,
+      domain: adminDomain
+    }).save();
+
+    adminOrganization.users.push(user.id);
+    adminOrganization.save();
+
+    if (adminOrganization._id) {
+      const userPermission = await new Permission({
+        profile: profile.id,
+        organization: adminOrganization.id,
+        role: role,
+        permissionRight: rolesToPermission[role]
+      });
+      console.log("hello", adminOrganization);
+      await userPermission.save();
+    }
+
+      await stripeLibrary.doUpdateSubscription(adminProfile._id);
+
+    return res.json({
+      success: true,
       alert: {
-        title: 'Error!',
-        detail: 'Organization not found'
-      }
+        title: 'Success!',
+        detail: 'New User Is Created'
+      },
     });
-  }
-
-  const existingUser = await User.findOne({email});
-  if (existingUser) {
-    return res.status(422).json({
-      alert: {
-        title: 'Error!',
-        detail: 'User already exists'
-      }
-    });
-  }
-
-  const r = email.match(domain_regex);
-  let userDomain = email;
-  if (r) {
-    userDomain = r[0];
-  }
-
-  if (role === "admin" || role === "staff" || role === "user") {
-      if (userDomain !== adminDomain) {
-        return res.status(403).json({
-          alert: {
-            title: 'Error!',
-            detail: userId + " with role " + userRole + " should have same domain"
-          }
-        });
-      }
-  }
-
-  const user = await new User({
-    email,
-    password,
-  }).save();
-
-  let profile = await new Profile({
-    user: user.id,
-    email,
-    lastName,
-    firstName,
-    domain: adminDomain
-  }).save();
-
-  adminOrganization.users.push(user.id);
-  adminOrganization.save();
-
-  if (adminOrganization.id) {
-    const userPermission = await new Permission({
-      profile: profile.id,
-      organization: adminOrganization.id,
-      role: role,
-      permissionRight: rolesToPermission[role]
-    });
-    await userPermission.save();
-  }
-
-    await stripeLibrary.doUpdateSubscription(adminProfile._id);
-
-  return res.json({
-    success: true,
-    alert: {
-      title: 'Success!',
-      detail: 'New User Is Created'
-    },
-  });
-}catch (error) {
-    console.error(error);
-  console.log(error);
-    return res.status(422).json({
-      alert: {
-        title: 'Error!',
-        detail: 'Server Error: Please try again'
-      }
-    });
+  }catch (error) {
+      console.error(error);
+      console.log(error);
+      return res.status(422).json({
+        alert: {
+          title: 'Error!',
+          detail: 'Server Error: Please try again'
+        }
+      });
   }
 };
 

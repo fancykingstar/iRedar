@@ -32,4 +32,6 @@ router.post('/', middleware(socketnotificationController.update));
  **/
 router.post('/delete/:id', middleware(socketnotificationController.delete));
 
+router.post('/deleteall', middleware(socketnotificationController.deleteAll));
+
 module.exports = router;

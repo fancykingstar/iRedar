@@ -25,7 +25,6 @@ class ReferralForm extends Component {
 
     componentDidMount() {
         const { adminPermissions, permissions } = this.props;
-        console.log(permissions);
         this.props.dispatch(getAdminPermissions(permissions[0].organization, permissions[0].profile))
         window.$('#partnerList').tagsinput({
             allowDuplicates: false,

@@ -21,6 +21,14 @@ export const editSocketNotification = (_id, id) => async (dispatch) => {
   });
 };
 
+export const deleteAllSocket = () => async (dispatch) => {
+  const {data: {data}} = await axios.post(`${API_URL}/api/socketnotifications/deleteall`);
+  dispatch({
+    type: GET_ALL_SOCKET_NOTIFICATIONS,
+    payload: data
+  });
+};
+
 export const getNotification = (payload) => async dispatch => {
   const {data: {data}} = await axios.get(`${API_URL}/api/notifications/${payload}`);
   dispatch({

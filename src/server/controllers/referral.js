@@ -7,6 +7,8 @@ const nodeMailer = require('../helpers/nodemailer')
 const User = require('../models/User')
 const Profile = require('../models/Profile')
 const Referral = require('../models/Referral')
+const SocketNotification = require("../models/SocketNotification")
+const Socket = require('./sockets');
 
 const { referralPreview } = require('../helpers/htmlMails/referral');
 
@@ -82,13 +84,6 @@ exports.deleteReferral = async (req, res) => {
 exports.postReferral = async (req, res) => {
     try {
         let userId = req.user._id
-        const user = await User.findById(userId)
-        if (!user) {
-            return res.status(422).json({
-                name: 'Uploader info is required'
-            })
-        }
-
         const {
             _id,
             formName,
@@ -105,9 +100,30 @@ exports.postReferral = async (req, res) => {
             receivers,
             submissionId
         } = req.body
+        debugger
+        let nofi = Profile.find({_id: sender}).then((nofi) => {
+            debugger
+            let name = nofi[0].firstName + " " + nofi[0].lastName;
+            const socketnotification = {
+              title: "",
+              content: note,
+              type: "Submission",
+              recipients: receivers,
+              sentBy: name,
+              id: submissionId,
+              formName: formName
+            };
+            SocketNotification.create(socketnotification);
+            Socket.socket('has-new-conversation', '', { id: submissionId, to: receivers, sentBy: name, content: note, title: "", type: "Submission", hasNewMessage: true, formName: formName });
+        });
+        const user = await User.findById(userId)
+        if (!user) {
+            return res.status(422).json({
+                name: 'Uploader info is required'
+            })
+        }
 
         const profiles = await Profile.find({ _id: { $in: receivers } })
-        console.log(profiles);
         if (!profiles) {
             return res.json({
                 referral: {}
@@ -148,7 +164,7 @@ exports.postReferral = async (req, res) => {
                 submission: submissionId
             })
         }
-        console.log("referal---------------------", referral);
+
         let saved = await referral.save()
 
         let apiUrl = (process.env.NODE_ENV === "production") ? 'https://iauto.herokuapp.com' : 'http://localhost:3000'

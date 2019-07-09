@@ -218,7 +218,6 @@ exports.postPermission = async (req, res) => {
       profile: profile.id,
     });
 
-    console.log(existingPermission);
     if (existingPermission) {
       return res.status(422).json({
         name: 'Your permission already existed',

@@ -9,7 +9,6 @@ const Socket = require('./sockets');
 exports.index = async (req, res) => {
   let {id} = req.query;
   let response = await SocketNotification.find({ $or:[ {recipients: {$all: [id]}}] });  
-  console.log("getsocketnotification:", response);
   return res.json({
     success: true,
     data: response
@@ -56,9 +55,20 @@ exports.edit = async (req, res) => {
  */
 exports.update = async (req, res) => {
   const {_id, id} = req.body;
-  console.log("ssssssssssssssssssssssssssssssSS:", req.body);
   const remove = await SocketNotification.findOne({_id: req.body._id}).remove();
   const response = await SocketNotification.find({ $or:[ {recipients: {$all: [id]}}] });
+  
+  return res.json({
+    success: true,
+    data: {
+      data: response
+    }
+  });
+};
+
+exports.deleteAll = async (req, res) => {
+  const remove = await SocketNotification.find().remove();
+  const response = await SocketNotification.find();
   
   return res.json({
     success: true,
