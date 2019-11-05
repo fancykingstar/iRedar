@@ -34,7 +34,7 @@
     "jsonwebtoken": "^8.4.0",
     "jwt-decode": "^2.2.0",
     "moment": "^2.24.0",
-    "mongoose": "^5.4.7",
+    "mongoose": "^5.7.5",
     "morgan": "^1.9.1",
     "nodemailer": "^5.1.1",
     "papaparse": "^4.6.3",
